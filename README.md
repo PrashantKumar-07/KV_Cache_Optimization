@@ -7,6 +7,14 @@ them to an on-chip **STT-RAM victim cache** whose fast-read / slow-write
 asymmetry matches the write-once / read-maybe lifecycle of a KV token, then
 **promote them back** when a later query needs them.
 
+The victim cache alone would pay a heavy price on every re-eviction: an STT-RAM
+**write** is ~4× slower and costlier than a read. Because KV tokens are
+**immutable after prefill**, we make the victim cache **inclusive** — a promoted
+token's STT copy is kept as a clean *shadow backup*, so a later re-demote just
+reactivates the backup at **zero write cost**. On a 150-step thrashing scenario
+this eliminates 96.8% of demotion writes and cuts derived latency 3.7× (54.4 →
+14.6 µs) with **identical accuracy**. See "Migration overhead" below.
+
 This repo is the *local, small-scale* stage: prove correctness + the accuracy
 benefit on tiny synthetic workloads with full instrumentation, before running
 real 8B models on LongBench on the server.
@@ -23,9 +31,12 @@ src/
   tiered_kv_cache.py  the core 3-tier router (Phase-0 bifurcation + 4-step decode loop)
   baselines.py        FullAttention (oracle), StreamingLLM, SnapKV
 tests/
-  test_tiered_cache.py   invariant tests (sinks pinned, window kept, bounds held, promotion works)
+  test_tiered_cache.py   invariant tests (sinks pinned, window kept, bounds held, promotion works, inclusive cache saves writes)
 experiments/
   compare_accuracy.py    Full vs StreamingLLM vs SnapKV vs TieredKV on a long-range scenario
+  sweep_sram.py          SRAM-budget sweep → crossover point (CSV output)
+  model_wrapper.py       run the 3-tier cache on real (or --smoke synthetic) per-layer K/V
+  plot_results.py        LOCAL-only matplotlib figures (quarantined; not in the server pipeline)
 results/
   tiered_run.json        per-step metrics dump (created on run)
 ```
@@ -34,9 +45,17 @@ results/
 
 ```bash
 pip install -r requirements.txt
-python tests/test_tiered_cache.py        # correctness
-python experiments/compare_accuracy.py   # head-to-head accuracy + migration stats
+python tests/test_tiered_cache.py                       # correctness (7 tests)
+python experiments/compare_accuracy.py                  # inclusive victim cache (default)
+python experiments/compare_accuracy.py --no-inclusive \
+    --json results/tiered_run_destructive.json          # ablation: destructive eviction
+python experiments/plot_results.py \
+    results/tiered_run.json results/tiered_run_destructive.json --outdir figures
 ```
+
+The two `tiered_run*.json` dumps rendered side by side show the STT-write (red)
+latency band collapse under the inclusive cache — the visual proof of the
+migration-overhead contribution.
 
 ---
 
@@ -46,7 +65,7 @@ python experiments/compare_accuracy.py   # head-to-head accuracy + migration sta
 |---|---|---|
 | Full KV cache | `TieredKVCache` (3 tiers combined) | — |
 | Hot working set | Tier 1 SRAM (`sram_k/v`) | StreamingLLM |
-| Warm victim cache | Tier 2 STT-RAM (`stt_k/v`, paged sketches) | **our novelty** |
+| Warm victim cache | Tier 2 STT-RAM (`stt_k/v`, paged sketches, inclusive shadow backups) | **our novelty** |
 | Cold storage / drop | Tier 3 DRAM (`dram_k/v`) or discard | H2O / FlexGen |
 | Prompt compression | `initial_bifurcation` | SnapKV |
 | Importance score | `sram_cum` (cumulative attention) | H2O |
@@ -63,7 +82,9 @@ resident changes. Any accuracy gap is a pure memory-management effect.
 2. **`promote`** — move predicted-useful pages STT-RAM → SRAM.
 3. **`compute_attention`** — exact attention over the SRAM working set only.
 4. **`evict_and_demote`** — SRAM→STT-RAM (lowest cumulative attention, sinks &
-   window protected); STT-RAM→DRAM/drop (LRU) when the warm tier overflows.
+   window protected); reactivate a shadow backup instead of writing when one
+   exists (inclusive cache); STT-RAM→DRAM/drop (LRU, backups reclaimed first)
+   when the warm tier overflows.
 
 ---
 
@@ -100,6 +121,38 @@ while promoting (read-often) is cheap.
 - `Acc(local)` = accuracy on ordinary local steps (all methods similar).
 - Absolute values are synthetic (random Gaussians → low cosine baseline). **The
   ordering — TieredKV > SnapKV > StreamingLLM on `Acc(anchor)` — is the claim.**
+
+---
+
+## Migration overhead: the inclusive victim cache
+
+A victim cache only helps if promoting/demoting is cheaper than the recall it
+buys. The cost is dominated by the **STT-RAM write** (250 GB/s, 8 pJ/bit — vs
+1 TB/s, 2 pJ/bit for a read), and thrashing re-demotes the same tokens over and
+over. We attack this on two axes:
+
+- **Cost per migration — inclusive cache (`inclusive=True`, default).** KV is
+  immutable after prefill, so when `promote` moves a token STT→SRAM we keep its
+  STT row as a clean **shadow backup** (`stt_shadow=True`) instead of deleting
+  it. A later `evict_and_demote` of that token finds the backup
+  (`_find_backup`), flips it live, and pays **no write** (`writes_saved++`).
+  Backups are reclaimed before any real victim is dropped, so they never cost
+  accuracy. Set `inclusive=False` (or `--no-inclusive`) for the destructive
+  ablation.
+- **Volume — `promote_top_pages`.** Fewer promotions per step ⇒ less thrashing
+  ⇒ fewer demotions to pay for. Exposed as `--promote-top-pages` on the sweep.
+
+**A/B (compare_accuracy, 150 steps, SRAM=64, STT=128), identical accuracy:**
+
+| | demotions | paid writes | writes saved | total latency | total energy |
+|---|---|---|---|---|---|
+| destructive | 4950 | 4950 | 0 | 54.4 µs | 1.20 mJ |
+| **inclusive** | 4950 | **159** | **4791 (96.8%)** | **14.6 µs** | **0.49 mJ** |
+
+**Why not prefetch?** A prefetch hit only hides the *cheap* read; a prefetch
+miss wastes a read and can evict a good token, forcing an extra *expensive*
+write — increasing the very overhead we reduce. So prefetch is deliberately
+excluded; the inclusive cache is the sole cost lever.
 
 ---
 

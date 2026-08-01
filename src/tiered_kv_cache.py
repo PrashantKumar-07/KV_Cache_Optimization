@@ -44,6 +44,10 @@ class TieredConfig:
     promote_top_pages: int = 2   # max pages promoted per step
     store_dram: bool = False     # True: keep cold tokens in DRAM; False: drop
     pool_kernel: int = 5         # SnapKV clustering pool
+    inclusive: bool = True       # inclusive victim cache: keep an STT backup on
+                                 # promote so a later re-demote costs NO write
+                                 # (KV is immutable -> the backup is never stale).
+                                 # False = destructive (old behaviour, for ablation).
     dtype: torch.dtype = torch.float32
     device: str = "cpu"
 
@@ -66,6 +70,7 @@ class TieredKVCache:
         self.stt_v = torch.empty(H, 0, D, device=dev, dtype=dt)
         self.stt_pos = []
         self.stt_last_access = torch.empty(0, device=dev, dtype=dt)
+        self.stt_shadow = []  # True = this token is also in SRAM (inclusive backup)
 
         # ---- Tier 3: DRAM (optional) ----
         self.dram_k = torch.empty(H, 0, D, device=dev, dtype=dt)
@@ -120,6 +125,7 @@ class TieredKVCache:
         self.stt_v = v_all[:, stt_idx, :].clone()
         self.stt_pos = list(stt_idx)
         self.stt_last_access = torch.zeros(len(stt_idx), device=cfg.device, dtype=cfg.dtype)
+        self.stt_shadow = [False] * len(stt_idx)   # bifurcated tokens are real victims
 
         if cfg.store_dram:
             self.dram_k = k_all[:, cold_idx, :].clone()
@@ -135,13 +141,22 @@ class TieredKVCache:
     # STEP 1 : sketch check  (Quest min/max upper bound)
     # =====================================================================
     def _page_bounds(self):
-        """Return per-page (min_k, max_k) sketches and the token-index slices."""
+        """Return per-page (min_k, max_k) sketches and the token-index slices.
+
+        Shadow rows (already resident in SRAM as inclusive backups) are skipped:
+        a page is scored only over its NON-shadow victim tokens, and pages with
+        no victims are omitted entirely -- we never route a query at a token the
+        SRAM working set already holds.
+        """
         H, m, D = self.stt_k.shape
         ps = self.cfg.page_size
         pages = []
         for start in range(0, m, ps):
             end = min(start + ps, m)
-            block = self.stt_k[:, start:end, :]              # (H, p, D)
+            local = [i for i in range(start, end) if not self.stt_shadow[i]]
+            if not local:
+                continue
+            block = self.stt_k[:, local, :]                  # (H, p_victim, D)
             pages.append((start, end,
                           block.min(dim=1).values,           # (H, D)
                           block.max(dim=1).values))          # (H, D)
@@ -183,30 +198,52 @@ class TieredKVCache:
     # STEP 2 : promote  (STT-RAM -> SRAM)
     # =====================================================================
     def promote(self, hits):
+        """Move real-victim tokens in the hit pages STT-RAM -> SRAM.
+
+        Shadow rows inside a hit page are skipped (already in SRAM). In inclusive
+        mode the promoted victim's STT row is KEPT and flipped to a shadow
+        backup (KV is immutable, so the backup can never go stale); in
+        destructive mode the row is removed. Returns tokens moved.
+        """
         if not hits:
             return 0
         H, m, D = self.stt_k.shape
-        keep = torch.ones(m, dtype=torch.bool)
-        moved = 0
+        # gather the real-victim rows across all hit pages
+        idx = []
         for (s, e) in hits:
-            idx = list(range(s, e))
-            self.sram_k = torch.cat([self.sram_k, self.stt_k[:, idx, :]], dim=1)
-            self.sram_v = torch.cat([self.sram_v, self.stt_v[:, idx, :]], dim=1)
-            self.sram_pos += [self.stt_pos[i] for i in idx]
-            self.sram_cum = torch.cat(
-                [self.sram_cum, torch.zeros(len(idx), device=self.cfg.device, dtype=self.cfg.dtype)]
-            )
-            for i in idx:
-                keep[i] = False
-            moved += len(idx)
+            idx += [i for i in range(s, e) if not self.stt_shadow[i]]
+        if not idx:
+            return 0
 
-        # remove promoted tokens from STT-RAM
-        keep_idx = keep.nonzero(as_tuple=True)[0].tolist()
-        self.stt_k = self.stt_k[:, keep_idx, :]
-        self.stt_v = self.stt_v[:, keep_idx, :]
-        self.stt_pos = [self.stt_pos[i] for i in keep_idx]
-        self.stt_last_access = self.stt_last_access[keep_idx]
-        return moved
+        self.sram_k = torch.cat([self.sram_k, self.stt_k[:, idx, :]], dim=1)
+        self.sram_v = torch.cat([self.sram_v, self.stt_v[:, idx, :]], dim=1)
+        self.sram_pos += [self.stt_pos[i] for i in idx]
+        self.sram_cum = torch.cat(
+            [self.sram_cum, torch.zeros(len(idx), device=self.cfg.device, dtype=self.cfg.dtype)]
+        )
+
+        if self.cfg.inclusive:
+            # keep the STT copy as a clean backup; mark it shadow, refresh its age
+            for i in idx:
+                self.stt_shadow[i] = True
+                self.stt_last_access[i] = self._t
+        else:
+            # destructive: physically remove promoted rows from STT-RAM
+            drop = set(idx)
+            keep_idx = [i for i in range(m) if i not in drop]
+            self.stt_k = self.stt_k[:, keep_idx, :]
+            self.stt_v = self.stt_v[:, keep_idx, :]
+            self.stt_pos = [self.stt_pos[i] for i in keep_idx]
+            self.stt_last_access = self.stt_last_access[keep_idx]
+            self.stt_shadow = [self.stt_shadow[i] for i in keep_idx]
+        return len(idx)
+
+    def _find_backup(self, pos):
+        """Index of a shadow STT row holding `pos`, or -1. Inclusive mode only."""
+        for i, (p, sh) in enumerate(zip(self.stt_pos, self.stt_shadow)):
+            if sh and p == pos:
+                return i
+        return -1
 
     # =====================================================================
     # STEP 3 : compute attention over the SRAM working set
@@ -237,6 +274,8 @@ class TieredKVCache:
         cfg = self.cfg
         dropped = 0
         demoted = 0
+        writes_saved = 0
+        reclaimed = 0
 
         # newly generated token always enters SRAM (it is the newest window token)
         self.sram_k = torch.cat([self.sram_k, new_k], dim=1)
@@ -258,15 +297,24 @@ class TieredKVCache:
             vk = self.sram_k[:, victim:victim + 1, :]
             vv = self.sram_v[:, victim:victim + 1, :]
             vpos = self.sram_pos[victim]
-
-            # append to STT-RAM
-            self.stt_k = torch.cat([self.stt_k, vk], dim=1)
-            self.stt_v = torch.cat([self.stt_v, vv], dim=1)
-            self.stt_pos.append(vpos)
-            self.stt_last_access = torch.cat(
-                [self.stt_last_access, torch.tensor([self._t], device=cfg.device, dtype=cfg.dtype)]
-            )
             demoted += 1
+
+            # inclusive: if a clean STT backup already exists, just reactivate it
+            # (KV immutable => identical bytes) and pay NO write.
+            back = self._find_backup(vpos) if cfg.inclusive else -1
+            if back >= 0:
+                self.stt_shadow[back] = False            # backup becomes a live victim
+                self.stt_last_access[back] = self._t
+                writes_saved += 1
+            else:
+                # no backup -> pay the STT write to append a fresh victim row
+                self.stt_k = torch.cat([self.stt_k, vk], dim=1)
+                self.stt_v = torch.cat([self.stt_v, vv], dim=1)
+                self.stt_pos.append(vpos)
+                self.stt_last_access = torch.cat(
+                    [self.stt_last_access, torch.tensor([self._t], device=cfg.device, dtype=cfg.dtype)]
+                )
+                self.stt_shadow.append(False)
 
             # remove victim from SRAM
             keep = [i for i in range(len(self.sram_pos)) if i != victim]
@@ -275,21 +323,33 @@ class TieredKVCache:
             self.sram_pos = [self.sram_pos[i] for i in keep]
             self.sram_cum = self.sram_cum[keep]
 
-        # ---- STT-RAM overflow -> deep-demote LRU token to DRAM/drop ----
+        # ---- STT-RAM overflow ----
+        # Reclaim shadow backups FIRST (lossless: the token still lives in SRAM),
+        # only then deep-demote a real-victim LRU token to DRAM/drop.
         while len(self.stt_pos) > cfg.sttram_capacity:
-            lru = int(torch.argmin(self.stt_last_access).item())
-            if cfg.store_dram:
-                self.dram_k = torch.cat([self.dram_k, self.stt_k[:, lru:lru + 1, :]], dim=1)
-                self.dram_v = torch.cat([self.dram_v, self.stt_v[:, lru:lru + 1, :]], dim=1)
-                self.dram_pos.append(self.stt_pos[lru])
-            keep = [i for i in range(len(self.stt_pos)) if i != lru]
+            shadow_idx = [i for i, sh in enumerate(self.stt_shadow) if sh]
+            if shadow_idx:
+                # drop the least-recently-used backup (no data movement, no loss)
+                la = self.stt_last_access
+                evict = min(shadow_idx, key=lambda i: la[i].item())
+                reclaimed += 1
+            else:
+                # no backups left: drop the LRU real victim (true eviction)
+                evict = int(torch.argmin(self.stt_last_access).item())
+                if cfg.store_dram:
+                    self.dram_k = torch.cat([self.dram_k, self.stt_k[:, evict:evict + 1, :]], dim=1)
+                    self.dram_v = torch.cat([self.dram_v, self.stt_v[:, evict:evict + 1, :]], dim=1)
+                    self.dram_pos.append(self.stt_pos[evict])
+                dropped += 1
+
+            keep = [i for i in range(len(self.stt_pos)) if i != evict]
             self.stt_k = self.stt_k[:, keep, :]
             self.stt_v = self.stt_v[:, keep, :]
             self.stt_pos = [self.stt_pos[i] for i in keep]
             self.stt_last_access = self.stt_last_access[keep]
-            dropped += 1
+            self.stt_shadow = [self.stt_shadow[i] for i in keep]
 
-        return demoted, dropped
+        return demoted, dropped, writes_saved, reclaimed
 
     # =====================================================================
     # Full decode step orchestrator
@@ -312,9 +372,11 @@ class TieredKVCache:
         rec.attn_macs = attn_macs
 
         # 4. evict + demote (also inserts the new token)
-        demoted, dropped = self.evict_and_demote(new_k, new_v, new_pos)
+        demoted, dropped, writes_saved, reclaimed = self.evict_and_demote(new_k, new_v, new_pos)
         rec.demoted_tokens = demoted
         rec.dropped_tokens = dropped
+        rec.writes_saved = writes_saved
+        rec.backups_reclaimed = reclaimed
 
         # occupancy
         rec.sram_tokens = len(self.sram_pos)
@@ -322,9 +384,12 @@ class TieredKVCache:
         rec.dram_tokens = len(self.dram_pos)
 
         # ---- derive latency + energy from the cost model ----
+        # Only demotions that actually paid an STT write are charged the (slow,
+        # costly) write. Inclusive-cache re-demotes that reused a backup are free.
+        paid_writes = rec.demoted_tokens - rec.writes_saved
         elems_per_tok = H * D
         lat_p, eng_p = self.cm.promote_cost(rec.promoted_tokens * 2 * elems_per_tok)
-        lat_d, eng_d = self.cm.demote_cost(rec.demoted_tokens * 2 * elems_per_tok)
+        lat_d, eng_d = self.cm.demote_cost(paid_writes * 2 * elems_per_tok)
         lat_dd, eng_dd = self.cm.deep_demote_cost(rec.dropped_tokens * 2 * elems_per_tok)
         lat_sr, eng_sr = self.cm.sram_compute_read_cost(rec.sram_tokens * 2 * elems_per_tok)
         # sketch traffic: read min/max sketch (2 * n_pages * H * D) from SRAM-resident sketches

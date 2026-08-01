@@ -28,7 +28,11 @@ SRAM (fast, small, leaky)  →  STT-RAM (fast-read / slow+costly-write, ~0 leaka
 
 **Novelty claim:** first to exploit STT-RAM's read-fast/write-slow asymmetry as a victim cache for KV tokens, enabling **near-lossless eviction** — recovering the accuracy that permanent-eviction methods (SnapKV, H2O) throw away. Attention math stays IDENTICAL everywhere; only *which K/V tokens are resident* changes.
 
-**Techniques combined:** SnapKV (prompt compression), Quest (min/max sketch routing), StreamingLLM (attention sinks + sliding window), H2O (cumulative-attention importance for eviction), InfiniGen (async prefetch), FlexGen (DRAM offload).
+**Migration-overhead contribution — the INCLUSIVE victim cache:** the dominant cost in a victim cache is the STT *write* (4× slower/costlier than read: 250 vs 1000 GB/s, 8 vs 2 pJ/bit), and thrashing forces the same token to be demoted repeatedly. We exploit **KV immutability**: when a token is promoted STT→SRAM we KEEP its STT copy as a clean *shadow backup* rather than deleting it. A later re-demote of that token just reactivates the backup at ZERO write cost (`writes_saved`). Because K/V never change after prefill, the backup can never go stale. Ablation A/B (150 steps, SRAM=64, STT=128): total latency **54.4µs → 14.6µs (3.7×)**, energy **1.20mJ → 0.49mJ (2.4×)**, **96.8%** of demotions paid no write — with **identical accuracy** (lossless). Toggle with `inclusive=True|False` (`--no-inclusive` on the drivers) for the ablation.
+
+**Prefetch was considered and REJECTED.** A prefetch hit only hides the *cheap* read direction; a prefetch miss wastes a read AND can evict a good token, forcing an extra *expensive* STT write — i.e. it increases the exact overhead we are reducing. The inclusive victim cache is the sole migration-overhead lever; `promote_top_pages` is a secondary *volume* lever (fewer promotions → less thrashing).
+
+**Techniques combined:** SnapKV (prompt compression), Quest (min/max sketch routing), StreamingLLM (attention sinks + sliding window), H2O (cumulative-attention importance for eviction), FlexGen (DRAM offload). (No prefetching — see above.)
 
 ---
 
@@ -90,12 +94,12 @@ Analytical latency/energy. `TierSpec(name, read_bw_gbps, write_bw_gbps, read_pj_
 `CostModel(tiers=DEFAULT_TIERS, bytes_per_elem=2)` methods: `read/write_latency_us`, `read/write_energy_nj`, `promote_cost` (STT read + SRAM write), `demote_cost` (SRAM read + STT write), `deep_demote_cost` (STT read + DRAM write), `sram_compute_read_cost`. Migration methods return `(latency_us, energy_nj)`.
 
 ### `src/metrics.py` — DONE
-`StepRecord`: step, attn_macs, sketch_macs, promoted/demoted/dropped_tokens, sram/sttram/dram_tokens, latency_us, energy_nj, lat_sketch/promote/attention/demote_us.
-`RunMetrics(label, steps, num_heads, head_dim, prompt_len)`: `.add(rec)`, props total_macs, total_gops (`macs*2/1e9`), total_promoted/demoted/dropped, total_latency_us, total_energy_nj, peak_sram/sttram_tokens; `kv_bytes(tokens, bpe=2)=tokens*2*num_heads*head_dim*bpe`; `summary()`; `to_json(path)`.
+`StepRecord`: step, attn_macs, sketch_macs, promoted/demoted/dropped_tokens, **writes_saved** (demotions that reused a backup, no write paid), **backups_reclaimed** (shadow backups freed under STT pressure), sram/sttram/dram_tokens, latency_us, energy_nj, lat_sketch/promote/attention/demote_us.
+`RunMetrics(label, steps, num_heads, head_dim, prompt_len)`: `.add(rec)`, props total_macs, total_gops (`macs*2/1e9`), total_promoted/demoted/dropped, **total_writes_saved**, **total_paid_writes** (`demoted - writes_saved`, the expensive direction), total_latency_us, total_energy_nj, peak_sram/sttram_tokens; `kv_bytes(tokens, bpe=2)=tokens*2*num_heads*head_dim*bpe`; `summary()` (includes paid_writes/writes_saved); `to_json(path)`.
 
 ### `src/tiered_kv_cache.py` — DONE
-`TieredConfig(num_heads=8, head_dim=64, sink_size=4, window_size=16, sram_capacity=64, sttram_capacity=128, page_size=16, promote_top_pages=2, store_dram=False, pool_kernel=5, dtype, device)`.
-`TieredKVCache(cfg, cost_model=None)`: `initial_bifurcation(k_all, v_all, q_all)` → occupancy dict; `step(q, new_k, new_v, new_pos)` → `(H,1,D)`; exposes `.metrics` (RunMetrics).
+`TieredConfig(num_heads=8, head_dim=64, sink_size=4, window_size=16, sram_capacity=64, sttram_capacity=128, page_size=16, promote_top_pages=2, store_dram=False, pool_kernel=5, inclusive=True, dtype, device)`. `inclusive=True` keeps an STT shadow backup on promote so a re-demote costs no write; `False` = destructive (ablation).
+`TieredKVCache(cfg, cost_model=None)`: `initial_bifurcation(k_all, v_all, q_all)` → occupancy dict; `step(q, new_k, new_v, new_pos)` → `(H,1,D)`; exposes `.metrics` (RunMetrics). Internals: `stt_shadow[]` (True = row is an inclusive backup, also live in SRAM); `_find_backup(pos)`; `evict_and_demote` returns `(demoted, dropped, writes_saved, reclaimed)` and reclaims LRU shadow backups before dropping any real victim. Invariant: a position is in SRAM ⟺ its STT row (if any) is shadow=True (no double-residency).
 
 ### `src/baselines.py` — DONE
 `FullAttention` (oracle): `reset_prompt`, `step`, `total_macs`, `num_tokens`.
@@ -105,24 +109,27 @@ Analytical latency/energy. `TierSpec(name, read_bw_gbps, write_bw_gbps, read_pj_
 `scaled_dot_product_attention(q,k,v,causal=False)`; `snapkv_importance(q_window, k_all, pool_kernel=5)`.
 
 ### `tests/test_tiered_cache.py` — DONE
-5 plain-assert tests, all passing.
+7 plain-assert tests, all passing (5 core + `test_inclusive_saves_writes` and `test_inclusive_capacity_and_finite` for the inclusive victim cache).
 
 ### `experiments/sweep_sram.py` — DONE & VERIFIED (Option B)
-Finds the SRAM-budget crossover. Args: `--budgets` (default 16,32,64,96,128,192,256), `--prompt` 512, `--steps` 150, `--heads` 8, `--dim` 64, `--stt-mult` 2.0, `--acc-thresh` 0.30, `--device` cpu, `--csv`.
-`make_scenario(H,D,prompt_len,num_steps,anchor_frac=0.35,scale=3.0,device,seed=42)` (CPU generator then `.to(device)`, injects long-range anchors). `run_full`, `run_tiered`. Verdict "WIN" if net>0 AND acc_all≥thresh; tracks first crossover; prints table + crossover + transfer reminder + optional CSV.
-**Result on synthetic data:** no crossover in swept range (all "slow"); accuracy rises monotonically with SRAM budget (Acc_anch 0.0276 → 0.9587 as SRAM 16→256). Expected — real number must come from server.
+Finds the SRAM-budget crossover. Args: `--budgets` (default 16,32,64,96,128,192,256), `--prompt` 512, `--steps` 150, `--heads` 8, `--dim` 64, `--stt-mult` 2.0, `--acc-thresh` 0.30, `--promote-top-pages` 2 (volume lever), `--no-inclusive` (ablation), `--device` cpu, `--csv`.
+`make_scenario(H,D,prompt_len,num_steps,anchor_frac=0.35,scale=3.0,device,seed=42)` (CPU generator then `.to(device)`, injects long-range anchors). `run_full`, `run_tiered`. Verdict "WIN" if net>0 AND acc_all≥thresh; tracks first crossover; prints table + crossover + transfer reminder + optional CSV (columns incl. `verdict`).
+**Result on synthetic data:** no green WIN in swept range — small budgets are "fast" but below the accuracy threshold, larger budgets are accurate but "slow" (migration volume dominates at a 512-token synthetic context). Honest, not manufactured; the real operating point must come from the server.
 
 ### `experiments/compare_accuracy.py` — DONE
-Head-to-head Full/StreamingLLM/SnapKV/TieredKV. H=8, D=64, prompt_len=512, steps=150, SRAM=64, STT=128. StreamingLLM window=SRAM. Splits Acc(all)/Acc(anchor)/Acc(local). Saves `results/tiered_run.json`.
+Head-to-head Full/StreamingLLM/SnapKV/TieredKV. H=8, D=64, prompt_len=512, steps=150, SRAM=64, STT=128. StreamingLLM window=SRAM. Splits Acc(all)/Acc(anchor)/Acc(local). Prints migration stats incl. paid vs saved writes and write-savings %. Args: `--no-inclusive` (destructive ablation), `--json` (default `results/tiered_run.json`). A/B: inclusive vs `--no-inclusive` gives identical accuracy but 3.7× lower latency.
+
+### `experiments/plot_results.py` — DONE (LOCAL-ONLY, needs matplotlib; NOT in the server pipeline)
+Auto-detects three input formats and writes PNGs: sweep CSV → accuracy/latency/migration-vs-budget, Pareto, **sweet-spot verdict** (colors fast/slow/WIN, marks the crossover budget); model_wrapper JSON → per-layer accuracy/migration/GOPs/latency; RunMetrics JSON → occupancy, **latency breakdown** (stacked sketch/promote/attention/demote — the red demote band shrinks under inclusive), cumulative migration. Quarantined so the core stays torch+numpy only. Usage: `python experiments/plot_results.py results/sweep.csv results/tiered_run.json --outdir figures`.
 
 ### `experiments/model_wrapper.py` — DONE & VERIFIED (Option A)
 Runs the 3-tier cache on REAL (or synthetic-smoke) per-layer attention tensors.
 - `SDPACapture` context manager patches `torch.nn.functional.scaled_dot_product_attention` for one forward pass → records post-RoPE / post-`repeat_kv` `(q,k,v)` at `(batch,32,seq,128)` in layer order. `capture_layers(model, input_ids)` squeezes batch row 0 → per-layer `(H,seq,D)`.
 - `synthetic_layers(...)` fabricates per-layer `(q,k,v)` + per-position anchor masks with the SAME long-range structure as `compare_accuracy` — powers `--smoke` with **no transformers / no model download**.
 - `real_layers(model_name, text, prompt_len)` lazily imports transformers, loads an HF causal LM (`attn_implementation="sdpa"`, fp16), captures one prefill. masks=None (no ground-truth anchor labels on real text).
-- `eval_layer(qkv, split, sram, stt, flags)` replays one layer through `FullAttention` oracle + `TieredKVCache` (prompt = first `split` tokens, rest streamed one-at-a-time); returns measured dict (acc_all/anchor/local cosine, tiered vs oracle GOPs, promoted/demoted/dropped, peak SRAM/STT tokens+KB, derived latency/energy).
-- `report(per_layer, meta)` prints per-layer table + aggregate, returns aggregate dict; every run prints the transfer reminder.
-- argparse `main()`: `--smoke`, `--model`, `--text-file`, `--prompt-len`, `--sram`, `--stt`, `--layers`, `--smoke-layers`, `--smoke-seq`, `--heads`, `--dim`, `--device`, `--json`.
+- `eval_layer(qkv, split, sram, stt, flags, inclusive=True)` replays one layer through `FullAttention` oracle + `TieredKVCache` (prompt = first `split` tokens, rest streamed one-at-a-time); returns measured dict (acc_all/anchor/local cosine, tiered vs oracle GOPs, promoted/demoted/**paid_writes**/**writes_saved**/dropped, peak SRAM/STT tokens+KB, derived latency/energy).
+- `report(per_layer, meta)` prints per-layer table + aggregate (incl. write-savings %), returns aggregate dict; every run prints the transfer reminder.
+- argparse `main()`: `--smoke`, `--model`, `--text-file`, `--prompt-len`, `--sram`, `--stt`, `--layers`, `--smoke-layers`, `--smoke-seq`, `--heads`, `--dim`, `--device`, `--no-inclusive`, `--json`.
 **Verified:** `python experiments/model_wrapper.py --smoke` runs the full path (synthetic_layers → eval_layer → report → optional JSON) end-to-end with no transformers install and no AttributeErrors.
 Server run (real weights):
 ```

@@ -28,8 +28,10 @@ class StepRecord:
     sketch_macs: int = 0
     # migration (element counts, per KV so multiply by 2 for K+V where noted)
     promoted_tokens: int = 0
-    demoted_tokens: int = 0
+    demoted_tokens: int = 0          # total demotions this step (volume)
+    writes_saved: int = 0            # demotions that reused an STT backup (NO write paid)
     dropped_tokens: int = 0
+    backups_reclaimed: int = 0       # shadow backups freed under STT pressure (lossless)
     # occupancy (token counts)
     sram_tokens: int = 0
     sttram_tokens: int = 0
@@ -75,6 +77,16 @@ class RunMetrics:
         return sum(s.demoted_tokens for s in self.steps)
 
     @property
+    def total_writes_saved(self) -> int:
+        """Demotions that reused an immutable-KV backup, paying no STT write."""
+        return sum(s.writes_saved for s in self.steps)
+
+    @property
+    def total_paid_writes(self) -> int:
+        """Demotions that actually paid an STT write (the expensive direction)."""
+        return sum(s.demoted_tokens - s.writes_saved for s in self.steps)
+
+    @property
     def total_dropped(self) -> int:
         return sum(s.dropped_tokens for s in self.steps)
 
@@ -108,6 +120,8 @@ class RunMetrics:
             "total_energy_nj": round(self.total_energy_nj, 3),
             "promoted": self.total_promoted,
             "demoted": self.total_demoted,
+            "paid_writes": self.total_paid_writes,
+            "writes_saved": self.total_writes_saved,
             "dropped": self.total_dropped,
             "peak_sram_tokens": self.peak_sram_tokens,
             "peak_sttram_tokens": self.peak_sttram_tokens,

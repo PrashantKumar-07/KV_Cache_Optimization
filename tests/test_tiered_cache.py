@@ -108,6 +108,60 @@ def test_promotion_happens():
     print(f"  [ok] promotion path exercised ({promoted} tokens promoted)")
 
 
+def test_inclusive_saves_writes():
+    # force thrashing: small SRAM, aggressive promotion, anchored recall
+    torch.manual_seed(1)
+    def build(inclusive):
+        cfg = TieredConfig(num_heads=2, head_dim=8, sink_size=2, window_size=4,
+                           sram_capacity=16, sttram_capacity=48, page_size=4,
+                           promote_top_pages=2, inclusive=inclusive)
+        cache = TieredKVCache(cfg)
+        k, v, q = make_prompt(2, 96, 8)
+        cache.initial_bifurcation(k, v, q)
+        pos = 96
+        kp = k  # reuse prompt keys as anchors to trigger promotion + re-demotion
+        for t in range(80):
+            if t % 2 == 0:
+                nq = 3.0 * kp[:, torch.randint(2, 40, (1,)).item(), :].unsqueeze(1)
+            else:
+                nq = torch.randn(2, 1, 8)
+            cache.step(nq, torch.randn(2, 1, 8), torch.randn(2, 1, 8), pos)
+            pos += 1
+        return cache.metrics
+
+    inc = build(True)
+    dst = build(False)
+    # inclusive must reuse backups -> some demotions pay no write
+    assert inc.total_writes_saved > 0, "inclusive cache saved no writes"
+    assert dst.total_writes_saved == 0, "destructive mode should never save writes"
+    # paid writes strictly fewer under inclusive (the whole point)
+    assert inc.total_paid_writes < dst.total_demoted, \
+        f"no write reduction: paid={inc.total_paid_writes} vs {dst.total_demoted}"
+    print(f"  [ok] inclusive victim cache saved {inc.total_writes_saved} writes "
+          f"(paid {inc.total_paid_writes} vs destructive {dst.total_demoted})")
+
+
+def test_inclusive_capacity_and_finite():
+    # shadows occupy real STT rows; capacity must still hold, output stays finite
+    cfg = TieredConfig(num_heads=2, head_dim=8, sink_size=2, window_size=4,
+                       sram_capacity=16, sttram_capacity=32, page_size=4,
+                       promote_top_pages=2, inclusive=True)
+    cache = TieredKVCache(cfg)
+    k, v, q = make_prompt(2, 80, 8)
+    cache.initial_bifurcation(k, v, q)
+    pos = 80
+    for _ in range(120):
+        out = cache.step(torch.randn(2, 1, 8), torch.randn(2, 1, 8), torch.randn(2, 1, 8), pos)
+        pos += 1
+        assert len(cache.sram_pos) <= cfg.sram_capacity, "SRAM overflow (inclusive)"
+        assert len(cache.stt_pos) <= cfg.sttram_capacity, "STT overflow (inclusive)"
+        assert torch.isfinite(out).all(), "non-finite output (inclusive)"
+        # invariant: an SRAM-resident position has no live (non-shadow) STT twin
+        live = {p for p, sh in zip(cache.stt_pos, cache.stt_shadow) if not sh}
+        assert not (set(cache.sram_pos) & live), "position both in SRAM and a live STT victim"
+    print("  [ok] inclusive mode respects capacity, stays finite, no double-residency")
+
+
 if __name__ == "__main__":
     print("Running TieredKVCache correctness tests...")
     test_bifurcation_counts()
@@ -115,4 +169,6 @@ if __name__ == "__main__":
     test_capacity_never_exceeded()
     test_output_shape_and_finiteness()
     test_promotion_happens()
+    test_inclusive_saves_writes()
+    test_inclusive_capacity_and_finite()
     print("\nAll tests passed.")
