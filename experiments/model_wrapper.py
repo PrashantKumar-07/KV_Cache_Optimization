@@ -152,7 +152,7 @@ def real_layers(model_name, text, prompt_len, device="cpu"):
 
 
 # ---------------------------------------------------------------- per-layer eval
-def eval_layer(qkv, split, sram, stt, flags=None):
+def eval_layer(qkv, split, sram, stt, flags=None, inclusive=True):
     """Replay ONE layer through Full oracle + TieredKV.
 
     qkv   : (q, k, v) each (H, seq, D) -- exact post-RoPE / post-repeat tensors.
@@ -160,6 +160,7 @@ def eval_layer(qkv, split, sram, stt, flags=None):
             one-at-a-time as a decode replay (same shape as compare_accuracy).
     flags : optional per-position anchor labels (synthetic only) for the
             anchor/local accuracy breakdown; None for real captures.
+    inclusive : inclusive victim cache on (write-saving) vs destructive (ablation).
 
     Returns a dict of measured numbers for this layer plus the tiered metrics.
     """
@@ -175,7 +176,7 @@ def eval_layer(qkv, split, sram, stt, flags=None):
     tiered = TieredKVCache(TieredConfig(
         num_heads=H, head_dim=D, sink_size=4, window_size=16,
         sram_capacity=sram, sttram_capacity=stt, page_size=16,
-        promote_top_pages=2, store_dram=False))
+        promote_top_pages=2, store_dram=False, inclusive=inclusive))
     tiered.initial_bifurcation(k_p, v_p, q_p)
 
     sims, anchor_sims, local_sims = [], [], []
@@ -202,6 +203,7 @@ def eval_layer(qkv, split, sram, stt, flags=None):
         "tiered_GOPs": m.total_gops,
         "oracle_GOPs": oracle.total_macs * 2 / 1e9,
         "promoted": m.total_promoted, "demoted": m.total_demoted,
+        "paid_writes": m.total_paid_writes, "writes_saved": m.total_writes_saved,
         "dropped": m.total_dropped,
         "peak_sram_tokens": m.peak_sram_tokens,
         "peak_sttram_tokens": m.peak_sttram_tokens,
@@ -248,6 +250,8 @@ def report(per_layer, meta):
         "oracle_GOPs_total": total("oracle_GOPs"),
         "promoted_total": total("promoted"),
         "demoted_total": total("demoted"),
+        "paid_writes_total": total("paid_writes"),
+        "writes_saved_total": total("writes_saved"),
         "dropped_total": total("dropped"),
         "latency_us_total": total("latency_us"),
         "energy_nj_total": total("energy_nj"),
@@ -265,6 +269,11 @@ def report(per_layer, meta):
           f"oracle={agg['oracle_GOPs_total']:.3f}  (compute saved {saved*100:.1f}%)")
     print(f"  migration: promoted={agg['promoted_total']} "
           f"demoted={agg['demoted_total']} dropped={agg['dropped_total']}")
+    if agg["demoted_total"]:
+        pct = 100.0 * agg["writes_saved_total"] / agg["demoted_total"]
+        print(f"  write savings: paid={agg['paid_writes_total']} "
+              f"saved={agg['writes_saved_total']}  "
+              f"({pct:.1f}% of demotions paid NO STT write)")
     print(f"  peak occupancy: SRAM={agg['peak_sram_tokens_max']} tok  "
           f"STT={agg['peak_sttram_tokens_max']} tok")
     print(f"  derived latency={agg['latency_us_total']:.2f} us  "
@@ -299,6 +308,9 @@ def main():
     ap.add_argument("--heads", type=int, default=8, help="H for --smoke (real run uses captured H).")
     ap.add_argument("--dim", type=int, default=64, help="D for --smoke (real run uses captured D).")
     ap.add_argument("--device", default="cpu")
+    ap.add_argument("--no-inclusive", action="store_true",
+                    help="ablation: destructive eviction (turns the inclusive "
+                         "victim-cache write-saving OFF) so you can A/B its effect.")
     ap.add_argument("--json", default=None, help="write full results (per-layer + aggregate) here.")
     args = ap.parse_args()
 
@@ -319,17 +331,19 @@ def main():
     sel = args.layers if args.layers is not None else list(range(len(layers)))
     sel = [i for i in sel if 0 <= i < len(layers)]
 
+    inclusive = not args.no_inclusive
     per_layer = []
     for i in sel:
         flags = masks[i] if masks is not None else None
-        r, _m = eval_layer(layers[i], args.prompt_len, args.sram, args.stt, flags)
+        r, _m = eval_layer(layers[i], args.prompt_len, args.sram, args.stt, flags,
+                           inclusive=inclusive)
         per_layer.append(r)
 
     seq0 = layers[sel[0]][1].shape[1]
     meta = {"source": source, "H": layers[sel[0]][1].shape[0],
             "D": layers[sel[0]][1].shape[2], "seq": seq0,
             "prompt_len": min(args.prompt_len, seq0 - 1),
-            "sram": args.sram, "stt": args.stt}
+            "sram": args.sram, "stt": args.stt, "inclusive": inclusive}
     agg = report(per_layer, meta)
 
     print("\n[transfer reminder] Compute/memory trade-off SHAPE transfers "

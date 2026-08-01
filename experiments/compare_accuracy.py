@@ -20,7 +20,7 @@ The absolute numbers are synthetic; the ORDERING (Tiered > SnapKV > Streaming)
 is the claim to carry to the real LongBench run on the server.
 """
 
-import os, sys
+import os, sys, argparse
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "src"))
 
 import torch
@@ -82,12 +82,21 @@ def run_system(system, prompt, steps, is_tiered=False):
 
 
 def main():
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--no-inclusive", action="store_true",
+                    help="use destructive eviction (ablation: turns the victim-cache "
+                         "write-saving OFF) so you can A/B the inclusive contribution.")
+    ap.add_argument("--json", default=None,
+                    help="path for per-step TieredKV metrics (default results/tiered_run.json).")
+    args = ap.parse_args()
+
     H, D = 8, 64
     prompt_len = 512
     num_steps = 150
     # equal token budget for a fair fight
     SRAM = 64
     STT = 128
+    inclusive = not args.no_inclusive
 
     prompt, steps = make_scenario(H, D, prompt_len, num_steps)
 
@@ -102,7 +111,7 @@ def main():
             TieredKVCache(TieredConfig(
                 num_heads=H, head_dim=D, sink_size=4, window_size=16,
                 sram_capacity=SRAM, sttram_capacity=STT, page_size=16,
-                promote_top_pages=2, store_dram=False)),
+                promote_top_pages=2, store_dram=False, inclusive=inclusive)),
             True,
         ),
     }
@@ -111,7 +120,8 @@ def main():
     anchor_mask = [s[3] >= 0 for s in steps]
 
     print(f"\nScenario: prompt={prompt_len}, decode_steps={num_steps}, "
-          f"H={H}, D={D}, SRAM_budget={SRAM}, STT_budget={STT}")
+          f"H={H}, D={D}, SRAM_budget={SRAM}, STT_budget={STT}, "
+          f"inclusive={inclusive}")
     print(f"Long-range (anchor) steps: {sum(anchor_mask)}/{num_steps}\n")
 
     header = f"{'System':<18}{'Acc(all)':>10}{'Acc(anchor)':>13}{'Acc(local)':>12}{'GOPs':>9}{'PeakTok':>9}"
@@ -145,8 +155,12 @@ def main():
     m = tiered.metrics
     print("\nTieredKV migration stats:")
     print(f"  promoted STT->SRAM : {m.total_promoted}")
-    print(f"  demoted  SRAM->STT : {m.total_demoted}")
+    print(f"  demoted  SRAM->STT : {m.total_demoted}  "
+          f"(paid writes {m.total_paid_writes}, saved {m.total_writes_saved})")
     print(f"  dropped  STT->drop : {m.total_dropped}")
+    if m.total_demoted:
+        pct = 100.0 * m.total_writes_saved / m.total_demoted
+        print(f"  write savings      : {pct:.1f}% of demotions paid NO STT write")
     print(f"  total latency (us) : {m.total_latency_us:.2f}")
     print(f"  total energy  (nJ) : {m.total_energy_nj:.2f}")
 
@@ -159,9 +173,11 @@ def main():
     print("  -> victim cache recovers long-range recall lost by permanent eviction"
           if t > s else "  -> no recovery on this seed; tune budgets/anchor_frac")
 
-    os.makedirs(os.path.join(os.path.dirname(__file__), "..", "results"), exist_ok=True)
-    m.to_json(os.path.join(os.path.dirname(__file__), "..", "results", "tiered_run.json"))
-    print("\nSaved per-step TieredKV metrics -> results/tiered_run.json")
+    default_json = os.path.join(os.path.dirname(__file__), "..", "results", "tiered_run.json")
+    out_json = args.json or default_json
+    os.makedirs(os.path.dirname(os.path.abspath(out_json)), exist_ok=True)
+    m.to_json(out_json)
+    print(f"\nSaved per-step TieredKV metrics -> {out_json}")
 
 
 if __name__ == "__main__":

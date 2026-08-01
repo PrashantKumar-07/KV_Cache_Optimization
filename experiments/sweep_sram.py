@@ -87,6 +87,12 @@ def main():
     ap.add_argument("--dim", type=int, default=64)
     ap.add_argument("--stt-mult", type=float, default=2.0, help="STT capacity = mult * SRAM")
     ap.add_argument("--acc-thresh", type=float, default=0.30, help="min acceptable Acc(all)")
+    ap.add_argument("--promote-top-pages", type=int, default=2,
+                    help="max STT pages promoted per step; lower = less thrashing "
+                         "(smaller migration volume), the volume lever complementing "
+                         "the inclusive-cache cost lever.")
+    ap.add_argument("--no-inclusive", action="store_true",
+                    help="ablation: destructive eviction (inclusive write-saving OFF).")
     ap.add_argument("--device", type=str, default="cpu")
     ap.add_argument("--csv", type=str, default=None)
     args = ap.parse_args()
@@ -120,7 +126,8 @@ def main():
         stt = int(args.stt_mult * sram)
         cfg = TieredConfig(num_heads=H, head_dim=D, sink_size=4, window_size=16,
                            sram_capacity=sram, sttram_capacity=stt, page_size=16,
-                           promote_top_pages=2, store_dram=False, device=args.device)
+                           promote_top_pages=args.promote_top_pages, store_dram=False,
+                           inclusive=not args.no_inclusive, device=args.device)
         outs, cache = run_tiered(cfg, prompt, steps)
 
         sims = [cos(o, r) for o, r in zip(outs, full_outs)]
