@@ -63,11 +63,16 @@ class SDPACapture:
 
         def patched(query, key, value, *args, **kwargs):
             # query/key/value: (batch, n_heads, seq, head_dim), post-RoPE, post-repeat_kv
-            self.calls.append((
-                query.detach().float().cpu().clone(),
-                key.detach().float().cpu().clone(),
-                value.detach().float().cpu().clone(),
-            ))
+            q = query.detach().float().cpu().clone()
+            k = key.detach().float().cpu().clone()
+            v = value.detach().float().cpu().clone()
+            
+            if q.size(1) != k.size(1):
+                n_rep = q.size(1) // k.size(1)
+                k = k.repeat_interleave(n_rep, dim=1)
+                v = v.repeat_interleave(n_rep, dim=1)
+
+            self.calls.append((q, k, v))
             return self._orig(query, key, value, *args, **kwargs)
 
         F.scaled_dot_product_attention = patched
@@ -99,43 +104,10 @@ def cos(a, b):
     return F.cosine_similarity(a.flatten(), b.flatten(), dim=0).item()
 
 
-def synthetic_layers(num_layers, H, D, seq, anchor_frac=0.35, scale=3.0, seed=42):
-    """Fabricate per-layer (q, k, v) with the SAME long-range structure the
-    synthetic experiments use, so `--smoke` exercises the real code path with
-    NO transformers / model download.
-
-    Returns (layers, masks):
-      layers : list of (q, k, v) each (H, seq, D)
-      masks  : list of per-DECODE-step bool lists (True == long-range anchor step),
-               so accuracy can be split anchor/local exactly like compare_accuracy.
-    The prompt/decode split is applied later by the evaluator; anchors are injected
-    into the tail (decode) queries and steered at a random early key.
-    """
-    g = torch.Generator().manual_seed(seed)
-    layers, masks = [], []
-    # decode tail is whatever sits past prompt-len; we mark anchors across the
-    # whole sequence and the evaluator keeps only the decode-region flags.
-    for L in range(num_layers):
-        k = torch.randn(H, seq, D, generator=g)
-        v = torch.randn(H, seq, D, generator=g)
-        q = torch.randn(H, seq, D, generator=g)
-        flags = [False] * seq
-        for t in range(seq):
-            if torch.rand(1, generator=g).item() < anchor_frac:
-                anchor = torch.randint(low=4, high=max(5, seq // 4),
-                                       size=(1,), generator=g).item()
-                q[:, t, :] = scale * k[:, anchor, :] + 0.3 * torch.randn(H, D, generator=g)
-                flags[t] = True
-        layers.append((q, k, v))
-        masks.append(flags)
-    return layers, masks
-
-
 def real_layers(model_name, text, prompt_len, device="cpu"):
     """Load a real HF causal LM, capture post-RoPE/post-repeat_kv (q,k,v) per
     layer for one prefill of `text` (truncated to prompt_len tokens).
 
-    Imported lazily so the smoke path needs neither transformers nor weights.
     Returns (layers, masks) with masks=None (no ground-truth anchor labels).
     """
     from transformers import AutoTokenizer, AutoModelForCausalLM
@@ -225,15 +197,7 @@ def report(per_layer, meta):
     hdr = (f"{'L':>3}{'Acc(all)':>10}{'Acc(anc)':>10}{'Acc(loc)':>10}"
            f"{'GOPs':>9}{'orclGOP':>9}{'prom':>6}{'demo':>6}{'drop':>6}"
            f"{'pkSRAM':>8}{'lat_us':>10}")
-    print(hdr)
-    print("-" * len(hdr))
-    for i, r in enumerate(per_layer):
-        print(f"{i:>3}{_fmt(r['acc_all']):>10}{_fmt(r['acc_anchor']):>10}"
-              f"{_fmt(r['acc_local']):>10}{r['tiered_GOPs']:>9.3f}"
-              f"{r['oracle_GOPs']:>9.3f}{r['promoted']:>6}{r['demoted']:>6}"
-              f"{r['dropped']:>6}{r['peak_sram_tokens']:>8}"
-              f"{r['latency_us']:>10.2f}")
-
+    # Calculate aggregates first
     n = len(per_layer)
     def mean(key):
         vals = [r[key] for r in per_layer if not (isinstance(r[key], float) and r[key] != r[key])]
@@ -285,14 +249,10 @@ def report(per_layer, meta):
 # ---------------------------------------------------------------- main
 def main():
     ap = argparse.ArgumentParser(
-        description="Option A: run the 3-tier KV cache on REAL (or synthetic-smoke) "
-                    "per-layer attention tensors and report accuracy / GOPs / "
-                    "migration / occupancy / derived latency+energy.")
-    ap.add_argument("--smoke", action="store_true",
-                    help="build synthetic per-layer tensors locally; NO transformers, "
-                         "NO model download. Verifies the whole code path.")
-    ap.add_argument("--model", default="meta-llama/Meta-Llama-3-8B",
-                    help="HF model id for the real run (ignored under --smoke).")
+        description="Run the 3-tier KV cache on REAL model layers."
+    )
+    ap.add_argument("--model", required=True,
+                    help="HF model id for the real run.")
     ap.add_argument("--text-file", default=None,
                     help="prompt text file for the real run; falls back to a builtin string.")
     ap.add_argument("--prompt-len", type=int, default=256,
@@ -301,12 +261,7 @@ def main():
     ap.add_argument("--stt", type=int, default=256, help="STT-RAM token capacity.")
     ap.add_argument("--layers", type=int, nargs="*", default=None,
                     help="subset of layer indices to evaluate (default: all captured).")
-    ap.add_argument("--smoke-layers", type=int, default=4,
-                    help="how many synthetic layers to build under --smoke.")
-    ap.add_argument("--smoke-seq", type=int, default=320,
-                    help="synthetic sequence length under --smoke (prompt+decode).")
-    ap.add_argument("--heads", type=int, default=8, help="H for --smoke (real run uses captured H).")
-    ap.add_argument("--dim", type=int, default=64, help="D for --smoke (real run uses captured D).")
+
     ap.add_argument("--device", default="cpu")
     ap.add_argument("--no-inclusive", action="store_true",
                     help="ablation: destructive eviction (turns the inclusive "
@@ -314,19 +269,15 @@ def main():
     ap.add_argument("--json", default=None, help="write full results (per-layer + aggregate) here.")
     args = ap.parse_args()
 
-    if args.smoke:
-        layers, masks = synthetic_layers(
-            args.smoke_layers, args.heads, args.dim, args.smoke_seq)
-        source = f"SYNTHETIC-SMOKE ({args.smoke_layers} layers, seq={args.smoke_seq})"
+    if args.text_file:
+        with open(args.text_file, "r", encoding="utf-8") as f:
+            text = f.read()
     else:
-        if args.text_file:
-            with open(args.text_file, "r", encoding="utf-8") as f:
-                text = f.read()
-        else:
-            text = ("The quick brown fox jumps over the lazy dog. " * 200)
-        layers, _ = real_layers(args.model, text, args.prompt_len, args.device)
-        masks = None
-        source = f"REAL {args.model}"
+        text = "The quick brown fox jumps over the lazy dog. " * 300
+
+    print(f"Loading weights...")
+    layers, masks = real_layers(args.model, text, args.prompt_len, args.device)
+    source = f"REAL {args.model}"
 
     sel = args.layers if args.layers is not None else list(range(len(layers)))
     sel = [i for i in sel if 0 <= i < len(layers)]
@@ -345,10 +296,6 @@ def main():
             "prompt_len": min(args.prompt_len, seq0 - 1),
             "sram": args.sram, "stt": args.stt, "inclusive": inclusive}
     agg = report(per_layer, meta)
-
-    print("\n[transfer reminder] Compute/memory trade-off SHAPE transfers "
-          "synthetic->real; accuracy-at-budget and migration VOLUME do NOT. "
-          "Trust these numbers only from the REAL run (drop --smoke).")
 
     if args.json:
         os.makedirs(os.path.dirname(os.path.abspath(args.json)), exist_ok=True)

@@ -4,16 +4,19 @@ tiered_kv_cache.py
 The core contribution: a 3-tier KV-cache memory hierarchy with query-aware
 routing.  Pure PyTorch, hardware-agnostic, instrumented end to end.
 
-    Tier 1  SRAM     - hot working set  (sinks + recent window + hot heavy-hitters)
-    Tier 2  STT-RAM  - warm victim cache (recently evicted, sketch-indexed)
-    Tier 3  DRAM/Drop- cold storage / permanent eviction
+    Tier 1  GPU_VRAM - hot working set  (sinks + recent window + hot heavy-hitters)
+                       On Server 3 (NVIDIA L40S): GDDR6, 864 GB/s, 12 pJ/bit.
+                       This is GPU VRAM, NOT on-chip SRAM — do not confuse the two.
+    Tier 2  STT-RAM  - warm victim cache (simulated: 1 TB/s read / 250 GB/s write,
+                       2 / 8 pJ/bit; the 4× read/write asymmetry is what we exploit)
+    Tier 3  DRAM/Drop- cold storage / permanent eviction (CPU DDR5, 200 GB/s)
 
 Decode-step pipeline (Phase 1), executed every generated token:
 
     1. sketch_check   - Quest-style min/max upper-bound scores over STT-RAM pages
-    2. promote        - fetch predicted-useful pages STT-RAM -> SRAM
-    3. compute_attn   - exact attention over the SRAM working set only
-    4. evict_demote   - SRAM->STT-RAM (lowest cum-attn), STT-RAM->DRAM (LRU)
+    2. promote        - fetch predicted-useful pages STT-RAM -> GPU_VRAM
+    3. compute_attn   - exact attention over the GPU_VRAM working set only
+    4. evict_demote   - GPU_VRAM->STT-RAM (lowest cum-attn), STT-RAM->DRAM (LRU)
 
 The attention MATH is identical to full attention; only the visible K/V set
 changes.  Attention sinks (positions 0..sink_size-1) and the recent sliding
@@ -36,20 +39,23 @@ from metrics import StepRecord, RunMetrics
 class TieredConfig:
     num_heads: int = 8
     head_dim: int = 64
-    sink_size: int = 4           # attention sinks pinned to SRAM forever
-    window_size: int = 16        # recent sliding window pinned to SRAM
-    sram_capacity: int = 64      # max tokens resident in SRAM
-    sttram_capacity: int = 128   # max tokens resident in STT-RAM
+    sink_size: int = 4           # attention sinks pinned to GPU_VRAM forever
+    window_size: int = 16        # recent sliding window pinned to GPU_VRAM
+    sram_capacity: int = 64      # max tokens resident in GPU_VRAM (Tier 1)
+                                 # NOTE: field name kept as sram_capacity for
+                                 # backward compatibility; the physical tier is
+                                 # GPU VRAM (L40S GDDR6, 864 GB/s), not on-chip SRAM.
+    sttram_capacity: int = 128   # max tokens resident in STT-RAM (Tier 2, simulated)
     page_size: int = 16          # Quest sketch granularity
     promote_top_pages: int = 2   # max pages promoted per step
-    store_dram: bool = False     # True: keep cold tokens in DRAM; False: drop
+    store_dram: bool = False     # True: keep cold tokens in CPU DRAM; False: drop
     pool_kernel: int = 5         # SnapKV clustering pool
     inclusive: bool = True       # inclusive victim cache: keep an STT backup on
                                  # promote so a later re-demote costs NO write
                                  # (KV is immutable -> the backup is never stale).
                                  # False = destructive (old behaviour, for ablation).
     dtype: torch.dtype = torch.float32
-    device: str = "cpu"
+    device: str = "cpu"          # set to 'cuda' for GPU tensor placement on server
 
 
 class TieredKVCache:
@@ -59,7 +65,9 @@ class TieredKVCache:
         H, D = cfg.num_heads, cfg.head_dim
         dev, dt = cfg.device, cfg.dtype
 
-        # ---- Tier 1: SRAM ----
+        # ---- Tier 1: GPU_VRAM (hot working set) ----
+        # Variable names kept as sram_* for backward compatibility with tests.
+        # The physical tier on the L40S server is GDDR6 VRAM, not on-chip SRAM.
         self.sram_k = torch.empty(H, 0, D, device=dev, dtype=dt)
         self.sram_v = torch.empty(H, 0, D, device=dev, dtype=dt)
         self.sram_pos = []                                     # original token index
@@ -391,10 +399,14 @@ class TieredKVCache:
         lat_p, eng_p = self.cm.promote_cost(rec.promoted_tokens * 2 * elems_per_tok)
         lat_d, eng_d = self.cm.demote_cost(paid_writes * 2 * elems_per_tok)
         lat_dd, eng_dd = self.cm.deep_demote_cost(rec.dropped_tokens * 2 * elems_per_tok)
-        lat_sr, eng_sr = self.cm.sram_compute_read_cost(rec.sram_tokens * 2 * elems_per_tok)
-        # sketch traffic: read min/max sketch (2 * n_pages * H * D) from SRAM-resident sketches
+        # GPU_VRAM read: K+V of every token in the active working set, charged at
+        # L40S GDDR6 bandwidth (864 GB/s) — NOT on-chip SRAM bandwidth.
+        lat_sr, eng_sr = self.cm.gpu_vram_read_cost(rec.sram_tokens * 2 * elems_per_tok)
+        # Sketch traffic: TieredKV reads min/max sketches from STT-RAM (Tier 2),
+        # NOT from GPU_VRAM. Bug fix: was previously charged at VRAM bandwidth.
+        # 2 sketch vectors (min_k, max_k) per page, each (H, D) elements.
         n_pages = math.ceil(max(rec.sttram_tokens, 1) / self.cfg.page_size)
-        lat_sk, eng_sk = self.cm.sram_compute_read_cost(2 * n_pages * H * D)
+        lat_sk, eng_sk = self.cm.sketch_read_cost(2 * n_pages * H * D, tier="STT-RAM")
 
         rec.lat_sketch_us = lat_sk
         rec.lat_promote_us = lat_p
