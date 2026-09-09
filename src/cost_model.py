@@ -1,14 +1,31 @@
 # cost_model.py — analytical latency + energy for the 3-tier KV cache hierarchy
 #
 # STT-RAM is simulated, not physical. Every byte moved between tiers is costed
-# with NVM-literature per-bit figures (same approach as NVSim / CACTI / Destiny).
+# with per-bit bandwidth/energy figures.
 #
 # Hardware mapping (NVIDIA L40S + AMD EPYC 9754):
-#   Tier 1  GPU VRAM  — GDDR6, 864 GB/s, 12 pJ/bit  (NOT on-chip SRAM)
-#   Tier 2  STT-RAM   — simulated: 1 TB/s read / 250 GB/s write, 2 / 8 pJ/bit
+#   Tier 1  GPU VRAM  — GDDR6, 864 GB/s, 12 pJ/bit  (NOT on-chip SRAM;
+#                       these are real, plausible published GDDR6/L40S
+#                       figures)
+#   Tier 2  STT-RAM   — simulated: 1 TB/s read / 250 GB/s write, 2 / 8 pJ/bit.
+#                       IMPORTANT: these numbers are NOT taken from a cited
+#                       paper, vendor datasheet, or a named simulator run
+#                       (e.g. NVSim/CACTI/Destiny) -- they are directionally
+#                       plausible for STT-MRAM (real STT-RAM devices do have
+#                       an asymmetric write penalty and lower energy than
+#                       DRAM/SRAM) but chosen by hand, not measured or
+#                       derived from a specific source. Any paper claim
+#                       built on modeled_latency_us/modeled_energy_nj must
+#                       either (a) cite a specific real STT-RAM
+#                       measurement/simulator output backing these exact
+#                       numbers, or (b) present this as an illustrative /
+#                       assumed-NVM-model sensitivity study, not as a
+#                       literature-derived hardware result.
 #   Tier 3  CPU DRAM  — DDR5, conservative 200 GB/s, 20 pJ/bit
 #
-# Accuracy, MACs, and occupancy are MEASURED. Latency/energy are DERIVED.
+# Accuracy, MACs, and occupancy are MEASURED. Latency/energy are DERIVED
+# under the assumed tier model above -- treat as illustrative unless/until
+# the STT-RAM figures are replaced with cited values.
 
 from __future__ import annotations
 from dataclasses import dataclass, field
@@ -136,12 +153,16 @@ class CostModel:
 
     def baseline_attention_cost(self, num_tokens: int, num_heads: int, head_dim: int):
         """
-        Equitable analytical overhead for permanent-eviction baselines
-        (StreamingLLM, SnapKV) per decode step.
+        Equitable analytical overhead for the non-tiered baselines
+        (Full/StreamingLLM/H2O/SnapKV) per decode step. Called from
+        experiments/longbench_eval.py's generate_with_policy for every
+        policy that isn't TieredKV (see _ModeledCostMixin/_BASELINE_COST_MODEL
+        there) -- previously unused/dead, so no baseline had a
+        modeled_latency_us/modeled_energy_nj figure at all.
 
         These methods keep their cache in GPU VRAM and read it every step for
-        the attention matmul.  Charging them GDDR6 (864 GB/s, 12 pJ/bit) —
-        not zero — makes the latency comparison fair.
+        the attention matmul. Charging them GDDR6 (864 GB/s, 12 pJ/bit) —
+        not zero — makes the latency comparison against TieredKV fair.
         """
         # K + V read: tokens × head_dim × num_heads × 2 (K and V) elements
         elems = num_tokens * head_dim * num_heads * 2

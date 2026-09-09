@@ -28,6 +28,7 @@ class StepRecord:
     sketch_macs: int = 0
     # migration (element counts, per KV so multiply by 2 for K+V where noted)
     promoted_tokens: int = 0
+    peeked_tokens: int = 0            # attended in-place from STT-RAM, no residency move
     demoted_tokens: int = 0          # total demotions this step (volume)
     writes_saved: int = 0            # demotions that reused an STT backup (NO write paid)
     dropped_tokens: int = 0
@@ -42,6 +43,7 @@ class StepRecord:
     # sub-latency breakdown
     lat_sketch_us: float = 0.0
     lat_promote_us: float = 0.0
+    lat_peek_us: float = 0.0          # reading real K/V for peeked STT pages
     lat_attention_us: float = 0.0
     lat_demote_us: float = 0.0
 
@@ -71,6 +73,13 @@ class RunMetrics:
     @property
     def total_promoted(self) -> int:
         return sum(s.promoted_tokens for s in self.steps)
+
+    @property
+    def total_peeked(self) -> int:
+        """Attended in-place from STT-RAM without a residency move -- the
+        cheap path that lets single-use relevance be seen without paying
+        promotion's VRAM-slot + eventual write-back cost."""
+        return sum(s.peeked_tokens for s in self.steps)
 
     @property
     def total_demoted(self) -> int:
@@ -119,6 +128,7 @@ class RunMetrics:
             "total_latency_us": round(self.total_latency_us, 3),
             "total_energy_nj": round(self.total_energy_nj, 3),
             "promoted": self.total_promoted,
+            "peeked": self.total_peeked,
             "demoted": self.total_demoted,
             "paid_writes": self.total_paid_writes,
             "writes_saved": self.total_writes_saved,
