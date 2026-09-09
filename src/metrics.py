@@ -29,6 +29,15 @@ class StepRecord:
     # migration (element counts, per KV so multiply by 2 for K+V where noted)
     promoted_tokens: int = 0
     peeked_tokens: int = 0            # attended in-place from STT-RAM, no residency move
+    promotions_deferred: int = 0      # candidates the hysteresis gate denied
+                                      # promotion this step. NOT the same as
+                                      # peeked_tokens: a deferred candidate is
+                                      # only attended if the caller separately
+                                      # exposes it (TieredKVCache.step does via
+                                      # get_peek_kv; the LongBench harness does
+                                      # not). Kept distinct so a denied
+                                      # promotion is never reported as a
+                                      # visibility benefit that was delivered.
     demoted_tokens: int = 0          # total demotions this step (volume)
     writes_saved: int = 0            # demotions that reused an STT backup (NO write paid)
     dropped_tokens: int = 0
@@ -82,6 +91,15 @@ class RunMetrics:
         return sum(s.peeked_tokens for s in self.steps)
 
     @property
+    def total_promotions_deferred(self) -> int:
+        """Promotion candidates refused by the re-entry hysteresis gate.
+
+        A workload counter, not a benefit: these tokens stayed in the slow
+        tier and were attended only if the caller exposed them separately.
+        """
+        return sum(s.promotions_deferred for s in self.steps)
+
+    @property
     def total_demoted(self) -> int:
         return sum(s.demoted_tokens for s in self.steps)
 
@@ -129,6 +147,7 @@ class RunMetrics:
             "total_energy_nj": round(self.total_energy_nj, 3),
             "promoted": self.total_promoted,
             "peeked": self.total_peeked,
+            "promotions_deferred": self.total_promotions_deferred,
             "demoted": self.total_demoted,
             "paid_writes": self.total_paid_writes,
             "writes_saved": self.total_writes_saved,

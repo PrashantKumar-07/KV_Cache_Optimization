@@ -58,8 +58,31 @@ class TieredConfig:
     # one this code should make silently -- left at 1.0 (no behavior
     # change) until set explicitly.
     sttram_bifurcation_frac: float = 1.0
+    # Dtype for the SCORE tensors (sram_cum, sram_age, stt_last_access,
+    # stt_peek_streak). Keep this at float32: sram_cum accumulates attention
+    # mass over hundreds of decode steps and is the input to every eviction
+    # decision, so reduced precision here degrades the policy itself.
     dtype: torch.dtype = torch.float32
+    # Dtype for the K/V TENSORS. None means "same as dtype" (float32), which
+    # is what every result so far was measured with.
+    #
+    # This matters for the memory claim, not for accuracy: the model runs in
+    # bfloat16 and every baseline holds its KV in bfloat16, so storing the
+    # tiered cache in float32 doubles its real footprint. At the headline
+    # configuration that is 268.4 MB for a nominally "1024-token, equal-VRAM"
+    # fast tier against a baseline's 134.2 MB, plus 536.9 MB for the
+    # simulated slow tier, which also lives in GPU memory -- 6.0x the
+    # baseline in total, while CostModel prices the hierarchy at
+    # bytes_per_elem=2. Set kv_dtype=torch.bfloat16 to make the resident
+    # footprint match what the equal-VRAM comparison claims. Left at None so
+    # this does not silently change results; the honest-memory run is opt-in
+    # via --tiered-kv-dtype.
+    kv_dtype: torch.dtype | None = None
     device: str = "cpu"
+
+    @property
+    def resolved_kv_dtype(self) -> torch.dtype:
+        return self.kv_dtype if self.kv_dtype is not None else self.dtype
 
 
 class TieredKVCache:
@@ -68,34 +91,53 @@ class TieredKVCache:
         self.cm = cost_model or CostModel(bytes_per_elem=2)
         H, D = cfg.num_heads, cfg.head_dim
         dev, dt = cfg.device, cfg.dtype
+        kvt = cfg.resolved_kv_dtype
 
         # ---- Tier 1: VRAM (hot working set) ----
-        self.sram_k = torch.empty(H, 0, D, device=dev, dtype=dt)
-        self.sram_v = torch.empty(H, 0, D, device=dev, dtype=dt)
+        self.sram_k = torch.empty(H, 0, D, device=dev, dtype=kvt)
+        self.sram_v = torch.empty(H, 0, D, device=dev, dtype=kvt)
         self.sram_pos = []                                     # original token index
         self.sram_cum = torch.empty(0, device=dev, dtype=dt)   # cumulative attn
         self.sram_age = torch.empty(0, device=dev, dtype=dt)   # # compute_attention() passes seen
-        self.sram_grace = []    # True = promoted this step, protected from eviction
-                                 # until it has survived one compute_attention() pass
+        # True = promoted this step, protected from eviction until it has
+        # survived one compute_attention() pass.
+        #
+        # Held as a torch.bool tensor, NOT a Python list, and deliberately on
+        # the CPU regardless of cfg.device. Two separate measurements drove
+        # this (L40S, H=8 D=128, VRAM=1024, STT=2048):
+        #   - As a Python list this had to be rebuilt into a tensor on every
+        #     evict_and_demote() call (~0.05-0.10 ms each) and re-materialised
+        #     as a list comprehension on every eviction (~0.07 ms each). Across
+        #     4 tensor constructions + 6 list rebuilds per call, that was the
+        #     dominant share of 2.55 ms/call, i.e. ~81.7 ms per decode token
+        #     across 32 layers -- roughly 3x a full Mistral-7B forward pass.
+        #   - Moving these masks to the GPU makes it WORSE, not better:
+        #     constructing a 2048-element bool tensor costs 0.111 ms on device
+        #     vs 0.100 ms on host, and indexing a CUDA tensor with a CPU bool
+        #     mask is 0.0076 ms vs 0.0236 ms with a device mask, because at
+        #     these sizes kernel-launch overhead dominates the H2D copy.
+        # So: tensors (to kill the rebuilds), on CPU (to keep launches cheap).
+        self.sram_grace = torch.zeros(0, dtype=torch.bool)
 
         # ---- Tier 2: STT-RAM ----
-        self.stt_k = torch.empty(H, 0, D, device=dev, dtype=dt)
-        self.stt_v = torch.empty(H, 0, D, device=dev, dtype=dt)
+        self.stt_k = torch.empty(H, 0, D, device=dev, dtype=kvt)
+        self.stt_v = torch.empty(H, 0, D, device=dev, dtype=kvt)
         self.stt_pos = []
         self.stt_last_access = torch.empty(0, device=dev, dtype=dt)
-        self.stt_shadow = []  # True = also in VRAM (inclusive backup)
+        # True = also in VRAM (inclusive backup). CPU bool tensor -- see the
+        # sram_grace comment above for the measurements behind that choice.
+        self.stt_shadow = torch.zeros(0, dtype=torch.bool)
         # peek/promote hysteresis (see resolve_promotions docstring):
-        self.stt_was_vram_resident = []   # True = has left VRAM before (via
-                                           # promote+evict); re-promotion of
-                                           # these is gated on repeated
-                                           # candidacy instead of the first hit
+        # True = has left VRAM before (via promote+evict); re-promotion of
+        # these is gated on repeated candidacy instead of the first hit.
+        self.stt_was_vram_resident = torch.zeros(0, dtype=torch.bool)
         self.stt_peek_streak = torch.empty(0, device=dev, dtype=dt)  # consecutive
                                            # steps this token has cleared the
                                            # sketch bar (resets to 0 otherwise)
 
         # ---- Tier 3: DRAM (optional) ----
-        self.dram_k = torch.empty(H, 0, D, device=dev, dtype=dt)
-        self.dram_v = torch.empty(H, 0, D, device=dev, dtype=dt)
+        self.dram_k = torch.empty(H, 0, D, device=dev, dtype=kvt)
+        self.dram_v = torch.empty(H, 0, D, device=dev, dtype=kvt)
         self.dram_pos = []
 
         self.metrics = RunMetrics(label="TieredKV", num_heads=H, head_dim=D)
@@ -121,6 +163,23 @@ class TieredKVCache:
         window_idx = list(range(max(0, N - w), N))
         pinned = sorted(set(sink_idx) | set(window_idx))
 
+        # Capacity guard. `pinned` is unioned into sram_idx unconditionally
+        # below, so if sink_size + window_size exceeds sram_capacity the cache
+        # starts over capacity and can NEVER recover: _hard_protected_mask()
+        # protects exactly those tokens, so evict_and_demote() finds no
+        # eligible victim and the overflow is permanent (measured: capacity
+        # 16, sink 4, window 16 -> 20 resident tokens, still 20 after a step).
+        # Fail loudly at construction rather than silently violating the
+        # invariant every later step depends on.
+        if len(pinned) > cfg.sram_capacity:
+            raise ValueError(
+                f"sink_size ({cfg.sink_size}) + window_size ({w}) = {len(pinned)} "
+                f"pinned tokens exceeds sram_capacity ({cfg.sram_capacity}). "
+                f"These tokens are never evictable, so the VRAM tier could not "
+                f"stay within capacity. Raise sram_capacity above {len(pinned)}, "
+                f"or lower window_size/sink_size."
+            )
+
         rest = [i for i in range(N) if i not in set(pinned)]
         rest_sorted = sorted(rest, key=lambda i: importance[i].item(), reverse=True)
 
@@ -136,27 +195,28 @@ class TieredKVCache:
         stt_idx = sorted(stt_sel)
         cold_idx = sorted(cold_sel)
 
-        self.sram_k = k_all[:, sram_idx, :].clone()
-        self.sram_v = v_all[:, sram_idx, :].clone()
+        kvt = cfg.resolved_kv_dtype
+        self.sram_k = k_all[:, sram_idx, :].clone().to(kvt)
+        self.sram_v = v_all[:, sram_idx, :].clone().to(kvt)
         self.sram_pos = list(sram_idx)
         self.sram_cum = importance[sram_idx].clone().to(self.cfg.dtype)
         self.sram_age = torch.zeros(len(sram_idx), device=cfg.device, dtype=cfg.dtype)
-        self.sram_grace = [False] * len(sram_idx)
+        self.sram_grace = torch.zeros(len(sram_idx), dtype=torch.bool)
 
-        self.stt_k = k_all[:, stt_idx, :].clone()
-        self.stt_v = v_all[:, stt_idx, :].clone()
+        self.stt_k = k_all[:, stt_idx, :].clone().to(kvt)
+        self.stt_v = v_all[:, stt_idx, :].clone().to(kvt)
         self.stt_pos = list(stt_idx)
         self.stt_last_access = torch.zeros(len(stt_idx), device=cfg.device, dtype=cfg.dtype)
-        self.stt_shadow = [False] * len(stt_idx)
+        self.stt_shadow = torch.zeros(len(stt_idx), dtype=torch.bool)
         # Prompt tokens routed straight to STT-RAM at bifurcation have never
         # been VRAM-resident, so they promote on first candidacy just like
         # before peek/promote existed -- gating only applies to re-entry.
-        self.stt_was_vram_resident = [False] * len(stt_idx)
+        self.stt_was_vram_resident = torch.zeros(len(stt_idx), dtype=torch.bool)
         self.stt_peek_streak = torch.zeros(len(stt_idx), device=cfg.device, dtype=cfg.dtype)
 
         if cfg.store_dram:
-            self.dram_k = k_all[:, cold_idx, :].clone()
-            self.dram_v = v_all[:, cold_idx, :].clone()
+            self.dram_k = k_all[:, cold_idx, :].clone().to(kvt)
+            self.dram_v = v_all[:, cold_idx, :].clone().to(kvt)
             self.dram_pos = list(cold_idx)
 
         return {
@@ -184,7 +244,7 @@ class TieredKVCache:
         pad = num_pages * ps - m
         dev = self.stt_k.device
 
-        shadow_t = torch.tensor(self.stt_shadow, dtype=torch.bool, device=dev)
+        shadow_t = self.stt_shadow.to(dev)
         if pad > 0:
             k_pad = torch.cat(
                 [self.stt_k, torch.zeros(H, pad, D, device=dev, dtype=self.stt_k.dtype)], dim=1
@@ -209,6 +269,41 @@ class TieredKVCache:
             pages.append((start, end, mins[:, pi, :], maxs[:, pi, :]))
         return pages
 
+    @staticmethod
+    def page_upper_bounds(q, pages):
+        """Quest page bound for every page in `pages`, as a (P,) tensor.
+
+        Split out of sketch_check() so the bound is directly testable: the
+        formula is the one thing here that must satisfy a hard mathematical
+        property (bound >= max_{k in page} q.k), and a test that recomputes
+        it locally rather than calling this would pass even if sketch_check
+        regressed. See tests/test_sketch_bound.py.
+
+        q     : (H, 1, D) query for this decode step
+        pages : list of (start, end, min_k, max_k) from _page_bounds()
+        """
+        q2 = q.squeeze(1)                                     # (H, D)
+        mn_stack = torch.stack([p[2] for p in pages], dim=0)  # (P, H, D)
+        mx_stack = torch.stack([p[3] for p in pages], dim=0)  # (P, H, D)
+
+        # Quest's page bound is  sum_d max(q_d * min_d, q_d * max_d)  -- the
+        # elementwise maximum is taken PER FEATURE DIMENSION and only then
+        # reduced over D. Taking the maximum after reducing over D (i.e.
+        # max(sum_d q*min, sum_d q*max)) is a different, much smaller
+        # quantity, and is NOT an upper bound at all: for a query with mixed
+        # signs the two sums cancel internally, and over 2000 random trials
+        # (D=8, page=16) that form fell BELOW the page's true maximum dot
+        # product on 60.9% of them (worst case: true max 12.815, correct
+        # bound 15.458, the sum-first form 0.787). Since the bound gates
+        # which pages are even considered for promotion, underestimating it
+        # silently discards the most relevant pages.
+        #
+        # Batched into one (P, H, D) op rather than one Python-level .item()
+        # sync per page (up to ~40+ pages/call at realistic STT-RAM sizes).
+        per_dim_max = torch.maximum(q2.unsqueeze(0) * mn_stack,
+                                    q2.unsqueeze(0) * mx_stack)  # (P, H, D)
+        return per_dim_max.sum(-1).sum(-1)                       # (P,)
+
     def sketch_check(self, q):
         """
         q : (H, 1, D). Returns list of (start, end) slices that clear the
@@ -225,16 +320,7 @@ class TieredKVCache:
         pages = self._page_bounds()
         if not pages:
             return [], 0
-        q2 = q.squeeze(1)  # (H, D)
-
-        # Batch all pages into one (P, H, D) stack so dmin/dmax/ub are one
-        # vectorized op each instead of one Python-level `.item()` sync per
-        # page (up to ~40+ pages/call at realistic STT-RAM sizes).
-        mn_stack = torch.stack([p[2] for p in pages], dim=0)  # (P, H, D)
-        mx_stack = torch.stack([p[3] for p in pages], dim=0)  # (P, H, D)
-        dmin = (q2.unsqueeze(0) * mn_stack).sum(-1)  # (P, H)
-        dmax = (q2.unsqueeze(0) * mx_stack).sum(-1)  # (P, H)
-        ub = torch.maximum(dmin, dmax).sum(-1)       # (P,)
+        ub = self.page_upper_bounds(q, pages)   # (P,) -- see that method
 
         if self.sram_k.shape[1] > 0:
             s_vram = torch.matmul(q, self.sram_k.transpose(-2, -1)).squeeze(1)
@@ -383,18 +469,18 @@ class TieredKVCache:
         # evict_and_demote() pass (cleared at the end of that pass) so they
         # compete on REAL accumulated attention afterward, not a fabricated
         # score. Structurally identical to sink/window protection.
-        self.sram_grace += [True] * len(idx)
+        self.sram_grace = torch.cat(
+            [self.sram_grace, torch.ones(len(idx), dtype=torch.bool)]
+        )
 
         # This token is now (or again) VRAM-resident -- mark it so, so a
         # future eviction back to STT-RAM knows to gate its re-promotion
         # (see resolve_promotions). Idempotent for tokens promoted before.
-        for i in idx:
-            self.stt_was_vram_resident[i] = True
+        self.stt_was_vram_resident[idx] = True
 
         if self.cfg.inclusive:
-            for i in idx:
-                self.stt_shadow[i] = True
-                self.stt_last_access[i] = self._t
+            self.stt_shadow[idx] = True
+            self.stt_last_access[idx] = self._t
         else:
             drop = set(idx)
             keep_idx = [i for i in range(m) if i not in drop]
@@ -402,8 +488,8 @@ class TieredKVCache:
             self.stt_v = self.stt_v[:, keep_idx, :]
             self.stt_pos = [self.stt_pos[i] for i in keep_idx]
             self.stt_last_access = self.stt_last_access[keep_idx]
-            self.stt_shadow = [self.stt_shadow[i] for i in keep_idx]
-            self.stt_was_vram_resident = [self.stt_was_vram_resident[i] for i in keep_idx]
+            self.stt_shadow = self.stt_shadow[keep_idx]
+            self.stt_was_vram_resident = self.stt_was_vram_resident[keep_idx]
             self.stt_peek_streak = self.stt_peek_streak[keep_idx]
 
         return len(idx)
@@ -454,8 +540,9 @@ class TieredKVCache:
         reclaimed = 0
 
         # Add new token to VRAM
-        self.sram_k = torch.cat([self.sram_k, new_k], dim=1)
-        self.sram_v = torch.cat([self.sram_v, new_v], dim=1)
+        kvt = cfg.resolved_kv_dtype
+        self.sram_k = torch.cat([self.sram_k, new_k.to(kvt)], dim=1)
+        self.sram_v = torch.cat([self.sram_v, new_v.to(kvt)], dim=1)
         self.sram_pos.append(new_pos)
         self.sram_cum = torch.cat(
             [self.sram_cum, torch.zeros(1, device=cfg.device, dtype=cfg.dtype)]
@@ -463,7 +550,8 @@ class TieredKVCache:
         self.sram_age = torch.cat(
             [self.sram_age, torch.zeros(1, device=cfg.device, dtype=cfg.dtype)]
         )
-        self.sram_grace.append(False)  # newest token is protected via window, not grace
+        # newest token is protected via window, not grace
+        self.sram_grace = torch.cat([self.sram_grace, torch.zeros(1, dtype=torch.bool)])
 
         # VRAM overflow -> demote the unprotected token with the lowest
         # AVERAGE attention per attended step (sram_cum / sram_age), not
@@ -498,8 +586,7 @@ class TieredKVCache:
         victims = []
         if n_over > 0:
             hard = self._hard_protected_mask()
-            grace_t = torch.tensor(self.sram_grace, dtype=torch.bool)
-            soft = hard | grace_t
+            soft = hard | self.sram_grace
             cand = self.sram_cum / self.sram_age.clamp(min=1)
 
             cand_soft = cand.clone()
@@ -533,8 +620,8 @@ class TieredKVCache:
         # read-only for this batch: sram_pos entries are unique, so no two
         # victims can share a vpos / contend for the same backup slot.
         backup_by_pos = {}
-        if cfg.inclusive and self.stt_shadow:
-            shadow_idx0 = torch.where(torch.tensor(self.stt_shadow, dtype=torch.bool))[0].tolist()
+        if cfg.inclusive and self.stt_shadow.numel():
+            shadow_idx0 = torch.where(self.stt_shadow)[0].tolist()
             backup_by_pos = {self.stt_pos[i]: i for i in shadow_idx0}
 
         no_backup_victims = []
@@ -565,11 +652,15 @@ class TieredKVCache:
                 torch.full((len(no_backup_victims),), float(self._t),
                            device=cfg.device, dtype=cfg.dtype),
             ])
-            self.stt_shadow += [False] * len(no_backup_victims)
+            self.stt_shadow = torch.cat(
+                [self.stt_shadow, torch.zeros(len(no_backup_victims), dtype=torch.bool)]
+            )
             # These tokens just left VRAM -- any future re-promotion is a
             # RE-entry and must clear the hysteresis gate, not the free pass
             # a genuinely-new candidate gets.
-            self.stt_was_vram_resident += [True] * len(no_backup_victims)
+            self.stt_was_vram_resident = torch.cat(
+                [self.stt_was_vram_resident, torch.ones(len(no_backup_victims), dtype=torch.bool)]
+            )
             self.stt_peek_streak = torch.cat([
                 self.stt_peek_streak,
                 torch.zeros(len(no_backup_victims), device=cfg.device, dtype=cfg.dtype),
@@ -584,7 +675,7 @@ class TieredKVCache:
             self.sram_pos = [self.sram_pos[i] for i in keep]
             self.sram_cum = self.sram_cum[keep_mask]
             self.sram_age = self.sram_age[keep_mask]
-            self.sram_grace = [self.sram_grace[i] for i in keep]
+            self.sram_grace = self.sram_grace[keep_mask]
 
         # STT-RAM overflow -> reclaim shadows first, then LRU evict.
         #
@@ -611,7 +702,7 @@ class TieredKVCache:
             # capacity almost every step, this ran O(sttram_capacity)
             # Python-level work per layer per step and was measured to
             # dominate real wall-clock time once STT-RAM got large.
-            shadow_t = torch.tensor(self.stt_shadow, dtype=torch.bool)
+            shadow_t = self.stt_shadow
             shadow_idx = torch.where(shadow_t)[0].tolist()
             evict_set = []
 
@@ -647,13 +738,13 @@ class TieredKVCache:
             self.stt_v = self.stt_v[:, keep, :]
             self.stt_pos = [self.stt_pos[i] for i in keep]
             self.stt_last_access = self.stt_last_access[keep_mask]
-            self.stt_shadow = [self.stt_shadow[i] for i in keep]
-            self.stt_was_vram_resident = [self.stt_was_vram_resident[i] for i in keep]
+            self.stt_shadow = self.stt_shadow[keep_mask]
+            self.stt_was_vram_resident = self.stt_was_vram_resident[keep_mask]
             self.stt_peek_streak = self.stt_peek_streak[keep_mask]
 
         # Grace protection is one-shot: it only shields a just-promoted token
         # through the eviction pass immediately following its own promotion.
-        self.sram_grace = [False] * len(self.sram_grace)
+        self.sram_grace.fill_(False)
 
         return demoted, dropped, writes_saved, reclaimed
 
@@ -723,7 +814,11 @@ class TieredKVCache:
         elems_per_tok = H * D
         lat_p, eng_p = self.cm.promote_cost(rec.promoted_tokens * 2 * elems_per_tok)
         lat_d, eng_d = self.cm.demote_cost(paid_writes * 2 * elems_per_tok)
-        lat_dd, eng_dd = self.cm.deep_demote_cost(rec.dropped_tokens * 2 * elems_per_tok)
+        # Cold tokens leaving STT-RAM only cross the PCIe bus into DRAM when
+        # there IS a DRAM tier; with store_dram=False they are freed, and only
+        # the retiring STT-RAM read is real. See CostModel.drop_cost().
+        _deep = self.cm.deep_demote_cost if self.cfg.store_dram else self.cm.drop_cost
+        lat_dd, eng_dd = _deep(rec.dropped_tokens * 2 * elems_per_tok)
         lat_vr, eng_vr = self.cm.gpu_vram_read_cost(rec.sram_tokens * 2 * elems_per_tok)
         # Peek: a real STT-RAM read for exact attention, no VRAM write --
         # the whole point is that this is cheaper than promote_cost.

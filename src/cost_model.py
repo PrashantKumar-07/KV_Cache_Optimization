@@ -121,10 +121,48 @@ class CostModel:
         return lat, eng
 
     def deep_demote_cost(self, num_elems: int):
-        """STT-RAM -> DRAM: read from STT-RAM, write into CPU DRAM."""
+        """STT-RAM -> DRAM: read from STT-RAM, write into CPU DRAM.
+
+        Only correct when the tokens really are written to a DRAM tier, i.e.
+        TieredConfig.store_dram=True. When cold tokens are DROPPED instead
+        (store_dram=False, which is what the LongBench harness runs), use
+        drop_cost() -- billing a PCIe DRAM write for a token that was simply
+        freed inflates TieredKV's own modeled latency and energy.
+        """
         lat = self.read_latency_us("STT-RAM", num_elems) + self.write_latency_us("DRAM", num_elems)
         eng = self.read_energy_nj("STT-RAM", num_elems) + self.write_energy_nj("DRAM", num_elems)
         return lat, eng
+
+    def drop_cost(self, num_elems: int):
+        """Evict from STT-RAM with no Tier-3 destination (store_dram=False).
+
+        The token is freed, not migrated, so the only physical work is the
+        STT-RAM read that retires the line. Charging deep_demote_cost() here
+        overstated the bill by ~6x in latency and ~11x in energy (measured:
+        100k dropped tokens cost 2457.6 us / 72,089,600 nJ under
+        deep_demote_cost vs 409.6 us / 6,553,600 nJ actually justifiable).
+        """
+        return (self.read_latency_us("STT-RAM", num_elems),
+                self.read_energy_nj("STT-RAM", num_elems))
+
+    def leakage_energy_nj(self, tier: str, num_elems: int, seconds: float) -> float:
+        """Static (standby) energy for holding `num_elems` resident in `tier`.
+
+        leakage_mw_per_mb was declared on TierSpec from the start but never
+        read by anything, which meant the energy model captured only dynamic
+        read/write traffic. That omission works directly against the paper's
+        own argument: near-zero standby leakage is STT-RAM's main physical
+        advantage over DRAM and SRAM (1.0 mW/MB here against GDDR6's 8.0 and
+        DDR5's 15.0), so a dynamic-only model silently discards the effect
+        the tiered hierarchy is supposed to exploit.
+
+        Reported as a SEPARATE figure rather than folded into energy_nj, so
+        that existing dynamic-energy comparisons keep their old meaning and
+        the two contributions stay individually auditable.
+        """
+        mb = num_elems * self.bytes_per_elem / (1024 * 1024)
+        mw = mb * self.tiers[tier].leakage_mw_per_mb
+        return mw * 1e-3 * seconds * 1e9      # W * s = J -> nJ
 
     def gpu_vram_read_cost(self, num_elems: int):
         """
