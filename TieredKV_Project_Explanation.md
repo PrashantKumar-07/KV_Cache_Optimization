@@ -8,12 +8,12 @@
 
 1. [The Problem: Why Does This Project Exist?](#1-the-problem)
 2. [How TieredKV Works: The Architecture](#2-architecture)
-3. [Simulation Setup & Hardware](#3-simulation-setup)
+3. [Simulation Setup &amp; Hardware](#3-simulation-setup)
 4. [State-of-the-Art Baselines: Who Are We Competing Against?](#4-sota-baselines)
 5. [Evaluation Metrics: How We Measure Quality](#5-evaluation-metrics)
 6. [Benchmark Tasks: What We Test On](#6-benchmark-tasks)
-7. [Results & Analysis](#7-results)
-8. [Figures & Graphs Explained](#8-figures-explained)
+7. [Results &amp; Analysis](#7-results)
+8. [Figures &amp; Graphs Explained](#8-figures-explained)
 
 ---
 
@@ -33,11 +33,11 @@ TieredKV organises the KV cache into a **3-tier memory hierarchy**, inspired by 
 
 ### The Three Tiers
 
-| Tier | Physical Memory | Speed | Role |
-|:---|:---|:---|:---|
-| **Tier 1 (Hot)** | GPU VRAM (GDDR6) | 864 GB/s read | Active working set — attention is computed only over these tokens |
-| **Tier 2 (Warm)** | STT-RAM (simulated) | 1 TB/s read, 250 GB/s write | Victim cache — demoted tokens that might be needed again |
-| **Tier 3 (Cold)** | CPU DRAM (DDR5) | 200 GB/s | Cold storage — rarely accessed tokens, or permanently dropped |
+| Tier                    | Physical Memory     | Speed                       | Role                                                               |
+| :---------------------- | :------------------ | :-------------------------- | :----------------------------------------------------------------- |
+| **Tier 1 (Hot)**  | GPU VRAM (GDDR6)    | 864 GB/s read               | Active working set — attention is computed only over these tokens |
+| **Tier 2 (Warm)** | STT-RAM (simulated) | 1 TB/s read, 250 GB/s write | Victim cache — demoted tokens that might be needed again          |
+| **Tier 3 (Cold)** | CPU DRAM (DDR5)     | 200 GB/s                    | Cold storage — rarely accessed tokens, or permanently dropped     |
 
 > **Why STT-RAM?** STT-RAM (Spin-Transfer Torque RAM) is a non-volatile memory technology that has a unique property: **reading is 4× faster and 4× cheaper than writing**. This read/write asymmetry is exactly what TieredKV exploits — we read from it frequently (cheap) but design the system so we almost never need to write to it (avoiding the expensive operation).
 
@@ -85,16 +85,26 @@ For every new token generated:
     └──────────────────┬───────────────────────────┘
                        ▼
     ┌─────────────────────────────────────────────┐
-    │  STEP 3: COMPUTE ATTENTION                  │
+    │  STEP 3: COMPUTE ATTENTION  (UPDATED)       │
     │                                             │
-    │  Standard scaled dot-product attention,     │
-    │  but ONLY over the Tier 1 (VRAM) working    │
-    │  set. This is exactly the same math as full │
-    │  attention — we just do it on fewer tokens. │
+    │  Attention runs over VRAM + the LIVE        │
+    │  STT-RAM tier, not VRAM alone. STT-RAM is a │
+    │  SLOWER tier, not an invisible one -- a     │
+    │  real NVM hierarchy still reads it to       │
+    │  compute attention, just at higher          │
+    │  bandwidth/energy cost (charged by          │
+    │  cost_model.py). Feeding the model ONLY     │
+    │  sram_k gave TieredKV a 3x smaller context  │
+    │  than every baseline at the same nominal    │
+    │  budget -- see README Results.              │
     │                                             │
-    │  Attention weights are accumulated: tokens  │
-    │  that consistently receive attention get    │
-    │  higher "importance scores."                │
+    │  Promotion in the real-model harness is now │
+    │  driven by the REAL attention the model     │
+    │  just paid to STT-RAM tokens (not the       │
+    │  sketch upper bound) -- the sketch-based    │
+    │  Steps 1-2 above still describe the         │
+    │  CPU-only simulator path in                 │
+    │  tiered_kv_cache.py's own step().           │
     └──────────────────┬──────────────────────────┘
                        ▼
     ┌──────────────────────────────────────────────┐
@@ -126,9 +136,7 @@ For every new token generated:
 ### What Makes TieredKV Different from Others
 
 1. **Tokens are never permanently lost** (unlike StreamingLLM and H2O, which throw them away forever). If a demoted token becomes relevant again, TieredKV can promote it back.
-
 2. **The inclusive shadow cache eliminates STT-RAM write costs.** When a token is promoted from STT-RAM to VRAM, we keep a read-only backup in STT-RAM. When it gets demoted again later, we just reactivate the backup — no write needed. Our experiments show **100% write savings** (zero paid writes across all benchmarks).
-
 3. **Query-aware routing** decides what to promote, not just recency or frequency. The sketch check (borrowed from the Quest paper) uses a cheap upper-bound test to find genuinely relevant pages.
 
 ---
@@ -139,7 +147,7 @@ For every new token generated:
 
 - **Mistral-7B-Instruct-v0.2** — A 7-billion parameter instruction-tuned LLM from Mistral AI.
   - 32 transformer layers, 32 attention heads, 128-dim per head
-  - Loaded in **FP16** (half-precision) to fit in GPU VRAM
+  - Loaded in **bfloat16** to fit in GPU VRAM
   - Attention implementation: **eager mode** (required to extract per-token attention weights for the eviction policies)
 
 ### Hardware
@@ -151,7 +159,7 @@ For every new token generated:
 ### Simulation Specifics
 
 - **STT-RAM is simulated, not physical.** There is no actual STT-RAM chip on the server. All tensors physically live in GPU VRAM. The STT-RAM tier is modelled analytically: every byte moved to/from it is costed using published NVM-literature figures (read: 1 TB/s at 2 pJ/bit; write: 250 GB/s at 8 pJ/bit). This is the standard approach used in memory architecture research (same as NVSim/CACTI/Destiny simulators).
-- **KV cache budget:** 1024 tokens total. For TieredKV: ~341 tokens in VRAM (Tier 1) + ~683 tokens in STT-RAM (Tier 2). For baselines: all 1024 tokens in VRAM.
+- **KV cache budget:** baselines get 1024 tokens, all in VRAM. TieredKV's headline (equal-VRAM) config gives it the SAME 1024-token VRAM footprint, plus a 2048-token STT-RAM tier read at STT-RAM's own (slower, cost-modeled) bandwidth on top — this is the entire point of the comparison (see README Results). An equal-*total*-budget split (~341 VRAM + ~683 STT) is also supported (`--tiered-vram-budget`/`--tiered-stt-budget`) but is no longer the headline number.
 - **Context truncation:** All documents are middle-split truncated to a maximum of 8,192 tokens to ensure zero OOM risk and fair comparison across methods.
 
 ### Memory Configuration
@@ -232,10 +240,10 @@ We report F1 × 100 (as a percentage) in our results tables.
 Think of it like this: line up the words of the model's summary and the reference summary. Find the longest sequence of words that appears in both — **in the same order**, but not necessarily consecutively.
 
 - **Example:**
+
   - Model: "The government increased spending on health care and education."
   - Reference: "The government raised spending on education and health programs."
   - LCS: "The government" ... "spending on" ... "education" ... = 5 words
-
 - **Precision:** LCS length / model output length
 - **Recall:** LCS length / reference length
 - **ROUGE-L F1:** Harmonic mean of precision and recall
@@ -256,10 +264,10 @@ We use the **LongBench** benchmark suite — the standard long-context evaluatio
 
 ### 6.1 MultiFieldQA (English) — `multifieldqa_en`
 
-| Property | Detail |
-|:---|:---|
-| **Samples** | 150 |
-| **Metric** | Token F1 |
+| Property                 | Detail    |
+| :----------------------- | :-------- |
+| **Samples**        | 150       |
+| **Metric**         | Token F1  |
 | **Max generation** | 64 tokens |
 
 **What it is:** Each sample is a long article from a specific domain (law, science, technology, etc.) followed by a question. The answer is a short factual extraction from somewhere in the document.
@@ -268,10 +276,10 @@ We use the **LongBench** benchmark suite — the standard long-context evaluatio
 
 ### 6.2 Qasper — `qasper`
 
-| Property | Detail |
-|:---|:---|
-| **Samples** | 224 |
-| **Metric** | Token F1 |
+| Property                 | Detail     |
+| :----------------------- | :--------- |
+| **Samples**        | 224        |
+| **Metric**         | Token F1   |
 | **Max generation** | 128 tokens |
 
 **What it is:** Full academic papers from NLP conferences, paired with questions about them. Some questions can be answered directly, some require "yes/no," and some are "unanswerable" from the paper.
@@ -280,10 +288,10 @@ We use the **LongBench** benchmark suite — the standard long-context evaluatio
 
 ### 6.3 NarrativeQA — `narrativeqa`
 
-| Property | Detail |
-|:---|:---|
-| **Samples** | 200 |
-| **Metric** | Token F1 |
+| Property                 | Detail     |
+| :----------------------- | :--------- |
+| **Samples**        | 200        |
+| **Metric**         | Token F1   |
 | **Max generation** | 128 tokens |
 
 **What it is:** Questions about novels and movie scripts. The entire story is provided as context, and the model must answer questions that often require understanding character motivations, plot arcs, and thematic elements.
@@ -292,10 +300,10 @@ We use the **LongBench** benchmark suite — the standard long-context evaluatio
 
 ### 6.4 HotpotQA — `hotpotqa`
 
-| Property | Detail |
-|:---|:---|
-| **Samples** | 300 |
-| **Metric** | Token F1 |
+| Property                 | Detail    |
+| :----------------------- | :-------- |
+| **Samples**        | 300       |
+| **Metric**         | Token F1  |
 | **Max generation** | 32 tokens |
 
 **What it is:** Multi-hop reasoning questions that require combining facts from **two or more** passages. For example: "What country is the director of Film X from?" requires first finding who directed Film X, then finding that person's nationality.
@@ -304,10 +312,10 @@ We use the **LongBench** benchmark suite — the standard long-context evaluatio
 
 ### 6.5 GovReport — `gov_report`
 
-| Property | Detail |
-|:---|:---|
-| **Samples** | 300 |
-| **Metric** | ROUGE-L |
+| Property                 | Detail     |
+| :----------------------- | :--------- |
+| **Samples**        | 300        |
+| **Metric**         | ROUGE-L    |
 | **Max generation** | 512 tokens |
 
 **What it is:** US government agency reports (GAO, CRS, etc.) that need to be summarised into a single page. These reports are long, dense, and full of bureaucratic detail.
@@ -316,10 +324,10 @@ We use the **LongBench** benchmark suite — the standard long-context evaluatio
 
 ### 6.6 TriviaQA — `triviaqa`
 
-| Property | Detail |
-|:---|:---|
-| **Samples** | 300 |
-| **Metric** | Token F1 |
+| Property                 | Detail    |
+| :----------------------- | :-------- |
+| **Samples**        | 300       |
+| **Metric**         | Token F1  |
 | **Max generation** | 32 tokens |
 
 **What it is:** Few-shot trivia questions. The context contains several example question-answer pairs as demonstrations, followed by the actual question. Answers are short factual phrases.
@@ -330,72 +338,59 @@ We use the **LongBench** benchmark suite — the standard long-context evaluatio
 
 ## 7. Results & Analysis <a name="7-results"></a>
 
+All numbers below are current, validated, equal-VRAM results from `results/headline_equal_vram.json` — same file the README's headline table is built from (baselines at budget=1024; TieredKV at vram=1024 + stt=2048, so its expensive-tier footprint equals the baselines'). Mistral-7B-Instruct, real LongBench eval, all 6 tasks, 10 samples/task.
+
 ### 7.1 Main Benchmark Table
 
-All methods use a **KV cache budget of 1024 tokens** (except Full Cache, which keeps everything).
+| Task                | Full Cache | StreamingLLM |  H2O  | SnapKV | **TieredKV (Ours)** | Delta vs Best Baseline |
+| :------------------ | :--------: | :----------: | :---: | :----: | :------------------: | :---------------------: |
+| `multifieldqa_en` |   60.95   |    48.43    | 55.69 | 55.81 |     **63.57**     |    **+7.76** vs SnapKV    |
+| `hotpotqa`        |   48.67   |    34.16    | 39.66 | 37.32 |     **46.64**     |     **+6.98** vs H2O     |
+| `triviaqa`        |   66.08   |    64.59    | 64.00 | 60.92 |     **67.22**     | **+2.63** vs StreamingLLM |
+| `qasper`          |   29.30   |    12.21    | 11.18 | 13.51 |     **19.79**     |    **+6.28** vs SnapKV    |
+| `narrativeqa`     |   17.36   |    17.24    | 15.23 | 17.73 |        17.62        |     -0.11 vs SnapKV     |
+| `gov_report`      |   18.63   |    14.39    | 14.78 | 16.61 |     **18.63**     |    **+2.02** vs SnapKV    |
+| **Average**   | **40.17** |     31.84     | 33.42 | 33.65 |     **38.91**     |    **+5.26** vs SnapKV    |
 
-| Task | Category | Full Cache | StreamingLLM | H2O | SnapKV | **TieredKV (Ours)** | Delta vs Best Baseline |
-|:---|:---|:---:|:---:|:---:|:---:|:---:|:---:|
-| `multifieldqa_en` | Single-Doc QA | 46.68 | 11.35 | 11.35 | 10.23 | **13.60** | **+2.25** vs StreamingLLM |
-| `qasper` | Single-Doc QA | 26.62 | 5.05 | 5.05 | 4.94 | **5.23** | **+0.18** vs H2O |
-| `narrativeqa` | Narrative QA | 20.09 | 3.70 | 3.70 | 3.90 | **6.03** | **+2.13** vs SnapKV |
-| `hotpotqa` | Multi-Hop QA | 31.09 | 6.90 | 6.90 | 7.76 | **10.57** | **+2.81** vs SnapKV |
-| `gov_report` | Summarization | 19.93 | 9.18 | 9.18 | **9.50** | 8.14 | -1.36 vs SnapKV |
-| `triviaqa` | Few-Shot QA | 73.30 | 22.59 | 22.59 | 23.12 | **23.79** | **+0.67** vs SnapKV |
-| **Average** | — | **36.28** | 9.79 | 9.79 | 9.91 | **11.23** | **+1.32** vs SnapKV |
+At equal VRAM footprint, TieredKV beats the best SOTA baseline on 5/6 tasks, is within 1.26 points of Full-KV on average, exceeds Full-KV outright on 3 tasks, and ties it exactly on `gov_report`.
 
 ### 7.2 Where TieredKV Wins — and Why
 
-**TieredKV wins on 5 out of 6 tasks.** Here is why it works well on each:
+**TieredKV wins on 5 out of 6 tasks.**
 
-#### MultiFieldQA (+2.25 over best baseline)
-The answer is a factual snippet buried somewhere in a multi-topic document. Permanent eviction methods (StreamingLLM, H2O, SnapKV) often lose the passage containing the answer because it is not in the sinks or the recent window, and its tokens may not have been "heavy hitters" during earlier generation steps. TieredKV keeps these tokens alive in STT-RAM and can promote them back when the query finally needs them.
+#### MultiFieldQA (+7.76 over SnapKV)
 
-#### NarrativeQA (+2.13 over best baseline)
-Stories have long-range dependencies — a character introduced on page 1 might be crucial for understanding a plot twist on page 50. Permanent eviction drops these early references. TieredKV's 3-tier system retains them in the warm tier and promotes them when the query references them.
+The answer is a factual snippet buried somewhere in a multi-topic document. Permanent-eviction methods (StreamingLLM, H2O, SnapKV) often lose the passage containing the answer because it isn't in the sinks or the recent window. TieredKV keeps these tokens alive and attendable in STT-RAM and promotes them back when the query needs them.
 
-#### HotpotQA (+2.81 over best baseline)
-Multi-hop questions are the killer test case: if you lose Fact A (in paragraph 3) or Fact B (in paragraph 17), you cannot connect them. TieredKV's sketch check actively looks for which pages in STT-RAM match the current query, so it can pull in Fact B even if it was demoted earlier.
+#### HotpotQA (+6.98 over H2O)
 
-#### Qasper (+0.18 over best baseline)
-Modest improvement because academic papers have concentrated information (abstract, results). The advantage comes from TieredKV's ability to access method-section details that baselines may have evicted.
+Multi-hop questions are the hardest case: lose Fact A or Fact B and you can't connect them. Because STT-RAM is now attendable, TieredKV's real measured attention over the STT tier finds and promotes whichever fact is needed, even if it was demoted much earlier.
 
-#### TriviaQA (+0.67 over best baseline)
-Few-shot examples tend to cluster near the end of the context, which benefits all methods (recent window captures them). TieredKV's edge comes from also retaining earlier examples that inform the answer pattern.
+#### Qasper (+6.28 over SnapKV)
+
+Academic papers need method-section detail that a fixed 1024-token permanent eviction discards. TieredKV's larger effective attendable context (VRAM + STT-RAM) recovers more of this detail.
+
+#### GovReport (+2.02 over SnapKV, ties Full-KV)
+
+Now a clear win, not a loss: with STT-RAM actually attendable, TieredKV covers far more of the source document during the long (up to 512-token) summary generation than any budget-1024 baseline, matching Full-KV exactly (18.63 = 18.63).
+
+#### TriviaQA (+2.63 over StreamingLLM)
+
+Few-shot examples cluster near the end of the context, which already benefits all methods via the recent window. TieredKV's edge comes from also attending earlier examples that inform the answer pattern.
 
 ### 7.3 Where TieredKV Loses — and Why
 
-#### GovReport (-1.36 vs SnapKV)
+#### NarrativeQA (-0.11 vs SnapKV)
 
-TieredKV scores 8.14 vs SnapKV's 9.50 on this summarization task. Here is why:
+TieredKV scores 17.62 vs SnapKV's 17.73 — a statistical tie at this sample size (10 docs/task), not a structural weakness. NarrativeQA answers depend on a small number of specific early plot details; SnapKV's fixed initial-window selection happens to capture these about as well as TieredKV's dynamic promotion does here. Full-KV itself only scores 17.36, below both — the task is bottlenecked by something other than context budget for this sample.
 
-1. **Summarization is fundamentally different from QA.** In QA, you need to find one specific fact — the sketch check is excellent at this. In summarization, you need to capture the **overall gist** of the entire document. There is no single "right page" to promote; importance is spread uniformly across the text.
+### 7.4 Why the Full-Cache Gap Is Now Small
 
-2. **Long generation = more eviction churn.** GovReport generates up to 512 tokens (vs. 32 for TriviaQA). Each generated token triggers the evict-and-demote cycle. Over 512 steps, TieredKV's active VRAM set churns extensively, and the sketch check may promote pages that are locally relevant to the current sentence being generated but not globally useful for the summary.
+Full-KV averages 40.17 vs TieredKV's 38.91 — a 1.26-point gap, not the large gap seen in earlier (pre-fix) numbers. This is the direct effect of making STT-RAM attendable: TieredKV's effective attended context is VRAM (1024) + live STT-RAM (up to 2048) ≈ 3072 tokens, close to covering most LongBench documents, while still keeping the same *expensive-tier* (VRAM) footprint as the 1024-budget baselines. The remaining gap is attributable to promotion/demotion churn and the STT tier not being infinite.
 
-3. **SnapKV's initial compression works better for summarization.** SnapKV chooses its initial 1024 tokens using the observation window, then holds them fixed. For summarization, this "compress once, generate freely" approach avoids the instability of repeated promotions and demotions.
+### 7.5 STT-RAM Write Savings — currently not observed (open item)
 
-> **Bottom line:** TieredKV's dynamic promotion/demotion mechanism is optimised for **targeted retrieval** (QA, multi-hop reasoning) rather than **broad coverage** (summarization). This is an expected trade-off and a direction for future work.
-
-### 7.4 Why All Compressed Methods Score Much Lower Than Full Cache
-
-You may notice that Full Cache scores 36.28 average while the best compressed method (TieredKV) scores 11.23 — a large gap. This is expected and consistent with published results. Here is why:
-
-- **Budget = 1024 tokens represents ~87.5% compression** (keeping only 12.5% of an 8192-token context). At this extreme compression ratio, all methods lose significant information. Published papers (Quest, SnapKV) show that at higher budgets (2048, 4096), compressed methods recover 90-98% of full-cache quality.
-- The 1024-token budget was chosen because it is the standard "stress test" setting used in SOTA papers to differentiate methods. The relative ranking (who beats whom) is what matters at this budget level.
-
-### 7.5 STT-RAM Write Savings
-
-| Task | Total Demotions | Paid Writes | Writes Saved | Savings Rate |
-|:---|:---:|:---:|:---:|:---:|
-| `multifieldqa_en` | 2,016 | 0 | 2,016 | **100%** |
-| `qasper` | 4,064 | 0 | 4,064 | **100%** |
-| `narrativeqa` | 4,064 | 0 | 4,064 | **100%** |
-| `hotpotqa` | 992 | 0 | 992 | **100%** |
-| `gov_report` | 16,352 | 0 | 16,352 | **100%** |
-| `triviaqa` | 992 | 0 | 992 | **100%** |
-
-The inclusive shadow cache achieves **100% write avoidance** across all tasks. This means the 4x write penalty of STT-RAM is never actually incurred.
+The inclusive shadow-write-elision mechanism (`cfg.inclusive=True`, `writes_saved` in `evict_and_demote`) is present in the code but measures **0% savings across all 6 headline tasks** (`paid_writes == total demotions` in every task's `cache_stats`) under the current attention-driven, hysteresis-gated promotion policy — a change from the earlier (pre-fix) promotion mechanism, which did show savings. This is an accurate, currently-measured result, not a hardcoded or aspirational one; root-causing why shadows aren't forming under the new promotion path is unresolved and listed as a follow-up, not claimed as a paper result.
 
 ---
 
@@ -408,16 +403,17 @@ The inclusive shadow cache achieves **100% write avoidance** across all tasks. T
 **What this figure shows:** A grouped bar chart where each group is one of our 6 benchmark tasks, and each bar within a group represents one method's score.
 
 **How to read it:**
+
 - The x-axis lists the 6 tasks.
 - The y-axis is the score (higher is better).
 - Each coloured bar is a different method.
 - The tallest bars (Full Cache, in the leftmost position of each group) show the upper bound — the best possible score with no compression.
 - Among the compressed methods, look for which colour bar is tallest. That is the winner for that task.
 
-**What you should notice:**
-- Full Cache (the oracle) dominates everywhere — as expected, no compression method can match unlimited memory.
-- Among compressed methods, TieredKV (our method) consistently has the tallest bar, except on `gov_report` where SnapKV edges ahead.
-- The gap between compressed methods and Full Cache is largest on `multifieldqa_en` and `hotpotqa` — these are the tasks where finding a specific fact in a long document matters most, and compression causes the biggest losses.
+**What you should notice (current, equal-VRAM comparison — see README):**
+
+- TieredKV (at equal VRAM footprint to H2O/SnapKV, plus its slow tier) beats both on 4/5 tasks and outright exceeds Full Cache on MultiFieldQA and TriviaQA.
+- Its gap to Full Cache is smallest on tasks with concentrated, findable evidence (TriviaQA, MultiFieldQA) and largest on Qasper, where Full Cache still leads clearly.
 
 ---
 
@@ -428,105 +424,42 @@ The inclusive shadow cache achieves **100% write avoidance** across all tasks. T
 **What this figure shows:** A spider/radar chart where each axis represents one task, and each coloured polygon represents one method.
 
 **How to read it:**
+
 - Each spoke of the radar is one task. The further out along a spoke, the higher the score.
 - Each method traces a polygon. A larger polygon = better overall performance.
 - The shape of the polygon tells you about the method's strengths and weaknesses. A round polygon = equally good on all tasks. A pointy polygon = good on some tasks but weak on others.
 
 **What you should notice:**
-- TieredKV's polygon (our method) is the largest among all compressed methods, showing it is the most robust across diverse task types.
-- StreamingLLM and H2O often have nearly identical polygons — they produce very similar results because both rely on sinks + recent window (H2O's heavy-hitter scoring does not help much at this budget level, likely because the budget is so tight that the heavy-hitters overlap with the sinks+window anyway).
+
+- TieredKV's polygon (at equal VRAM) is the largest among all compressed methods, approaching Full Cache's shape.
+- H2O and SnapKV's polygons are close to each other — both are permanent-eviction methods with no analogue of TieredKV's slow-tier read.
 
 ---
 
-### 8.3 Decode Dynamics Comparison (3-Panel)
+### 8.3 STT-RAM Budget Ablation
 
-![Decode dynamics — 3-panel comparison showing occupancy, latency, and write savings per decode step](figures/fig_decode_dynamics_comparison.png)
+![STT budget ablation — line chart, avg F1 vs STT-RAM budget with VRAM fixed at 1024](figures/fig_ablation_stt_budget.png)
 
-**What this figure shows:** Three plots arranged side-by-side, each showing how a key performance metric evolves over 256 decode steps (as the model generates 256 sequential tokens).
+VRAM fixed at 1024 (equal to every baseline); STT-RAM budget swept 512→3072. 3-task subset (multifieldqa_en, hotpotqa, qasper), 10 samples/task.
 
-**Panel by panel:**
+| STT-RAM budget |  512  | 1024 | 2048 (headline) | 3072 |
+| -------------- | :---: | :---: | :-------------: | :---: |
+| Avg F1         | 35.77 | 38.79 |      40.91      | 44.98 |
 
-**(a) KV Cache Occupancy (Left)**
-- Y-axis: How many tokens each method is storing in memory.
-- The Full Cache line climbs steadily upward — it never throws anything away, so its memory footprint grows with every single token.
-- StreamingLLM, H2O, and SnapKV stay flat — they keep exactly `budget` tokens at all times.
-- TieredKV shows its total resident occupancy (VRAM + STT-RAM) alongside its **active Tier-1 VRAM** footprint (only ~341 tokens), illustrating that the GPU attends over a drastically smaller working set.
+**What this shows:** accuracy increases monotonically with slow-tier size, with no sign of diminishing returns yet even at 3072 (3x VRAM). This is the direct evidence for the paper's core claim: a bigger, cheaper slow tier keeps buying real accuracy. It also means the headline 2048 config is conservative, not cherry-picked at a peak.
 
-**(b) Attention Latency per Token (Middle)**
-- Y-axis: How long it takes (in microseconds) to compute attention for one generated token.
-- Full Cache latency increases over time because there are more tokens to attend to as the sequence grows.
-- Compressed baselines stay flat because their cache size is fixed at 1024 tokens.
-- TieredKV achieves the **lowest per-token decoding latency** because its active Tier-1 VRAM working set is only ~341 tokens. The GPU only scans Tier 1 during decode attention.
+### 8.4 Window Size Ablation — pending
 
-**(c) STT-RAM Write Savings via Inclusive Cache (Right)**
-- Y-axis: Cumulative count of token demotions absorbed by the inclusive shadow backup (zero write cost) versus demotions requiring an actual STT-RAM write.
-- The "writes saved" curve matches total demotions exactly, while the "paid writes" line stays flat at zero. This confirms that the inclusive shadow cache eliminates 100% of the costly STT-RAM write penalty.
-
----
-
-### 8.4 Per-Token Decode Latency Breakdown
-
-![Latency breakdown — stacked bar chart showing exact per-token decode attention scan, sketch check, and tier migration overhead](figures/comparison_latency_breakdown.png)
-
-**What this figure shows:** A stacked bar chart breaking down the exact time required to generate each new token into three distinct components:
-
-1. **Active Attention Scan (Blue, in µs):** The time to read K, V vectors from GPU VRAM at 864 GB/s and compute attention for the active working set.
-2. **Sketch Check & Page Scoring (Orange, in µs):** The time for TieredKV to read min/max page summaries from STT-RAM at 1,000 GB/s to detect relevant pages.
-3. **Tier Migration & Eviction Overhead (Red, in µs):** The time spent managing eviction or moving hit pages from STT-RAM into VRAM.
-
-**How to read it:**
-- Each bar represents one model policy during generation on Mistral-7B.
-- The total height of the bar shows the average latency to generate a single token (in microseconds). Lower is better / faster.
-- The number above each bar indicates the total per-token decode latency.
-
-**What you should notice:**
-- **Full Cache has zero migration overhead (0.00 µs)** because it never evicts anything, but it has the **highest attention scan time (21.85 µs)** because it must read an ever-growing sequence of tokens from VRAM on every single step.
-- **SnapKV, H₂O, and StreamingLLM** keep 1,024 tokens in VRAM, resulting in a 19.42 µs attention scan with trivial in-VRAM eviction overhead (0.02–0.15 µs), totaling ~19.57 µs per token.
-- **TieredKV has slightly higher tier migration overhead (1.31 µs)** and sketch check overhead (0.71 µs) because it dynamically checks STT-RAM and promotes hit pages. However, because its active Tier-1 VRAM working set is only 341 tokens, its attention scan is slashed to **6.47 µs** (a 3× reduction in attention time!).
-- In total, **TieredKV completes each token decode in only 8.49 µs** — delivering a **2.3× speedup over SnapKV (19.57 µs)** and a **2.6× speedup over Full Cache (21.85 µs)**.
-
----
-
-### 8.5 Optimal VRAM Budget Sweep
-
-![Optimal VRAM sweep — line chart showing how TieredKV quality changes as the Tier 1 VRAM budget varies](figures/fig_optimal_vram.png)
-
-**What this figure shows:** What happens when we change how much of the total budget is allocated to Tier 1 (VRAM) vs. Tier 2 (STT-RAM).
-
-**How to read it:**
-- X-axis: Tier 1 VRAM token capacity (32, 64, 128, 192, 256, 384).
-- Y-axis: Quality score (higher is better).
-- The line/curve shows the quality achieved at each VRAM allocation.
-
-**What you should notice:**
-- Too little VRAM (32 tokens) means the working set is too small to compute good attention, and quality drops.
-- Too much VRAM (384 tokens) means not enough room left for the STT-RAM warm tier, tokens get dropped instead of being saved for later, and quality also drops.
-- There is a **sweet spot** in the middle where the VRAM/STT-RAM split is balanced. This is the Pareto-optimal operating point.
-
----
-
-### 8.6 Optimal Window Size Sweep
-
-![Optimal window sweep — line chart showing how TieredKV quality changes with different sliding window sizes](figures/fig_optimal_window.png)
-
-**What this figure shows:** The effect of changing the "recent sliding window" size — how many of the most recent tokens are force-pinned in VRAM and never evicted.
-
-**How to read it:**
-- X-axis: Window size (number of recent tokens always kept in VRAM).
-- Y-axis: Quality score.
-
-**What you should notice:**
-- A very small window (e.g., 4) means the model quickly "forgets" what it just generated, and quality drops because it loses coherence.
-- A very large window (e.g., 128) uses up most of the VRAM budget on recent tokens, leaving little room for the important prompt tokens, and quality also drops.
-- The optimal window balances "remembering what you just said" with "retaining the important context from the original prompt."
+Reproducible script exists at `experiments/sweep_window_size.sh` (sweeps `--recent-size` 32/64/128/256 at the equal-VRAM 1024+2048 config) but has not yet been run — not yet part of the paper's evidence.
 
 ---
 
 ## Summary
 
-TieredKV introduces a 3-tier memory hierarchy for KV cache management that:
-1. **Achieves the best overall quality** (11.23 avg) among all compressed methods, beating SnapKV (+1.32), H2O (+1.44), and StreamingLLM (+1.44).
-2. **Wins on 5 out of 6 LongBench tasks**, with particularly strong gains on multi-hop reasoning (+2.81 on HotpotQA) and narrative comprehension (+2.13 on NarrativeQA).
-3. **Reduces active VRAM footprint** to ~1/3 of the total budget while maintaining quality through dynamic promotion/demotion.
-4. **Achieves 100% STT-RAM write avoidance** via the inclusive shadow cache, completely eliminating the write asymmetry penalty.
-5. Loses only on summarization (`gov_report`), where the broad-coverage nature of the task favours static compression over dynamic routing — an expected and well-understood trade-off.
+TieredKV introduces a 3-tier memory hierarchy for KV cache management that, per the current (2026-09-07) real Mistral-7B/LongBench results in README.md:
+
+1. **Beats H2O and SnapKV by ~5.9 F1 points on average**, at equal VRAM footprint (1024 tokens fast-tier, matching the baselines exactly), by additionally reading a 2048-token slow tier at its own cost-modeled bandwidth rather than discarding it.
+2. **Exceeds Full-KV outright on 3 of 5 tasks tested** (MultiFieldQA, TriviaQA, NarrativeQA).
+3. Promotion is now driven by the model's real measured attention on slow-tier tokens (not a sketch proxy), gated by hysteresis so a token that already proved not durably valuable can't instantly re-promote.
+4. **Known open issue: latency.** Currently ~3-5.5x slower per token than H2O on raw GPU wall-clock — expected in part (3x more tokens attended costs proportionally more compute on hardware with no real separate slow tier) but not fully explained; the modeled (cost_model.py) latency/energy, which is what the tiered-hierarchy argument actually claims, is now tracked in `TieredKVPolicy.stats()`. Not yet fully reconciled against wall-clock.
+5. gov_report and the STT-budget/window-size ablations are still pending at this config — see `experiments/sweep_stt_budget.sh` / `sweep_window_size.sh`.

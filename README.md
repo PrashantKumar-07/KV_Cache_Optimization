@@ -20,7 +20,9 @@ Standard KV cache compression methods (H₂O, SnapKV, StreamingLLM) permanently 
 └─────────────────────────────────────────────────────────────┘
 ```
 
-**Inclusive shadow cache:** When a token is promoted from STT-RAM → VRAM, the STT-RAM copy is kept as an immutable shadow backup. If the same token is later re-demoted, the backup is reactivated at **zero write cost**. Because KV tensors never change after prefill, the backup is always valid. This eliminates **100% of STT-RAM writes** in steady-state inference.
+**Inclusive shadow cache:** When a token is promoted from STT-RAM → VRAM, the STT-RAM copy is kept as an immutable shadow backup. If the same token is later re-demoted, the backup is reactivated at **zero write cost**. Because KV tensors never change after prefill, the backup is always valid *whenever it hasn't been reclaimed first*.
+
+That "whenever" matters: this only pays off if STT-RAM has spare capacity to hold backups. If `initial_bifurcation` fills STT-RAM to capacity with cold prompt tokens (the default, `sttram_bifurcation_frac=1.0` — the common case for any document longer than the VRAM+STT budget), every backup gets reclaimed under pressure before it can ever be reused, and write savings measure 0%, independent of eviction-scoring or promotion rate. Reserving headroom (`sttram_bifurcation_frac < 1.0`) restores substantial write savings (measured 74-85% across a real 3-task, 12-samples/task LongBench pilot) and, in that same pilot, *improved* accuracy rather than costing it — see the Results section below for the full sweep and its caveats (small sample size; treat as a promising pilot, not a settled result). See `src/tiered_kv_cache.py`'s `TieredConfig.sttram_bifurcation_frac` docstring for implementation detail.
 
 ---
 
@@ -53,43 +55,54 @@ Attention sinks (positions 0–3) and the recent sliding window are pinned and n
 
 ## Results
 
-### LongBench SOTA Comparison (Mistral-7B-Instruct-v0.2, Budget = 1024 tokens)
+### Headline: equal-VRAM comparison — real Mistral-7B-Instruct, real LongBench, 2026-09-07
 
-All methods evaluated on the same model, same samples, same scoring. **Higher is better.**
+TieredKV attends over its VRAM tier *and* its live STT-RAM tier every step (not VRAM alone — an earlier version silently gave TieredKV a 3x smaller effective context than every baseline at the same nominal budget, explained below). That makes an equal-VRAM comparison meaningful: TieredKV given the SAME VRAM footprint as H2O/SnapKV (1024 tokens), plus a 2048-token STT-RAM tier read at its own (cost-modeled, non-free) bandwidth.
 
-| Task | Full Cache | StreamingLLM | H₂O | SnapKV | **TieredKV** |
-|------|:----------:|:------------:|:---:|:------:|:------------:|
-| MultiFieldQA-EN | 46.68 | 11.35 | 11.35 | 10.23 | **13.60** |
-| Qasper | 26.62 | 5.05 | 5.05 | 4.94 | **5.23** |
-| NarrativeQA | 20.09 | 3.70 | 3.70 | 3.90 | **6.03** |
-| HotpotQA | 31.09 | 6.90 | 6.90 | 7.76 | **10.57** |
-| GovReport | 19.93 | **9.18** | **9.18** | **9.50** | 8.14 |
-| TriviaQA | 73.30 | 22.59 | 22.59 | 23.12 | **23.79** |
+All 6 original LongBench tasks, 25 samples/task (10 for gov_report), budget=1024. See [`figures/fig_longbench_comparison.png`](figures/fig_longbench_comparison.png), [`figures/fig_radar_comparison.png`](figures/fig_radar_comparison.png).
 
-**TieredKV outperforms all compression baselines on 5 out of 6 tasks.** It achieves 100% STT-RAM write savings across all tasks (inclusive cache eliminates all redundant writes).
+| Task | Full-KV | H2O@1024 | SnapKV@1024 | **TieredKV (equal-VRAM)** |
+|------|:---:|:---:|:---:|:---:|
+| MultiFieldQA | 60.95 | 55.69 | 55.81 | **63.57** |
+| HotpotQA | 48.67 | 39.66 | 37.32 | **46.64** |
+| TriviaQA | 66.08 | 64.00 | 60.92 | **67.22** |
+| Qasper | 29.30 | 11.18 | 13.51 | **19.79** |
+| NarrativeQA | 17.36 | 15.23 | 17.73 | **17.62** |
+| GovReport | 18.63 | 14.78 | 16.61 | **18.63** |
+| **Average** | 40.17 | 33.42 | 33.65 | **38.91** |
 
-### Synthetic Accuracy Sweep (Mistral-7B-v0.1, 512-token context)
+TieredKV beats both SOTA baselines by ~5.3-5.5 points on average at equal VRAM, is within 1.25 points of Full-KV, exceeds Full-KV outright on 3/6 tasks, and ties it exactly on GovReport. This is a legitimate systems argument, not a trick: a real memory hierarchy attends over more total context than a VRAM-only baseline at the same fast-tier footprint, because the slow tier is read (at a real, cost-modeled bandwidth penalty), not just used as an invisible staging buffer.
 
-| Metric | Value |
-|--------|-------|
-| Accuracy vs oracle (cosine similarity) | **0.9753** |
-| Compute saved vs Full Cache | **65.6%** |
-| STT-RAM write savings (inclusive cache) | **97.0%** |
-| Peak VRAM occupancy | 128 tokens |
-| Peak STT-RAM occupancy | 256 tokens |
+```latex
+\begin{tabular}{lccccc}
+\toprule
+Task & Full Cache & StreamingLLM & H$_2$O & SnapKV & \textbf{TieredKV (Ours)} \\
+\midrule
+MultiFieldQA & 61.0 & 48.4 & 55.7 & 55.8 & \textbf{63.6} \\
+HotpotQA & \textbf{48.7} & 34.2 & 39.7 & 37.3 & 46.6 \\
+TriviaQA & 66.1 & 64.6 & 64.0 & 60.9 & \textbf{67.2} \\
+Qasper & \textbf{29.3} & 12.2 & 11.2 & 13.5 & 19.8 \\
+NarrativeQA & 17.4 & 17.2 & 15.2 & \textbf{17.7} & 17.6 \\
+GovReport & \textbf{18.6} & 14.4 & 14.8 & 16.6 & \textbf{18.6} \\
+\midrule
+\textbf{Average} & \textbf{40.2} & 31.8 & 33.4 & 33.6 & 38.9 \\
+\bottomrule
+\end{tabular}
+```
 
-### Optimal VRAM Budget Sweep
+**Known open issue — latency.** Measured directly (real Mistral-7B, gov_report): TieredKV is currently **~3-5.5x slower per token than H2O** on raw GPU wall-clock. Part of this is expected and not a bug: at equal-VRAM, TieredKV attends 3072 tokens vs. H2O's 1024, and this GPU has no real separate slow-memory hardware, so more attended tokens costs proportionally more compute regardless of tier. Two rounds of vectorizing Python-level per-token loops in `evict_and_demote`/overflow handling (`src/tiered_kv_cache.py`) improved but did not close the remaining gap at *equal total* tokens. The paper's actual latency/energy claim should use the **modeled** cost (`TieredKVPolicy.stats()["modeled_latency_us"/"modeled_energy_nj"]`, from `cost_model.py`'s NVM-literature bandwidth figures), which is what a real STT-RAM-backed system would experience — not raw wall-clock on a GPU-only prototype with no physically separate slow tier.
 
-| VRAM Tokens | Accuracy | Compute (GOPs) | STT Writes Paid |
-|:-----------:|:--------:|:--------------:|:---------------:|
-| 32 | 0.9440 | 0.042 | 32 / 1056 total |
-| 64 | 0.9594 | 0.059 | 32 / 1056 total |
-| **128** | **0.9753** | **0.092** | **32 / 1056 total** |
-| 192 | 0.9811 | 0.126 | 32 / 1056 total |
-| 256 | 0.9845 | 0.159 | 32 / 1052 total |
-| 384 | 0.9888 | 0.222 | 32 / 1037 total |
+**What changed to get here** — `TieredKVPolicy._visible_tuple()` (`experiments/longbench_eval.py`) now builds what the model attends over from VRAM + live (non-shadow) STT-RAM tokens, not VRAM alone. Promotion is driven by the model's real measured attention on STT-RAM tokens (not a K-as-Q sketch proxy), gated by `TieredKVCache.resolve_promotions()`'s hysteresis so a token that already proved not durably valuable can't instantly re-promote on one new hit. An attempt to also inject *peeked* (not-yet-promoted) STT-RAM content directly into the model's real attention was tried and rolled back: HF shares one causal mask across all 32 decoder layers, and independent per-layer peek decisions broke that invariant, measured to collapse promotion volume ~20x and cost double-digit F1 points before being caught and reverted.
 
-**Recommended:** 128 tokens (25% of context) — optimal balance of accuracy, compute, and write savings.
+### STT-RAM budget ablation
+
+VRAM fixed at 1024 (equal to every baseline), STT-RAM budget swept 512→3072 (3-task subset, 10 samples/task). See [`figures/fig_ablation_stt_budget.png`](figures/fig_ablation_stt_budget.png).
+
+| STT-RAM budget | 512 | 1024 | 2048 (headline) | 3072 |
+|---|:---:|:---:|:---:|:---:|
+| Avg F1 | 35.77 | 38.79 | 40.91 | 44.98 |
+
+Accuracy increases monotonically with slow-tier size, no diminishing returns visible yet even at 3x VRAM — direct evidence for the core claim, and confirms the headline 2048 config isn't a cherry-picked peak. Window-size ablation (`experiments/sweep_window_size.sh`) is scripted but not yet run.
 
 ---
 
@@ -104,14 +117,9 @@ KV_Cache_Optimization/
 │   ├── cost_model.py           # Analytical latency/energy model (L40S-calibrated)
 │   └── metrics.py              # Per-step and aggregate metrics
 ├── experiments/
-│   ├── longbench_eval.py       # ★ Main: LongBench 6-task SOTA comparison
+│   ├── longbench_eval.py       # ★ Main: LongBench SOTA comparison, all policies
 │   ├── longbench_metrics.py    # F1, ROUGE-L, substring-match scorers
-│   ├── model_wrapper.py        # Real-model evaluation (SDPA hook, Mistral/Llama)
-│   ├── plot_decode_dynamics.py # 3-panel decode dynamics + occupancy/migration
-│   ├── plot_sota_comparison.py # Bar chart + radar chart from LongBench JSON
-│   ├── plot_optimization.py    # Optimal VRAM budget + window size figures
-│   ├── sweep_budgets.py        # Sweep Tier 1 VRAM budget sizes
-│   └── sweep_window.py         # Sweep sliding window sizes
+│   └── plot_sota_comparison.py # Bar chart + radar chart from LongBench JSON
 ├── sota/
 │   ├── snapkv/                 # FasterDecoding/SnapKV (upstream)
 │   ├── streamingllm/           # mit-han-lab/streaming-llm (upstream)
@@ -163,10 +171,7 @@ huggingface-cli download mistralai/Mistral-7B-Instruct-v0.2 \
 ## Quick Verification (No Model Required)
 
 ```bash
-# Smoke test — runs full code path with synthetic tensors, no GPU needed
-python experiments/model_wrapper.py --smoke
-
-# Unit tests (7 tests, ~5 seconds)
+# Unit tests (10 tests, ~2 seconds)
 python -m pytest tests/ -v
 ```
 
@@ -174,85 +179,42 @@ python -m pytest tests/ -v
 
 ## Reproducing All Results
 
-### Step 1 — LongBench SOTA Comparison (Main Result)
-
-Runs all 5 methods on 6 LongBench tasks with the same model, same budget, same scoring.
+### Step 1 — Baselines at budget=1024 (Full, StreamingLLM, H2O, SnapKV)
 
 ```bash
 MODEL=./models/mistral-7b-instruct
 
-python experiments/longbench_eval.py \
-    --model $MODEL \
+python experiments/longbench_eval.py --model $MODEL \
     --tasks multifieldqa_en qasper narrativeqa hotpotqa gov_report triviaqa \
-    --methods full streamingllm h2o snapkv tieredkv \
-    --budget 1024 \
-    --device cuda \
-    --json results/longbench_comparison.json
+    --methods full streamingllm h2o snapkv \
+    --budget 1024 --device cuda \
+    --json results/baselines.json
 ```
 
-> **Note:** Full evaluation takes 4–8 hours. Use `--max-samples 20` for a quick preview.
+### Step 2 — TieredKV at equal VRAM (the headline comparison)
 
-### Step 2 — SOTA Comparison Figures
+Same VRAM footprint as the baselines above (1024 tokens fast-tier), plus a slow tier on top:
+
+```bash
+python experiments/longbench_eval.py --model $MODEL \
+    --tasks multifieldqa_en qasper narrativeqa hotpotqa gov_report triviaqa \
+    --methods tieredkv \
+    --budget 1024 --tiered-vram-budget 1024 --tiered-stt-budget 2048 \
+    --device cuda \
+    --json results/tieredkv_equal_vram.json
+```
+
+> **Note:** Full evaluation takes several hours (TieredKV currently has a known, unfixed latency overhead — see Results). Use `--max-samples 20` for a quick preview.
+
+### Step 3 — Comparison Figures
 
 ```bash
 python experiments/plot_sota_comparison.py \
-    --json results/longbench_comparison.json \
+    --json results/headline_equal_vram.json \
     --outdir figures/
 ```
 
-Output: `figures/fig_longbench_comparison.png`, `figures/fig_radar_comparison.png`
-
----
-
-### Step 3 — Decode Dynamics & Cache Occupancy Figures
-
-```bash
-python experiments/plot_decode_dynamics.py --outdir figures/
-```
-
-Output: Three figures showing decode-step dynamics, VRAM/STT-RAM occupancy over time, and token migration counts.
-
----
-
-### Step 4 — Synthetic Accuracy & Sweep Experiments
-
-```bash
-MODEL=./models/mistral-7b-instruct
-
-# Single-run accuracy vs oracle
-python experiments/model_wrapper.py \
-    --model $MODEL \
-    --prompt-len 512 \
-    --sram 128 --stt 256 \
-    --device cuda \
-    --json results/mistral7b_real.json
-
-# Sweep VRAM budget (32 → 384 tokens)
-python experiments/sweep_budgets.py \
-    --model $MODEL \
-    --prompt-len 512 --stt 256 \
-    --device cuda
-
-# Sweep sliding window size
-python experiments/sweep_window.py \
-    --model $MODEL \
-    --prompt-len 512 \
-    --sram 128 --stt 256 \
-    --windows 4 8 16 32 64 128 \
-    --device cuda \
-    --json results/window_sweep.json
-```
-
-### Step 5 — Generate Optimization Figures
-
-```bash
-python experiments/plot_optimization.py \
-    --results-dir results \
-    --window-json results/window_sweep.json \
-    --outdir figures/
-```
-
-Output: `figures/fig_optimal_vram.png`, `figures/fig_optimal_window.png`
+Output: `figures/fig_longbench_comparison.png`, `figures/fig_radar_comparison.png` (merge Step 1/2's JSON files into one `config`/`results` file first — see `results/headline_equal_vram.json` for the schema).
 
 ---
 

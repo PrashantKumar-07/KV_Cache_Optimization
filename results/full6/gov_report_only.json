@@ -1,0 +1,47 @@
+{
+  "config": {
+    "model": "/data/nishant/Nishant/Prashant/models/mistral-7b-instruct",
+    "budget": 1024,
+    "tasks": [
+      "gov_report"
+    ],
+    "methods": [
+      "full",
+      "streamingllm",
+      "h2o",
+      "snapkv",
+      "tieredkv"
+    ],
+    "tiered_vram_budget": 341,
+    "tiered_stt_budget": 683,
+    "sttram_bifurcation_frac": 1.0
+  },
+  "results": {
+    "gov_report": {
+      "full": {
+        "score": 18.63
+      },
+      "streamingllm": {
+        "score": 14.39
+      },
+      "h2o": {
+        "score": 14.78
+      },
+      "snapkv": {
+        "score": 16.61
+      },
+      "tieredkv": {
+        "score": 13.8,
+        "cache_stats": {
+          "demoted": 165149,
+          "promoted": 159229,
+          "paid_writes": 165149,
+          "writes_saved": 0,
+          "dropped": 5920,
+          "write_savings_pct": 0.0,
+          "decode_steps": 185
+        }
+      }
+    }
+  }
+}

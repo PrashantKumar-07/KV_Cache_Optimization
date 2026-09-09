@@ -1,0 +1,70 @@
+{
+  "config": {
+    "model": "/data/nishant/Nishant/Prashant/models/mistral-7b-instruct",
+    "budget": 1024,
+    "tasks": [
+      "multifieldqa_en",
+      "hotpotqa",
+      "qasper"
+    ],
+    "methods": [
+      "tieredkv"
+    ],
+    "tiered_vram_budget": 1024,
+    "tiered_stt_budget": 512,
+    "sttram_bifurcation_frac": 1.0
+  },
+  "results": {
+    "multifieldqa_en": {
+      "tieredkv": {
+        "score": 53.17,
+        "cache_stats": {
+          "demoted": 30591,
+          "promoted": 28575,
+          "peeked": 35937,
+          "paid_writes": 7167,
+          "writes_saved": 23424,
+          "dropped": 0,
+          "write_savings_pct": 76.6,
+          "decode_steps": 63,
+          "modeled_latency_us": 13881.7,
+          "modeled_energy_nj": 888612519.9
+        }
+      }
+    },
+    "hotpotqa": {
+      "tieredkv": {
+        "score": 41.09,
+        "cache_stats": {
+          "demoted": 16169,
+          "promoted": 15177,
+          "peeked": 16567,
+          "paid_writes": 16169,
+          "writes_saved": 0,
+          "dropped": 992,
+          "write_savings_pct": 0.0,
+          "decode_steps": 31,
+          "modeled_latency_us": 7396.1,
+          "modeled_energy_nj": 450992078.8
+        }
+      }
+    },
+    "qasper": {
+      "tieredkv": {
+        "score": 13.06,
+        "cache_stats": {
+          "demoted": 10889,
+          "promoted": 10281,
+          "peeked": 9175,
+          "paid_writes": 10889,
+          "writes_saved": 0,
+          "dropped": 608,
+          "write_savings_pct": 0.0,
+          "decode_steps": 19,
+          "modeled_latency_us": 4562.4,
+          "modeled_energy_nj": 277505179.6
+        }
+      }
+    }
+  }
+}
