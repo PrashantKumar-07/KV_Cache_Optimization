@@ -460,7 +460,13 @@ class TieredKVPolicy:
     def __init__(self, sram_budget=128, stt_budget=256,
                  start_size=4, recent_size=16,
                  page_size=16, promote_top_pages=2,
-                 sttram_bifurcation_frac=1.0, stt_expose_quota=None):
+                 sttram_bifurcation_frac=1.0, stt_expose_quota=None,
+                 kv_dtype=None):
+        # Dtype the tiered cache stores K/V in. None keeps the float32 that
+        # every result so far used. torch.bfloat16 matches the model and the
+        # baselines, making the resident footprint equal to what the
+        # equal-VRAM comparison claims -- see TieredConfig.kv_dtype.
+        self.kv_dtype = kv_dtype
         self.sram_budget = sram_budget
         self.stt_budget = stt_budget
         self.start_size = start_size
@@ -491,6 +497,11 @@ class TieredKVPolicy:
         self.layer_caches = {}  # layer_idx -> TieredKVCache
         self.initialized = False
         self.decode_step_count = 0
+        # Steps on which _visible_tuple() exposed ZERO slow-tier tokens
+        # because some layer's STT tier was fully shadowed -- see the note in
+        # _visible_tuple. Reported in stats() so a degenerate VRAM-only run
+        # cannot be mistaken for a legitimate tiered result.
+        self._stt_starved_steps = 0
         self._stt_attn = {}        # layer -> {stt position: real attention received}
         self._vis_sram_keep = {}   # layer -> VRAM indices in the visible set
         self._vis_stt_pos = {}     # layer -> STT positions in the visible set
@@ -506,8 +517,9 @@ class TieredKVPolicy:
         # folds the outgoing sample's totals in here before clearing
         # layer_caches, and stats() reports accumulator + still-live totals.
         self._accum = dict.fromkeys(
-            ("promoted", "peeked", "demoted", "paid_writes", "writes_saved",
-             "dropped", "decode_steps", "latency_us", "energy_nj"), 0
+            ("promoted", "promotions_deferred", "demoted", "paid_writes",
+             "writes_saved", "dropped", "decode_steps", "latency_us",
+             "energy_nj", "stt_starved_steps"), 0
         )
 
     def _live_totals(self):
@@ -515,7 +527,7 @@ class TieredKVPolicy:
         caches = self.layer_caches.values()
         return {
             "promoted": sum(c.metrics.total_promoted for c in caches),
-            "peeked": sum(c.metrics.total_peeked for c in caches),
+            "promotions_deferred": sum(c.metrics.total_promotions_deferred for c in caches),
             "demoted": sum(c.metrics.total_demoted for c in caches),
             "paid_writes": sum(c.metrics.total_paid_writes for c in caches),
             "writes_saved": sum(c.metrics.total_writes_saved for c in caches),
@@ -523,6 +535,7 @@ class TieredKVPolicy:
             "decode_steps": self.decode_step_count,
             "latency_us": sum(c.metrics.total_latency_us for c in caches),
             "energy_nj": sum(c.metrics.total_energy_nj for c in caches),
+            "stt_starved_steps": self._stt_starved_steps,
         }
 
     def reset(self):
@@ -533,6 +546,8 @@ class TieredKVPolicy:
         self.layer_caches = {}
         self.initialized = False
         self.decode_step_count = 0
+        self._accum["stt_starved_steps"] += self._stt_starved_steps
+        self._stt_starved_steps = 0
         self._stt_attn = {}
         self._vis_sram_keep = {}
         self._vis_stt_pos = {}
@@ -579,6 +594,7 @@ class TieredKVPolicy:
                 inclusive=True,
                 sttram_bifurcation_frac=self.sttram_bifurcation_frac,
                 dtype=torch.float32,
+                kv_dtype=self.kv_dtype,
                 device=k.device,
             )
             cache = TieredKVCache(cfg)
@@ -637,14 +653,12 @@ class TieredKVPolicy:
         if not idxs:
             return tuple(past_kv)
 
-        # Vectorized: a Python enumerate()-loop over stt_shadow (up to
-        # thousands of tokens) here, every layer, every step, was measured
-        # to dominate wall-clock time -- torch.where on a boolean tensor
-        # does the same selection in one C-level call.
+        # stt_shadow is a torch.bool tensor (see TieredKVCache.__init__), so
+        # this is one C-level selection per layer with no list-to-tensor
+        # rebuild -- the Python enumerate() loop it replaced was measured to
+        # dominate wall-clock time at realistic STT sizes.
         live_by_layer = {
-            i: torch.where(
-                ~torch.tensor(self.layer_caches[i].stt_shadow, dtype=torch.bool)
-            )[0].tolist() if self.layer_caches[i].stt_shadow else []
+            i: torch.where(~self.layer_caches[i].stt_shadow)[0].tolist()
             for i in idxs
         }
         n_sram_uni = min(len(self.layer_caches[i].sram_pos) for i in idxs)
@@ -653,10 +667,24 @@ class TieredKVPolicy:
         # exceeds the quota even when far more STT tokens are physically
         # live -- see stt_expose_quota's docstring for why this must be
         # bounded, not "as much as is available".
-        n_stt_uni = min(
-            self.stt_expose_quota,
-            min(len(live_by_layer[i]) for i in idxs),
-        )
+        #
+        # The min() across layers is a single point of failure: ONE layer
+        # whose STT tier happens to be entirely shadowed drives n_stt_uni to
+        # 0 for all 32 layers at once, silently collapsing TieredKV to a
+        # VRAM-only policy for that step with no error and no log line. That
+        # would look like an accuracy result rather than the degenerate state
+        # it is, so count it and surface it in stats() instead of letting it
+        # pass unobserved.
+        n_stt_live_min = min(len(live_by_layer[i]) for i in idxs)
+        n_stt_uni = min(self.stt_expose_quota, n_stt_live_min)
+        if n_stt_uni == 0:
+            self._stt_starved_steps += 1
+            if self._stt_starved_steps == 1:
+                starved = [i for i in idxs if not live_by_layer[i]]
+                print(f"  [WARNING] TieredKV: slow tier fully shadowed on "
+                      f"layer(s) {starved[:4]}{'...' if len(starved) > 4 else ''} "
+                      f"-- no STT tokens exposed to attention this step. "
+                      f"TieredKV is running VRAM-only until this clears.")
 
         result = []
         self._vis_sram_keep = {}
@@ -731,7 +759,7 @@ class TieredKVPolicy:
             # (rather than substituting a fabricated query).
             stt_attn = (self._stt_attn or {}).get(layer_idx)
             promoted = 0
-            peeked_count = 0
+            deferred_count = 0
             if stt_attn:
                 pos_to_idx = {p: i for i, p in enumerate(cache.stt_pos)}
                 scored = [
@@ -744,7 +772,13 @@ class TieredKVPolicy:
                     candidates = [(i, i + 1) for _, i in scored[:budget]]
                     promote_hits, peek_hits = cache.resolve_promotions(candidates)
                     promoted = cache.promote(promote_hits)
-                    peeked_count = sum(
+                    # NOT "peeked": in this harness peek_hits are promotion
+                    # candidates the hysteresis gate DENIED. They get no extra
+                    # attention visibility (that path is rolled back -- see the
+                    # class docstring), so they are deferred promotions, not
+                    # tokens attended in place. Naming them "peeked" reported
+                    # ~139k tokens/task as a benefit that never materialised.
+                    deferred_count = sum(
                         len([i for i in range(s, e) if not cache.stt_shadow[i]])
                         for (s, e) in peek_hits
                     )
@@ -763,7 +797,7 @@ class TieredKVPolicy:
 
             rec = StepRecord(step=cache._t)
             rec.promoted_tokens = promoted
-            rec.peeked_tokens = peeked_count
+            rec.promotions_deferred = deferred_count
             rec.demoted_tokens = demoted
             rec.dropped_tokens = dropped
             rec.writes_saved = writes_saved
@@ -866,12 +900,13 @@ class TieredKVPolicy:
         return {
             "demoted": t["demoted"],
             "promoted": t["promoted"],
-            "peeked": t["peeked"],
+            "promotions_deferred": t["promotions_deferred"],
             "paid_writes": t["paid_writes"],
             "writes_saved": t["writes_saved"],
             "dropped": t["dropped"],
             "write_savings_pct": round(pct, 1),
             "decode_steps": t["decode_steps"],
+            "stt_starved_steps": t["stt_starved_steps"],
             # Modeled (cost_model.py) latency/energy -- the paper's real
             # latency claim: real wall-clock on this GPU has no separate
             # slow-memory hardware, so attending more tokens costs
@@ -888,7 +923,7 @@ class TieredKVPolicy:
 # ---------------------------------------------------------------------------
 @torch.inference_mode()
 def generate_with_policy(model, tokenizer, input_text, max_gen, policy, device,
-                         max_ctx=8192, task_name=""):
+                         max_ctx=31500, task_name=""):
     """Generate text token-by-token, applying cache policy after each step.
 
     Position-id note: every eviction policy here trims `past_key_values` in
@@ -916,6 +951,16 @@ def generate_with_policy(model, tokenizer, input_text, max_gen, policy, device,
     whenever it was originally computed; only the position assigned to
     the newly generated token at each step needs fixing.
     """
+    # max_ctx note: the reference LongBench protocol truncates to the model's
+    # own trained length -- 31500 for mistral-7B-instruct-v0.2, per
+    # sota/snapkv/experiments/LongBench/config/model2maxlen.json. This used to
+    # be pinned at 8192 with no way to change it, which had two consequences:
+    # absolute scores were not comparable to published LongBench/SnapKV/H2O
+    # numbers, and, worse, it worked against the result being claimed -- at 8k
+    # with a 1024-token budget the compression ratio is only 8:1, where the
+    # reference length gives ~31:1. Eviction hurts far more at 31:1 and a
+    # victim cache has correspondingly more to recover, so truncating to 8k
+    # systematically shrank the very gap TieredKV exists to close.
     toks = tokenizer(input_text, truncation=False, return_tensors="pt")
     input_ids = toks.input_ids
 
@@ -988,7 +1033,7 @@ def generate_with_policy(model, tokenizer, input_text, max_gen, policy, device,
 # Task evaluation
 # ---------------------------------------------------------------------------
 def evaluate_task(model, tokenizer, task_name, policy, device, 
-                  max_samples=None, is_instruct=False):
+                  max_samples=None, is_instruct=False, max_ctx=31500):
     """Evaluate one LongBench task, return (avg_score, sample_results)."""
     data = None
     
@@ -1057,7 +1102,7 @@ def evaluate_task(model, tokenizer, task_name, policy, device,
 
         pred = generate_with_policy(
             model, tokenizer, input_text, max_gen, policy, device,
-            task_name=task_name
+            max_ctx=max_ctx, task_name=task_name
         )
 
         # Matches the reference LongBench eval protocol (THUDM/LongBench,
@@ -1110,6 +1155,26 @@ def main():
     parser.add_argument("--max-samples", type=int, default=None,
                         help="Limit samples per task for quick runs")
     parser.add_argument("--device", default="cuda")
+    parser.add_argument("--max-ctx", type=int, default=31500, dest="max_ctx",
+                        help="Prompt truncation length (middle-split), shared "
+                             "by every method. Default 31500 matches the "
+                             "reference LongBench protocol for "
+                             "mistral-7B-instruct-v0.2. Lowering this shrinks "
+                             "the compression ratio and is NOT comparable to "
+                             "published LongBench numbers -- report the value "
+                             "you used.")
+    parser.add_argument("--tiered-kv-dtype", default="float32",
+                        choices=["float32", "bfloat16", "float16"],
+                        dest="tiered_kv_dtype",
+                        help="Dtype TieredKV stores its K/V tiers in. Default "
+                             "float32 reproduces every result measured so far, "
+                             "but doubles the real footprint versus the "
+                             "bfloat16 baselines it is compared against. Use "
+                             "bfloat16 for a footprint-honest equal-VRAM run. "
+                             "Eviction scores stay float32 either way.")
+    parser.add_argument("--seed", type=int, default=0,
+                        help="Seed for torch/numpy, recorded in the results "
+                             "config so a run is identifiable.")
     parser.add_argument("--sttram-bifurcation-frac", type=float, default=1.0,
                         dest="sttram_bifurcation_frac",
                         help="Fraction of TieredKV's STT-RAM budget that bifurcation "
@@ -1165,6 +1230,9 @@ def main():
     ckpt_path = args.checkpoint or (args.json + ".ckpt")
     os.makedirs(os.path.dirname(ckpt_path) or ".", exist_ok=True)
     
+    torch.manual_seed(args.seed)
+    np.random.seed(args.seed)
+
     print(f"Loading model: {args.model}")
     tokenizer = AutoTokenizer.from_pretrained(args.model, trust_remote_code=True)
     model = AutoModelForCausalLM.from_pretrained(
@@ -1237,6 +1305,8 @@ def main():
                 promote_top_pages=2,
                 sttram_bifurcation_frac=args.sttram_bifurcation_frac,
                 stt_expose_quota=args.tiered_stt_expose,
+                kv_dtype=(None if args.tiered_kv_dtype == "float32"
+                          else getattr(torch, args.tiered_kv_dtype)),
             )
         else:
             raise ValueError(f"Unknown method: {name}")
@@ -1257,6 +1327,18 @@ def main():
         "sttram_bifurcation_frac": args.sttram_bifurcation_frac,
         "sink": sink,
         "recent": recent,
+        # max_samples and tasks were NOT fingerprinted before. Resuming a
+        # checkpoint after changing --max-samples silently blended scores
+        # computed over different numbers of samples into one table -- which
+        # is exactly what happened to the sttram_bifurcation_frac sweep, where
+        # frac=1.0 was measured on 25 samples/task and frac=0.25/0.5/0.75 on
+        # 15, making the comparison uninterpretable. max_ctx matters for the
+        # same reason: it changes every score.
+        "max_samples": args.max_samples,
+        "tasks": sorted(args.tasks),
+        "max_ctx": args.max_ctx,
+        "seed": args.seed,
+        "tiered_kv_dtype": args.tiered_kv_dtype,
     }
 
     # Load checkpoint so we can skip already-finished work
@@ -1303,7 +1385,7 @@ def main():
             is_instruct = "instruct" in args.model.lower()
             score = evaluate_task(
                 model, tokenizer, task, policy, args.device, 
-                args.max_samples, is_instruct
+                args.max_samples, is_instruct, max_ctx=args.max_ctx
             )
             
             if task not in all_results:
@@ -1367,6 +1449,10 @@ def main():
             "tiered_stt_budget": tiered_stt,
             "tiered_stt_expose": args.tiered_stt_expose,
             "sttram_bifurcation_frac": args.sttram_bifurcation_frac,
+            "max_ctx": args.max_ctx,
+            "max_samples": args.max_samples,
+            "seed": args.seed,
+            "tiered_kv_dtype": args.tiered_kv_dtype,
         },
         "results": {k: v for k, v in all_results.items() if k != "_config_fingerprint"},
     }
