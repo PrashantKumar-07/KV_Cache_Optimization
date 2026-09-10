@@ -6,6 +6,37 @@
 
 ---
 
+## 0a. Remediation status
+
+Everything in §6 that is a code or documentation change has been applied and is
+covered by tests. What remains needs GPU re-runs, which are a compute decision
+rather than an engineering one.
+
+| §6 item | Status | Evidence |
+|---|---|---|
+| 3 — `max_ctx` | **Done** | Default raised 8192 → 31500, exposed as `--max-ctx`, recorded in the results config and the fingerprint |
+| 5 — withdraw the false claims | **Done** | "100% write savings" and "improved accuracy" both removed and replaced with the measured per-task figures |
+| 6 — fingerprint `max_samples`/`tasks` | **Partly** | Fingerprint extended with `max_samples`, `tasks`, `max_ctx`, `seed`, `tiered_kv_dtype`, and verified to refuse a mismatched resume. **The `frac` sweep still needs re-running at one sample count.** |
+| 7 — README architecture table | **Done** | Phases now describe attention-driven promotion and two-tier attention, with a note on why the Quest sketch is not on the harness path |
+| 8 — tensor residency state | **Done** | `stt_shadow`, `sram_grace`, `stt_was_vram_resident` are CPU `torch.bool` tensors. `evict_and_demote` 2.55 → 2.12 ms/call; `torch.tensor` construction cost down 73% |
+| 9 — `src/baselines.py` | **Done** | `H2O.reset_prompt` honours its budget, both eviction loops guard the all-`inf` argmin, `Quest._sketch_score` bound corrected, scope docstring added |
+| 10 — sketch bound | **Done** | Fixed in both files, extracted as `TieredKVCache.page_upper_bounds` so it is directly testable, property test added and **mutation-verified** |
+| 11 — bifurcation capacity guard | **Done** | Raises `ValueError` when `sink_size + window_size > sram_capacity` |
+| 12 — assorted | **Done** | `datasets` added; test counts reconciled; `CostModel.drop_cost` replaces the DRAM overcharge when `store_dram=False`; `leakage_energy_nj` implemented; `peeked` renamed to `promotions_deferred` |
+| 13 — harness integration tests | **Done** | `tests/test_longbench_policies.py`, 11 tests against a tiny Mistral |
+| §4.7 — fp32 footprint | **Done (opt-in)** | `TieredConfig.kv_dtype` and `--tiered-kv-dtype` separate K/V storage from score precision; `bfloat16` makes the resident footprint match the equal-VRAM claim. Default unchanged so no existing result silently moves |
+| §4.10 — `_visible_tuple` starvation | **Done** | Counted as `stt_starved_steps`, reported in `stats()`, and warned on first occurrence |
+| §4.10 — monotonicity, sweep scripts | **Done** | README states the per-task non-monotonicity; sweep scripts default to the 3 tasks and 25 samples actually reported, and pin `--seed` |
+| **1 — re-run headline and ablations** | **Open** | Needs hours of GPU. README now carries a prominent notice that its tables are not reproducible with this code |
+| **2 — pick the headline comparison** | **Open** | Depends on item 1 |
+| **4 — report variance** | **Open** | Depends on item 1. `--seed` is now plumbed and recorded so runs are identifiable |
+
+Test suite: **40 passing**, up from 10. The three regression guards that matter
+were mutation-tested — reverting the sketch bound, the stats accumulator fold,
+or the exposure cap each makes a specific test fail.
+
+---
+
 ## 0. Bottom line
 
 The prior audit is **roughly 60% correct on facts and substantially wrong on severity**. Its six "Critical" findings are all real bugs, but **four of the six sit in code that has never run** and **one of the six is a misreading of the design**. Meanwhile it missed the single most consequential problem in the repository.

@@ -22,7 +22,7 @@ Standard KV cache compression methods (H₂O, SnapKV, StreamingLLM) permanently 
 
 **Inclusive shadow cache:** When a token is promoted from STT-RAM → VRAM, the STT-RAM copy is kept as an immutable shadow backup. If the same token is later re-demoted, the backup is reactivated at **zero write cost**. Because KV tensors never change after prefill, the backup is always valid *whenever it hasn't been reclaimed first*.
 
-That "whenever" matters: this only pays off if STT-RAM has spare capacity to hold backups. If `initial_bifurcation` fills STT-RAM to capacity with cold prompt tokens (the default, `sttram_bifurcation_frac=1.0` — the common case for any document longer than the VRAM+STT budget), every backup gets reclaimed under pressure before it can ever be reused, and write savings measure 0%, independent of eviction-scoring or promotion rate. Reserving headroom (`sttram_bifurcation_frac < 1.0`) restores substantial write savings (measured 74-85% across a real 3-task, 12-samples/task LongBench pilot) and, in that same pilot, *improved* accuracy rather than costing it — see the Results section below for the full sweep and its caveats (small sample size; treat as a promising pilot, not a settled result). See `src/tiered_kv_cache.py`'s `TieredConfig.sttram_bifurcation_frac` docstring for implementation detail.
+That "whenever" matters: this only pays off if STT-RAM has spare capacity to hold backups. If `initial_bifurcation` fills STT-RAM to capacity with cold prompt tokens (the default, `sttram_bifurcation_frac=1.0` — the common case for any document longer than the VRAM+STT budget), every backup gets reclaimed under pressure before it can ever be reused, and write savings measure 0%, independent of eviction-scoring or promotion rate. Reserving headroom (`sttram_bifurcation_frac < 1.0`) restores substantial write savings — 78.5-79.7% on average across `results/full6/`. **It costs accuracy rather than improving it:** on those six tasks the average F1 falls from 28.48 at `frac=1.0` to 26.90 / 27.01 / 25.80 at `frac=0.75 / 0.5 / 0.25`. An earlier version of this README claimed the opposite; no file in this repository supports that claim, and it has been withdrawn. Note also that the sweep is **not currently interpretable as a controlled comparison**: `frac=1.0` was measured on 25 samples/task and the other three points on 15, by different revisions of the harness. Re-running it at one fixed sample count is tracked below. See `src/tiered_kv_cache.py`'s `TieredConfig.sttram_bifurcation_frac` docstring for implementation detail.
 
 ---
 
@@ -32,12 +32,20 @@ Each decode step runs four phases:
 
 | Phase | Operation |
 |-------|-----------|
-| **1. Sketch** | Quest-style page-level min/max scoring over STT-RAM pages to identify promotion candidates cheaply |
-| **2. Promote** | Top-scored STT-RAM pages migrate → VRAM |
-| **3. Attention** | Exact scaled dot-product attention over the VRAM working set only |
-| **4. Evict/Demote** | Lowest cumulative-attention VRAM tokens demote → STT-RAM (shadow backup reused if available) |
+| **1. Score** | Rank live STT-RAM tokens by the attention the model *actually gave them* on the previous step (`update_scores`), then gate re-entry of tokens that were already VRAM-resident behind a repeated-candidacy streak |
+| **2. Promote** | Top-scored STT-RAM tokens migrate → VRAM so future reads hit the fast tier |
+| **3. Attention** | Exact attention over the VRAM working set **plus** up to `stt_expose_quota` live STT-RAM tokens, read at STT-RAM's own cost-modelled bandwidth |
+| **4. Evict/Demote** | Lowest attention-per-step VRAM tokens demote → STT-RAM (shadow backup reused if available) |
 
 Attention sinks (positions 0–3) and the recent sliding window are pinned and never evicted.
+
+> **On the Quest sketch.** `TieredKVCache.sketch_check()` implements Quest-style
+> page-level min/max scoring and is exercised by the CPU simulator and its unit
+> tests, but the LongBench harness does **not** call it: once the slow tier
+> became attendable, promotion could be driven by the model's real measured
+> attention instead of a K-as-Q upper bound, which is strictly better
+> information. The sketch remains in the codebase for the simulator and as the
+> basis for a future real Quest baseline.
 
 ---
 
@@ -54,6 +62,33 @@ Attention sinks (positions 0–3) and the recent sliding window are pinned and n
 ---
 
 ## Results
+
+> ### ⚠️ Status of the numbers below
+>
+> **The tables in this section were produced by an earlier revision of
+> `experiments/longbench_eval.py` and are not reproducible with the code in
+> this repository.** They are kept here so the history is auditable, not
+> because they are current. Two changes since they were measured move the
+> numbers:
+>
+> 1. **Bounded slow-tier exposure.** `stt_expose_quota` now caps how many
+>    STT-RAM tokens enter the softmax each step (default 32). When the
+>    headline ran, the whole live slow tier was exposed, so TieredKV attended
+>    ~3072 tokens against every baseline's 1024. Under equal attended tokens
+>    (`results/headline_fair.json`) TieredKV averages **35.32** against
+>    SnapKV's 34.20 — a **+1.12** margin, not the **+5.26** below.
+> 2. **`--max-ctx` now defaults to 31500**, matching the reference LongBench
+>    protocol for this model, where the headline ran at a hardcoded 8192.
+>
+> A third caveat is independent of both: at 25 samples/task the run-to-run
+> spread on a *fixed* configuration reaches 7.29 F1 on Qasper (12.50 in
+> `results/sweep_stt/stt2048.json` vs 19.79 here, same settings), which is
+> larger than the margin being claimed. No confidence intervals are reported
+> anywhere yet.
+>
+> See [`AUDIT_VERIFICATION.md`](AUDIT_VERIFICATION.md) for the full analysis
+> and the remediation plan. Re-running everything at a fixed sample count and
+> seed is the top open item.
 
 ### Headline: equal-VRAM comparison — real Mistral-7B-Instruct, real LongBench, 2026-09-07
 
@@ -90,7 +125,7 @@ GovReport & \textbf{18.6} & 14.4 & 14.8 & 16.6 & \textbf{18.6} \\
 \end{tabular}
 ```
 
-**Known open issue — latency.** Measured directly (real Mistral-7B, gov_report): TieredKV is currently **~3-5.5x slower per token than H2O** on raw GPU wall-clock. Part of this is expected and not a bug: at equal-VRAM, TieredKV attends 3072 tokens vs. H2O's 1024, and this GPU has no real separate slow-memory hardware, so more attended tokens costs proportionally more compute regardless of tier. Two rounds of vectorizing Python-level per-token loops in `evict_and_demote`/overflow handling (`src/tiered_kv_cache.py`) improved but did not close the remaining gap at *equal total* tokens. The paper's actual latency/energy claim should use the **modeled** cost (`TieredKVPolicy.stats()["modeled_latency_us"/"modeled_energy_nj"]`, from `cost_model.py`'s NVM-literature bandwidth figures), which is what a real STT-RAM-backed system would experience — not raw wall-clock on a GPU-only prototype with no physically separate slow tier.
+**Known open issue — latency.** Measured directly (real Mistral-7B, gov_report): TieredKV is currently **~3-5.5x slower per token than H2O** on raw GPU wall-clock. Part of this was expected and not a bug: in the build that produced these figures TieredKV attended 3072 tokens vs. H2O's 1024, and this GPU has no real separate slow-memory hardware, so more attended tokens costs proportionally more compute regardless of tier. With `stt_expose_quota` now bounding the attended pool to 1056, that component is largely gone and the remainder is software overhead: `evict_and_demote` was measured at 2.55 ms/call (~81.7 ms per decode token across 32 layers, ~3x a full forward pass), reduced to 2.12 ms/call by holding the tier-residency flags as tensors rather than Python lists. The remaining cost is the per-step compaction of the tier arrays. Two rounds of vectorizing Python-level per-token loops in `evict_and_demote`/overflow handling (`src/tiered_kv_cache.py`) improved but did not close the remaining gap at *equal total* tokens. The paper's actual latency/energy claim should use the **modeled** cost (`TieredKVPolicy.stats()["modeled_latency_us"/"modeled_energy_nj"]`, from `cost_model.py`'s NVM-literature bandwidth figures), which is what a real STT-RAM-backed system would experience — not raw wall-clock on a GPU-only prototype with no physically separate slow tier.
 
 **What changed to get here** — `TieredKVPolicy._visible_tuple()` (`experiments/longbench_eval.py`) now builds what the model attends over from VRAM + live (non-shadow) STT-RAM tokens, not VRAM alone. Promotion is driven by the model's real measured attention on STT-RAM tokens (not a K-as-Q sketch proxy), gated by `TieredKVCache.resolve_promotions()`'s hysteresis so a token that already proved not durably valuable can't instantly re-promote on one new hit. An attempt to also inject *peeked* (not-yet-promoted) STT-RAM content directly into the model's real attention was tried and rolled back: HF shares one causal mask across all 32 decoder layers, and independent per-layer peek decisions broke that invariant, measured to collapse promotion volume ~20x and cost double-digit F1 points before being caught and reverted.
 
@@ -102,7 +137,7 @@ VRAM fixed at 1024 (equal to every baseline), STT-RAM budget swept 512→3072 (3
 |---|:---:|:---:|:---:|:---:|
 | Avg F1 | 35.77 | 38.79 | 40.91 | 44.98 |
 
-Accuracy increases monotonically with slow-tier size, no diminishing returns visible yet even at 3x VRAM — direct evidence for the core claim, and confirms the headline 2048 config isn't a cherry-picked peak. Window-size ablation (`experiments/sweep_window_size.sh`) is scripted but not yet run.
+The 3-task **average** rises monotonically with slow-tier size. Individual tasks do not: Qasper runs 13.06 → 15.85 → **12.50** → 23.62 and HotpotQA 41.09 → 40.76 → 50.64 → 50.64. At 10 samples/task the per-task spread is larger than the trend, so read this as directional evidence that a bigger slow tier helps, not as a smooth scaling law. Window-size ablation (`experiments/sweep_window_size.sh`) is scripted but not yet run.
 
 ---
 
@@ -128,7 +163,11 @@ KV_Cache_Optimization/
 ├── figures/                    # Generated publication figures (PNG/JPG)
 ├── results/                    # JSON result files (gitignored from build outputs)
 ├── tests/
-│   └── test_tiered_cache.py    # 7 unit tests
+│   ├── test_tiered_cache.py    # 3-tier cache invariants
+│   ├── test_sketch_bound.py    # Quest bound property tests
+│   ├── test_baselines.py       # baseline budget/sink invariants
+│   ├── test_cost_model.py      # latency/energy unit conversions
+│   └── test_longbench_policies.py  # harness integration tests
 ├── TieredKV_Project_Explanation.md   # Full project write-up
 ├── TieredKV_Project_Explanation.pdf  # PDF version with embedded figures
 └── requirements.txt
@@ -171,7 +210,7 @@ huggingface-cli download mistralai/Mistral-7B-Instruct-v0.2 \
 ## Quick Verification (No Model Required)
 
 ```bash
-# Unit tests (10 tests, ~2 seconds)
+# Unit + integration tests (40 tests, ~7 seconds)
 python -m pytest tests/ -v
 ```
 
@@ -238,7 +277,7 @@ The 4× write/read asymmetry in STT-RAM is exactly what the inclusive victim cac
 python -m pytest tests/ -v
 ```
 
-All 7 unit tests cover: bifurcation, promote/demote cycle, inclusive write savings, capacity invariants, full decode loop, ablation (destructive eviction), and accuracy vs oracle.
+All 40 tests cover: bifurcation and capacity invariants, the promote/demote cycle, inclusive write savings, the peek/promote hysteresis gate, the Quest page bound's upper-bound property, baseline budget accounting and sink survival, cost-model unit conversions, and `longbench_eval.py` integration (per-policy budget limits, visible-tuple length uniformity, bounded slow-tier exposure, true RoPE positions, and cross-sample stats accumulation) against a tiny randomly-initialised Mistral.
 
 ---
 
