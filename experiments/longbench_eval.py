@@ -67,6 +67,35 @@ def apply_tuple_kv_inplace(past_kv, tuple_kv):
     return past_kv
 
 # ---------------------------------------------------------------------------
+# Attention-implementation switching
+# ---------------------------------------------------------------------------
+from contextlib import contextmanager
+
+@contextmanager
+def _attn_impl(model, impl):
+    """Temporarily switch the model's attention implementation.
+
+    H2O/SnapKV/TieredKV need output_attentions=True during DECODE, which only
+    the eager path produces -- so the model is loaded as "eager". But eager
+    materialises the full (batch, heads, q_len, k_len) score matrix, and at
+    PREFILL q_len is the whole prompt: for a 31500-token document that is
+    32 heads x 31500^2 x 2 bytes = 59.1 GiB in a single allocation, which OOMs
+    on a 44.5 GiB L40S before the first layer finishes.
+
+    Prefill never asks for attention weights (see generate_with_policy), so it
+    can run under SDPA, which never materialises that matrix. Decode keeps
+    eager, where q_len=1 makes the same tensor (1, heads, 1, k_len) -- a few
+    hundred KB. The KV cache produced is identical either way; only the
+    intermediate is avoided.
+    """
+    prev = model.config._attn_implementation
+    model.config._attn_implementation = impl
+    try:
+        yield
+    finally:
+        model.config._attn_implementation = prev
+
+# ---------------------------------------------------------------------------
 # KV cache eviction policies
 # Each policy receives tuple[(K, V)] per layer, K/V: (batch, heads, seq, dim)
 # and returns a trimmed tuple[(K, V)].
@@ -502,6 +531,8 @@ class TieredKVPolicy:
         # _visible_tuple. Reported in stats() so a degenerate VRAM-only run
         # cannot be mistaken for a legitimate tiered result.
         self._stt_starved_steps = 0
+        self._stt_exposed_total = 0
+        self._stt_exposure_samples = 0
         self._stt_attn = {}        # layer -> {stt position: real attention received}
         self._vis_sram_keep = {}   # layer -> VRAM indices in the visible set
         self._vis_stt_pos = {}     # layer -> STT positions in the visible set
@@ -519,7 +550,8 @@ class TieredKVPolicy:
         self._accum = dict.fromkeys(
             ("promoted", "promotions_deferred", "demoted", "paid_writes",
              "writes_saved", "dropped", "decode_steps", "latency_us",
-             "energy_nj", "stt_starved_steps"), 0
+             "energy_nj", "stt_starved_steps", "stt_exposed_total",
+             "stt_exposure_samples"), 0
         )
 
     def _live_totals(self):
@@ -536,6 +568,8 @@ class TieredKVPolicy:
             "latency_us": sum(c.metrics.total_latency_us for c in caches),
             "energy_nj": sum(c.metrics.total_energy_nj for c in caches),
             "stt_starved_steps": self._stt_starved_steps,
+            "stt_exposed_total": self._stt_exposed_total,
+            "stt_exposure_samples": self._stt_exposure_samples,
         }
 
     def reset(self):
@@ -547,7 +581,11 @@ class TieredKVPolicy:
         self.initialized = False
         self.decode_step_count = 0
         self._accum["stt_starved_steps"] += self._stt_starved_steps
+        self._accum["stt_exposed_total"] += self._stt_exposed_total
+        self._accum["stt_exposure_samples"] += self._stt_exposure_samples
         self._stt_starved_steps = 0
+        self._stt_exposed_total = 0
+        self._stt_exposure_samples = 0
         self._stt_attn = {}
         self._vis_sram_keep = {}
         self._vis_stt_pos = {}
@@ -677,6 +715,15 @@ class TieredKVPolicy:
         # pass unobserved.
         n_stt_live_min = min(len(live_by_layer[i]) for i in idxs)
         n_stt_uni = min(self.stt_expose_quota, n_stt_live_min)
+        # Record what was actually exposed, not just the hard-zero case. The
+        # common degradation is not starvation but the min() itself: one layer
+        # with a handful of live tokens throttles all 32 layers down to that
+        # handful, so the slow tier can be nominally full (2048 resident) while
+        # contributing 1 token to the softmax. That looks like a weak accuracy
+        # result rather than a throttled configuration, so stats() reports mean
+        # exposure against the quota.
+        self._stt_exposed_total += n_stt_uni
+        self._stt_exposure_samples += 1
         if n_stt_uni == 0:
             self._stt_starved_steps += 1
             if self._stt_starved_steps == 1:
@@ -907,6 +954,11 @@ class TieredKVPolicy:
             "write_savings_pct": round(pct, 1),
             "decode_steps": t["decode_steps"],
             "stt_starved_steps": t["stt_starved_steps"],
+            "mean_stt_exposed": (
+                round(t["stt_exposed_total"] / t["stt_exposure_samples"], 2)
+                if t["stt_exposure_samples"] else 0
+            ),
+            "stt_expose_quota": self.stt_expose_quota,
             # Modeled (cost_model.py) latency/energy -- the paper's real
             # latency claim: real wall-clock on this GPU has no separate
             # slow-memory hardware, so attending more tokens costs
@@ -976,7 +1028,11 @@ def generate_with_policy(model, tokenizer, input_text, max_gen, policy, device,
     # empty -- passed explicitly anyway for clarity and to keep prefill and
     # decode on the same explicit-position code path).
     prefill_pos = torch.arange(prompt_len, device=device).unsqueeze(0)
-    out = model(input_ids, use_cache=True, position_ids=prefill_pos)
+    # SDPA for prefill: no attention weights are requested here, and eager
+    # would allocate a (heads, prompt_len, prompt_len) score matrix -- 59 GiB
+    # at the reference 31500-token context. See _attn_impl.
+    with _attn_impl(model, "sdpa"):
+        out = model(input_ids, use_cache=True, position_ids=prefill_pos)
     raw_past = out.past_key_values
     tuple_kv = to_tuple_kv(raw_past)
     tuple_kv = policy(tuple_kv)
@@ -1240,7 +1296,10 @@ def main():
         torch_dtype=torch.bfloat16,
         device_map=args.device,
         trust_remote_code=True,
-        attn_implementation="eager"  # Need attention weights for H2O
+        # Eager is required for output_attentions during DECODE (H2O/SnapKV/
+        # TieredKV all score on real attention weights). Prefill runs under
+        # SDPA instead -- see _attn_impl for why that is not optional.
+        attn_implementation="eager"
     )
     model.eval()
     

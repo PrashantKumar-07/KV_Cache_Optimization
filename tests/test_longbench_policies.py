@@ -200,6 +200,55 @@ def test_stats_reports_deferred_promotions_not_phantom_peeks():
     print("  [ok] stats report promotions_deferred and stt_starved_steps")
 
 
+def test_slow_tier_starvation_is_detected_and_reported():
+    """One fully-shadowed layer zeroes the exposed slow tier for ALL layers.
+
+    _visible_tuple sizes the exposed set to the minimum live count across
+    layers, so this is a single point of failure: TieredKV silently degrades
+    to a VRAM-only policy, which reads as an accuracy result rather than the
+    degenerate state it is. Asserted directly on _visible_tuple, because a
+    full decode step repopulates the live set (evict_and_demote appends the
+    demoted token) before the check is reached.
+    """
+    import io, contextlib
+    p, past = _tiered()
+    p(past)
+    assert p.stats()["stt_starved_steps"] == 0, "starved before anything went wrong"
+
+    p.layer_caches[0].stt_shadow[:] = True          # one layer, fully shadowed
+    buf = io.StringIO()
+    with contextlib.redirect_stdout(buf):
+        out = p._visible_tuple(past)
+
+    assert "WARNING" in buf.getvalue(), "starvation was not surfaced to the operator"
+    assert p.stats()["stt_starved_steps"] == 1, p.stats()["stt_starved_steps"]
+    assert len({k.size(2) for k, _ in out}) == 1, "layers disagree while starved"
+    print(f"  [ok] slow-tier starvation warns and counts "
+          f"(visible collapsed to {out[0][0].size(2)} VRAM-only tokens)")
+
+
+def test_mean_slow_tier_exposure_is_reported():
+    """The common degradation is throttling to the cross-layer minimum, not
+    a hard zero -- a nominally full 2048-token tier can contribute 1 token."""
+    p, past = _tiered(seq=600, vram=64, stt=256, expose=16)
+    p(past)
+    healthy = p.stats()["mean_stt_exposed"]
+    assert healthy > 0, "no slow-tier exposure recorded at all"
+    assert p.stats()["stt_expose_quota"] == 16
+
+    # Throttle one layer to a single live token; every layer must follow it.
+    p.layer_caches[0].stt_shadow[:] = True
+    p.layer_caches[0].stt_shadow[0] = False
+    p._visible_tuple(past)
+    throttled = p.stats()["mean_stt_exposed"]
+    assert throttled < healthy, (
+        f"mean exposure {throttled} did not drop below {healthy} when one "
+        f"layer was throttled to a single live token"
+    )
+    print(f"  [ok] mean slow-tier exposure tracks throttling "
+          f"({healthy} -> {throttled} against a quota of 16)")
+
+
 # ---------------------------------------------------------------------------
 # End to end through the real generation loop
 # ---------------------------------------------------------------------------

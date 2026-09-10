@@ -14,7 +14,7 @@ rather than an engineering one.
 
 | §6 item | Status | Evidence |
 |---|---|---|
-| 3 — `max_ctx` | **Done** | Default raised 8192 → 31500, exposed as `--max-ctx`, recorded in the results config and the fingerprint |
+| 3 — `max_ctx` | **Done, with a correction to this audit** | Default raised 8192 → 31500, exposed as `--max-ctx`, recorded in the config and fingerprint. **Raising it alone crashes the tool** — see §0b. Fixed by running prefill under SDPA. Verified end to end on a 31500-token `narrativeqa` sample. |
 | 5 — withdraw the false claims | **Done** | "100% write savings" and "improved accuracy" both removed and replaced with the measured per-task figures |
 | 6 — fingerprint `max_samples`/`tasks` | **Partly** | Fingerprint extended with `max_samples`, `tasks`, `max_ctx`, `seed`, `tiered_kv_dtype`, and verified to refuse a mismatched resume. **The `frac` sweep still needs re-running at one sample count.** |
 | 7 — README architecture table | **Done** | Phases now describe attention-driven promotion and two-tier attention, with a note on why the Quest sketch is not on the harness path |
@@ -25,15 +25,58 @@ rather than an engineering one.
 | 12 — assorted | **Done** | `datasets` added; test counts reconciled; `CostModel.drop_cost` replaces the DRAM overcharge when `store_dram=False`; `leakage_energy_nj` implemented; `peeked` renamed to `promotions_deferred` |
 | 13 — harness integration tests | **Done** | `tests/test_longbench_policies.py`, 11 tests against a tiny Mistral |
 | §4.7 — fp32 footprint | **Done (opt-in)** | `TieredConfig.kv_dtype` and `--tiered-kv-dtype` separate K/V storage from score precision; `bfloat16` makes the resident footprint match the equal-VRAM claim. Default unchanged so no existing result silently moves |
-| §4.10 — `_visible_tuple` starvation | **Done** | Counted as `stt_starved_steps`, reported in `stats()`, and warned on first occurrence |
+| §4.10 — `_visible_tuple` starvation | **Done, and widened** | Counted as `stt_starved_steps`, reported in `stats()`, warned on first occurrence, and mutation-tested. Testing it revealed that hard starvation is rare (a demotion repopulates the live set each step); the real degradation is throttling to the cross-layer minimum, so `stats()` now also reports `mean_stt_exposed` against `stt_expose_quota`. |
 | §4.10 — monotonicity, sweep scripts | **Done** | README states the per-task non-monotonicity; sweep scripts default to the 3 tasks and 25 samples actually reported, and pin `--seed` |
 | **1 — re-run headline and ablations** | **Open** | Needs hours of GPU. README now carries a prominent notice that its tables are not reproducible with this code |
 | **2 — pick the headline comparison** | **Open** | Depends on item 1 |
 | **4 — report variance** | **Open** | Depends on item 1. `--seed` is now plumbed and recorded so runs are identifiable |
 
-Test suite: **40 passing**, up from 10. The three regression guards that matter
-were mutation-tested — reverting the sketch bound, the stats accumulator fold,
-or the exposure cap each makes a specific test fail.
+Test suite: **42 passing**, up from 10. Four regression guards were
+mutation-tested — reverting the sketch bound, the stats accumulator fold, the
+exposure cap, or the starvation check each makes a specific test fail. The
+first version of the sketch test did **not** catch its mutation, because it
+recomputed the bound locally instead of calling the production path; that is
+why `page_upper_bounds` was extracted.
+
+---
+
+## 0b. Correction to this audit: raising `max_ctx` is not a one-line change
+
+§4.2 recommends raising `max_ctx` from 8192 to the reference protocol's 31500.
+That recommendation was incomplete, and applying it literally **breaks the
+tool**. Verified by running it:
+
+```
+torch.OutOfMemoryError: CUDA out of memory. Tried to allocate 59.14 GiB.
+GPU 0 has a total capacity of 44.52 GiB
+  ...in eager_attention_forward:
+  attn_weights = torch.matmul(query, key_states.transpose(2, 3)) * scaling
+```
+
+The model is loaded with `attn_implementation="eager"` because H2O, SnapKV and
+TieredKV all need `output_attentions=True` during decode, and only the eager
+path produces attention weights. Eager materialises the full
+`(batch, heads, q_len, k_len)` score matrix. At decode `q_len` is 1, so that
+tensor is a few hundred KB. At **prefill** `q_len` is the whole prompt, so at
+31500 tokens it is `32 heads x 31500^2 x 2 bytes = 59.1 GiB` in one
+allocation. The 8192 default was therefore load-bearing, not merely
+conservative — which the audit did not identify.
+
+The fix is that prefill never requests attention weights, so it does not need
+the eager path. `_attn_impl` switches the model to SDPA for the prefill
+forward and back to eager for the decode loop. Verified equivalent, not just
+non-crashing:
+
+| check | result |
+|---|---|
+| max abs difference in prefill logits, eager vs SDPA | `0.000e+00` |
+| max abs difference in cached K | `0.000e+00` |
+| max abs difference in cached V | `0.000e+00` |
+| implementation restored after the context manager | `eager` |
+
+K and V come from the projections, which are upstream of the attention
+computation, so the cache is bit-identical by construction. With the split in
+place, a 31500-token `narrativeqa` sample completes for both H2O and TieredKV.
 
 ---
 
