@@ -1,0 +1,21 @@
+\begin{table}[t]
+\centering
+\small
+\setlength{\tabcolsep}{5pt}
+\caption{LongBench accuracy (F1/ROUGE-L $\times$ 100). Equal-VRAM setting: TieredKV uses VRAM=1024 + STT-RAM=2048; baselines at budget=1024. Bold = best per task.}
+\label{tab:accuracy_equivram}
+\begin{tabular}{lrrrrr}
+\toprule
+\textbf{Task} & \textbf{Full Cache} & \textbf{StreamingLLM} & \textbf{H_2O} & \textbf{SnapKV} & \textbf{TieredKV (Ours)} \\
+\midrule
+MultiFieldQA & \textbf{61.0} & 48.4 & 56.4 & 54.6 & 55.2 \\
+HotpotQA & \textbf{48.7} & 34.4 & 39.3 & 37.3 & 37.9 \\
+TriviaQA & \textbf{74.6} & 64.6 & 64.2 & 64.2 & 67.4 \\
+Qasper & \textbf{29.6} & 12.8 & 11.5 & 11.5 & 13.3 \\
+NarrativeQA & 17.3 & 17.6 & 15.4 & \textbf{19.0} & 18.6 \\
+GovReport & \textbf{32.2} & 26.6 & 27.1 & 28.5 & 26.9 \\
+\midrule
+\textbf{Average} & \textbf{43.9} & 34.1 & 35.6 & 35.9 & 36.6 \\
+\bottomrule
+\end{tabular}
+\end{table}

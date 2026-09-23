@@ -7,6 +7,7 @@
 import re
 import string
 from collections import Counter
+from rouge import Rouge
 
 
 def normalize_answer(s):
@@ -34,66 +35,71 @@ def qa_f1_score(prediction, ground_truth, **kwargs):
 
 
 def rouge_score(prediction, ground_truth, **kwargs):
-    """ROUGE-L F1 via longest common subsequence."""
-    pred_tokens = normalize_answer(prediction).split()
-    gt_tokens = normalize_answer(ground_truth).split()
-    if not pred_tokens or not gt_tokens:
+    """ROUGE-L F1 via the real `rouge` package, on RAW (unnormalized) text --
+    matches the reference LongBench eval (sota/snapkv/.../metrics.py:104-110)
+    exactly. The previous version ran a hand-written LCS-based ROUGE-L over
+    normalize_answer()'d text (lowercased, punctuation/article-stripped),
+    which is a QA-style normalization, not the summarization-ROUGE
+    convention the cited protocol uses -- numbers from that version are not
+    directly comparable to published LongBench/SnapKV gov_report/samsum
+    results.
+    """
+    rouge = Rouge()
+    try:
+        scores = rouge.get_scores([prediction], [ground_truth], avg=True)
+    except Exception:
         return 0.0
-    lcs = _lcs_length(pred_tokens, gt_tokens)
-    precision = lcs / len(pred_tokens) if pred_tokens else 0
-    recall = lcs / len(gt_tokens) if gt_tokens else 0
-    if precision + recall == 0:
-        return 0.0
-    return 2 * precision * recall / (precision + recall)
-
-
-def _lcs_length(x, y):
-    """Length of longest common subsequence."""
-    m, n = len(x), len(y)
-    dp = [[0] * (n + 1) for _ in range(m + 1)]
-    for i in range(1, m + 1):
-        for j in range(1, n + 1):
-            if x[i - 1] == y[j - 1]:
-                dp[i][j] = dp[i - 1][j - 1] + 1
-            else:
-                dp[i][j] = max(dp[i - 1][j], dp[i][j - 1])
-    return dp[m][n]
+    return scores["rouge-l"]["f"]
 
 
 def classification_score(prediction, ground_truth, **kwargs):
-    """Exact match after normalization."""
+    """Matches the reference (sota/snapkv/.../metrics.py:89-102): find every
+    class name that's a substring of the (untruncated) prediction, drop any
+    match that's itself a substring of another candidate ground truth in the
+    match list, then split credit 1/n across whatever ambiguity remains --
+    not a binary first-match exact test.
+    """
+    em_match_list = []
     all_classes = kwargs.get("all_classes", [])
-    pred = prediction.lstrip("\n").split("\n")[0]
-    for c in all_classes:
-        if c.lower() in pred.lower():
-            pred = c
-            break
-    return 1.0 if pred.lower() == ground_truth.lower() else 0.0
+    for class_name in all_classes:
+        if class_name in prediction:
+            em_match_list.append(class_name)
+    for match_term in list(em_match_list):
+        if match_term in ground_truth and match_term != ground_truth:
+            em_match_list.remove(match_term)
+    if ground_truth in em_match_list:
+        return 1.0 / len(em_match_list)
+    return 0.0
 
 
 def retrieval_score(prediction, ground_truth, **kwargs):
-    """Paragraph retrieval: check if ground truth paragraph index is in prediction.
-
-    Dataset stores ground truth as 'Paragraph 15' (full string).
-    Regex extracts just the number, so we extract the number from ground_truth too.
+    """Matches the reference (sota/snapkv/.../metrics.py:56-66): fractional
+    credit = (# numbers in prediction equal to the ground-truth paragraph
+    id) / (total numbers extracted from prediction) -- penalizes a
+    prediction that lists many candidate numbers, unlike a binary
+    "somewhere in the text" check.
     """
-    pred_matches = re.findall(r"Paragraph (\d+)", prediction, re.IGNORECASE)
-    if not pred_matches:
+    match = re.search(r"Paragraph (\d+)", ground_truth)
+    if not match:
         return 0.0
-    # Extract number from ground truth (e.g., 'Paragraph 15' -> '15', or '15' -> '15')
-    gt_num_match = re.search(r"(\d+)", ground_truth.strip())
-    if not gt_num_match:
+    ground_truth_id = match.group(1)
+    numbers = re.findall(r"\d+", prediction)
+    if not numbers:
         return 0.0
-    gt_num = gt_num_match.group(1)
-    return 1.0 if gt_num in pred_matches else 0.0
+    right_num = sum(1 for n in numbers if n == ground_truth_id)
+    return right_num / len(numbers)
 
 
 def count_score(prediction, ground_truth, **kwargs):
-    """Count extraction: first number in prediction matches ground truth."""
+    """Matches the reference (sota/snapkv/.../metrics.py:47-54): fractional
+    credit = (# numbers in prediction equal to ground truth) / (total
+    numbers extracted), not binary credit for the first number matching.
+    """
     numbers = re.findall(r"\d+", prediction)
-    if numbers and numbers[0] == ground_truth.strip():
-        return 1.0
-    return 0.0
+    if not numbers:
+        return 0.0
+    right_num = sum(1 for n in numbers if n == str(ground_truth).strip())
+    return right_num / len(numbers)
 
 
 # Map task names to scoring functions

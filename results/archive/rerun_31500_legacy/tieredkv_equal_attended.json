@@ -1,0 +1,147 @@
+{
+  "config": {
+    "model": "/data/nishant/Nishant/Prashant/models/mistral-7b-instruct",
+    "budget": 1024,
+    "tasks": [
+      "multifieldqa_en",
+      "hotpotqa",
+      "triviaqa",
+      "qasper",
+      "narrativeqa",
+      "gov_report"
+    ],
+    "methods": [
+      "tieredkv"
+    ],
+    "tiered_vram_budget": 992,
+    "tiered_stt_budget": 2048,
+    "tiered_stt_expose": 32,
+    "sttram_bifurcation_frac": 1.0,
+    "max_ctx": 31500,
+    "max_samples": 25,
+    "seed": 0,
+    "tiered_kv_dtype": "float32"
+  },
+  "results": {
+    "multifieldqa_en": {
+      "tieredkv": {
+        "score": 58.05,
+        "cache_stats": {
+          "demoted": 353088,
+          "promoted": 332128,
+          "promotions_deferred": 338592,
+          "paid_writes": 283285,
+          "writes_saved": 69803,
+          "dropped": 15296,
+          "write_savings_pct": 19.8,
+          "decode_steps": 655,
+          "stt_starved_steps": 0,
+          "mean_stt_exposed": 32.0,
+          "stt_expose_quota": 32,
+          "modeled_latency_us": 110613.4,
+          "modeled_energy_nj": 8568874074.1
+        }
+      }
+    },
+    "hotpotqa": {
+      "tieredkv": {
+        "score": 35.45,
+        "cache_stats": {
+          "demoted": 212608,
+          "promoted": 200160,
+          "promotions_deferred": 198176,
+          "paid_writes": 212576,
+          "writes_saved": 32,
+          "dropped": 12384,
+          "write_savings_pct": 0.0,
+          "decode_steps": 395,
+          "stt_starved_steps": 14,
+          "mean_stt_exposed": 31.45,
+          "stt_expose_quota": 32,
+          "modeled_latency_us": 66997.6,
+          "modeled_energy_nj": 5143470800.9
+        }
+      }
+    },
+    "triviaqa": {
+      "tieredkv": {
+        "score": 67.36,
+        "cache_stats": {
+          "demoted": 175584,
+          "promoted": 165472,
+          "promotions_deferred": 158112,
+          "paid_writes": 158713,
+          "writes_saved": 16871,
+          "dropped": 8768,
+          "write_savings_pct": 9.6,
+          "decode_steps": 316,
+          "stt_starved_steps": 0,
+          "mean_stt_exposed": 32.0,
+          "stt_expose_quota": 32,
+          "modeled_latency_us": 53910.7,
+          "modeled_energy_nj": 4151842570.2
+        }
+      }
+    },
+    "qasper": {
+      "tieredkv": {
+        "score": 11.67,
+        "cache_stats": {
+          "demoted": 531488,
+          "promoted": 499776,
+          "promotions_deferred": 515008,
+          "paid_writes": 501160,
+          "writes_saved": 30328,
+          "dropped": 29696,
+          "write_savings_pct": 5.7,
+          "decode_steps": 991,
+          "stt_starved_steps": 0,
+          "mean_stt_exposed": 32.0,
+          "stt_expose_quota": 32,
+          "modeled_latency_us": 169025.3,
+          "modeled_energy_nj": 13015534534.7
+        }
+      }
+    },
+    "narrativeqa": {
+      "tieredkv": {
+        "score": 16.06,
+        "cache_stats": {
+          "demoted": 228352,
+          "promoted": 215072,
+          "promotions_deferred": 209888,
+          "paid_writes": 228352,
+          "writes_saved": 0,
+          "dropped": 13280,
+          "write_savings_pct": 0.0,
+          "decode_steps": 415,
+          "stt_starved_steps": 0,
+          "mean_stt_exposed": 32.0,
+          "stt_expose_quota": 32,
+          "modeled_latency_us": 71244.8,
+          "modeled_energy_nj": 5465874366.5
+        }
+      }
+    },
+    "gov_report": {
+      "tieredkv": {
+        "score": 27.3,
+        "cache_stats": {
+          "demoted": 3908704,
+          "promoted": 3672192,
+          "promotions_deferred": 3896192,
+          "paid_writes": 3364931,
+          "writes_saved": 543773,
+          "dropped": 200192,
+          "write_savings_pct": 13.9,
+          "decode_steps": 7391,
+          "stt_starved_steps": 0,
+          "mean_stt_exposed": 32.0,
+          "stt_expose_quota": 32,
+          "modeled_latency_us": 1251725.7,
+          "modeled_energy_nj": 96786486001.7
+        }
+      }
+    }
+  }
+}

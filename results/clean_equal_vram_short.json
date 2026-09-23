@@ -1,0 +1,290 @@
+{
+  "config": {
+    "model": "/data/nishant/Nishant/Prashant/models/mistral-7b-instruct",
+    "budget": 1024,
+    "tasks": [
+      "multifieldqa_en",
+      "qasper",
+      "narrativeqa",
+      "hotpotqa",
+      "triviaqa"
+    ],
+    "methods": [
+      "full",
+      "streamingllm",
+      "h2o",
+      "snapkv",
+      "tieredkv"
+    ],
+    "tiered_vram_budget": 1024,
+    "tiered_stt_budget": 2048,
+    "tiered_stt_expose": null,
+    "sttram_bifurcation_frac": 1.0,
+    "max_ctx": 31500,
+    "max_samples": 25,
+    "seed": 0,
+    "tiered_kv_dtype": "bfloat16"
+  },
+  "results": {
+    "multifieldqa_en": {
+      "full": {
+        "score": 60.95,
+        "cache_stats": {
+          "modeled_latency_us": 362786.1,
+          "modeled_energy_nj": 30090926751.7,
+          "decode_steps": 590
+        }
+      },
+      "streamingllm": {
+        "score": 48.43,
+        "cache_stats": {
+          "modeled_latency_us": 120081.4,
+          "modeled_energy_nj": 9960029159.4,
+          "decode_steps": 773
+        }
+      },
+      "h2o": {
+        "score": 56.37,
+        "cache_stats": {
+          "modeled_latency_us": 110294.7,
+          "modeled_energy_nj": 9148280340.5,
+          "decode_steps": 710
+        }
+      },
+      "snapkv": {
+        "score": 54.61,
+        "cache_stats": {
+          "modeled_latency_us": 102061.4,
+          "modeled_energy_nj": 8465380540.4,
+          "decode_steps": 657
+        }
+      },
+      "tieredkv": {
+        "score": 57.19,
+        "cache_stats": {
+          "demoted": 369952,
+          "promoted": 348000,
+          "promotions_deferred": 354464,
+          "paid_writes": 287584,
+          "writes_saved": 82368,
+          "dropped": 16064,
+          "write_savings_pct": 22.3,
+          "decode_steps": 686,
+          "stt_starved_steps": 0,
+          "mean_stt_exposed": 32.0,
+          "stt_expose_quota": 32,
+          "modeled_latency_us": 118659.8,
+          "modeled_energy_nj": 9234248892.4
+        }
+      }
+    },
+    "qasper": {
+      "full": {
+        "score": 29.55,
+        "cache_stats": {
+          "modeled_latency_us": 717465.5,
+          "modeled_energy_nj": 59509460434.9,
+          "decode_steps": 934
+        }
+      },
+      "streamingllm": {
+        "score": 12.8,
+        "cache_stats": {
+          "modeled_latency_us": 173053.9,
+          "modeled_energy_nj": 14353780703.2,
+          "decode_steps": 1114
+        }
+      },
+      "h2o": {
+        "score": 11.47,
+        "cache_stats": {
+          "modeled_latency_us": 146023.9,
+          "modeled_energy_nj": 12111807774.7,
+          "decode_steps": 940
+        }
+      },
+      "snapkv": {
+        "score": 11.54,
+        "cache_stats": {
+          "modeled_latency_us": 157208.7,
+          "modeled_energy_nj": 13039520710.7,
+          "decode_steps": 1012
+        }
+      },
+      "tieredkv": {
+        "score": 12.34,
+        "cache_stats": {
+          "demoted": 478720,
+          "promoted": 450176,
+          "promotions_deferred": 463232,
+          "paid_writes": 461045,
+          "writes_saved": 17675,
+          "dropped": 27328,
+          "write_savings_pct": 3.7,
+          "decode_steps": 892,
+          "stt_starved_steps": 0,
+          "mean_stt_exposed": 32.0,
+          "stt_expose_quota": 32,
+          "modeled_latency_us": 156138.2,
+          "modeled_energy_nj": 12063654150.1
+        }
+      }
+    },
+    "narrativeqa": {
+      "full": {
+        "score": 17.3,
+        "cache_stats": {
+          "modeled_latency_us": 1493997.0,
+          "modeled_energy_nj": 123918090240.0,
+          "decode_steps": 400
+        }
+      },
+      "streamingllm": {
+        "score": 17.65,
+        "cache_stats": {
+          "modeled_latency_us": 63225.2,
+          "modeled_energy_nj": 5244155068.4,
+          "decode_steps": 407
+        }
+      },
+      "h2o": {
+        "score": 15.4,
+        "cache_stats": {
+          "modeled_latency_us": 82643.3,
+          "modeled_energy_nj": 6854767804.4,
+          "decode_steps": 532
+        }
+      },
+      "snapkv": {
+        "score": 18.98,
+        "cache_stats": {
+          "modeled_latency_us": 64157.3,
+          "modeled_energy_nj": 5321464479.7,
+          "decode_steps": 413
+        }
+      },
+      "tieredkv": {
+        "score": 18.58,
+        "cache_stats": {
+          "demoted": 223200,
+          "promoted": 210112,
+          "promotions_deferred": 208704,
+          "paid_writes": 223200,
+          "writes_saved": 0,
+          "dropped": 13088,
+          "write_savings_pct": 0.0,
+          "decode_steps": 409,
+          "stt_starved_steps": 0,
+          "mean_stt_exposed": 32.0,
+          "stt_expose_quota": 32,
+          "modeled_latency_us": 71876.8,
+          "modeled_energy_nj": 5540895785.0
+        }
+      }
+    },
+    "hotpotqa": {
+      "full": {
+        "score": 48.67,
+        "cache_stats": {
+          "modeled_latency_us": 200194.4,
+          "modeled_energy_nj": 16604926574.6,
+          "decode_steps": 226
+        }
+      },
+      "streamingllm": {
+        "score": 34.43,
+        "cache_stats": {
+          "modeled_latency_us": 56184.8,
+          "modeled_energy_nj": 4660194705.4,
+          "decode_steps": 366
+        }
+      },
+      "h2o": {
+        "score": 39.27,
+        "cache_stats": {
+          "modeled_latency_us": 56650.9,
+          "modeled_energy_nj": 4698849411.1,
+          "decode_steps": 369
+        }
+      },
+      "snapkv": {
+        "score": 37.32,
+        "cache_stats": {
+          "modeled_latency_us": 61621.9,
+          "modeled_energy_nj": 5111166271.5,
+          "decode_steps": 401
+        }
+      },
+      "tieredkv": {
+        "score": 38.05,
+        "cache_stats": {
+          "demoted": 206272,
+          "promoted": 194208,
+          "promotions_deferred": 191840,
+          "paid_writes": 206240,
+          "writes_saved": 32,
+          "dropped": 12000,
+          "write_savings_pct": 0.0,
+          "decode_steps": 383,
+          "stt_starved_steps": 7,
+          "mean_stt_exposed": 31.45,
+          "stt_expose_quota": 32,
+          "modeled_latency_us": 66529.9,
+          "modeled_energy_nj": 5129654763.5
+        }
+      }
+    },
+    "triviaqa": {
+      "full": {
+        "score": 74.64,
+        "cache_stats": {
+          "modeled_latency_us": 168111.8,
+          "modeled_energy_nj": 13943867179.0,
+          "decode_steps": 227
+        }
+      },
+      "streamingllm": {
+        "score": 64.59,
+        "cache_stats": {
+          "modeled_latency_us": 48156.8,
+          "modeled_energy_nj": 3994319585.3,
+          "decode_steps": 310
+        }
+      },
+      "h2o": {
+        "score": 64.2,
+        "cache_stats": {
+          "modeled_latency_us": 46137.3,
+          "modeled_energy_nj": 3826815860.7,
+          "decode_steps": 297
+        }
+      },
+      "snapkv": {
+        "score": 64.24,
+        "cache_stats": {
+          "modeled_latency_us": 52351.1,
+          "modeled_energy_nj": 4342211936.3,
+          "decode_steps": 337
+        }
+      },
+      "tieredkv": {
+        "score": 67.21,
+        "cache_stats": {
+          "demoted": 172416,
+          "promoted": 162496,
+          "promotions_deferred": 154944,
+          "paid_writes": 155179,
+          "writes_saved": 17237,
+          "dropped": 8576,
+          "write_savings_pct": 10.0,
+          "decode_steps": 310,
+          "stt_starved_steps": 0,
+          "mean_stt_exposed": 32.0,
+          "stt_expose_quota": 32,
+          "modeled_latency_us": 54206.2,
+          "modeled_energy_nj": 4191928844.3
+        }
+      }
+    }
+  }
+}

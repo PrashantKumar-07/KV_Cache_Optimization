@@ -1,0 +1,21 @@
+\begin{table}[t]
+\centering
+\small
+\setlength{\tabcolsep}{5pt}
+\caption{LongBench accuracy (F1/ROUGE-L $\times$ 100). Fair (iso-VRAM) setting: all methods use identical VRAM budget (992 tokens). Bold = best per task.}
+\label{tab:accuracy_fair}
+\begin{tabular}{lrrrrr}
+\toprule
+\textbf{Task} & \textbf{Full Cache} & \textbf{StreamingLLM} & \textbf{H_2O} & \textbf{SnapKV} & \textbf{TieredKV (Ours)} \\
+\midrule
+MultiFieldQA & \textbf{61.0} & 48.4 & 56.4 & 54.6 & 55.3 \\
+HotpotQA & \textbf{48.7} & 34.4 & 39.3 & 37.3 & 33.3 \\
+TriviaQA & \textbf{74.6} & 64.6 & 64.2 & 64.2 & 67.9 \\
+Qasper & \textbf{29.6} & 12.8 & 11.5 & 11.5 & 12.4 \\
+NarrativeQA & 17.3 & 17.6 & 15.4 & \textbf{19.0} & 16.8 \\
+GovReport & \textbf{32.2} & 26.6 & 27.1 & 28.5 & 27.2 \\
+\midrule
+\textbf{Average} & \textbf{43.9} & 34.1 & 35.6 & 35.9 & 35.5 \\
+\bottomrule
+\end{tabular}
+\end{table}

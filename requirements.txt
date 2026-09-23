@@ -7,9 +7,19 @@ transformers>=4.43
 accelerate>=0.30
 huggingface_hub>=0.23
 
+# LongBench data loading (experiments/longbench_eval.py imports
+# `load_dataset` from this at module scope -- a clean environment
+# without it fails at import, before any argument is parsed).
+datasets>=2.14
+
 # Visualisation (experiments/plot_*.py only)
 matplotlib>=3.8
 
 # Testing
 pytest>=8.0
+
+# LongBench scoring (rouge_score in experiments/longbench_metrics.py --
+# must match the real `rouge` package the reference protocol uses, not a
+# hand-rolled LCS approximation)
+rouge>=1.0.1
 

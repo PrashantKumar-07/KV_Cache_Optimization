@@ -1,0 +1,147 @@
+{
+  "config": {
+    "model": "/data/nishant/Nishant/Prashant/models/mistral-7b-instruct",
+    "budget": 1024,
+    "tasks": [
+      "multifieldqa_en",
+      "hotpotqa",
+      "triviaqa",
+      "qasper",
+      "narrativeqa",
+      "gov_report"
+    ],
+    "methods": [
+      "tieredkv"
+    ],
+    "tiered_vram_budget": 1024,
+    "tiered_stt_budget": 2048,
+    "tiered_stt_expose": 2048,
+    "sttram_bifurcation_frac": 1.0,
+    "max_ctx": 31500,
+    "max_samples": 25,
+    "seed": 0,
+    "tiered_kv_dtype": "float32"
+  },
+  "results": {
+    "multifieldqa_en": {
+      "tieredkv": {
+        "score": 63.5,
+        "cache_stats": {
+          "demoted": 404568,
+          "promoted": 382584,
+          "promotions_deferred": 320904,
+          "paid_writes": 333026,
+          "writes_saved": 71542,
+          "dropped": 16736,
+          "write_savings_pct": 17.7,
+          "decode_steps": 687,
+          "stt_starved_steps": 0,
+          "mean_stt_exposed": 1788.68,
+          "stt_expose_quota": 2048,
+          "modeled_latency_us": 279034.5,
+          "modeled_energy_nj": 11841524465.7
+        }
+      }
+    },
+    "hotpotqa": {
+      "tieredkv": {
+        "score": 46.11,
+        "cache_stats": {
+          "demoted": 175914,
+          "promoted": 167626,
+          "promotions_deferred": 97590,
+          "paid_writes": 175011,
+          "writes_saved": 903,
+          "dropped": 8224,
+          "write_savings_pct": 0.5,
+          "decode_steps": 265,
+          "stt_starved_steps": 14,
+          "mean_stt_exposed": 1979.98,
+          "stt_expose_quota": 2048,
+          "modeled_latency_us": 114942.0,
+          "modeled_energy_nj": 4661467938.8
+        }
+      }
+    },
+    "triviaqa": {
+      "tieredkv": {
+        "score": 73.78,
+        "cache_stats": {
+          "demoted": 163651,
+          "promoted": 155971,
+          "promotions_deferred": 89789,
+          "paid_writes": 157304,
+          "writes_saved": 6347,
+          "dropped": 7264,
+          "write_savings_pct": 3.9,
+          "decode_steps": 240,
+          "stt_starved_steps": 0,
+          "mean_stt_exposed": 1984.33,
+          "stt_expose_quota": 2048,
+          "modeled_latency_us": 104840.0,
+          "modeled_energy_nj": 4275095011.3
+        }
+      }
+    },
+    "qasper": {
+      "tieredkv": {
+        "score": 20.94,
+        "cache_stats": {
+          "demoted": 537343,
+          "promoted": 507071,
+          "promotions_deferred": 461633,
+          "paid_writes": 501873,
+          "writes_saved": 35470,
+          "dropped": 27456,
+          "write_savings_pct": 6.6,
+          "decode_steps": 946,
+          "stt_starved_steps": 0,
+          "mean_stt_exposed": 2012.74,
+          "stt_expose_quota": 2048,
+          "modeled_latency_us": 412299.3,
+          "modeled_energy_nj": 16763809103.9
+        }
+      }
+    },
+    "narrativeqa": {
+      "tieredkv": {
+        "score": 21.0,
+        "cache_stats": {
+          "demoted": 261738,
+          "promoted": 248682,
+          "promotions_deferred": 169110,
+          "paid_writes": 261738,
+          "writes_saved": 0,
+          "dropped": 13056,
+          "write_savings_pct": 0.0,
+          "decode_steps": 408,
+          "stt_starved_steps": 0,
+          "mean_stt_exposed": 2048.0,
+          "stt_expose_quota": 2048,
+          "modeled_latency_us": 180949.8,
+          "modeled_energy_nj": 7304414625.8
+        }
+      }
+    },
+    "gov_report": {
+      "tieredkv": {
+        "score": 32.84,
+        "cache_stats": {
+          "demoted": 3421530,
+          "promoted": 3151162,
+          "promotions_deferred": 5500614,
+          "paid_writes": 2946569,
+          "writes_saved": 474961,
+          "dropped": 225120,
+          "write_savings_pct": 13.9,
+          "decode_steps": 8449,
+          "stt_starved_steps": 0,
+          "mean_stt_exposed": 1963.12,
+          "stt_expose_quota": 2048,
+          "modeled_latency_us": 3584085.4,
+          "modeled_energy_nj": 147218767020.0
+        }
+      }
+    }
+  }
+}

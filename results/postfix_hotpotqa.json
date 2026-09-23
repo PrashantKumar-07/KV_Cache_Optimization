@@ -1,0 +1,70 @@
+{
+  "config": {
+    "model": "/data/nishant/Nishant/Prashant/models/mistral-7b-instruct",
+    "budget": 1024,
+    "tasks": [
+      "hotpotqa"
+    ],
+    "methods": [
+      "tieredkv"
+    ],
+    "tiered_vram_budget": 1024,
+    "tiered_stt_budget": 2048,
+    "tiered_stt_expose": null,
+    "sttram_bifurcation_frac": 1.0,
+    "max_ctx": 31500,
+    "max_samples": 25,
+    "seed": 0,
+    "tiered_kv_dtype": "bfloat16"
+  },
+  "results": {
+    "hotpotqa": {
+      "tieredkv": {
+        "score": 38.05,
+        "n": 25,
+        "sample_scores": [
+          0.0,
+          100.0,
+          0.0,
+          100.0,
+          40.0,
+          50.0,
+          20.0,
+          36.36,
+          80.0,
+          0.0,
+          16.67,
+          100.0,
+          25.0,
+          14.81,
+          57.14,
+          15.38,
+          0.0,
+          66.67,
+          0.0,
+          0.0,
+          9.09,
+          66.67,
+          0.0,
+          53.33,
+          100.0
+        ],
+        "cache_stats": {
+          "demoted": 206272,
+          "promoted": 194208,
+          "promotions_deferred": 191840,
+          "paid_writes": 206240,
+          "writes_saved": 32,
+          "dropped": 12000,
+          "write_savings_pct": 0.0,
+          "decode_steps": 383,
+          "stt_starved_steps": 7,
+          "mean_stt_exposed": 31.45,
+          "stt_expose_quota": 32,
+          "modeled_latency_us": 176823.4,
+          "modeled_energy_nj": 5129654763.5
+        }
+      }
+    }
+  }
+}
