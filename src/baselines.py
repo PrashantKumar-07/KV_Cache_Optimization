@@ -5,6 +5,14 @@
 #   step(q, new_k, new_v, pos) -> attn output (H, 1, D)
 #
 # Accuracy gaps vs FullAttention isolate the effect of each eviction policy.
+#
+# SCOPE — READ THIS BEFORE CITING ANY NUMBER FROM THIS FILE.
+# These standalone CPU-simulator baselines serve the unit tests and direct
+# cache drivers only. They did NOT produce the LongBench results: published
+# baseline scores come from the separate H2O/SnapKV/StreamingLLM policies in
+# experiments/longbench_eval.py, which run on a real model's DynamicCache
+# instead of (H, seq, D) tensors. Same budget/sink semantics in both (pinned
+# by tests/test_baselines.py), different interfaces.
 
 from __future__ import annotations
 import torch
@@ -101,14 +109,37 @@ class H2O:
         self.total_macs = 0
 
     def reset_prompt(self, k_all, v_all, q_all=None):
+        """Seed the cache with `budget` prompt tokens, not just sink+window.
+
+        This used to keep only sinks + the recent window, discarding the rest
+        of the budget outright: at budget=1024 on a 4000-token prompt it kept
+        20 tokens and threw away 1004 tokens' worth of allocation, which
+        crippled the baseline TieredKV is measured against. H2O has no
+        accumulated attention yet at prompt time, so the remaining budget is
+        filled by observation-window importance -- the same signal
+        H2OPolicy._initialize_scores uses in the LongBench harness, so the
+        simulator and the harness agree on what H2O starts from.
+        """
         N = k_all.shape[1]
-        sink = list(range(min(self.sink_size, N)))
-        win = list(range(max(0, N - self.window_size), N))
-        idx = sorted(set(sink) | set(win))
+        w = min(self.window_size, N)
+        sink = set(range(min(self.sink_size, N)))
+        win = set(range(max(0, N - w), N))
+        pinned = sink | win
+
+        # K-as-Q proxy when no real queries are supplied, matching
+        # H2OPolicy._initialize_scores in experiments/longbench_eval.py.
+        q_win = (q_all if q_all is not None else k_all)[:, N - w:, :]
+        imp = snapkv_importance(q_win, k_all, pool_kernel=1)
+
+        extra = max(0, self.budget - len(pinned))
+        rest = sorted((i for i in range(N) if i not in pinned),
+                      key=lambda i: imp[i].item(), reverse=True)
+        idx = sorted(pinned | set(rest[:extra]))
+
         self.k = k_all[:, idx, :].clone()
         self.v = v_all[:, idx, :].clone()
         self.pos = list(idx)
-        self.cum = torch.zeros(len(idx), device=self.device, dtype=self.dtype)
+        self.cum = imp[idx].clone().to(self.dtype)
         return {"kept": len(idx)}
 
     def step(self, q, new_k, new_v, new_pos):
@@ -128,6 +159,15 @@ class H2O:
             for i, p in enumerate(self.pos):
                 if p < self.sink_size or p > max_pos - self.window_size:
                     cand[i] = float("inf")
+            # Every remaining token is sink- or window-protected (reachable
+            # whenever budget < sink_size + window_size). argmin over an
+            # all-inf vector returns index 0, which is the FIRST ATTENTION
+            # SINK -- measured to wipe positions 0-3 within three steps at
+            # budget=16, sink=4, window=16. Capacity cannot be met without
+            # evicting a protected token, so stop instead: overshooting the
+            # budget is recoverable, destroying the sinks is not.
+            if not torch.isfinite(cand).any():
+                break
             victim = int(torch.argmin(cand).item())
             keep = [i for i in range(len(self.pos)) if i != victim]
             self.k = self.k[:, keep, :]
@@ -198,6 +238,11 @@ class SnapKV:
             for i, p in enumerate(self.pos):
                 if p < self.sink_size or p > max_pos - self.window_size:
                     cand[i] = float("inf")
+            # See H2O.step: an all-inf candidate vector means every survivor
+            # is sink/window protected, and argmin would return index 0 --
+            # the first attention sink. Stop rather than evict it.
+            if not torch.isfinite(cand).any():
+                break
             victim = int(torch.argmin(cand).item())
             keep = [i for i in range(len(self.pos)) if i != victim]
             self.k = self.k[:, keep, :]
@@ -240,7 +285,7 @@ class Quest:
         return {"kept": k_all.shape[1]}
 
     def _sketch_score(self, q):
-        """Per-page upper bound: max(q·min_k, q·max_k) summed over heads."""
+        """Per-page upper bound: sum_d max(q_d*min_d, q_d*max_d), summed over heads."""
         H, N, D = self.k.shape
         P = self.page_size
         num_pages = (N + P - 1) // P
@@ -252,9 +297,11 @@ class Quest:
             min_k = page_k.min(dim=1).values
             max_k = page_k.max(dim=1).values
             q_sq = q.squeeze(1)
-            scores[pi] = torch.maximum(
-                (q_sq * min_k).sum(-1), (q_sq * max_k).sum(-1)
-            ).sum()
+            # Per-FEATURE-dimension max, then reduce over D (Quest, Sec. 3.2).
+            # Reducing over D first and taking the max afterwards is not an
+            # upper bound: it failed on 60.9% of random mixed-sign queries.
+            # See the matching note in TieredKVCache.sketch_check().
+            scores[pi] = torch.maximum(q_sq * min_k, q_sq * max_k).sum(-1).sum()
 
         self.total_sketch_macs += 2 * H * D * num_pages
         return scores, num_pages

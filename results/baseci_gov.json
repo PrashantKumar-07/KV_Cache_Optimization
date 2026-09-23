@@ -1,0 +1,111 @@
+{
+  "config": {
+    "model": "/data/nishant/Nishant/Prashant/models/mistral-7b-instruct",
+    "budget": 1024,
+    "tasks": [
+      "gov_report"
+    ],
+    "methods": [
+      "full",
+      "streamingllm",
+      "h2o",
+      "snapkv"
+    ],
+    "tiered_vram_budget": 341,
+    "tiered_stt_budget": 683,
+    "tiered_stt_expose": null,
+    "sttram_bifurcation_frac": 1.0,
+    "max_ctx": 31500,
+    "max_samples": 10,
+    "seed": 0,
+    "tiered_kv_dtype": "float32"
+  },
+  "results": {
+    "gov_report": {
+      "full": {
+        "score": 32.23,
+        "n": 10,
+        "sample_scores": [
+          31.36,
+          33.42,
+          30.0,
+          34.04,
+          38.01,
+          35.25,
+          31.04,
+          27.24,
+          34.81,
+          27.17
+        ],
+        "cache_stats": {
+          "modeled_latency_us": 2293978.0,
+          "modeled_energy_nj": 190271711084.5,
+          "decode_steps": 3619
+        }
+      },
+      "streamingllm": {
+        "score": 26.6,
+        "n": 10,
+        "sample_scores": [
+          28.79,
+          29.38,
+          17.35,
+          30.47,
+          25.88,
+          29.6,
+          25.05,
+          24.09,
+          24.46,
+          30.9
+        ],
+        "cache_stats": {
+          "modeled_latency_us": 420207.1,
+          "modeled_energy_nj": 34853659607.0,
+          "decode_steps": 2705
+        }
+      },
+      "h2o": {
+        "score": 27.07,
+        "n": 10,
+        "sample_scores": [
+          28.94,
+          29.65,
+          24.84,
+          27.01,
+          19.3,
+          29.96,
+          25.6,
+          26.5,
+          28.49,
+          30.39
+        ],
+        "cache_stats": {
+          "modeled_latency_us": 426420.9,
+          "modeled_energy_nj": 35369055682.6,
+          "decode_steps": 2745
+        }
+      },
+      "snapkv": {
+        "score": 28.49,
+        "n": 10,
+        "sample_scores": [
+          26.92,
+          32.61,
+          27.5,
+          31.44,
+          27.94,
+          33.06,
+          27.57,
+          26.61,
+          27.67,
+          23.53
+        ],
+        "cache_stats": {
+          "modeled_latency_us": 473335.0,
+          "modeled_energy_nj": 39260296052.7,
+          "decode_steps": 3047
+        }
+      }
+    }
+  }
+}

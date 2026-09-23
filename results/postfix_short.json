@@ -1,0 +1,217 @@
+{
+  "config": {
+    "model": "/data/nishant/Nishant/Prashant/models/mistral-7b-instruct",
+    "budget": 1024,
+    "tasks": [
+      "multifieldqa_en",
+      "qasper",
+      "narrativeqa",
+      "triviaqa"
+    ],
+    "methods": [
+      "tieredkv"
+    ],
+    "tiered_vram_budget": 1024,
+    "tiered_stt_budget": 2048,
+    "tiered_stt_expose": null,
+    "sttram_bifurcation_frac": 1.0,
+    "max_ctx": 31500,
+    "max_samples": 25,
+    "seed": 0,
+    "tiered_kv_dtype": "bfloat16"
+  },
+  "results": {
+    "multifieldqa_en": {
+      "tieredkv": {
+        "score": 57.19,
+        "n": 25,
+        "sample_scores": [
+          48.48,
+          100.0,
+          0.0,
+          25.0,
+          51.43,
+          22.86,
+          91.67,
+          90.0,
+          66.67,
+          26.09,
+          100.0,
+          12.9,
+          33.33,
+          50.0,
+          17.54,
+          57.14,
+          100.0,
+          100.0,
+          80.0,
+          40.0,
+          70.0,
+          100.0,
+          100.0,
+          28.57,
+          18.18
+        ],
+        "cache_stats": {
+          "demoted": 369952,
+          "promoted": 348000,
+          "promotions_deferred": 354464,
+          "paid_writes": 287584,
+          "writes_saved": 82368,
+          "dropped": 16064,
+          "write_savings_pct": 22.3,
+          "decode_steps": 686,
+          "stt_starved_steps": 0,
+          "mean_stt_exposed": 32.0,
+          "stt_expose_quota": 32,
+          "modeled_latency_us": 291185.0,
+          "modeled_energy_nj": 9234248892.4
+        }
+      }
+    },
+    "qasper": {
+      "tieredkv": {
+        "score": 12.34,
+        "n": 25,
+        "sample_scores": [
+          8.89,
+          12.5,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          38.71,
+          19.05,
+          30.0,
+          18.18,
+          15.38,
+          0.0,
+          30.77,
+          6.74,
+          28.95,
+          27.59,
+          12.9,
+          8.7,
+          0.0,
+          0.0,
+          15.38,
+          30.0,
+          4.65,
+          0.0
+        ],
+        "cache_stats": {
+          "demoted": 478720,
+          "promoted": 450176,
+          "promotions_deferred": 463232,
+          "paid_writes": 461045,
+          "writes_saved": 17675,
+          "dropped": 27328,
+          "write_savings_pct": 3.7,
+          "decode_steps": 892,
+          "stt_starved_steps": 0,
+          "mean_stt_exposed": 32.0,
+          "stt_expose_quota": 32,
+          "modeled_latency_us": 407906.0,
+          "modeled_energy_nj": 12063654150.1
+        }
+      }
+    },
+    "narrativeqa": {
+      "tieredkv": {
+        "score": 18.58,
+        "n": 25,
+        "sample_scores": [
+          18.18,
+          11.11,
+          33.33,
+          28.57,
+          0.0,
+          30.77,
+          0.0,
+          0.0,
+          57.14,
+          0.0,
+          6.45,
+          0.0,
+          13.33,
+          66.67,
+          22.22,
+          62.5,
+          10.53,
+          18.75,
+          0.0,
+          0.0,
+          18.18,
+          16.67,
+          0.0,
+          0.0,
+          50.0
+        ],
+        "cache_stats": {
+          "demoted": 223200,
+          "promoted": 210112,
+          "promotions_deferred": 208704,
+          "paid_writes": 223200,
+          "writes_saved": 0,
+          "dropped": 13088,
+          "write_savings_pct": 0.0,
+          "decode_steps": 409,
+          "stt_starved_steps": 0,
+          "mean_stt_exposed": 32.0,
+          "stt_expose_quota": 32,
+          "modeled_latency_us": 191322.3,
+          "modeled_energy_nj": 5540895785.0
+        }
+      }
+    },
+    "triviaqa": {
+      "tieredkv": {
+        "score": 67.21,
+        "n": 25,
+        "sample_scores": [
+          50.0,
+          100.0,
+          100.0,
+          33.33,
+          13.33,
+          100.0,
+          10.53,
+          100.0,
+          33.33,
+          10.0,
+          100.0,
+          100.0,
+          63.16,
+          50.0,
+          100.0,
+          100.0,
+          50.0,
+          33.33,
+          100.0,
+          66.67,
+          100.0,
+          66.67,
+          0.0,
+          100.0,
+          100.0
+        ],
+        "cache_stats": {
+          "demoted": 172416,
+          "promoted": 162496,
+          "promotions_deferred": 154944,
+          "paid_writes": 155179,
+          "writes_saved": 17237,
+          "dropped": 8576,
+          "write_savings_pct": 10.0,
+          "decode_steps": 310,
+          "stt_starved_steps": 0,
+          "mean_stt_exposed": 32.0,
+          "stt_expose_quota": 32,
+          "modeled_latency_us": 140530.8,
+          "modeled_energy_nj": 4191928844.3
+        }
+      }
+    }
+  }
+}

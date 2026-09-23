@@ -1,0 +1,321 @@
+{
+  "config": {
+    "model": "/data/nishant/Nishant/Prashant/models/mistral-7b-instruct",
+    "budget": 1024,
+    "tasks": [
+      "multifieldqa_en",
+      "hotpotqa",
+      "triviaqa",
+      "qasper",
+      "narrativeqa",
+      "gov_report"
+    ],
+    "methods": [
+      "full",
+      "streamingllm",
+      "h2o",
+      "snapkv",
+      "tieredkv"
+    ],
+    "tiered_vram_budget": 992,
+    "tiered_stt_budget": 2048,
+    "tiered_stt_expose": 32,
+    "sttram_bifurcation_frac": 1.0
+  },
+  "results": {
+    "multifieldqa_en": {
+      "full": {
+        "score": 60.68,
+        "cache_stats": {
+          "modeled_latency_us": 14058.8,
+          "modeled_energy_nj": 1166096203.8,
+          "decode_steps": 63
+        }
+      },
+      "streamingllm": {
+        "score": 52.15,
+        "cache_stats": {
+          "modeled_latency_us": 9786.7,
+          "modeled_energy_nj": 811748818.9,
+          "decode_steps": 63
+        }
+      },
+      "h2o": {
+        "score": 55.61,
+        "cache_stats": {
+          "modeled_latency_us": 9786.7,
+          "modeled_energy_nj": 811748818.9,
+          "decode_steps": 63
+        }
+      },
+      "snapkv": {
+        "score": 54.69,
+        "cache_stats": {
+          "modeled_latency_us": 9786.7,
+          "modeled_energy_nj": 811748818.9,
+          "decode_steps": 63
+        }
+      },
+      "tieredkv": {
+        "score": 55.23,
+        "cache_stats": {
+          "demoted": 144832,
+          "promoted": 136224,
+          "peeked": 139232,
+          "paid_writes": 98927,
+          "writes_saved": 45905,
+          "dropped": 5120,
+          "write_savings_pct": 31.7,
+          "decode_steps": 269,
+          "modeled_latency_us": 45029.5,
+          "modeled_energy_nj": 3506794004.5
+        }
+      }
+    },
+    "hotpotqa": {
+      "full": {
+        "score": 50.64,
+        "cache_stats": {
+          "modeled_latency_us": 30187.4,
+          "modeled_energy_nj": 2503861076.0,
+          "decode_steps": 31
+        }
+      },
+      "streamingllm": {
+        "score": 35.08,
+        "cache_stats": {
+          "modeled_latency_us": 4815.7,
+          "modeled_energy_nj": 399431958.5,
+          "decode_steps": 31
+        }
+      },
+      "h2o": {
+        "score": 41.14,
+        "cache_stats": {
+          "modeled_latency_us": 4815.7,
+          "modeled_energy_nj": 399431958.5,
+          "decode_steps": 31
+        }
+      },
+      "snapkv": {
+        "score": 41.14,
+        "cache_stats": {
+          "modeled_latency_us": 4815.7,
+          "modeled_energy_nj": 399431958.5,
+          "decode_steps": 31
+        }
+      },
+      "tieredkv": {
+        "score": 44.27,
+        "cache_stats": {
+          "demoted": 53056,
+          "promoted": 49920,
+          "peeked": 50432,
+          "paid_writes": 53024,
+          "writes_saved": 32,
+          "dropped": 3072,
+          "write_savings_pct": 0.1,
+          "decode_steps": 98,
+          "modeled_latency_us": 16795.8,
+          "modeled_energy_nj": 1289702342.7
+        }
+      }
+    },
+    "triviaqa": {
+      "full": {
+        "score": 60.29,
+        "cache_stats": {
+          "modeled_latency_us": 25160.1,
+          "modeled_energy_nj": 2086875955.2,
+          "decode_steps": 31
+        }
+      },
+      "streamingllm": {
+        "score": 43.49,
+        "cache_stats": {
+          "modeled_latency_us": 4815.7,
+          "modeled_energy_nj": 399431958.5,
+          "decode_steps": 31
+        }
+      },
+      "h2o": {
+        "score": 49.45,
+        "cache_stats": {
+          "modeled_latency_us": 4815.7,
+          "modeled_energy_nj": 399431958.5,
+          "decode_steps": 31
+        }
+      },
+      "snapkv": {
+        "score": 44.25,
+        "cache_stats": {
+          "modeled_latency_us": 4815.7,
+          "modeled_energy_nj": 399431958.5,
+          "decode_steps": 31
+        }
+      },
+      "tieredkv": {
+        "score": 54.03,
+        "cache_stats": {
+          "demoted": 103552,
+          "promoted": 97536,
+          "peeked": 94976,
+          "paid_writes": 89071,
+          "writes_saved": 14481,
+          "dropped": 5024,
+          "write_savings_pct": 14.0,
+          "decode_steps": 188,
+          "modeled_latency_us": 31947.6,
+          "modeled_energy_nj": 2466019409.9
+        }
+      }
+    },
+    "qasper": {
+      "full": {
+        "score": 30.87,
+        "cache_stats": {
+          "modeled_latency_us": 13354.3,
+          "modeled_energy_nj": 1107661160.4,
+          "decode_steps": 18
+        }
+      },
+      "streamingllm": {
+        "score": 14.95,
+        "cache_stats": {
+          "modeled_latency_us": 2330.2,
+          "modeled_energy_nj": 193273528.3,
+          "decode_steps": 15
+        }
+      },
+      "h2o": {
+        "score": 11.64,
+        "cache_stats": {
+          "modeled_latency_us": 2330.2,
+          "modeled_energy_nj": 193273528.3,
+          "decode_steps": 15
+        }
+      },
+      "snapkv": {
+        "score": 12.44,
+        "cache_stats": {
+          "modeled_latency_us": 2330.2,
+          "modeled_energy_nj": 193273528.3,
+          "decode_steps": 15
+        }
+      },
+      "tieredkv": {
+        "score": 8.62,
+        "cache_stats": {
+          "demoted": 226080,
+          "promoted": 212608,
+          "peeked": 218496,
+          "paid_writes": 226080,
+          "writes_saved": 0,
+          "dropped": 13472,
+          "write_savings_pct": 0.0,
+          "decode_steps": 421,
+          "modeled_latency_us": 72107.9,
+          "modeled_energy_nj": 5538689581.1
+        }
+      }
+    },
+    "narrativeqa": {
+      "full": {
+        "score": 25.72,
+        "cache_stats": {
+          "modeled_latency_us": 3728.7,
+          "modeled_energy_nj": 309275394.0,
+          "decode_steps": 3
+        }
+      },
+      "streamingllm": {
+        "score": 19.52,
+        "cache_stats": {
+          "modeled_latency_us": 466.0,
+          "modeled_energy_nj": 38654705.7,
+          "decode_steps": 3
+        }
+      },
+      "h2o": {
+        "score": 17.85,
+        "cache_stats": {
+          "modeled_latency_us": 2019.5,
+          "modeled_energy_nj": 167503724.5,
+          "decode_steps": 13
+        }
+      },
+      "snapkv": {
+        "score": 24.5,
+        "cache_stats": {
+          "modeled_latency_us": 466.0,
+          "modeled_energy_nj": 38654705.7,
+          "decode_steps": 3
+        }
+      },
+      "tieredkv": {
+        "score": 22.32,
+        "cache_stats": {
+          "demoted": 62464,
+          "promoted": 58848,
+          "peeked": 56864,
+          "paid_writes": 62464,
+          "writes_saved": 0,
+          "dropped": 3616,
+          "write_savings_pct": 0.0,
+          "decode_steps": 113,
+          "modeled_latency_us": 19407.8,
+          "modeled_energy_nj": 1488617209.9
+        }
+      }
+    },
+    "gov_report": {
+      "full": {
+        "score": 31.98,
+        "cache_stats": {
+          "modeled_latency_us": 211669.9,
+          "modeled_energy_nj": 17556748369.9,
+          "decode_steps": 334
+        }
+      },
+      "streamingllm": {
+        "score": 25.5,
+        "cache_stats": {
+          "modeled_latency_us": 49710.3,
+          "modeled_energy_nj": 4123168604.2,
+          "decode_steps": 320
+        }
+      },
+      "h2o": {
+        "score": 26.69,
+        "cache_stats": {
+          "modeled_latency_us": 63535.9,
+          "modeled_energy_nj": 5269924872.2,
+          "decode_steps": 409
+        }
+      },
+      "snapkv": {
+        "score": 28.19,
+        "cache_stats": {
+          "modeled_latency_us": 40078.9,
+          "modeled_energy_nj": 3324304687.1,
+          "decode_steps": 258
+        }
+      },
+      "tieredkv": {
+        "score": 27.46,
+        "cache_stats": {
+          "demoted": 1600000,
+          "promoted": 1503200,
+          "peeked": 1594400,
+          "paid_writes": 1381868,
+          "writes_saved": 218132,
+          "dropped": 82368,
+          "write_savings_pct": 13.6,
+          "decode_steps": 3025,
+          "modeled_latency_us": 512419.5,
+          "modeled_energy_nj": 39616402423.8
+        }
+      }
+    }
+  }
+}

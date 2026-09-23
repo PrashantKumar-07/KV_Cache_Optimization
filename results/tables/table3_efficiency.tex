@@ -1,0 +1,18 @@
+\begin{table}[t]
+\centering
+\small
+\setlength{\tabcolsep}{4pt}
+\caption{Modeled efficiency metrics (fair/iso-VRAM setting, summed over all tasks). Latency and energy are analytical estimates from the tier bandwidth model. Bold = best (lowest) per metric. TieredKV uniquely tracks write savings.}
+\label{tab:efficiency}
+\begin{tabular}{lrrr}
+\toprule
+\textbf{Method} & \textbf{Total Latency (s)} & \textbf{Total Energy (J)} & \textbf{Write Savings (\%)} \\
+\midrule
+Full Cache & 5.24 & 434.34 & -- \\
+StreamingLLM & 0.88 & 73.07 & -- \\
+H\_2O & \textbf{0.87} & \textbf{72.01} & -- \\
+SnapKV & 0.91 & 75.54 & -- \\
+TieredKV (Ours) & 1.73 & 74.34 & 84.8 \\
+\bottomrule
+\end{tabular}
+\end{table}

@@ -1,0 +1,188 @@
+{
+  "config": {
+    "model": "/data/nishant/Nishant/Prashant/models/mistral-7b-instruct",
+    "output": "/data/nishant/Nishant/Prashant/KV_Cache_Optimization/results/latency_profile.json",
+    "ctx_lens": [
+      512,
+      1024,
+      2048,
+      4096,
+      8192,
+      16384
+    ],
+    "budget": 1024,
+    "n_decode": 30,
+    "n_repeat": 2,
+    "n_warmup": 1,
+    "methods": [
+      "full",
+      "streamingllm",
+      "h2o",
+      "snapkv",
+      "tieredkv"
+    ],
+    "device": "cuda"
+  },
+  "results": {
+    "full": {
+      "512": {
+        "ttft_ms": 45.22,
+        "itl_ms": 24.592,
+        "peak_memory_gb": 14.695
+      },
+      "1024": {
+        "ttft_ms": 85.04,
+        "itl_ms": 24.924,
+        "peak_memory_gb": 14.889
+      },
+      "2048": {
+        "ttft_ms": 167.77,
+        "itl_ms": 26.225,
+        "peak_memory_gb": 15.279
+      },
+      "4096": {
+        "ttft_ms": 363.34,
+        "itl_ms": 28.788,
+        "peak_memory_gb": 16.061
+      },
+      "8192": {
+        "ttft_ms": 835.73,
+        "itl_ms": 40.012,
+        "peak_memory_gb": 17.623
+      },
+      "16384": {
+        "ttft_ms": 1928.01,
+        "itl_ms": 61.948,
+        "peak_memory_gb": 20.748
+      }
+    },
+    "streamingllm": {
+      "512": {
+        "ttft_ms": 45.37,
+        "itl_ms": 32.343,
+        "peak_memory_gb": 14.695
+      },
+      "1024": {
+        "ttft_ms": 86.74,
+        "itl_ms": 25.004,
+        "peak_memory_gb": 14.883
+      },
+      "2048": {
+        "ttft_ms": 169.29,
+        "itl_ms": 24.986,
+        "peak_memory_gb": 15.161
+      },
+      "4096": {
+        "ttft_ms": 367.95,
+        "itl_ms": 24.936,
+        "peak_memory_gb": 15.652
+      },
+      "8192": {
+        "ttft_ms": 845.12,
+        "itl_ms": 24.918,
+        "peak_memory_gb": 16.677
+      },
+      "16384": {
+        "ttft_ms": 1930.81,
+        "itl_ms": 24.913,
+        "peak_memory_gb": 18.729
+      }
+    },
+    "h2o": {
+      "512": {
+        "ttft_ms": 45.43,
+        "itl_ms": 24.615,
+        "peak_memory_gb": 14.695
+      },
+      "1024": {
+        "ttft_ms": 86.86,
+        "itl_ms": 25.064,
+        "peak_memory_gb": 14.883
+      },
+      "2048": {
+        "ttft_ms": 169.42,
+        "itl_ms": 45.918,
+        "peak_memory_gb": 15.183
+      },
+      "4096": {
+        "ttft_ms": 367.81,
+        "itl_ms": 24.975,
+        "peak_memory_gb": 15.652
+      },
+      "8192": {
+        "ttft_ms": 837.61,
+        "itl_ms": 24.994,
+        "peak_memory_gb": 16.677
+      },
+      "16384": {
+        "ttft_ms": 1919.87,
+        "itl_ms": 24.989,
+        "peak_memory_gb": 18.729
+      }
+    },
+    "snapkv": {
+      "512": {
+        "ttft_ms": 45.14,
+        "itl_ms": 24.586,
+        "peak_memory_gb": 14.695
+      },
+      "1024": {
+        "ttft_ms": 87.49,
+        "itl_ms": 25.075,
+        "peak_memory_gb": 14.883
+      },
+      "2048": {
+        "ttft_ms": 167.97,
+        "itl_ms": 25.065,
+        "peak_memory_gb": 15.199
+      },
+      "4096": {
+        "ttft_ms": 365.6,
+        "itl_ms": 25.029,
+        "peak_memory_gb": 15.652
+      },
+      "8192": {
+        "ttft_ms": 833.79,
+        "itl_ms": 25.026,
+        "peak_memory_gb": 16.677
+      },
+      "16384": {
+        "ttft_ms": 1910.47,
+        "itl_ms": 24.995,
+        "peak_memory_gb": 18.729
+      }
+    },
+    "tieredkv": {
+      "512": {
+        "ttft_ms": 45.36,
+        "itl_ms": 24.798,
+        "peak_memory_gb": 14.846
+      },
+      "1024": {
+        "ttft_ms": 86.35,
+        "itl_ms": 24.901,
+        "peak_memory_gb": 15.073
+      },
+      "2048": {
+        "ttft_ms": 167.83,
+        "itl_ms": 24.902,
+        "peak_memory_gb": 15.281
+      },
+      "4096": {
+        "ttft_ms": 362.36,
+        "itl_ms": 24.908,
+        "peak_memory_gb": 15.696
+      },
+      "8192": {
+        "ttft_ms": 836.22,
+        "itl_ms": 24.907,
+        "peak_memory_gb": 16.592
+      },
+      "16384": {
+        "ttft_ms": 1902.43,
+        "itl_ms": 24.904,
+        "peak_memory_gb": 18.643
+      }
+    }
+  }
+}

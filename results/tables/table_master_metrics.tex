@@ -1,0 +1,18 @@
+\begin{table*}[t]
+\centering
+\small
+\setlength{\tabcolsep}{4pt}
+\caption{Master results: accuracy (mean $\pm$ SE, n=25/10), measured ITL@16k, resident KV, attended tokens, write savings, analytical energy. TieredKV at 1024 VRAM + 2048 STT, bf16.}
+\label{tab:master}
+\begin{tabular}{lcccccc}
+\toprule
+\textbf{Method} & \textbf{Avg F1 $\pm$ SE} & \textbf{ITL@16k (ms)} & \textbf{Resident KV} & \textbf{Attended} & \textbf{Write sav.} & \textbf{Energy (J)} \\
+\midrule
+Full Cache & 43.89 $\pm$ 2.30 & 61.7 & 4.03 GB@31.5k & full ctx & -- & 434.3 \\
+StreamingLLM & 34.08 $\pm$ 2.26 & 24.7 & 134 MB & 1024 & -- & 73.1 \\
+H2O & 35.63 $\pm$ 2.27 & 24.8 & 134 MB & 1024 & -- & 72.0 \\
+SnapKV & 35.86 $\pm$ 2.22 & 24.8 & 134 MB & 1024 & -- & 75.5 \\
+\textbf{TieredKV (Ours)} & 36.58 $\pm$ 2.23 & 25.1 & 403 MB & 1024+32 & 13.0 & 71.4 \\
+\bottomrule
+\end{tabular}
+\end{table*}

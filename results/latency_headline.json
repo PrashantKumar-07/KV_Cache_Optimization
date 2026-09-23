@@ -1,0 +1,188 @@
+{
+  "config": {
+    "model": "/data/nishant/Nishant/Prashant/models/mistral-7b-instruct",
+    "output": "results/latency_headline.json",
+    "ctx_lens": [
+      512,
+      1024,
+      2048,
+      4096,
+      8192,
+      16384
+    ],
+    "budget": 1024,
+    "n_decode": 50,
+    "n_repeat": 3,
+    "n_warmup": 1,
+    "methods": [
+      "full",
+      "streamingllm",
+      "h2o",
+      "snapkv",
+      "tieredkv"
+    ],
+    "device": "cuda"
+  },
+  "results": {
+    "full": {
+      "512": {
+        "ttft_ms": 44.26,
+        "itl_ms": 24.382,
+        "peak_memory_gb": 14.695
+      },
+      "1024": {
+        "ttft_ms": 82.46,
+        "itl_ms": 24.699,
+        "peak_memory_gb": 14.891
+      },
+      "2048": {
+        "ttft_ms": 160.77,
+        "itl_ms": 25.543,
+        "peak_memory_gb": 15.284
+      },
+      "4096": {
+        "ttft_ms": 351.32,
+        "itl_ms": 28.552,
+        "peak_memory_gb": 16.07
+      },
+      "8192": {
+        "ttft_ms": 812.04,
+        "itl_ms": 39.657,
+        "peak_memory_gb": 17.64
+      },
+      "16384": {
+        "ttft_ms": 1902.18,
+        "itl_ms": 61.748,
+        "peak_memory_gb": 20.782
+      }
+    },
+    "streamingllm": {
+      "512": {
+        "ttft_ms": 45.18,
+        "itl_ms": 24.377,
+        "peak_memory_gb": 14.695
+      },
+      "1024": {
+        "ttft_ms": 85.95,
+        "itl_ms": 24.73,
+        "peak_memory_gb": 14.885
+      },
+      "2048": {
+        "ttft_ms": 170.39,
+        "itl_ms": 24.693,
+        "peak_memory_gb": 15.16
+      },
+      "4096": {
+        "ttft_ms": 364.44,
+        "itl_ms": 24.711,
+        "peak_memory_gb": 15.654
+      },
+      "8192": {
+        "ttft_ms": 846.28,
+        "itl_ms": 24.716,
+        "peak_memory_gb": 16.68
+      },
+      "16384": {
+        "ttft_ms": 1931.5,
+        "itl_ms": 24.713,
+        "peak_memory_gb": 18.731
+      }
+    },
+    "h2o": {
+      "512": {
+        "ttft_ms": 45.19,
+        "itl_ms": 24.372,
+        "peak_memory_gb": 14.695
+      },
+      "1024": {
+        "ttft_ms": 87.12,
+        "itl_ms": 24.793,
+        "peak_memory_gb": 14.885
+      },
+      "2048": {
+        "ttft_ms": 170.88,
+        "itl_ms": 24.763,
+        "peak_memory_gb": 15.182
+      },
+      "4096": {
+        "ttft_ms": 365.16,
+        "itl_ms": 24.763,
+        "peak_memory_gb": 15.654
+      },
+      "8192": {
+        "ttft_ms": 832.73,
+        "itl_ms": 24.792,
+        "peak_memory_gb": 16.68
+      },
+      "16384": {
+        "ttft_ms": 1905.91,
+        "itl_ms": 24.762,
+        "peak_memory_gb": 18.731
+      }
+    },
+    "snapkv": {
+      "512": {
+        "ttft_ms": 45.22,
+        "itl_ms": 24.374,
+        "peak_memory_gb": 14.695
+      },
+      "1024": {
+        "ttft_ms": 85.56,
+        "itl_ms": 24.772,
+        "peak_memory_gb": 14.885
+      },
+      "2048": {
+        "ttft_ms": 169.38,
+        "itl_ms": 24.774,
+        "peak_memory_gb": 15.198
+      },
+      "4096": {
+        "ttft_ms": 366.18,
+        "itl_ms": 24.779,
+        "peak_memory_gb": 15.654
+      },
+      "8192": {
+        "ttft_ms": 844.91,
+        "itl_ms": 24.803,
+        "peak_memory_gb": 16.68
+      },
+      "16384": {
+        "ttft_ms": 1929.06,
+        "itl_ms": 24.758,
+        "peak_memory_gb": 18.731
+      }
+    },
+    "tieredkv": {
+      "512": {
+        "ttft_ms": 45.16,
+        "itl_ms": 24.501,
+        "peak_memory_gb": 14.805
+      },
+      "1024": {
+        "ttft_ms": 85.58,
+        "itl_ms": 24.977,
+        "peak_memory_gb": 15.109
+      },
+      "2048": {
+        "ttft_ms": 167.85,
+        "itl_ms": 25.022,
+        "peak_memory_gb": 15.456
+      },
+      "4096": {
+        "ttft_ms": 363.31,
+        "itl_ms": 25.096,
+        "peak_memory_gb": 16.007
+      },
+      "8192": {
+        "ttft_ms": 829.76,
+        "itl_ms": 25.095,
+        "peak_memory_gb": 16.84
+      },
+      "16384": {
+        "ttft_ms": 1905.55,
+        "itl_ms": 25.122,
+        "peak_memory_gb": 18.735
+      }
+    }
+  }
+}
