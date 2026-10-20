@@ -1,0 +1,23 @@
+{
+  "review": "No algorithmic blocker found in deterministic five-method timing harness",
+  "runner_sha256": "7f347c62fb499e428dbae04ef7dfe67d5190e2e8a4ac556800568e10db25f06a",
+  "checked_source": [
+    "experiments/latency_profile.py",
+    "results/full_evaluation_20261015/run_full.py"
+  ],
+  "confirmed": [
+    "Synchronized complete forward+policy+feedback+host-visible token delivery",
+    "identical fixed teacher stream across arms",
+    "SDPA prefill, strongest SDPA Full/Streaming, eager required-feedback methods",
+    "same finite-logit checks on every model call",
+    "50 decode forwards per measured row,3rows per arm/context",
+    "quiet physicalGPU1 checks before model and before/after each row",
+    "cleanup hook count restored after each arm"
+  ],
+  "conditions": [
+    "Actual process must be bound to CUDA_VISIBLE_DEVICES=1; physical quiet guard alone does not bind model device",
+    "Three rotated/reversed orders are predetermined but not exact position-balanced Latin design; descriptive claims only",
+    "Quiet guard samples boundaries; does not establish complete CPU/thermal isolation or detect all transient GPU contention"
+  ],
+  "gpu_measurement_performed_by_reviewer": false
+}

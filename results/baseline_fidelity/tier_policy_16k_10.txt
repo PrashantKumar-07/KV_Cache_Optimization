@@ -1,0 +1,78 @@
+         331171 function calls (319576 primitive calls) in 3.541 seconds
+
+   Ordered by: cumulative time
+   List reduced from 391 to 70 due to restriction <70>
+
+   ncalls  tottime  percall  cumtime  percall filename:lineno(function)
+     12/1    0.000    0.000    3.542    3.542 /home/nishant/.local/lib/python3.10/site-packages/torch/utils/_contextlib.py:113(decorate_context)
+        1    0.001    0.001    3.542    3.542 /data/nishant/Nishant/Prashant/Project/kv_cache/experiments/latency_profile.py:51(profile_one)
+    22/11    0.001    0.000    3.420    0.311 /data/nishant/Nishant/Prashant/Project/kv_cache/experiments/latency_profile.py:20(cuda_sync_time)
+        1    0.000    0.000    2.555    2.555 /data/nishant/Nishant/Prashant/Project/kv_cache/experiments/latency_profile.py:71(prefill)
+       44    0.000    0.000    1.259    0.029 /home/nishant/.local/lib/python3.10/site-packages/torch/cuda/__init__.py:944(synchronize)
+       44    1.257    0.029    1.257    0.029 {built-in method torch._C._cuda_synchronize}
+  4674/11    0.005    0.000    1.157    0.105 /home/nishant/.local/lib/python3.10/site-packages/torch/nn/modules/module.py:1732(_wrapped_call_impl)
+  4674/11    0.011    0.000    1.157    0.105 /home/nishant/.local/lib/python3.10/site-packages/torch/nn/modules/module.py:1740(_call_impl)
+       11    0.000    0.000    1.156    0.105 /home/nishant/.local/lib/python3.10/site-packages/transformers/utils/generic.py:905(wrapper)
+       11    0.000    0.000    1.156    0.105 /home/nishant/.local/lib/python3.10/site-packages/transformers/models/mistral/modeling_mistral.py:416(forward)
+       11    0.000    0.000    1.155    0.105 /home/nishant/.local/lib/python3.10/site-packages/transformers/utils/generic.py:978(wrapper)
+       11    0.000    0.000    1.154    0.105 /home/nishant/.local/lib/python3.10/site-packages/transformers/utils/output_capturing.py:231(wrapper)
+       11    0.001    0.000    1.151    0.105 /home/nishant/.local/lib/python3.10/site-packages/transformers/models/mistral/modeling_mistral.py:345(forward)
+      352    0.001    0.000    0.976    0.003 /home/nishant/.local/lib/python3.10/site-packages/transformers/modeling_layers.py:76(__call__)
+      352    0.026    0.000    0.969    0.003 /home/nishant/.local/lib/python3.10/site-packages/transformers/models/mistral/modeling_mistral.py:211(forward)
+       11    0.000    0.000    0.921    0.084 /data/nishant/Nishant/Prashant/Project/kv_cache/experiments/longbench_eval.py:617(__call__)
+        1    0.000    0.000    0.897    0.897 /data/nishant/Nishant/Prashant/Project/kv_cache/experiments/latency_profile.py:75(<lambda>)
+       10    0.000    0.000    0.862    0.086 /data/nishant/Nishant/Prashant/Project/kv_cache/experiments/latency_profile.py:91(decode)
+  672/352    0.005    0.000    0.715    0.002 /home/nishant/.local/lib/python3.10/site-packages/torch/nn/modules/module.py:1752(inner)
+       10    0.020    0.002    0.497    0.050 /data/nishant/Nishant/Prashant/Project/kv_cache/experiments/longbench_eval.py:814(_decode_step)
+      352    0.009    0.000    0.462    0.001 /home/nishant/.local/lib/python3.10/site-packages/transformers/models/mistral/modeling_mistral.py:139(forward)
+        1    0.005    0.005    0.423    0.423 /data/nishant/Nishant/Prashant/Project/kv_cache/experiments/longbench_eval.py:625(_bifurcate)
+       32    0.190    0.006    0.335    0.010 /data/nishant/Nishant/Prashant/Project/kv_cache/experiments/../src/tiered_kv_cache.py:169(initial_bifurcation)
+      320    0.105    0.000    0.269    0.001 /data/nishant/Nishant/Prashant/Project/kv_cache/experiments/../src/tiered_kv_cache.py:639(evict_and_demote)
+     2507    0.004    0.000    0.269    0.000 /home/nishant/.local/lib/python3.10/site-packages/torch/nn/modules/linear.py:124(forward)
+     2507    0.263    0.000    0.263    0.000 {built-in method torch._C._nn.linear}
+       10    0.000    0.000    0.260    0.026 /data/nishant/Nishant/Prashant/Project/kv_cache/experiments/latency_profile.py:93(<lambda>)
+      715    0.075    0.000    0.245    0.000 /home/nishant/.local/lib/python3.10/site-packages/transformers/models/mistral/modeling_mistral.py:191(forward)
+      352    0.138    0.000    0.182    0.001 /home/nishant/.local/lib/python3.10/site-packages/transformers/models/mistral/modeling_mistral.py:58(apply_rotary_pos_emb)
+      352    0.008    0.000    0.163    0.000 /data/nishant/Nishant/Prashant/Project/kv_cache/experiments/evaluate_query_selection.py:98(capture)
+     5515    0.129    0.000    0.129    0.000 {built-in method torch.cat}
+       11    0.027    0.002    0.120    0.011 /data/nishant/Nishant/Prashant/Project/kv_cache/experiments/longbench_eval.py:686(_visible_tuple)
+        1    0.000    0.000    0.120    0.120 /home/nishant/.local/lib/python3.10/site-packages/transformers/tokenization_utils_base.py:2430(__call__)
+        1    0.000    0.000    0.120    0.120 /home/nishant/.local/lib/python3.10/site-packages/transformers/tokenization_utils_tokenizers.py:857(_encode_plus)
+     5976    0.106    0.000    0.106    0.000 {method 'to' of 'torch._C.TensorBase' objects}
+       11    0.000    0.000    0.093    0.008 /home/nishant/.local/lib/python3.10/site-packages/transformers/modeling_rope_utils.py:120(wrapper)
+       11    0.076    0.007    0.093    0.008 /home/nishant/.local/lib/python3.10/site-packages/transformers/models/mistral/modeling_mistral.py:311(forward)
+     1046    0.092    0.000    0.092    0.000 {built-in method torch.tensor}
+        1    0.091    0.091    0.091    0.091 {method 'encode_batch' of 'tokenizers.Tokenizer' objects}
+      352    0.001    0.000    0.081    0.000 /home/nishant/.local/lib/python3.10/site-packages/transformers/cache_utils.py:1277(update)
+      352    0.001    0.000    0.080    0.000 /home/nishant/.local/lib/python3.10/site-packages/transformers/cache_utils.py:126(update)
+       10    0.020    0.002    0.076    0.008 /data/nishant/Nishant/Prashant/Project/kv_cache/experiments/longbench_eval.py:944(update_scores)
+      704    0.067    0.000    0.067    0.000 {built-in method torch.argsort}
+      352    0.006    0.000    0.065    0.000 /home/nishant/.local/lib/python3.10/site-packages/transformers/models/mistral/modeling_mistral.py:46(forward)
+       11    0.000    0.000    0.058    0.005 /home/nishant/.local/lib/python3.10/site-packages/torch/nn/modules/sparse.py:189(forward)
+      736    0.041    0.000    0.058    0.000 /home/nishant/.local/lib/python3.10/site-packages/transformers/models/mistral/modeling_mistral.py:51(rotate_half)
+       11    0.000    0.000    0.058    0.005 /home/nishant/.local/lib/python3.10/site-packages/torch/nn/functional.py:2437(embedding)
+       11    0.058    0.005    0.058    0.005 {built-in method torch.embedding}
+      320    0.006    0.000    0.053    0.000 /data/nishant/Nishant/Prashant/Project/kv_cache/experiments/../src/tiered_kv_cache.py:607(_hard_protected_mask)
+      480    0.052    0.000    0.053    0.000 {built-in method builtins.sorted}
+      320    0.009    0.000    0.052    0.000 /home/nishant/.local/lib/python3.10/site-packages/transformers/models/mistral/modeling_mistral.py:96(eager_attention_forward)
+       32    0.015    0.000    0.050    0.002 /data/nishant/Nishant/Prashant/Project/kv_cache/experiments/../src/attention.py:78(gqa_causal_importance)
+      320    0.017    0.000    0.048    0.000 /data/nishant/Nishant/Prashant/Project/kv_cache/experiments/../src/tiered_kv_cache.py:507(promote)
+     2336    0.045    0.000    0.045    0.000 {method 'tolist' of 'torch._C.TensorBase' objects}
+      320    0.018    0.000    0.041    0.000 /data/nishant/Nishant/Prashant/Project/kv_cache/experiments/../src/tiered_kv_cache.py:447(resolve_promotion_indices)
+     1024    0.001    0.000    0.038    0.000 /data/nishant/Nishant/Prashant/Project/kv_cache/experiments/../src/tiered_kv_cache.py:156(select_stt)
+     1024    0.035    0.000    0.035    0.000 /data/nishant/Nishant/Prashant/Project/kv_cache/experiments/../src/tiered_kv_cache.py:140(index_stt_storage)
+      715    0.033    0.000    0.033    0.000 {method 'pow' of 'torch._C.TensorBase' objects}
+      352    0.000    0.000    0.030    0.000 /home/nishant/.local/lib/python3.10/site-packages/transformers/activations.py:102(forward)
+      715    0.030    0.000    0.030    0.000 {built-in method torch.rsqrt}
+       32    0.030    0.001    0.030    0.001 /data/nishant/Nishant/Prashant/Project/kv_cache/experiments/../src/tiered_kv_cache.py:206(<listcomp>)
+      352    0.000    0.000    0.030    0.000 /home/nishant/.local/lib/python3.10/site-packages/torch/nn/functional.py:2358(silu)
+      352    0.030    0.000    0.030    0.000 {built-in method torch._C._nn.silu}
+        1    0.000    0.000    0.028    0.028 /home/nishant/.local/lib/python3.10/site-packages/transformers/tokenization_utils_base.py:224(__init__)
+        1    0.000    0.000    0.028    0.028 /home/nishant/.local/lib/python3.10/site-packages/transformers/tokenization_utils_base.py:676(convert_to_tensors)
+        2    0.000    0.000    0.028    0.014 /home/nishant/.local/lib/python3.10/site-packages/transformers/tokenization_utils_base.py:699(as_tensor)
+     1322    0.026    0.000    0.026    0.000 {built-in method torch.where}
+      320    0.004    0.000    0.026    0.000 /data/nishant/Nishant/Prashant/Project/kv_cache/experiments/../src/tiered_kv_cache.py:617(append_tokens)
+      352    0.025    0.000    0.025    0.000 {built-in method torch.isfinite}
+      672    0.025    0.000    0.025    0.000 {built-in method torch.matmul}
+
+

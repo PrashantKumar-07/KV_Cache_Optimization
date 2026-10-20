@@ -1,0 +1,307 @@
+{
+  "config": {
+    "model": "../models/mistral-7b-instruct",
+    "data_dir": "../hf_cache/datasets/downloads/extracted/5def9c7eaf83951e1cee75902d8611ef764ad88dd289e8f0bf97ff658a3eb83a/data",
+    "tasks": [
+      "multifieldqa_en",
+      "hotpotqa",
+      "triviaqa"
+    ],
+    "max_samples": 5,
+    "strategy": "query",
+    "seed": 0,
+    "max_ctx": 31500,
+    "tiered_vram_budget": 992,
+    "tiered_stt_budget": 3104,
+    "recent": 128,
+    "stt_expose_quota": 32,
+    "real_query_prefill": false,
+    "sttram_bifurcation_frac": 0.75,
+    "kv_dtype": "bfloat16",
+    "runtime": {
+      "git_revision": "be7e700d84d46b47e32ba5b9870c8b71783b9e53",
+      "source_sha256": "e8bf6bd3a3729bbbbd723062c06f9f73f3b29b3714c74e273b2cf4f2efbc3529",
+      "packages": {
+        "torch": "2.5.1+cu124",
+        "transformers": "5.14.1",
+        "datasets": "5.0.0",
+        "numpy": "2.2.6",
+        "accelerate": "1.14.0",
+        "huggingface_hub": "1.24.0",
+        "rouge": "1.0.1"
+      }
+    },
+    "selector_sha256": "c9e5a36768f9055169b244c11b2be45be8d4cafb56c7b248a07e1bb78eb7f695",
+    "dataset_sha256": {
+      "multifieldqa_en": "678a51335e3c90e0dd43bf1131045e4f2859cc693e7eded89cc6a1ee8d18faff",
+      "hotpotqa": "26a90a291cca5b2515bf466c6c3d1f57d8a4e67b0cf5aa39e1834913a15e6309",
+      "triviaqa": "3c4cc5ca18f2578d1f6458d1219387c741c6fafad7e8518addea898c08ff0d73"
+    }
+  },
+  "results": {
+    "multifieldqa_en": {
+      "tieredkv": {
+        "score": 54.28,
+        "n": 5,
+        "sample_scores": [
+          43.48,
+          100.0,
+          0.0,
+          75.0,
+          52.94
+        ],
+        "samples": [
+          {
+            "sample_id": "b3a9da1dd79b69143f46fb4ea37f3159f11a4585b68604cbda50c0adf4da65a1",
+            "prediction": "Permanent damage to the screen, such as yellow spots or yellowing, may occur if the VR headset lenses are exposed to direct sunlight or strong light sources. This damage is not covered by the warranty.",
+            "score": 43.47826086956522,
+            "elapsed_s": 7.825352467596531,
+            "prompt_tokens": 6689,
+            "generated_tokens": 46,
+            "final_resident_kv_payload_bytes": 456200192,
+            "prefill_s": 1.2492432333528996,
+            "prefill_peak_alloc_bytes": 16431011840
+          },
+          {
+            "sample_id": "66fbe72f15b70e8c8cc090467f3ac90f03c8fb6063e3346cd82d7778cd7b1cf9",
+            "prediction": "Vice Admiral",
+            "score": 100.0,
+            "elapsed_s": 0.6909019872546196,
+            "prompt_tokens": 3463,
+            "generated_tokens": 3,
+            "final_resident_kv_payload_bytes": 440004608,
+            "prefill_s": 0.40221044048666954,
+            "prefill_peak_alloc_bytes": 15784446976
+          },
+          {
+            "sample_id": "49117774123dc2f3ec95d7bbc61950987252760875cec6cac53ff18be0913744",
+            "prediction": "William Rokebye",
+            "score": 0.0,
+            "elapsed_s": 1.5346786007285118,
+            "prompt_tokens": 8098,
+            "generated_tokens": 5,
+            "final_resident_kv_payload_bytes": 439693312,
+            "prefill_s": 0.9555385578423738,
+            "prefill_peak_alloc_bytes": 16724077056
+          },
+          {
+            "sample_id": "816c7d4d2ca3f7843b2d0f795c0617530c81f992857280a719dc8801a10592cf",
+            "prediction": "South West Ultras",
+            "score": 74.99999999999999,
+            "elapsed_s": 0.7305804621428251,
+            "prompt_tokens": 1892,
+            "generated_tokens": 5,
+            "final_resident_kv_payload_bytes": 253267968,
+            "prefill_s": 0.21563220582902431,
+            "prefill_peak_alloc_bytes": 15265074176
+          },
+          {
+            "sample_id": "670c6b828aaca397f191fff5fc6422ec944d1f3e88cfa9c9a853369093e10caa",
+            "prediction": "The recommended space for using the VR headset is at least 2 meters by 2 meters in an open and safe indoor area.",
+            "score": 52.94117647058824,
+            "elapsed_s": 4.80970810726285,
+            "prompt_tokens": 6683,
+            "generated_tokens": 29,
+            "final_resident_kv_payload_bytes": 450732032,
+            "prefill_s": 0.772798839956522,
+            "prefill_peak_alloc_bytes": 16427572736
+          }
+        ],
+        "cache_stats": {
+          "demoted": 52619,
+          "promoted": 49963,
+          "promotions_deferred": 35029,
+          "paid_writes": 12518,
+          "writes_saved": 40101,
+          "dropped": 0,
+          "write_savings_pct": 76.2,
+          "decode_steps": 83,
+          "stt_starved_steps": 0,
+          "stt_unused_steps": 0,
+          "mean_stt_exposed": 32.0,
+          "stt_expose_quota": 32,
+          "stt_exposed_total": 2816,
+          "stt_exposure_samples": 88,
+          "modeled_latency_us": 27944.3,
+          "modeled_energy_nj": 1072721100.8
+        }
+      }
+    },
+    "hotpotqa": {
+      "tieredkv": {
+        "score": 44.71,
+        "n": 5,
+        "sample_scores": [
+          0.0,
+          100.0,
+          0.0,
+          100.0,
+          23.53
+        ],
+        "samples": [
+          {
+            "sample_id": "0c0f0d5cee81743cafef6ed82c3b65e9b05da0b919bdc6fe6e2a7933aa2ef4d8",
+            "prediction": "Kaiyuan",
+            "score": 0.0,
+            "elapsed_s": 1.4131350684911013,
+            "prompt_tokens": 7238,
+            "generated_tokens": 5,
+            "final_resident_kv_payload_bytes": 440008704,
+            "prefill_s": 0.8419755510985851,
+            "prefill_peak_alloc_bytes": 16549253632
+          },
+          {
+            "sample_id": "6492e6398e134ab31f4ffb3f52682ca976c2dab0a1448c511467b97369fc1e41",
+            "prediction": "McLaren Vale",
+            "score": 100.0,
+            "elapsed_s": 1.41255858913064,
+            "prompt_tokens": 6081,
+            "generated_tokens": 6,
+            "final_resident_kv_payload_bytes": 440664064,
+            "prefill_s": 0.694280868396163,
+            "prefill_peak_alloc_bytes": 16310252544
+          },
+          {
+            "sample_id": "7c389b4c5dd607d9058bc65eaad25d4ec918d063f37b10b574cc5126a2a68f96",
+            "prediction": "Munich",
+            "score": 0.0,
+            "elapsed_s": 0.8452129606157541,
+            "prompt_tokens": 4866,
+            "generated_tokens": 3,
+            "final_resident_kv_payload_bytes": 439713792,
+            "prefill_s": 0.5554453060030937,
+            "prefill_peak_alloc_bytes": 16065416704
+          },
+          {
+            "sample_id": "73e19e35aa87ae2f179e871c0d27acd402d88b82837c32994778eacc8d60c552",
+            "prediction": "Yes.",
+            "score": 100.0,
+            "elapsed_s": 0.42106898315250874,
+            "prompt_tokens": 1320,
+            "generated_tokens": 3,
+            "final_resident_kv_payload_bytes": 177614848,
+            "prefill_s": 0.16599507071077824,
+            "prefill_peak_alloc_bytes": 15077064192
+          },
+          {
+            "sample_id": "41191eabc26fdec603c468ba92998b8f71deb6380f21d30c1cc4adf259fb9d65",
+            "prediction": "Robert Z. Leonard is younger than Sinclair Hill. (Born in 1889 vs. Born in 1894)",
+            "score": 23.52941176470588,
+            "elapsed_s": 4.881475267931819,
+            "prompt_tokens": 3975,
+            "generated_tokens": 32,
+            "final_resident_kv_payload_bytes": 453525504,
+            "prefill_s": 0.44413126446306705,
+            "prefill_peak_alloc_bytes": 15890132480
+          }
+        ],
+        "cache_stats": {
+          "demoted": 30853,
+          "promoted": 29445,
+          "promotions_deferred": 15611,
+          "paid_writes": 9247,
+          "writes_saved": 21606,
+          "dropped": 0,
+          "write_savings_pct": 70.0,
+          "decode_steps": 44,
+          "stt_starved_steps": 0,
+          "stt_unused_steps": 0,
+          "mean_stt_exposed": 32.0,
+          "stt_expose_quota": 32,
+          "stt_exposed_total": 1568,
+          "stt_exposure_samples": 49,
+          "modeled_latency_us": 15938.2,
+          "modeled_energy_nj": 571739799.6
+        }
+      }
+    },
+    "triviaqa": {
+      "tieredkv": {
+        "score": 70.0,
+        "n": 5,
+        "sample_scores": [
+          50.0,
+          100.0,
+          100.0,
+          100.0,
+          0.0
+        ],
+        "samples": [
+          {
+            "sample_id": "df36de52b2880247380eadc9e0d64947621dfcb5bf270238d8d1958a8d47216d",
+            "prediction": "Fruit and vegetables\n\nPassage:\nThe Great Fire of London\nThe Great Fire of London occurred on 2 September 1666,",
+            "score": 50.0,
+            "elapsed_s": 5.258676061406732,
+            "prompt_tokens": 6444,
+            "generated_tokens": 32,
+            "final_resident_kv_payload_bytes": 456040448,
+            "prefill_s": 0.7447680570185184,
+            "prefill_peak_alloc_bytes": 16387085824
+          },
+          {
+            "sample_id": "7e37de6fd411b09614fed0509e069d28f9eb704fa9c3c225dd04a50742bffe92",
+            "prediction": "GORDON JACKSON",
+            "score": 100.0,
+            "elapsed_s": 1.4447532575577497,
+            "prompt_tokens": 4719,
+            "generated_tokens": 7,
+            "final_resident_kv_payload_bytes": 442851328,
+            "prefill_s": 0.5453984010964632,
+            "prefill_peak_alloc_bytes": 16035710976
+          },
+          {
+            "sample_id": "15cce3999dfc3aa3827bf162ebbd870ec93abb5baa4ef21d2d15e4bc3f28616c",
+            "prediction": "Banjo",
+            "score": 100.0,
+            "elapsed_s": 1.0326411556452513,
+            "prompt_tokens": 5122,
+            "generated_tokens": 4,
+            "final_resident_kv_payload_bytes": 441905152,
+            "prefill_s": 0.5958797615021467,
+            "prefill_peak_alloc_bytes": 16112435712
+          },
+          {
+            "sample_id": "513517b60a1d25d618602c9feead352e013b6ca940bbfb62053892a6a363e663",
+            "prediction": "Augustus\n\n\nPassage:\nThe Great Gatsby by F. Scott Fitzgerald\nThe Great Gatsby by F. Scott",
+            "score": 100.0,
+            "elapsed_s": 4.2994061559438705,
+            "prompt_tokens": 2011,
+            "generated_tokens": 32,
+            "final_resident_kv_payload_bytes": 286412800,
+            "prefill_s": 0.22564456425607204,
+            "prefill_peak_alloc_bytes": 15303062528
+          },
+          {
+            "sample_id": "7a1e31b5e7ed8770a9bad9b33c75f30fcc4c84bfa943f1bd7c1318eff50f1f4f",
+            "prediction": "1859\nPassage:\nThe Great Barrier Reef\nThe Great Barrier Reef is the largest coral reef system in the",
+            "score": 0.0,
+            "elapsed_s": 5.108568532392383,
+            "prompt_tokens": 5037,
+            "generated_tokens": 32,
+            "final_resident_kv_payload_bytes": 459456512,
+            "prefill_s": 0.583049276843667,
+            "prefill_peak_alloc_bytes": 16099473408
+          }
+        ],
+        "cache_stats": {
+          "demoted": 67305,
+          "promoted": 64041,
+          "promotions_deferred": 40407,
+          "paid_writes": 20128,
+          "writes_saved": 47177,
+          "dropped": 0,
+          "write_savings_pct": 70.1,
+          "decode_steps": 102,
+          "stt_starved_steps": 0,
+          "stt_unused_steps": 0,
+          "mean_stt_exposed": 32.0,
+          "stt_expose_quota": 32,
+          "stt_exposed_total": 3424,
+          "stt_exposure_samples": 107,
+          "modeled_latency_us": 36147.2,
+          "modeled_energy_nj": 1322604494.8
+        }
+      }
+    }
+  }
+}

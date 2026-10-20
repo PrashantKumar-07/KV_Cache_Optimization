@@ -1,0 +1,25 @@
+# Thesis audit — restart checkpoint
+
+Read AGENTS.md and TASK_STATE.json, then verify the linked raw evidence and actual processes. The user requires proper publication-grade comparisons, genuine improvements, and validated original-style figures before the four-page IEEE paper. No SOTA win is established. The persistent research goal remains active.
+
+## Running and queued work
+
+- Official current GQA SnapKV: supervisor3511641, GPU1 worker3511708; inspect actual commandlines and results/audit_20261016_checkpoint/proper_comparison_status.json. Full-model selector preflight passed at8K/16K with24 full-vocabulary arrays and768 layer-KV pairs exact. Full1474 quality evaluation is running; strict independent verifier follows. Do not aggregate partial quality, duplicate jobs, or mutate the frozen source/runtime.
+- Official IceCache BF16 build/import is COMPLETE, not still compiling. Read results/proper_baselines_20261016/installed_receipt.json. Isolated Torch2.4/Transformers4.57 environment leaves main runtime unchanged. Build-only SM89/toolchain/dependency-cache changes are recorded; all build failures preserved.
+- IceCache GPU kernel/tiny non-offloaded model revised preflight supervisor3523533 waits for the GQA queue. Read icecache_preflight_v2_queue_status.json in the checkpoint directory. This is not pretrained7B/offloaded-index proof. Original31-token finite-budget test was stopped before execution: upstream does not initialize proj_vec for prompts<=64. Revised plan uses65/129 and preserves the unresolved defect; no algorithm source changed. Do not launch competing GPU jobs. Other user's GPU0 workload must remain untouched.
+- IceCache upstream projection layout defect reproduced: sequence-major keys were reshaped as head-major before indexing. See projection_layout_finding.json and projection_layout_correction.py in proper_baselines_20261016. Original upstream source remains intact. CPU correction checks passed; compiled official-index proof dci_projection_contract.json shows corrected/native C token-to-leaf/offset assignments match at1/2/8heads, original fails multi-head cases. Independent review and12-case HND page-layout proof passed; root verified hashes/outcomes. GPU/offloaded/full7B correctness and default wall-clock-seeded index RNG design remain unresolved; no benchmark/SOTA claim.
+
+## Verified outcomes to preserve
+
+- Full current evaluation: results/full_evaluation_20261015/verified_results.json,10318 real predictions across1474 records/7 configurations, zero recorded errors. Primary five-task Tieredhot992 minus faithful legacy Snap1024 = -1.36577 points,95%CI[-3.73347,0.33088]. No superiority; unequal resources disclosed. NarrativeQA has no untouched document groups. These final records are now consumed and must never tune new variants.
+- Source suite602 tests passed. Query-combination and grouped-retention screens failed. Exposure-prior135-development screen also FAILED its registered advancement gate: +0.55924 points CI[-0.18520,1.58811] versus old, -0.05914 versus legacy Snap. No adoption or expansion.800 fresh cross-task rows/635 target groups remain reserved and unscored.
+- Prior faithful legacy Snap/native timing rejected native advancement (~53 versus26ms/token). Preserve the loss. Ordinary-GPU figure4 likewise shows a timing loss; internal controller acceleration is not SOTA acceleration.
+- Figures1/2/3/4/6/7/11/12/14 are deployed from matching actual verified runs, with raw provenance and original style. Main adapted functional-control panels are not SOTA evidence. Architecture SVG/PDF/PNG redesigned with concrete buffers/control. Fig3 only paid/avoided decode writes, excludes initial cold placement. Fig8/15 remain pending.
+
+## Priority and remaining gates
+
+Proper upstream comparisons first. Headroom ablation is DEFERRED; old supervisors3507865/3511556 and worker3511508 stopped, partial records preserved. Do not resume obsolete queues. Same initial1024 budget is descriptive, not equal whole-memory fairness. Read proper_baselines_20261016/comparison_contract.json; freeze exact GPU/CPU ceilings, actual resource trajectories, index costs, TTFT, fastest correct backends and common runtime controls before comparisons. Do not use consumed final outcomes for tuning. No additional adapted-baseline expansion.
+
+Complete broader audit, offload/model checks, fair quality/resource comparisons and validated figures before paper. Four old checklist files remain because whole-project file review is incomplete; exact archives already exist. Preserve all historical failures and preexisting dirty edits. Update these existing entrypoints at meaningful checkpoints rather than creating competing checklist documents.
+
+Use ../venv_kvcache/bin/python literally from this directory (do not resolve its symlink). IceCache uses its separately pinned venv under results/proper_baselines_20261016. Inspect ps, nvidia-smi, plan hashes, completion flags and logs before launch. Never infer completion from old prose or idle GPUs.

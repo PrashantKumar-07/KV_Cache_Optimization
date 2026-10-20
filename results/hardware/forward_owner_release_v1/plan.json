@@ -1,0 +1,41 @@
+{
+  "timestamp": "2026-10-02T20:45:58.969758+00:00",
+  "hypothesis": "Policy hot views keep old DynamicLayer input storage alive when model update replaces it. Clear only policy KV references before one-token forward and restore exact hot prefixes from the updated same DynamicCache afterward, including exceptions.",
+  "control": "Frozen research-only RawInputPolicy standardTorch compaction, default host allocator/caller; candidate adds only validated temporary forward ownership release and consumes restored hot prefix for existing payload reuse.",
+  "control_proof_sha256": "144fba29472053295bad1f909ad197a6f22244d68edb4e89bf1e50755a18e52b",
+  "raw_policy_sha256": "42199dcddc1a1ad154360d9b6a95a7e9d4e696fda89d3b8b918f663d3cee193d",
+  "dynamic_layer_update_sha256": "15d634e7095acc0e2c229a11eb387496e462b8c51dc4e5000cd330c7d4e58c75",
+  "model": "../models/mistral-7b-instruct",
+  "seed": 0,
+  "precision": "BF16KV/F32metadata",
+  "hardware": "GPU0L40S/model advisory lock; unrelated workloads untouched",
+  "geometries": {
+    "shared": [
+      991,
+      1090
+    ],
+    "default": [
+      1024,
+      2048
+    ]
+  },
+  "contexts": [
+    4096,
+    8192,
+    16384,
+    31500
+  ],
+  "decode": 12,
+  "primary": ">=10% lower whole-decode Torch allocated peak minus unique constant model storage plus actual owned pinned range. Whole-request/prefill and reserved scopes reported independently.",
+  "guards": {
+    "state_ids_history_counters_payload": "exact",
+    "median_decode_pct": 2,
+    "p95_decode_pct": 2,
+    "ttft_pct": 10,
+    "prefill_allocated_peak_pct": 2
+  },
+  "progression": "CPU exception/partial-update/fallback/no-owner-retention fixtures first; shared4-context public resource pilot; failed primary/correctness stops. Passing pilot advances usual geometry,3ABBA warm50-step timing and mandatory generation/lifecycle/stream/saturation/recycled-request stress before any ordinary adoption.",
+  "mechanism": "Read-only bit-prefix validation before release, same DynamicLayer torch.cat semantics. Save only DynamicCache container+primitive indices/row counts, never old KV tensors. Always-call posthook restores views; restored-prefix prepare bypasses duplicate backing bind and preserves original Bulk planner/metadata.",
+  "limits": "Experimental model hooks only scoped to one serial measure; no ordinary flag/default/controller/new kernel. Default host roots still256/512MiB; full512MiB equality may fail. Inspected quality holdouts untouched; no quality/SnapKV/physicalSTT/throughput claim.",
+  "source_bundle_sha256": "d8b503d1a8496922ade5d02a87e20e036225223574503550bbf8431db2e08e32"
+}

@@ -1,0 +1,309 @@
+{
+  "config": {
+    "model": "../models/mistral-7b-instruct",
+    "data_dir": "../hf_cache/datasets/downloads/extracted/5def9c7eaf83951e1cee75902d8611ef764ad88dd289e8f0bf97ff658a3eb83a/data",
+    "tasks": [
+      "qasper",
+      "narrativeqa",
+      "gov_report"
+    ],
+    "max_samples": 5,
+    "strategy": "lru",
+    "seed": 0,
+    "max_ctx": 31500,
+    "tiered_vram_budget": 992,
+    "tiered_stt_budget": 3104,
+    "recent": 128,
+    "stt_expose_quota": 32,
+    "real_query_prefill": false,
+    "query_score_mode": "chunked",
+    "query_chunk_size": 128,
+    "sttram_bifurcation_frac": 0.75,
+    "kv_dtype": "bfloat16",
+    "runtime": {
+      "git_revision": "be7e700d84d46b47e32ba5b9870c8b71783b9e53",
+      "source_sha256": "f81473a52b3aabcd383594d67c7f0b271fcee0c547773f8a6f6663d7cdfb194a",
+      "packages": {
+        "torch": "2.5.1+cu124",
+        "transformers": "5.14.1",
+        "datasets": "5.0.0",
+        "numpy": "2.2.6",
+        "accelerate": "1.14.0",
+        "huggingface_hub": "1.24.0",
+        "rouge": "1.0.1"
+      }
+    },
+    "selector_sha256": "1e390812c2f7e4d25e67f237961d548fb805913d88a76f4a3b9670f6b05f06b0",
+    "dataset_sha256": {
+      "qasper": "97d95c01221a17a2ce51f9180d65a671bf2998504a2ff0cccffe97e9b08444d8",
+      "narrativeqa": "0fb8d08ba5cdad4b74244224b0dc2e8b41ee6b850d954a13eb2d282621ce2f71",
+      "gov_report": "0a3902fcf3d49f228549f02a2ef1ae84dbe8578b8be3d4611d54459487bdef84"
+    }
+  },
+  "results": {
+    "qasper": {
+      "tieredkv": {
+        "score": 4.2,
+        "n": 5,
+        "sample_scores": [
+          0.0,
+          14.55,
+          6.45,
+          0.0,
+          0.0
+        ],
+        "samples": [
+          {
+            "sample_id": "3b91dce7ca41a9d16a1d0c61806c139db583a053ddb582bf79df3ff56f8e0344",
+            "prediction": "They selected Facebook pages based on intuition and availability, and further refined their choice based on performance on development data and label distribution. Specific pages are not mentioned in the article.",
+            "score": 0.0,
+            "elapsed_s": 4.377690406516194,
+            "prompt_tokens": 4895,
+            "generated_tokens": 37,
+            "final_resident_kv_payload_bytes": 445300736,
+            "prefill_s": 1.0446739215403795,
+            "prefill_peak_alloc_bytes": 16072915968
+          },
+          {
+            "sample_id": "5f59f94cd91401a55bcd3b6b24b78cd2c4c78e8ee6e7663e0ac8b97306444f08",
+            "prediction": "The latent context used to predict instructor intervention is not explicitly stated in the article. However, it can be inferred that the context is represented by a sequence of student posts and the model infers the context to predict intervention. Therefore, the context can be considered as a sequence of student posts leading up to the intervened post.",
+            "score": 14.545454545454545,
+            "elapsed_s": 6.7549342550337315,
+            "prompt_tokens": 5415,
+            "generated_tokens": 68,
+            "final_resident_kv_payload_bytes": 450031616,
+            "prefill_s": 0.607904439792037,
+            "prefill_peak_alloc_bytes": 16171674624
+          },
+          {
+            "sample_id": "9d37c5305ff63838fd6b7c96f13d10cfc388955672b1a629e5c0a8c2a89c520d",
+            "prediction": "In addition to F-scores, improvements in classification accuracy are demonstrated using Figure FIGREF22, which displays changes in F-score and Kappa statistics as the input training data size varies. (Figure not shown)\n\n(Note: The provided answer is based on the context of the article and assumes that the question refers to the evaluation metrics mentioned in the article. If the question has a different context, the answer may not be accurate.)",
+            "score": 6.451612903225806,
+            "elapsed_s": 9.101989176124334,
+            "prompt_tokens": 5549,
+            "generated_tokens": 93,
+            "final_resident_kv_payload_bytes": 452648960,
+            "prefill_s": 0.6169854551553726,
+            "prefill_peak_alloc_bytes": 16202172416
+          },
+          {
+            "sample_id": "5b60c062453de695f70d5f313a868a3c630068a85084fc9c456760f41e84d0f3",
+            "prediction": "The baselines were not explicitly stated in the provided information.",
+            "score": 0.0,
+            "elapsed_s": 1.682605927810073,
+            "prompt_tokens": 5175,
+            "generated_tokens": 13,
+            "final_resident_kv_payload_bytes": 441057280,
+            "prefill_s": 0.5804377309978008,
+            "prefill_peak_alloc_bytes": 16132271616
+          },
+          {
+            "sample_id": "a25d41e770a5f1816e04f39227fecd7dfcd9b83b25842e413d0f8fcb447b2092",
+            "prediction": "jiant is specifically designed for use with models implemented in Python and PyTorch.",
+            "score": 0.0,
+            "elapsed_s": 2.003525957465172,
+            "prompt_tokens": 3956,
+            "generated_tokens": 18,
+            "final_resident_kv_payload_bytes": 441901056,
+            "prefill_s": 0.4357171691954136,
+            "prefill_peak_alloc_bytes": 15884542464
+          }
+        ],
+        "cache_stats": {
+          "demoted": 119424,
+          "promoted": 112256,
+          "promotions_deferred": 117120,
+          "paid_writes": 13463,
+          "writes_saved": 105961,
+          "dropped": 0,
+          "write_savings_pct": 88.7,
+          "decode_steps": 224,
+          "stt_starved_steps": 0,
+          "stt_unused_steps": 0,
+          "mean_stt_exposed": 32.0,
+          "stt_expose_quota": 32,
+          "stt_exposed_total": 7328,
+          "stt_exposure_samples": 229,
+          "modeled_latency_us": 66703.8,
+          "modeled_energy_nj": 2871376871.4
+        }
+      }
+    },
+    "narrativeqa": {
+      "tieredkv": {
+        "score": 18.53,
+        "n": 5,
+        "sample_scores": [
+          18.18,
+          11.11,
+          33.33,
+          30.0,
+          0.0
+        ],
+        "samples": [
+          {
+            "sample_id": "27a07bedff812ae2c3fece3ac4a1f1db11f00793a3598fa94f1fa286ea347cb9",
+            "prediction": "Saltram is an inmate of the Maddocks, living with them and receiving a magnificent income from The Coxon Fund.",
+            "score": 18.181818181818183,
+            "elapsed_s": 7.225616013631225,
+            "prompt_tokens": 31500,
+            "generated_tokens": 29,
+            "final_resident_kv_payload_bytes": 442941440,
+            "prefill_s": 4.629855934530497,
+            "prefill_peak_alloc_bytes": 22383308800
+          },
+          {
+            "sample_id": "dfeb4058f4507fa2d2a6f80f6c230cc08e3c7eaa8221bead1ccee5ba90a57488",
+            "prediction": "Ann is unable to return Mary's feelings of affection.",
+            "score": 11.11111111111111,
+            "elapsed_s": 5.773462396115065,
+            "prompt_tokens": 31500,
+            "generated_tokens": 13,
+            "final_resident_kv_payload_bytes": 440877056,
+            "prefill_s": 4.672254625707865,
+            "prefill_peak_alloc_bytes": 22382604288
+          },
+          {
+            "sample_id": "b75b8f1d9f0027543e6f4d84ca94997765d41f9a6eda749df309b0070caee3d8",
+            "prediction": "The witch lives on Atlas.",
+            "score": 33.33333333333333,
+            "elapsed_s": 1.8017585221678019,
+            "prompt_tokens": 9674,
+            "generated_tokens": 8,
+            "final_resident_kv_payload_bytes": 440266752,
+            "prefill_s": 1.1510943695902824,
+            "prefill_peak_alloc_bytes": 17036815872
+          },
+          {
+            "sample_id": "5f2d99ab2d103d5f04d78f3e7a3b76f633fabeab2eb86a785cf76ed7ac77249e",
+            "prediction": "Crito visited to persuade Socrates to escape from prison.",
+            "score": 30.0,
+            "elapsed_s": 2.480565346777439,
+            "prompt_tokens": 9887,
+            "generated_tokens": 15,
+            "final_resident_kv_payload_bytes": 441143296,
+            "prefill_s": 1.183046218007803,
+            "prefill_peak_alloc_bytes": 17086821376
+          },
+          {
+            "sample_id": "254d602c75f8a37865dd7b4a2b7efbb25194b5064a29a07d7038b92d6add6c3d",
+            "prediction": "Baron Henry spared Otto's life.",
+            "score": 0.0,
+            "elapsed_s": 5.6480221301317215,
+            "prompt_tokens": 31500,
+            "generated_tokens": 10,
+            "final_resident_kv_payload_bytes": 440446976,
+            "prefill_s": 4.809527941048145,
+            "prefill_peak_alloc_bytes": 22382604288
+          }
+        ],
+        "cache_stats": {
+          "demoted": 38112,
+          "promoted": 35872,
+          "promotions_deferred": 35808,
+          "paid_writes": 7295,
+          "writes_saved": 30817,
+          "dropped": 0,
+          "write_savings_pct": 80.9,
+          "decode_steps": 70,
+          "stt_starved_steps": 0,
+          "stt_unused_steps": 0,
+          "mean_stt_exposed": 32.0,
+          "stt_expose_quota": 32,
+          "stt_exposed_total": 2400,
+          "stt_exposure_samples": 75,
+          "modeled_latency_us": 21940.0,
+          "modeled_energy_nj": 899692232.7
+        }
+      }
+    },
+    "gov_report": {
+      "tieredkv": {
+        "score": 27.96,
+        "n": 5,
+        "sample_scores": [
+          26.33,
+          32.0,
+          30.12,
+          22.42,
+          28.93
+        ],
+        "samples": [
+          {
+            "sample_id": "11d3fe7a8c5f9be5c05ff2b46002fae136e91f31575249f5c3db054f4d0715ad",
+            "prediction": "The report highlights the complexities and risks associated with the design and development of information systems for government agencies. The global IT supply chain introduces numerous security risks to federal information systems, which could jeopardize the confidentiality, integrity, and availability of federal information. The report emphasizes that without proper assessment, management, and monitoring of IT supply chain risks, agencies could face significant consequences.\n\nThe report outlines various measures that government agencies can take to mitigate these risks, including defining security measures, developing and implementing procedures, and creating monitoring capabilities. The report also mentions the efforts of four national security-related agencies to address supply chain security through interagency initiatives and technical offerings.\n\nThe report concludes by emphasizing the importance and urgency of federal agencies addressing IT supply chain risks as part of their overall information security programs. The report was produced by the Government Accountability Office (GAO) and is in the public domain.",
+            "score": 26.330531830300753,
+            "elapsed_s": 18.51902836561203,
+            "prompt_tokens": 3308,
+            "generated_tokens": 195,
+            "final_resident_kv_payload_bytes": 468369408,
+            "prefill_s": 0.3654887117445469,
+            "prefill_peak_alloc_bytes": 15743384064
+          },
+          {
+            "sample_id": "56f5a37dac322a67081fbbce0ee9261106133f38ac8b4f38fc3555f5b593969d",
+            "prediction": "The report by the Government Accountability Office (GAO) examines the compliance of the Departments of Health and Human Services (HHS), Labor (DOL), and Justice (DOJ) with statutory restrictions on religious-based hiring in grants awarded from 2007 to 2015. The report found that HHS did not identify any faith-based recipients of grants from the one grant program subject to a statutory restriction during this period. DOL and DOJ granted exemptions to nine and zero grantees, respectively. The exemptions were based on the grantees' belief that hiring individuals of a particular religion was a requirement for the organization's religious mission. The report also found that the agencies provided information on statutory restrictions to grantees through grant announcements and regulations. However, some grantees were unaware of the exemption process. The report recommends that the agencies improve their communication with grantees regarding the exemption process and provide more detailed information on the criteria for granting exemptions. The report was provided to the relevant departments and congressional committees, and will be made available to the public after a 30-day waiting period.",
+            "score": 31.9999995732898,
+            "elapsed_s": 24.337762873619795,
+            "prompt_tokens": 3548,
+            "generated_tokens": 255,
+            "final_resident_kv_payload_bytes": 479076352,
+            "prefill_s": 0.39700207114219666,
+            "prefill_peak_alloc_bytes": 15800904192
+          },
+          {
+            "sample_id": "32b69d9e2f01e5ad531164ef2b312ea36c6cf8a24dfd0b442779369d8cbd8e09",
+            "prediction": "This report provides an overview of cybersecurity-related bills and hearings in the United States Congress during the 115th and 116th sessions. In the 116th Congress, the House has passed four cybersecurity bills and the Senate one. A total of 31 bills received action in the 115th Congress. Five bills were signed into law, including the National Defense Authorization Act for Fiscal Year 2018, which established new cybersecurity initiatives, and the FITAR Act of 2017, which required agencies to improve their IT management. The report also lists cybersecurity-related hearings in the House and Senate during the 116th Congress. The tables in the report provide links to the committee websites for each hearing. The report notes that the list of hearings is not definitive as no single objective selection criterion was used. Overall, the report highlights the ongoing efforts of the United States Congress to address cybersecurity challenges through legislation and oversight.",
+            "score": 30.120481434968788,
+            "elapsed_s": 17.978217739611864,
+            "prompt_tokens": 1303,
+            "generated_tokens": 215,
+            "final_resident_kv_payload_bytes": 212471808,
+            "prefill_s": 0.16786096803843975,
+            "prefill_peak_alloc_bytes": 15072418816
+          },
+          {
+            "sample_id": "d1bba223842d90eab2f7962487cba597cea36944010060e21c010e1dbfbaeefe",
+            "prediction": "The report by the government agency found that in 2016, Customs and Border Protection (CBP) seized over 300,000 packages at the border, with approximately 60% being parcels and the rest being bulk cargo. Of these seizures, around 37,000 were from express consignments and 269,000 were from postal and courier services. The majority of seizures were due to prohibited or restricted goods, such as drugs, food, and counterfeit items.\n\nThe report also highlighted the use of Advanced Targeting System (ATS) by CBP to identify high-risk shipments for further inspection. ATS uses data from various sources, including trade data, shipper and consignee information, and previous seizure records, to assess the risk level of a shipment.\n\nHowever, the report noted that the use of ATS for postal and courier services is limited due to the lack of comprehensive data available from these services. The report recommended that CBP and the United States Postal Service (USPS) work together to improve data sharing and enhance the use of ATS for postal and courier services.\n\nThe report also discussed the costs and benefits of using Advanced Manifest System (AMS) data for targeting shipments for inspection. AMS is a system that requires importers to provide detailed information about the contents of their shipments before they arrive at the border. The report found that the use of AMS data for targeting shipments for inspection can be cost-effective and result in the seizure of prohibited or restricted goods.\n\nThe report concluded by emphasizing the importance of data sharing and collaboration between CBP and other agencies, such as USPS, to enhance border security and improve the efficiency of the import and export process.",
+            "score": 22.4215242217519,
+            "elapsed_s": 35.87599616125226,
+            "prompt_tokens": 2602,
+            "generated_tokens": 394,
+            "final_resident_kv_payload_bytes": 401969152,
+            "prefill_s": 0.29649639315903187,
+            "prefill_peak_alloc_bytes": 15519192576
+          },
+          {
+            "sample_id": "2124f6aefc1910cb6201bb8bef9916c102aeba694bace9e4d17237ba7d393b5b",
+            "prediction": "The report provides background information on the Navy's TAO-205 class oiler program, which aims to build 20 new oilers to support the Navy's fleet. The report discusses the program's background, issues, and current status. The Navy is requesting procurement funding for the fifth and sixth ships in the program in its FY2020 budget. The report highlights several issues for Congress to consider, including the Navy's request for procurement funding and the need for additional oilers to support the fleet's expansion. The report also notes that the Navy has made progress in the program, including completing the design and keeping to performance requirements. However, there have been schedule disruptions due to a dock incident, which has affected the delivery of future ships. The report concludes by noting that the program office is revising its acquisition baseline to reflect the updated quantity of 20 ships and has fully funded the third and fourth ships and advanced procurement for the fifth ship.",
+            "score": 28.925619359606593,
+            "elapsed_s": 20.49946649186313,
+            "prompt_tokens": 5421,
+            "generated_tokens": 214,
+            "final_resident_kv_payload_bytes": 472817664,
+            "prefill_s": 0.6143951900303364,
+            "prefill_peak_alloc_bytes": 16172267520
+          }
+        ],
+        "cache_stats": {
+          "demoted": 670656,
+          "promoted": 630080,
+          "promotions_deferred": 668352,
+          "paid_writes": 53458,
+          "writes_saved": 617198,
+          "dropped": 0,
+          "write_savings_pct": 92.0,
+          "decode_steps": 1268,
+          "stt_starved_steps": 0,
+          "stt_unused_steps": 0,
+          "mean_stt_exposed": 32.0,
+          "stt_expose_quota": 32,
+          "stt_exposed_total": 40736,
+          "stt_exposure_samples": 1273,
+          "modeled_latency_us": 369562.7,
+          "modeled_energy_nj": 16236670091.3
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "timestamp_utc": "2026-10-03T14:09:08.695028+00:00",
+  "hypothesis": "Cold timestamp batching is insufficient if even complete scoring elimination cannot save4ms. Measure current scorestage with real CPUphase property access and pooled GPU state versus zero work before implementing another fragmentary change.",
+  "settings": {
+    "layers": 32,
+    "attention_heads": 32,
+    "exposed": 32,
+    "geometries": [
+      [
+        649,
+        1982
+      ],
+      [
+        991,
+        1090
+      ]
+    ],
+    "blocks": 3,
+    "order": [
+      "current",
+      "zero_work",
+      "zero_work",
+      "current"
+    ],
+    "warmup": 4,
+    "measured": 20
+  },
+  "gate": "Current stage minus zero-work median>=4ms before developing score-only candidate. Zero-work is an optimistic ceiling, not a semantic alternative. Positive/zero/sparse BF16 score/state/timestamp parity between CPUphase-property fixture and plain-reference required.",
+  "reference": "experiments/batched_score_policy.py",
+  "reference_sha256": "da2b70facf9a6182d841224807ba6c834fe11c39004c991500689d3974457b2a"
+}

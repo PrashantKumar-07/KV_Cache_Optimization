@@ -1,0 +1,84 @@
+{
+  "CPU_only": true,
+  "seed": 7,
+  "threads": 1,
+  "torch": "2.5.1+cu124",
+  "source_sha256": {
+    "src/tiered_kv_cache.py": "d83687a9fd24128cfd9ea5db95d431435058322c9c23116e6c0f390a427aa0bd",
+    "src/cost_model.py": "a762d0fec5f0014be481d313a3d53ce3144f339df124e98414d8e95ab4ddd841",
+    "src/metrics.py": "0c4d89af1cfb468e86fbe3e8a000eb07306771e6d4e91e79909cefd6a0d77cca",
+    "src/baselines.py": "45fb479d1836bd7a49dd87628d2bb3878ad29352ed22525ad92aa5260bf00aa8"
+  },
+  "probes": [
+    {
+      "cold_dtype": "torch.bfloat16",
+      "initial_cold_rows": 32,
+      "identical_input_calls_each_reconstructed": 3,
+      "in_place_key_mutation_changes_bound": true,
+      "step_full_key_tensor_accesses": [
+        {
+          "elements": 256,
+          "bytes": 512
+        }
+      ],
+      "bound_elements": 32,
+      "computed_bound_bytes": 64,
+      "analytical_bound_bytes": 64,
+      "computed_bound_dtype": "torch.bfloat16",
+      "full_K_bytes_to_billed_metadata_ratio": 8.0,
+      "lat_sketch_us": 0.00128,
+      "sketch_MACs": 32
+    },
+    {
+      "cold_dtype": "torch.float8_e4m3fn",
+      "initial_cold_rows": 32,
+      "identical_input_calls_each_reconstructed": 3,
+      "in_place_key_mutation_changes_bound": true,
+      "step_full_key_tensor_accesses": [
+        {
+          "elements": 256,
+          "bytes": 256
+        }
+      ],
+      "bound_elements": 32,
+      "computed_bound_bytes": 64,
+      "analytical_bound_bytes": 32,
+      "computed_bound_dtype": "torch.bfloat16",
+      "full_K_bytes_to_billed_metadata_ratio": 8.0,
+      "lat_sketch_us": 0.00064,
+      "sketch_MACs": 32
+    }
+  ],
+  "dimensional_checks_passed": true,
+  "bandwidth_scenarios": [
+    {
+      "label": "commercial_2x1gb_ideal",
+      "1MB_read_us": 185.18518518518516,
+      "1MB_write_us": 185.18518518518516,
+      "1MB_read_nj": 16000.0,
+      "1MB_write_nj": 64000.0
+    },
+    {
+      "label": "pessimistic",
+      "1MB_read_us": 47.61904761904762,
+      "1MB_write_us": 190.47619047619048,
+      "1MB_read_nj": 16000.0,
+      "1MB_write_nj": 64000.0
+    },
+    {
+      "label": "nominal",
+      "1MB_read_us": 20.0,
+      "1MB_write_us": 80.0,
+      "1MB_read_nj": 16000.0,
+      "1MB_write_nj": 64000.0
+    },
+    {
+      "label": "optimistic",
+      "1MB_read_us": 10.0,
+      "1MB_write_us": 40.0,
+      "1MB_read_nj": 16000.0,
+      "1MB_write_nj": 64000.0
+    }
+  ],
+  "interpretation": "Tensor-access tracing demonstrates reconstruction semantics only; not physical traffic measurement. Full-K/bound ratio compares two alternative analytical boundaries; do not add full-K traffic to a declared ideal persistent-sketch model silently."
+}

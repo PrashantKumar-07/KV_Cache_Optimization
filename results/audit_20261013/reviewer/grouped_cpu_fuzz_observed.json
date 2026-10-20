@@ -1,0 +1,171 @@
+{
+  "record_type": "agent-observed CPU execution transcription; not a new test run",
+  "reviewer": "/root/fix_review",
+  "saved_utc": "2026-10-13T16:20:05.890980+00:00",
+  "source_basis": "Original frozen grouped_pilot/source.tar.gz, before zero-head malformed-input guards",
+  "source_sha256": {
+    "experiments/grouped_retention.py": "d4859416aee20932e7a0eff08d4ec8bb19869879b88bda3f17b314ba44692313",
+    "experiments/longbench_eval.py": "58c8e272152ac5618273a5a60919e9007988b1c9ece6b7907a16572495c1ced8",
+    "experiments/evaluate_query_selection.py": "8976018b30864371741ec62429b1200bba16f3c96cb71d543c4995cfcfb215b1",
+    "src/attention.py": "f0bba3edc349563118be9d6218c129c960a0fb0eb4a9d6d02dac5d809f9e4420",
+    "src/tiered_kv_cache.py": "d83687a9fd24128cfd9ea5db95d431435058322c9c23116e6c0f390a427aa0bd"
+  },
+  "execution_command": "../venv_kvcache/bin/python - (inline stdin CPU probe; full algorithm specification recorded below)",
+  "working_directory": "/data/nishant/Nishant/Prashant/Thesis/kv_cache",
+  "existing_test_command": "../venv_kvcache/bin/python -m pytest -q tests/test_grouped_retention.py",
+  "existing_tests_observed": "4 passed in 3.51s",
+  "no_drop_model_fuzz": {
+    "passed": true,
+    "case_count": 12,
+    "kv_heads_query_groups": [
+      [
+        1,
+        1
+      ],
+      [
+        1,
+        4
+      ],
+      [
+        2,
+        1
+      ],
+      [
+        2,
+        3
+      ],
+      [
+        4,
+        2
+      ],
+      [
+        8,
+        4
+      ]
+    ],
+    "dtypes": [
+      "float32",
+      "bfloat16"
+    ],
+    "seed": 91,
+    "threads": 1,
+    "model": "MistralConfig(num_hidden_layers=2,hidden_size=heads*groups*8,intermediate_size=heads*groups*16,num_attention_heads=heads*groups,num_key_value_heads=heads,vocab_size=128,max_position_embeddings=128,sliding_window=None,attn_implementation=eager)",
+    "policy": "sram_budget32,stt_budget32,start1,recent4,kv_dtype=modeldtype",
+    "inputs": "FixedTokenizer arange3..22, 20 tokens, max_gen5, CPU; install PromptQueryCapture on same model and each policy",
+    "reference": "TieredKVPolicy versus GroupedRetentionPolicy; same model weights",
+    "assertions": [
+      "identical predictions",
+      "each model-forward logits close rtol1e-5/atol1e-6",
+      "every final virtual-head hot position list equals corresponding global cache",
+      "final SRAM K and V per-head payload bitwise equal, rtol0/atol0"
+    ]
+  },
+  "synthetic_prior_feedback_fuzz": {
+    "passed": true,
+    "case_count": 4,
+    "head_counts_query_groups": [
+      [
+        [
+          1
+        ],
+        [
+          3
+        ]
+      ],
+      [
+        [
+          2,
+          4
+        ],
+        [
+          1,
+          3
+        ]
+      ],
+      [
+        [
+          4,
+          1,
+          2
+        ],
+        [
+          2,
+          4,
+          1
+        ]
+      ],
+      [
+        [
+          8,
+          8
+        ],
+        [
+          4,
+          4
+        ]
+      ]
+    ],
+    "shared_torch_rng": "Continuation of seed91 model-fuzz process",
+    "shape": "N31,W3,D6; random K/queries, deterministic per-head V=arange(heads*N)+1000*layer",
+    "policy": "sram6,stt10,start1,recent3,exposure3",
+    "reference_prior": "gqa_causal_importance(Q[head*groups:(head+1)*groups],K[head:head+1],pool_kernel=cache.cfg.pool_kernel,query_chunk128) indexed by selected SRAM absolute positions then multiplied by heads",
+    "reference_feedback": "Per corresponding query-head group mean over query heads and single query; add old-visible hot segment at _vis_sram_keep; cold segment matches position-key attention dict",
+    "assertions": [
+      "hot and cold K/V bitwise match original corresponding per-head rows",
+      "head count after packing correct",
+      "all actual queries consumed",
+      "prior scores match independent per-group scorer times original head count",
+      "SRAM feedback and cold attention match independent group mean",
+      "reset empties caches and head counts"
+    ]
+  },
+  "compressed_decode_fuzz": {
+    "passed": true,
+    "checked_virtual_head_step_states": 960,
+    "seed": 591,
+    "threads": 1,
+    "configuration_grid": {
+      "inclusive": [
+        true,
+        false
+      ],
+      "cold_fraction": [
+        0.75,
+        1.0
+      ],
+      "live_floor": [
+        0,
+        1
+      ]
+    },
+    "layers": 2,
+    "kv_heads": [
+      2,
+      4
+    ],
+    "query_groups": [
+      3,
+      2
+    ],
+    "shape": "N31,W3,D6",
+    "steps_per_case": 20,
+    "policy": "hot6,cold10,start1,recent3,exposure3,promotion3",
+    "algorithm": "Initialize random prompt K,V,Q; retain independent per-virtual-head truth dictionary absolute_position -> original K,V. Each step append random original-model-order single-token K,V; store truth at N+step; provide independent random softmax attention weights for original query heads; call grouped update_scores then policy. Compare every retained SRAM/STT row to its original per-head truth, including recycled/promoted/shadow rows. Iterate eight parameter combinations.",
+    "assertions": [
+      "all retained K and V bitwise match absolute-position oracle",
+      "hot<=6,cold<=10",
+      "positions unique within each tier",
+      "sink0 and three most recent absolute positions remain hot",
+      "cold shadow flag iff corresponding position remains hot",
+      "same packed visible width across layers",
+      "global decode_step_count equals number of forwards",
+      "double reset removes caches/head counts"
+    ]
+  },
+  "limitations": [
+    "CPU tiny/random and synthetic correctness tests only, not full-model task quality, GPU kernel/stream behavior, performance, total memory, or concurrency evidence.",
+    "Original stdin command bodies were executed without contemporaneous stdout files. This transcription preserves command, parameter grids, independent reference algorithms and observed outcomes; it does not claim a new rerun or a byte-identical saved original command body.",
+    "Exact query/weight zero-head malformed input was separately found and is unreachable in the actual fixed-head model pilot. Later source adds guards; frozen pilot source remains unchanged."
+  ],
+  "GPU_runs_performed_for_this_grouped_review": 0
+}

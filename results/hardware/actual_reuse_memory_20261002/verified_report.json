@@ -1,0 +1,119 @@
+{
+  "verified": true,
+  "fresh_processes": 8,
+  "preflight_cases": 6,
+  "geometries": {
+    "shared": {
+      "root_requested_bytes": 151257088,
+      "live_root_block_capacity_bytes": 268435456,
+      "root_padding_bytes": 117178368,
+      "exact_four_fresh_processes": true,
+      "arms": {
+        "fused_bounded": {
+          "whole_gpu_allocated_peak_bytes": 18627830784,
+          "whole_gpu_reserved_peak_bytes": 20600324096,
+          "decode_gpu_allocated_peak_bytes": 15826314240,
+          "final_gpu_allocated_bytes": [
+            14758694400,
+            14758694400
+          ],
+          "sampled_peak_rss_bytes": [
+            1881960448,
+            1881841664
+          ],
+          "host_cache_flush_rss_drop_bytes": [
+            270528512,
+            270532608
+          ]
+        },
+        "native_reuse": {
+          "whole_gpu_allocated_peak_bytes": 18627830784,
+          "whole_gpu_reserved_peak_bytes": 20600324096,
+          "decode_gpu_allocated_peak_bytes": 15826314240,
+          "final_gpu_allocated_bytes": [
+            14628879872,
+            14628879872
+          ],
+          "sampled_peak_rss_bytes": [
+            1881948160,
+            1881718784
+          ],
+          "host_cache_flush_rss_drop_bytes": [
+            270532608,
+            270532608
+          ]
+        }
+      },
+      "whole_gpu_peak_reduction_pct": 0.0,
+      "median_sampled_rss_change_bytes": -67584.0
+    },
+    "default": {
+      "root_requested_bytes": 276824064,
+      "live_root_block_capacity_bytes": 536870912,
+      "root_padding_bytes": 260046848,
+      "exact_four_fresh_processes": true,
+      "arms": {
+        "fused_bounded": {
+          "whole_gpu_allocated_peak_bytes": 18627830784,
+          "whole_gpu_reserved_peak_bytes": 20600324096,
+          "decode_gpu_allocated_peak_bytes": 15834124800,
+          "final_gpu_allocated_bytes": [
+            14767504896,
+            14767504896
+          ],
+          "sampled_peak_rss_bytes": [
+            2154938368,
+            2155220992
+          ],
+          "host_cache_flush_rss_drop_bytes": [
+            538968064,
+            538963968
+          ]
+        },
+        "native_reuse": {
+          "whole_gpu_allocated_peak_bytes": 18627830784,
+          "whole_gpu_reserved_peak_bytes": 20600324096,
+          "decode_gpu_allocated_peak_bytes": 15834124800,
+          "final_gpu_allocated_bytes": [
+            14633377280,
+            14633377280
+          ],
+          "sampled_peak_rss_bytes": [
+            2154962944,
+            2160021504
+          ],
+          "host_cache_flush_rss_drop_bytes": [
+            538968064,
+            538968064
+          ]
+        }
+      },
+      "whole_gpu_peak_reduction_pct": 0.0,
+      "median_sampled_rss_change_bytes": 2412544.0
+    }
+  },
+  "known_policy_kv_lower_bound_mib": 406.25390625,
+  "pinned_block_corrected_policy_kv_lower_bound_mib": 518.00390625,
+  "pinned_block_corrected_512mib_gate_passed": false,
+  "whole_model_10pct_memory_gate_passed": false,
+  "direct_root_capacity_measurement": true,
+  "host_global_cached_total_measured": false,
+  "source_bundle_sha256": "83b6127c52b135faa588295ef15183f516654470321e7106008f4563054bbda0",
+  "known_resource_proof_sha256": "afd848223cefb31f79f1d644d437a44de2a00cac78df08b147b01423ea811e13",
+  "evidence_sha256": {
+    "shared_0_fused_bounded.json": "9ff22259574df763f87278bf43917ae9fe14f4ad8106c4c68b82805f5b339f80",
+    "shared_1_fused_bounded.json": "b31a8ad578a0b8a0a1dc3b294d9e2ec328878936e4a76cf8df91ab931c05f1d4",
+    "shared_0_native_reuse.json": "06b33a66c6945d6c0cd023a33f3e0fe83de8e2f17abb2f338c00e367fe8e8d99",
+    "shared_1_native_reuse.json": "2eedba75d10ddb26333badfbb4d3f28edb34a4f6b24ef9c9a6ff8c6bd81309ee",
+    "default_0_fused_bounded.json": "f46576f03f379b4fe6990f60025ec1554a3044618b33e4bef8319f31bc7dfcc4",
+    "default_1_fused_bounded.json": "ca98cdd2a89c86c32307bb80473934aa3148bd19adefa5ca12a75d0ba2d471a3",
+    "default_0_native_reuse.json": "1bd0b3745d5e48dff4ecb74e493d0592d1c439f4edb9dd066ef1001b5ca0589c",
+    "default_1_native_reuse.json": "b6e97b11bca93fdfff40be706d36795938866e23240e687cc3207bc7a46681db",
+    "block_preflight.json": "2118f1be5dc830aab8101c325fe322f4258328d362ffe768eb4c5ea81afc6921",
+    "plan.json": "ecf6e132e3e831b485ec8c3c2a7622f4e50a20b19f9225e86338059a0a4e80b8",
+    "commands.json": "61b456b75b61b8420bd94c0b006ce2002bb4574bf0a64904677fe6ca1ac397db",
+    "upstream_sources.json": "58deb26daa700f29b69cf0e8791c5a2a038b4d5d0b22e1e62c8e077097e15bf0"
+  },
+  "verifier_sha256": "3c8604d0c79220c87c5a260b02df8f2e6f6c57bca4a5e0387689ae53f6cb77f7",
+  "limitations": "Private ABI capacity read validated against installed/upstream headers and allocator deleter. Owned root only, excludes additional cached host blocks, GPU allocator rounding/workspaces/driver and other process memory. Adding root padding to the SAME prior known-KV trace gives a stronger lower bound, not complete actual memory equality. Fresh memory harness retains different forward outputs from legacy timing instrumentation; decode peaks not interchangeable. RSS samples lowerbound, VmHWM not phase-local, cleanup includes diagnostic canonical hashing. No speed/quality/physical-STT claim."
+}

@@ -1,0 +1,510 @@
+{
+  "config": {
+    "model": "../models/mistral-7b-instruct",
+    "data_dir": "results/baseline_fidelity/real_query_document_holdout_20260929/data",
+    "tasks": [
+      "qasper",
+      "narrativeqa",
+      "multifieldqa_en",
+      "hotpotqa",
+      "triviaqa",
+      "gov_report"
+    ],
+    "max_samples": 4,
+    "strategy": "lru",
+    "seed": 0,
+    "max_ctx": 31500,
+    "candidate_pages": 0,
+    "tiered_vram_budget": 992,
+    "tiered_stt_budget": 3104,
+    "recent": 128,
+    "stt_expose_quota": 32,
+    "real_query_prefill": true,
+    "query_score_mode": "chunked",
+    "query_chunk_size": 128,
+    "sttram_bifurcation_frac": 0.75,
+    "kv_dtype": "bfloat16",
+    "runtime": {
+      "git_revision": "be7e700d84d46b47e32ba5b9870c8b71783b9e53",
+      "source_sha256": "eea0cf48baa0804928f6f4a1c2674af3547dbac77cb2ea1b890805ba0473cd9e",
+      "packages": {
+        "torch": "2.5.1+cu124",
+        "transformers": "5.14.1",
+        "datasets": "5.0.0",
+        "numpy": "2.2.6",
+        "accelerate": "1.14.0",
+        "huggingface_hub": "1.24.0",
+        "rouge": "1.0.1"
+      }
+    },
+    "selector_sha256": "ecef20ea48be38f1ac9e5c9d0cce2fb89fa90c270dc968cf541a448d77b89876",
+    "page_index_sha256": null,
+    "page_candidates_sha256": null,
+    "dataset_sha256": {
+      "qasper": "197e050b53691b22f0981bb0bd4654ff4ff5af75367d747f4ea1954788d1e35e",
+      "narrativeqa": "769ea37c4e1b9bc3498f05f80d599a8a840099fcfefdbcbec49a0dc5f21b0d33",
+      "multifieldqa_en": "bca2d1cbfb0f934ec07da8c224d17aab6ef3331e5a1b688ab411f677daaccf10",
+      "hotpotqa": "e6be93ffa875a67c3ef2d566952b0f4cba6884232690adc940372f5cd439533f",
+      "triviaqa": "b52689833d121a06a24859e3449a2236813cf5f779db40ccc8bdd82c444a1a3a",
+      "gov_report": "0d21a3ed23407109bc692e68c7f93ff64335cd56c5f5b0efa5c06c9110376bd5"
+    }
+  },
+  "results": {
+    "qasper": {
+      "tieredkv": {
+        "score": 51.17,
+        "n": 4,
+        "sample_scores": [
+          28.57,
+          35.29,
+          53.33,
+          87.5
+        ],
+        "samples": [
+          {
+            "sample_id": "950566ddc9fbc71c39562ebce1ac7c23fb82e6a53863c469ab547ecb1fad6d28",
+            "prediction": "Experiments are conducted on the SQuAD dataset.",
+            "score": 28.57142857142857,
+            "elapsed_s": 2.129403742030263,
+            "prompt_tokens": 6201,
+            "generated_tokens": 12,
+            "final_resident_kv_payload_bytes": 440664064,
+            "prefill_s": 1.235655564814806,
+            "prefill_peak_alloc_bytes": 16382619136
+          },
+          {
+            "sample_id": "c8684447d870b9c54239779003746113b7a9aa05e1bd3ebdb1d27c1444b430ec",
+            "prediction": "The method introduces performance boosts for both BERT and XLNet in paraphrase identification, improving the F1 score by +0.73 and +0.71, respectively.",
+            "score": 35.29411764705882,
+            "elapsed_s": 4.062268691137433,
+            "prompt_tokens": 6341,
+            "generated_tokens": 43,
+            "final_resident_kv_payload_bytes": 444600320,
+            "prefill_s": 0.7567588333040476,
+            "prefill_peak_alloc_bytes": 16415704064
+          },
+          {
+            "sample_id": "56ffe7b3365aeed864ce2445aa908c1abe001d863720aea64364420a3505f443",
+            "prediction": "The datasets used to evaluate this paper are WN18 (a subset of WordNet) and FB15k (a subset of Freebase).",
+            "score": 53.333333333333336,
+            "elapsed_s": 3.2125219143927097,
+            "prompt_tokens": 5751,
+            "generated_tokens": 33,
+            "final_resident_kv_payload_bytes": 443285504,
+            "prefill_s": 0.6907778698951006,
+            "prefill_peak_alloc_bytes": 16276278272
+          },
+          {
+            "sample_id": "b893b400a25523073a9c71d66e5da87dc673a96fb37cd28e59113e6930af176b",
+            "prediction": "The classifiers trained are K Nearest Neighbors (KNN), Random Forest (RF), Support Vector Machine (SVM), and Multi-layer Perceptron (MLP).",
+            "score": 87.50000000000001,
+            "elapsed_s": 3.399259800091386,
+            "prompt_tokens": 2543,
+            "generated_tokens": 41,
+            "final_resident_kv_payload_bytes": 342503424,
+            "prefill_s": 0.29008295200765133,
+            "prefill_peak_alloc_bytes": 15478066176
+          }
+        ],
+        "cache_stats": {
+          "demoted": 66624,
+          "promoted": 62624,
+          "promotions_deferred": 65376,
+          "paid_writes": 7876,
+          "writes_saved": 58748,
+          "dropped": 0,
+          "write_savings_pct": 88.2,
+          "decode_steps": 125,
+          "stt_starved_steps": 0,
+          "stt_unused_steps": 0,
+          "mean_stt_exposed": 32.0,
+          "stt_expose_quota": 32,
+          "stt_exposed_total": 4128,
+          "stt_exposure_samples": 129,
+          "modeled_latency_us": 37342.2,
+          "modeled_energy_nj": 1602560196.6
+        }
+      }
+    },
+    "narrativeqa": {
+      "tieredkv": {
+        "score": 11.11,
+        "n": 4,
+        "sample_scores": [
+          0.0,
+          44.44,
+          0.0,
+          0.0
+        ],
+        "samples": [
+          {
+            "sample_id": "f35dc463310a7bfa49831bb32ea1d2b0a672417f3eec552528895a72e53ad81b",
+            "prediction": "Landsmann is ultimately a doctor.",
+            "score": 0.0,
+            "elapsed_s": 2.4048529975116253,
+            "prompt_tokens": 13649,
+            "generated_tokens": 9,
+            "final_resident_kv_payload_bytes": 440139776,
+            "prefill_s": 1.7756082136183977,
+            "prefill_peak_alloc_bytes": 18142671872
+          },
+          {
+            "sample_id": "57723ef4355dad62436cf197b01e8d618129845d6ca00e6efeaf8ea0ba18e164",
+            "prediction": "Miranda writes her letters to her mother.",
+            "score": 44.44444444444445,
+            "elapsed_s": 3.583897354081273,
+            "prompt_tokens": 20619,
+            "generated_tokens": 10,
+            "final_resident_kv_payload_bytes": 440401920,
+            "prefill_s": 2.8684380520135164,
+            "prefill_peak_alloc_bytes": 19789766144
+          },
+          {
+            "sample_id": "6a584635ffd66d31b18f15c9a1c9e2a5d47b81a15b5a4080f36959fee41e301f",
+            "prediction": "In front of Clarence's trailer.",
+            "score": 0.0,
+            "elapsed_s": 5.812441540881991,
+            "prompt_tokens": 31500,
+            "generated_tokens": 11,
+            "final_resident_kv_payload_bytes": 440401920,
+            "prefill_s": 5.02126426436007,
+            "prefill_peak_alloc_bytes": 22412636160
+          },
+          {
+            "sample_id": "71ec57917f14f9572358fbacc1842cf8b9f130e6ddeed18da2c208f42509dfe9",
+            "prediction": "Falder worked at various jobs after he got out of prison but was unable to keep them due to his past record.",
+            "score": 0.0,
+            "elapsed_s": 6.900737999007106,
+            "prompt_tokens": 31500,
+            "generated_tokens": 25,
+            "final_resident_kv_payload_bytes": 442245120,
+            "prefill_s": 5.002122897654772,
+            "prefill_peak_alloc_bytes": 22412636160
+          }
+        ],
+        "cache_stats": {
+          "demoted": 27552,
+          "promoted": 25920,
+          "promotions_deferred": 26304,
+          "paid_writes": 5506,
+          "writes_saved": 22046,
+          "dropped": 0,
+          "write_savings_pct": 80.0,
+          "decode_steps": 51,
+          "stt_starved_steps": 0,
+          "stt_unused_steps": 0,
+          "mean_stt_exposed": 32.0,
+          "stt_expose_quota": 32,
+          "stt_exposed_total": 1760,
+          "stt_exposure_samples": 55,
+          "modeled_latency_us": 16029.7,
+          "modeled_energy_nj": 655516500.0
+        }
+      }
+    },
+    "multifieldqa_en": {
+      "tieredkv": {
+        "score": 49.01,
+        "n": 4,
+        "sample_scores": [
+          14.04,
+          100.0,
+          32.0,
+          50.0
+        ],
+        "samples": [
+          {
+            "sample_id": "5d600cf17ff028700b5c2a9555cc346920fce7e94605e967f255b93832fe0462",
+            "prediction": "The title of one of Kam W. Leong's publications in Journal of Controlled Release is \"Sustained release of insulin from chitosan nanoparticles: In vitro and in vivo studies\". However, the year and specific volume number are not provided in the text.",
+            "score": 14.035087719298245,
+            "elapsed_s": 5.5237858183681965,
+            "prompt_tokens": 5755,
+            "generated_tokens": 62,
+            "final_resident_kv_payload_bytes": 447217664,
+            "prefill_s": 0.7001690808683634,
+            "prefill_peak_alloc_bytes": 16277223424
+          },
+          {
+            "sample_id": "aa7711f24ee5b9167f0bf076079f69fb8313894418b0931a3a4e552f2efc4668",
+            "prediction": "The Tevatron Collider Run II started in March 2002 and is expected to continue until the end of this decade.",
+            "score": 100.0,
+            "elapsed_s": 3.2087081223726273,
+            "prompt_tokens": 7552,
+            "generated_tokens": 30,
+            "final_resident_kv_payload_bytes": 443023360,
+            "prefill_s": 0.9224806092679501,
+            "prefill_peak_alloc_bytes": 16701875712
+          },
+          {
+            "sample_id": "9ad16436b9b60211d69f0ea3489dcb7583c94bfd875656d103e3bbb3f022034c",
+            "prediction": "The authors used both simulated and real data in their experiments. In the first experiment, they estimated a fixed signal in a stationary environment using simulated data. In the second experiment, they used real data from a microphone array to estimate the direction of a sound source.",
+            "score": 32.0,
+            "elapsed_s": 5.238248001784086,
+            "prompt_tokens": 6689,
+            "generated_tokens": 57,
+            "final_resident_kv_payload_bytes": 446451712,
+            "prefill_s": 0.8106432482600212,
+            "prefill_peak_alloc_bytes": 16497939968
+          },
+          {
+            "sample_id": "9b98e63f17931f84938591274211096110986f8b8a46345c69ad2561f3cbc40c",
+            "prediction": "The parameter space V is divided into three subsets: V+, V0, and V-.",
+            "score": 50.0,
+            "elapsed_s": 2.3117655143141747,
+            "prompt_tokens": 6055,
+            "generated_tokens": 21,
+            "final_resident_kv_payload_bytes": 441712640,
+            "prefill_s": 0.7341043539345264,
+            "prefill_peak_alloc_bytes": 16348117504
+          }
+        ],
+        "cache_stats": {
+          "demoted": 88768,
+          "promoted": 83456,
+          "promotions_deferred": 86528,
+          "paid_writes": 9221,
+          "writes_saved": 79547,
+          "dropped": 0,
+          "write_savings_pct": 89.6,
+          "decode_steps": 166,
+          "stt_starved_steps": 0,
+          "stt_unused_steps": 0,
+          "mean_stt_exposed": 32.0,
+          "stt_expose_quota": 32,
+          "stt_exposed_total": 5440,
+          "stt_exposure_samples": 170,
+          "modeled_latency_us": 49204.1,
+          "modeled_energy_nj": 2127522037.8
+        }
+      }
+    },
+    "hotpotqa": {
+      "tieredkv": {
+        "score": 19.84,
+        "n": 4,
+        "sample_scores": [
+          0.0,
+          28.57,
+          28.57,
+          22.22
+        ],
+        "samples": [
+          {
+            "sample_id": "2c301a21c53946b3ef844d74cd22c71c3f624cf2f8a189072c17b1fdb20829d9",
+            "prediction": "The passages do not provide the number of visitors per year that the first stop of OC Transpo Route 97 attracts each year.",
+            "score": 0.0,
+            "elapsed_s": 3.5958092641085386,
+            "prompt_tokens": 9710,
+            "generated_tokens": 31,
+            "final_resident_kv_payload_bytes": 443023360,
+            "prefill_s": 1.2305523231625557,
+            "prefill_peak_alloc_bytes": 17211837952
+          },
+          {
+            "sample_id": "e9aa999e0415d1e353775748a638efbd9631e42c6dc96e23c78ab5e76771365b",
+            "prediction": "Both Sum 41 and Passion Pit are bands.",
+            "score": 28.571428571428577,
+            "elapsed_s": 3.683770228177309,
+            "prompt_tokens": 18967,
+            "generated_tokens": 14,
+            "final_resident_kv_payload_bytes": 440926208,
+            "prefill_s": 2.6531331688165665,
+            "prefill_peak_alloc_bytes": 19399378432
+          },
+          {
+            "sample_id": "53185f7554a389058fcfcf96e889110e3f2ea10740e0ebe77367be7fe440d813",
+            "prediction": "Arrowhead Stadium has a capacity of 76,416.",
+            "score": 28.57142857142857,
+            "elapsed_s": 3.622049091383815,
+            "prompt_tokens": 17303,
+            "generated_tokens": 17,
+            "final_resident_kv_payload_bytes": 441188352,
+            "prefill_s": 2.361342342570424,
+            "prefill_peak_alloc_bytes": 19006155264
+          },
+          {
+            "sample_id": "c2c8390b9969b059cccdca6c0da739ae3c1e1131e25b1d133c2e3110218e6ce4",
+            "prediction": "The hijacked plane crashed in a field near Shanksville, Pennsylvania.",
+            "score": 22.22222222222222,
+            "elapsed_s": 3.7960584834218025,
+            "prompt_tokens": 18587,
+            "generated_tokens": 16,
+            "final_resident_kv_payload_bytes": 441188352,
+            "prefill_s": 2.6048155836760998,
+            "prefill_peak_alloc_bytes": 19309579776
+          }
+        ],
+        "cache_stats": {
+          "demoted": 40192,
+          "promoted": 37824,
+          "promotions_deferred": 37952,
+          "paid_writes": 6272,
+          "writes_saved": 33920,
+          "dropped": 0,
+          "write_savings_pct": 84.4,
+          "decode_steps": 74,
+          "stt_starved_steps": 0,
+          "stt_unused_steps": 0,
+          "mean_stt_exposed": 32.0,
+          "stt_expose_quota": 32,
+          "stt_exposed_total": 2496,
+          "stt_exposure_samples": 78,
+          "modeled_latency_us": 22706.6,
+          "modeled_energy_nj": 950114713.6
+        }
+      }
+    },
+    "triviaqa": {
+      "tieredkv": {
+        "score": 91.67,
+        "n": 4,
+        "sample_scores": [
+          100.0,
+          100.0,
+          66.67,
+          100.0
+        ],
+        "samples": [
+          {
+            "sample_id": "44dd489ef5fbcee83c56f0a8db8088b31bb997f7f256d664bede64b3b674b5cd",
+            "prediction": "Mountain of light",
+            "score": 100.0,
+            "elapsed_s": 1.076717285439372,
+            "prompt_tokens": 6171,
+            "generated_tokens": 5,
+            "final_resident_kv_payload_bytes": 439615488,
+            "prefill_s": 0.7611813489347696,
+            "prefill_peak_alloc_bytes": 16375529984
+          },
+          {
+            "sample_id": "120d7556d9c8c0f0d8db5f1c2b236d3a078cccff3fedb5b59dc1af5850418a70",
+            "prediction": "Steel",
+            "score": 100.0,
+            "elapsed_s": 1.1407109182327986,
+            "prompt_tokens": 7872,
+            "generated_tokens": 3,
+            "final_resident_kv_payload_bytes": 439484416,
+            "prefill_s": 0.9819910209625959,
+            "prefill_peak_alloc_bytes": 16777495552
+          },
+          {
+            "sample_id": "fa05fd42b306c8ff368b5f6327b255c9378ac256dd18e090469c764db5c03502",
+            "prediction": "Bumblebee bat\nPassage:\nThe World's Smallest Mammal: Kuhn's Kitty Bat\nThe Kuhn",
+            "score": 66.66666666666666,
+            "elapsed_s": 3.658743280917406,
+            "prompt_tokens": 9373,
+            "generated_tokens": 32,
+            "final_resident_kv_payload_bytes": 443285504,
+            "prefill_s": 1.2024716064333916,
+            "prefill_peak_alloc_bytes": 17132201472
+          },
+          {
+            "sample_id": "2fa6b55a4eb83f683e2d88bfc5a4ecf151eb024f8b6dc96958d07125d92de958",
+            "prediction": "Seasons in the sun\n\nPassage:\nThe Great Gatsby\nThe Great Gatsby is a novel written by F. Scott Fitzger",
+            "score": 100.0,
+            "elapsed_s": 5.4397958889603615,
+            "prompt_tokens": 21159,
+            "generated_tokens": 32,
+            "final_resident_kv_payload_bytes": 443285504,
+            "prefill_s": 2.9779152572155,
+            "prefill_peak_alloc_bytes": 19917373952
+          }
+        ],
+        "cache_stats": {
+          "demoted": 37024,
+          "promoted": 34848,
+          "promotions_deferred": 34784,
+          "paid_writes": 6112,
+          "writes_saved": 30912,
+          "dropped": 0,
+          "write_savings_pct": 83.5,
+          "decode_steps": 68,
+          "stt_starved_steps": 0,
+          "stt_unused_steps": 0,
+          "mean_stt_exposed": 32.0,
+          "stt_expose_quota": 32,
+          "stt_exposed_total": 2304,
+          "stt_exposure_samples": 72,
+          "modeled_latency_us": 20989.3,
+          "modeled_energy_nj": 873348464.6
+        }
+      }
+    },
+    "gov_report": {
+      "tieredkv": {
+        "score": 26.79,
+        "n": 4,
+        "sample_scores": [
+          23.75,
+          23.81,
+          31.02,
+          28.57
+        ],
+        "samples": [
+          {
+            "sample_id": "f87f1bbfe0e620e3f457dfd6b340e5d148ffb69b843144ef8a31c434704bf6db",
+            "prediction": "The report provides an overview of various websites and contact information for different government agencies and offices related to the United States House of Representatives and the United States Senate. The House of Representatives has a website at house.gov, which includes access to the restricted HouseNet website at housenet.house.gov. This website provides access to various offices, committees, and support services, including the House Library, which offers historical and current House documents, and the House Parliamentarian.\n\nThe report also includes contact information for the Senate website, which offers similar services and resources for the United States Senate. Both the House and Senate websites provide access to Congress.gov, a legislative website that offers information on current and historical legislation, as well as various government publications and documents.\n\nAdditionally, the report provides contact information for various government agencies and services, such as the Congressional Research Service, the Government Accountability Office, the Government Publishing Office, the National Archives and Records Administration, and the Office of Management and Budget. These agencies offer a range of services, from legal research and analysis to document publication and preservation.\n\nOverall, the report serves as a comprehensive guide to various government websites and contact information for different agencies and offices related to the United States Congress. It provides valuable resources for individuals seeking information on legislation, government documents, and various government services.",
+            "score": 23.74999952820313,
+            "elapsed_s": 22.44331450201571,
+            "prompt_tokens": 2343,
+            "generated_tokens": 281,
+            "final_resident_kv_payload_bytes": 348344320,
+            "prefill_s": 0.28467557579278946,
+            "prefill_peak_alloc_bytes": 15411161600
+          },
+          {
+            "sample_id": "9f042e65ab0cba87baf6384e74590266540d63485262c5b38bd77c5b2360653a",
+            "prediction": "The report outlines the role of the Military Health System in ensuring the oral health of uniformed personnel in the Department of Defense (DOD). The Army, Navy, and Air Force dental corps provide dental care to servicemembers. The report highlights the Military Health System's efforts to assure the overall oral health of servicemembers through various programs, including the Military Health System's Scholarship Program, which covers the educational costs of dental students in exchange for military service. The report also discusses the importance of military dentists and the challenges in maintaining an adequate dental workforce. The report recommends that the DOD should continue to focus on recruitment and retention efforts to address the shortage of military dentists. The report also provides information on the number of active duty and civilian dentists in the Military Health System and the distribution of dental corps among the services.",
+            "score": 23.809523481985387,
+            "elapsed_s": 15.310919404029846,
+            "prompt_tokens": 8108,
+            "generated_tokens": 183,
+            "final_resident_kv_payload_bytes": 463355904,
+            "prefill_s": 1.0238259639590979,
+            "prefill_peak_alloc_bytes": 16833265664
+          },
+          {
+            "sample_id": "fec0f5709fee1499248f23ca23b0792a29306be0cb0c8031999939d9ada61028",
+            "prediction": "The Veterans Access, Choice, and Accountability Act of 2014 provided $10 billion in funding for veterans to receive health care services from community providers through the Choice Program due to long wait times or challenges accessing VA medical facilities. The Choice Program was funded separately from existing VA programs and contracted with two TPAs, Health Net and TriWest, to manage the program in specific regions. The program will end on June 6, 2019, and the VA MISSION Act of 2018 will replace it, requiring prompt payment to community providers and streamlining the process for veterans to access care.\n\nThe report highlights issues with the processing and payment of claims under the Choice Program, including delays and inconsistencies. VA's contracts with Health Net and TriWest outline the steps for processing and paying claims, but there have been challenges in implementing these processes effectively. The report also notes that VA's internal controls could be improved to better monitor and address issues with claim processing and payment.\n\nThe report makes two recommendations to the Undersecretary for Health: once the new software for managing claims is implemented, the Undersecretary should monitor data to ensure ongoing compliance with claim processing and payment requirements; and the Undersecretary should collect data on claim processing and payment performance and take steps to address any issues identified. The VA concurred with these recommendations and is taking steps to address them.",
+            "score": 31.016042325588383,
+            "elapsed_s": 24.184340093284845,
+            "prompt_tokens": 7333,
+            "generated_tokens": 297,
+            "final_resident_kv_payload_bytes": 478945280,
+            "prefill_s": 0.911141274496913,
+            "prefill_peak_alloc_bytes": 16650124800
+          },
+          {
+            "sample_id": "1dc3fb4f839ea0e48ed184b9201a39ccbb0ac40604734aecd16aafbc1afba009",
+            "prediction": "The Small Business Administration (SBA) supports small businesses through various programs, including venture capital and loan guaranty programs. Historically, these programs have aimed to provide long-term loans and equity to businesses with high growth potential and economic impact. The SBA's justification for these programs is the difficulty small businesses face in accessing capital through traditional financial markets.\n\nThe report discusses the economic rationale for these programs and the historical context of their implementation. It also touches on the controversy surrounding the SBA's role in the business world and the debate over the effectiveness of these programs in creating jobs and economic growth.\n\nSome critics argue that the SBA should focus on reducing business taxes, reforming financial credit markets, and implementing fiscal restraint as more effective means of assisting small businesses. Others advocate for additional funding for SBA programs to help small businesses access capital and create jobs.\n\nThe report concludes by outlining three potential options for the federal government to enhance small business access to capital: waiting and seeing how current programmatic changes play out, providing additional funding for SBA programs, or repealing portions of the Small Business Jobs Act of 2010 or other SBA initiatives. Ultimately, the report leaves the decision to Congress on what course of action to take.",
+            "score": 28.57142815941917,
+            "elapsed_s": 22.926858454942703,
+            "prompt_tokens": 12268,
+            "generated_tokens": 272,
+            "final_resident_kv_payload_bytes": 475029504,
+            "prefill_s": 1.5852703414857388,
+            "prefill_peak_alloc_bytes": 17816323584
+          }
+        ],
+        "cache_stats": {
+          "demoted": 543936,
+          "promoted": 511008,
+          "promotions_deferred": 542688,
+          "paid_writes": 37377,
+          "writes_saved": 506559,
+          "dropped": 0,
+          "write_savings_pct": 93.1,
+          "decode_steps": 1029,
+          "stt_starved_steps": 0,
+          "stt_unused_steps": 0,
+          "mean_stt_exposed": 32.0,
+          "stt_expose_quota": 32,
+          "stt_exposed_total": 33056,
+          "stt_exposure_samples": 1033,
+          "modeled_latency_us": 297882.3,
+          "modeled_energy_nj": 13172210270.2
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "created_utc": "2026-10-16T07:49:50.948070+00:00",
+  "purpose": "Paper-grade fairness contract; freeze claim/design before resource comparisons, not results",
+  "quality_evaluation_in_progress": {
+    "method": "Official current KV-head SnapKV,1024promptcapacity/growingdecode",
+    "data": "All1474originalsource records; descriptive alreadyconsumed; compare existingoriginal135 andfullpopulations separately",
+    "common": "ExactMistral7Bweights/tokenizer/BF16,inputtokenIDs,31500context,prompts/EOS/maxgen/scorers; actualqueryselector independentlyproved",
+    "not_claimed": "Sameinitialpromptcapacity is notmatchedwholememory orfixedthroughoutdecodewidth; currentrunalone is notthe finalresource-matchedpapercomparison"
+  },
+  "proper_baseline_requirements": [
+    "Pin officialcommit, precisionbranch anddependencies; retainunmodifiedalgorithm sources andseparatebuild-onlydiffs.",
+    "Independent selector/kernel/model correctness; no baselineprediction ormetric hardcoding.",
+    "Use thesame runtime for directlypairedsystemtiming; ifofficialdependencyversiondiffers, runourmethodandFullreference inthat environment orseparatelyproveequivalence andlabelruntime difference. Never comparecross-environment latencyasfullymatched.",
+    "Give competitors fastestcorrectsupportedbackend, upstreamvalidCPUthreadsetting, anddocumentindexconstruction/transfer/storage costs.",
+    "Record allinput/config/rawresults/errors, deterministicorder andper-samplecheckpoints. No silent missing rows, cherry-pickedtasks, orfavorable retries."
+  ],
+  "resource_axes_to_report": [
+    "Measured postcommit GPU allocation delta frompreloadedmodel; countvisiblecopies/staging/retainedhot.",
+    "Host cold KV pluspinnedrootcapacity andindex/canonicalmetadata, includingidlepersistentmemory.",
+    "PrefillpeakGPUandCPU separately, TTFT includesindex/prefill/copy/provisioning asdefined.",
+    "Actualattendedtokenwidthperstep, allheadcounts/dtypes, prompt/decodegrowth; generatedoutputtokens.",
+    "Measured full-loop latency/p95 andquality together; analyticSTTtraffic/energy assumptions separate fromGPU/CPU measurements."
+  ],
+  "comparison_panels": {
+    "initial_payload_reproduction": "Same1024initialcompressedbudget withgrowingSnap vsboundedTiered, unmatchedbudgetsdirectlydisclosed; usefuldescriptivecontrol only.",
+    "gpu_working_set_envelope": "Requireeveryarm withinone preregistered steadyGPUceiling; commonCPUceiling, allCPUindexcharged, measurethroughoutrequest. Baselinecapacitymustallowdecodegrowth; do nothandicapupstreambyarbitraryold1024limitifcompetingforlargerGPUenvelope.",
+    "whole_resource_tradeoff": "Plotquality against actualGPU andhostcapacity, TTFTanddecode; labeltradeoffs ratherthanglobaldominance whenaxes differ."
+  },
+  "before_next_gpu_run": "Choose exactphysicalmemory/CPU/latency ceilings andalgorithmconfigs fromcapacityarithmetic andoriginal135development only; snapshotcodeanddata, independentreview andprospectivegates. Do notuse nowunblinded1339finalrecordstotune.800transferreservedrowsmuststayunscoreduntilcandidatepassesdevelopment/resourcegates.",
+  "current_status": "OfficialGQASnap fullmodelproofPASS,current1474qualityrunactive. OfficialIceCacheisolatedbuildactive; noIceCachemodelorperformanceclaim. Adaptedbaselinesexcludedfromnewpaperacceptanceexperiments. Headroomdeferred."
+}

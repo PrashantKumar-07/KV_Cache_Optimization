@@ -1,0 +1,93 @@
+{
+  "config": {
+    "model": "../models/mistral-7b-instruct",
+    "data_dir": "../hf_cache/datasets/downloads/extracted/5def9c7eaf83951e1cee75902d8611ef764ad88dd289e8f0bf97ff658a3eb83a/data",
+    "tasks": [
+      "qasper"
+    ],
+    "max_samples": 2,
+    "strategy": "query",
+    "seed": 0,
+    "max_ctx": 31500,
+    "tiered_vram_budget": 992,
+    "tiered_stt_budget": 3104,
+    "recent": 128,
+    "stt_expose_quota": 32,
+    "real_query_prefill": true,
+    "query_score_mode": "chunked",
+    "query_chunk_size": 128,
+    "sttram_bifurcation_frac": 0.75,
+    "kv_dtype": "bfloat16",
+    "runtime": {
+      "git_revision": "be7e700d84d46b47e32ba5b9870c8b71783b9e53",
+      "source_sha256": "4b2c2909221fcb7156d875710e6bc770d28160ffd285a05a420c18ff8048674d",
+      "packages": {
+        "torch": "2.5.1+cu124",
+        "transformers": "5.14.1",
+        "datasets": "5.0.0",
+        "numpy": "2.2.6",
+        "accelerate": "1.14.0",
+        "huggingface_hub": "1.24.0",
+        "rouge": "1.0.1"
+      }
+    },
+    "selector_sha256": "8a21877fdd38b444e3c9619c49e123bd1470acc044eb2e5dd38baf9e79ab74c6",
+    "dataset_sha256": {
+      "qasper": "97d95c01221a17a2ce51f9180d65a671bf2998504a2ff0cccffe97e9b08444d8"
+    }
+  },
+  "results": {
+    "qasper": {
+      "tieredkv": {
+        "score": 53.97,
+        "n": 2,
+        "sample_scores": [
+          85.71,
+          22.22
+        ],
+        "samples": [
+          {
+            "sample_id": "3b91dce7ca41a9d16a1d0c61806c139db583a053ddb582bf79df3ff56f8e0344",
+            "prediction": "They selected different Facebook pages, including FoxNews, CNN, ESPN, New York Times, Time magazine, Huffington Post Weird News, The Guardian, Cartoon Network, Cooking Light, Home Cooking Adventure, Justin Bieber, Nickelodeon, and Spongebob.",
+            "score": 85.71428571428571,
+            "elapsed_s": 10.243517935276031,
+            "prompt_tokens": 4895,
+            "generated_tokens": 65,
+            "final_resident_kv_payload_bytes": 446623744,
+            "prefill_s": 1.1195081938058138,
+            "prefill_peak_alloc_bytes": 16089271808
+          },
+          {
+            "sample_id": "5f59f94cd91401a55bcd3b6b24b78cd2c4c78e8ee6e7663e0ac8b97306444f08",
+            "prediction": "The paper proposes attention models to infer the latent context that triggers an instructor intervention.",
+            "score": 22.22222222222222,
+            "elapsed_s": 3.3413492273539305,
+            "prompt_tokens": 5415,
+            "generated_tokens": 20,
+            "final_resident_kv_payload_bytes": 440614912,
+            "prefill_s": 0.6487486902624369,
+            "prefill_peak_alloc_bytes": 16203744768
+          }
+        ],
+        "cache_stats": {
+          "demoted": 45686,
+          "promoted": 43030,
+          "promotions_deferred": 41962,
+          "paid_writes": 4131,
+          "writes_saved": 41555,
+          "dropped": 0,
+          "write_savings_pct": 91.0,
+          "decode_steps": 83,
+          "stt_starved_steps": 0,
+          "stt_unused_steps": 0,
+          "mean_stt_exposed": 32.0,
+          "stt_expose_quota": 32,
+          "stt_exposed_total": 2720,
+          "stt_exposure_samples": 85,
+          "modeled_latency_us": 24555.5,
+          "modeled_energy_nj": 1064044068.9
+        }
+      }
+    }
+  }
+}

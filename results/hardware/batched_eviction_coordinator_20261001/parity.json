@@ -1,0 +1,447 @@
+{
+  "config": {
+    "output": "results/hardware/batched_eviction_coordinator_20261001/parity.json",
+    "contexts": [
+      4096,
+      8192,
+      16384,
+      31500
+    ],
+    "decode": 5,
+    "blocks": 0,
+    "warmup": 0,
+    "control": "direct_scores",
+    "candidate": "eviction_scores",
+    "real_query_prefill": true
+  },
+  "runtime": {
+    "git_revision": "be7e700d84d46b47e32ba5b9870c8b71783b9e53",
+    "source_sha256": "6687ce54f24b1372f958c406b037f650e492d82951611d59f1bb76364c4b692c",
+    "packages": {
+      "torch": "2.5.1+cu124",
+      "transformers": "5.15.0",
+      "datasets": "2.19.2",
+      "numpy": "2.2.6",
+      "accelerate": "1.14.0",
+      "huggingface_hub": "1.27.0",
+      "rouge": "1.0.1"
+    }
+  },
+  "runner_sha256": "c0e246757ea6e167b08bf48003cbecedc8f0d2d9f4ec2f11d190caa8d8836feb",
+  "backend_sha256": "514aed658034ebdc0f3e1bc62c293cd7472c1eef3e0712e6f95995a33769d45b",
+  "slot_backend_sha256": "5eaec8fdb0e9d0d3316820f2129b55f66b8c11c3ed3579b6f16c97ee0a1fd293",
+  "query_capture_sha256": "7b8d811f2969c1f0ef94624560c4bc499745419ebefbbe08e6d8812a784affb4",
+  "score_backend_sha256": "d2dbca0ed7f8ff95f0ae1c29ddfd2c04ddeac238aa6f046eb465cafdaa4987a5",
+  "direct_backend_sha256": null,
+  "eviction_backend_sha256": {
+    "batched_eviction_policy.py": "d733c06effa2264a6a17dcb315d1955452c88dcfe9fa7cdcace55b7a3e158a80",
+    "direct_shared_pool.py": "accfa1d447fbb12f5854118fead36190f08df884ec5ee5e199a3d11368d88da3",
+    "probe_batched_eviction_selection.py": "b3377ce75cee0acfd0aa4ce7ac674ff1a8a0693d2549bdb91508b703531e4ef6",
+    "probe_protected_mask_numpy.py": "6dc1a3768803d2f4b0e24828672349d786e84889102a87bdb519287ee623ebdb"
+  },
+  "scope": "CPU-DRAM surrogate, fixed-stream full-loop model/policy; observed history overhead included",
+  "rows": [
+    {
+      "context": 4096,
+      "block": 0,
+      "arm": "direct_scores",
+      "timing_scope": "end_to_end_model_policy_token",
+      "ttft_ms": 1755.606,
+      "itl_ms": 374.264,
+      "mean_itl_ms": 387.3091500252485,
+      "forward_ms": 25.52388608455658,
+      "peak_memory_gb": 14.913163776,
+      "prefill_peak_memory_gb": 15.603885568,
+      "trials": [
+        {
+          "ttft_ms": 1755.6060999631882,
+          "step_ms": [
+            440.7717790454626,
+            371.67551927268505,
+            394.3936061114073,
+            355.4403856396675,
+            374.2644600570202
+          ],
+          "forward_ms": [
+            57.62718431651592,
+            25.52388608455658,
+            25.522083044052124,
+            25.257611647248268,
+            25.81736072897911
+          ],
+          "prefill_peak_memory_gb": 15.603885568,
+          "decode_peak_memory_gb": 14.913163776,
+          "predicted_token_ids": [
+            1263,
+            18577,
+            28809,
+            592,
+            7616
+          ],
+          "prefill_forward_ms": 718.989996239543,
+          "paid_writes": 1152,
+          "writes_saved": 2016,
+          "demoted": 3168,
+          "promoted": 3008,
+          "decode_steps": 5
+        }
+      ],
+      "every_visible_state_sha256": [
+        "c20ff55a3da25db2a5b5ca81528b39322bb499744240531b3ba96c40b8d6f526",
+        "d73d6e729949b245b191dd5c2319d6423b729d294f86d4e79fb9a38359e38936",
+        "74502f4c2da88ee3327b6820aa419e37deb0f5bf95967ef89c10526a85a12128",
+        "066a375eff4773a83ef001c9a9d9c5a3d035783f83f8d21bece2552e42232276",
+        "28478003aba0bdb2621135f878ea51bd0e1617bd7f39f47dd37fe83f39af8daa",
+        "360d107539e73787b7f520ad98fe62ca02237b9534971cb5a4e5ec0fd512bc73"
+      ],
+      "final_gpu_allocated_bytes": 14627335168,
+      "state_sha256": "360d107539e73787b7f520ad98fe62ca02237b9534971cb5a4e5ec0fd512bc73",
+      "history_sha256": "b8bdc2d8491ab8440e1cd8960d8e1b8b724f8e4189b7d7fae77e1943f70a9cb5",
+      "explicit_h2d_payload_bytes": 37486592,
+      "explicit_d2h_payload_bytes": 206045184,
+      "initial_d2h_payload_bytes": 201326592,
+      "occupied_host_bytes": 206045184,
+      "reserved_host_bytes": 402784256,
+      "native_d2h_calls": 35,
+      "per_layer_initial_d2h_calls": 0,
+      "native_h2d_calls": 9
+    },
+    {
+      "context": 4096,
+      "block": 0,
+      "arm": "eviction_scores",
+      "timing_scope": "end_to_end_model_policy_token",
+      "ttft_ms": 816.493,
+      "itl_ms": 358.293,
+      "mean_itl_ms": 353.99839989840984,
+      "forward_ms": 25.258483365178108,
+      "peak_memory_gb": 14.915342848,
+      "prefill_peak_memory_gb": 15.60368896,
+      "trials": [
+        {
+          "ttft_ms": 816.4925146847963,
+          "step_ms": [
+            374.8107682913542,
+            339.29482474923134,
+            358.5897721350193,
+            339.00388702750206,
+            358.29274728894234
+          ],
+          "forward_ms": [
+            25.300001725554466,
+            25.258483365178108,
+            25.264084339141846,
+            25.255853310227394,
+            25.226233527064323
+          ],
+          "prefill_peak_memory_gb": 15.60368896,
+          "decode_peak_memory_gb": 14.915342848,
+          "predicted_token_ids": [
+            1263,
+            18577,
+            28809,
+            592,
+            7616
+          ],
+          "prefill_forward_ms": 351.8562354147434,
+          "paid_writes": 1152,
+          "writes_saved": 2016,
+          "demoted": 3168,
+          "promoted": 3008,
+          "decode_steps": 5
+        }
+      ],
+      "every_visible_state_sha256": [
+        "c20ff55a3da25db2a5b5ca81528b39322bb499744240531b3ba96c40b8d6f526",
+        "d73d6e729949b245b191dd5c2319d6423b729d294f86d4e79fb9a38359e38936",
+        "74502f4c2da88ee3327b6820aa419e37deb0f5bf95967ef89c10526a85a12128",
+        "066a375eff4773a83ef001c9a9d9c5a3d035783f83f8d21bece2552e42232276",
+        "28478003aba0bdb2621135f878ea51bd0e1617bd7f39f47dd37fe83f39af8daa",
+        "360d107539e73787b7f520ad98fe62ca02237b9534971cb5a4e5ec0fd512bc73"
+      ],
+      "final_gpu_allocated_bytes": 14630255616,
+      "state_sha256": "360d107539e73787b7f520ad98fe62ca02237b9534971cb5a4e5ec0fd512bc73",
+      "history_sha256": "b8bdc2d8491ab8440e1cd8960d8e1b8b724f8e4189b7d7fae77e1943f70a9cb5",
+      "explicit_h2d_payload_bytes": 37486592,
+      "explicit_d2h_payload_bytes": 206045184,
+      "initial_d2h_payload_bytes": 201326592,
+      "occupied_host_bytes": 206045184,
+      "reserved_host_bytes": 402784256,
+      "native_d2h_calls": 35,
+      "per_layer_initial_d2h_calls": 0,
+      "native_h2d_calls": 9
+    },
+    {
+      "context": 8192,
+      "block": 0,
+      "arm": "direct_scores",
+      "timing_scope": "end_to_end_model_policy_token",
+      "ttft_ms": 1364.415,
+      "itl_ms": 366.212,
+      "mean_itl_ms": 360.24050153791904,
+      "forward_ms": 25.238243862986565,
+      "peak_memory_gb": 14.913243648,
+      "prefill_peak_memory_gb": 16.576685568,
+      "trials": [
+        {
+          "ttft_ms": 1364.4152022898197,
+          "step_ms": [
+            369.1970072686672,
+            349.98710080981255,
+            366.21152609586716,
+            348.27783331274986,
+            367.52904020249844
+          ],
+          "forward_ms": [
+            25.23777447640896,
+            25.238243862986565,
+            25.21868236362934,
+            25.248384103178978,
+            25.24053305387497
+          ],
+          "prefill_peak_memory_gb": 16.576685568,
+          "decode_peak_memory_gb": 14.913243648,
+          "predicted_token_ids": [
+            1263,
+            808,
+            5745,
+            264,
+            15988
+          ],
+          "prefill_forward_ms": 805.4298795759678,
+          "paid_writes": 1152,
+          "writes_saved": 2016,
+          "demoted": 3168,
+          "promoted": 3008,
+          "decode_steps": 5
+        }
+      ],
+      "every_visible_state_sha256": [
+        "d96d76d8a11e42b94e8677f3aea9bb680fb1d48bcf831ec0f053e8878c35eac4",
+        "2999558726535d5f7fb3901dd04136a2db9d06aea4f89b1566f0b75ab005f896",
+        "013e7b6ef474a09edef3acb8d0e2ad119905d2c4d10c9f4582a989317b4f9c55",
+        "d056315ebaaad29479a783759165471c06c80190942b73c196de5bf92be5f52d",
+        "1005cf86bee5cab8300ce5f2d3377ab430f8ff49207c752eb34380ee823119c2",
+        "3af9bb3b184eb101b6bf809bc897a0f723afee2ea323f629d21ee100ecae4530"
+      ],
+      "final_gpu_allocated_bytes": 14628137984,
+      "state_sha256": "3af9bb3b184eb101b6bf809bc897a0f723afee2ea323f629d21ee100ecae4530",
+      "history_sha256": "94a8d190f799c9cd1592c1241591946ece1abc3f3ce1797e05b154e3a7e89e56",
+      "explicit_h2d_payload_bytes": 37486592,
+      "explicit_d2h_payload_bytes": 206045184,
+      "initial_d2h_payload_bytes": 201326592,
+      "occupied_host_bytes": 206045184,
+      "reserved_host_bytes": 402784256,
+      "native_d2h_calls": 35,
+      "per_layer_initial_d2h_calls": 0,
+      "native_h2d_calls": 9
+    },
+    {
+      "context": 8192,
+      "block": 0,
+      "arm": "eviction_scores",
+      "timing_scope": "end_to_end_model_policy_token",
+      "ttft_ms": 1352.141,
+      "itl_ms": 356.265,
+      "mean_itl_ms": 353.7807233631611,
+      "forward_ms": 25.30224248766899,
+      "peak_memory_gb": 14.914812416,
+      "prefill_peak_memory_gb": 16.576685568,
+      "trials": [
+        {
+          "ttft_ms": 1352.141486480832,
+          "step_ms": [
+            364.13637548685074,
+            347.6891368627548,
+            360.1446207612753,
+            340.6686335802078,
+            356.26485012471676
+          ],
+          "forward_ms": [
+            25.320693850517273,
+            25.87912231683731,
+            25.298552587628365,
+            25.30224248766899,
+            25.26753395795822
+          ],
+          "prefill_peak_memory_gb": 16.576685568,
+          "decode_peak_memory_gb": 14.914812416,
+          "predicted_token_ids": [
+            1263,
+            808,
+            5745,
+            264,
+            15988
+          ],
+          "prefill_forward_ms": 807.9954516142607,
+          "paid_writes": 1152,
+          "writes_saved": 2016,
+          "demoted": 3168,
+          "promoted": 3008,
+          "decode_steps": 5
+        }
+      ],
+      "every_visible_state_sha256": [
+        "d96d76d8a11e42b94e8677f3aea9bb680fb1d48bcf831ec0f053e8878c35eac4",
+        "2999558726535d5f7fb3901dd04136a2db9d06aea4f89b1566f0b75ab005f896",
+        "013e7b6ef474a09edef3acb8d0e2ad119905d2c4d10c9f4582a989317b4f9c55",
+        "d056315ebaaad29479a783759165471c06c80190942b73c196de5bf92be5f52d",
+        "1005cf86bee5cab8300ce5f2d3377ab430f8ff49207c752eb34380ee823119c2",
+        "3af9bb3b184eb101b6bf809bc897a0f723afee2ea323f629d21ee100ecae4530"
+      ],
+      "final_gpu_allocated_bytes": 14630018048,
+      "state_sha256": "3af9bb3b184eb101b6bf809bc897a0f723afee2ea323f629d21ee100ecae4530",
+      "history_sha256": "94a8d190f799c9cd1592c1241591946ece1abc3f3ce1797e05b154e3a7e89e56",
+      "explicit_h2d_payload_bytes": 37486592,
+      "explicit_d2h_payload_bytes": 206045184,
+      "initial_d2h_payload_bytes": 201326592,
+      "occupied_host_bytes": 206045184,
+      "reserved_host_bytes": 402784256,
+      "native_d2h_calls": 35,
+      "per_layer_initial_d2h_calls": 0,
+      "native_h2d_calls": 9
+    },
+    {
+      "context": 16384,
+      "block": 0,
+      "arm": "direct_scores",
+      "timing_scope": "end_to_end_model_policy_token",
+      "ttft_ms": 2457.67,
+      "itl_ms": 363.095,
+      "mean_itl_ms": 361.13433726131916,
+      "forward_ms": 25.247616693377495,
+      "peak_memory_gb": 14.912752128,
+      "prefill_peak_memory_gb": 18.627831296,
+      "trials": [
+        {
+          "ttft_ms": 2457.670347765088,
+          "step_ms": [
+            365.9870345145464,
+            347.807627171278,
+            378.4436918795109,
+            350.33872723579407,
+            363.09460550546646
+          ],
+          "forward_ms": [
+            25.22505633533001,
+            25.247616693377495,
+            25.231273844838142,
+            25.79703740775585,
+            25.28337389230728
+          ],
+          "prefill_peak_memory_gb": 18.627831296,
+          "decode_peak_memory_gb": 14.912752128,
+          "predicted_token_ids": [
+            14343,
+            18577,
+            3857,
+            4241,
+            7616
+          ],
+          "prefill_forward_ms": 1788.3460633456707,
+          "paid_writes": 1152,
+          "writes_saved": 2016,
+          "demoted": 3168,
+          "promoted": 3008,
+          "decode_steps": 5
+        }
+      ],
+      "every_visible_state_sha256": [
+        "4d304e974915867052d2f43aca9696a1991fdee24933509f2cc60d03d2e2efe3",
+        "49e0b9d9b0b194ac85a37e22c7f3d7434b8506406f4c60ae15031d03066712e6",
+        "09c6f902cece3b26a3bf0227415a61ab7534ca12ad99541fb7a771d185ca1895",
+        "1f3af6cca54ac37dedc3c6ba6e30b59a0478098e0d321e9fa021c0748ae6b501",
+        "01e98189e16fe09f8331533d61892e42fedc0ff0bde1db3a6dd2a6d1fb447708",
+        "fbb4879a58f12c9d55d21cab437d281c4e3306bca93c6cc2d75ac6651ec33c07"
+      ],
+      "final_gpu_allocated_bytes": 14627894272,
+      "state_sha256": "fbb4879a58f12c9d55d21cab437d281c4e3306bca93c6cc2d75ac6651ec33c07",
+      "history_sha256": "c958c14d837439310a257703b25b30f7ab66be20d6d86a42246af29a4d43301c",
+      "explicit_h2d_payload_bytes": 37486592,
+      "explicit_d2h_payload_bytes": 206045184,
+      "initial_d2h_payload_bytes": 201326592,
+      "occupied_host_bytes": 206045184,
+      "reserved_host_bytes": 402784256,
+      "native_d2h_calls": 35,
+      "per_layer_initial_d2h_calls": 0,
+      "native_h2d_calls": 9
+    },
+    {
+      "context": 16384,
+      "block": 0,
+      "arm": "eviction_scores",
+      "timing_scope": "end_to_end_model_policy_token",
+      "ttft_ms": 2466.402,
+      "itl_ms": 357.922,
+      "mean_itl_ms": 357.2330091148615,
+      "forward_ms": 25.263996794819832,
+      "peak_memory_gb": 14.914486784,
+      "prefill_peak_memory_gb": 18.627831296,
+      "trials": [
+        {
+          "ttft_ms": 2466.4016906172037,
+          "step_ms": [
+            364.697577431798,
+            350.6502527743578,
+            366.1163616925478,
+            346.7793520539999,
+            357.92150162160397
+          ],
+          "forward_ms": [
+            25.27632564306259,
+            25.29074437916279,
+            25.226475670933723,
+            25.263996794819832,
+            25.125691667199135
+          ],
+          "prefill_peak_memory_gb": 18.627831296,
+          "decode_peak_memory_gb": 14.914486784,
+          "predicted_token_ids": [
+            14343,
+            18577,
+            3857,
+            4241,
+            7616
+          ],
+          "prefill_forward_ms": 1798.1872223317623,
+          "paid_writes": 1152,
+          "writes_saved": 2016,
+          "demoted": 3168,
+          "promoted": 3008,
+          "decode_steps": 5
+        }
+      ],
+      "every_visible_state_sha256": [
+        "4d304e974915867052d2f43aca9696a1991fdee24933509f2cc60d03d2e2efe3",
+        "49e0b9d9b0b194ac85a37e22c7f3d7434b8506406f4c60ae15031d03066712e6",
+        "09c6f902cece3b26a3bf0227415a61ab7534ca12ad99541fb7a771d185ca1895",
+        "1f3af6cca54ac37dedc3c6ba6e30b59a0478098e0d321e9fa021c0748ae6b501",
+        "01e98189e16fe09f8331533d61892e42fedc0ff0bde1db3a6dd2a6d1fb447708",
+        "fbb4879a58f12c9d55d21cab437d281c4e3306bca93c6cc2d75ac6651ec33c07"
+      ],
+      "final_gpu_allocated_bytes": 14630317056,
+      "state_sha256": "fbb4879a58f12c9d55d21cab437d281c4e3306bca93c6cc2d75ac6651ec33c07",
+      "history_sha256": "c958c14d837439310a257703b25b30f7ab66be20d6d86a42246af29a4d43301c",
+      "explicit_h2d_payload_bytes": 37486592,
+      "explicit_d2h_payload_bytes": 206045184,
+      "initial_d2h_payload_bytes": 201326592,
+      "occupied_host_bytes": 206045184,
+      "reserved_host_bytes": 402784256,
+      "native_d2h_calls": 35,
+      "per_layer_initial_d2h_calls": 0,
+      "native_h2d_calls": 9
+    }
+  ],
+  "passed": false,
+  "prompt_sha256": "18695714f26e35cb8d2b039ae9efb3b7e64291cbd7bcd91956efc07e16a732cd",
+  "teacher_token_ids": [
+    28723,
+    14343,
+    18577,
+    3857,
+    4241,
+    7616
+  ],
+  "gpu": "NVIDIA L40S",
+  "error": "ValueError: Prompt has 30907 tokens, fewer than requested 31500"
+}

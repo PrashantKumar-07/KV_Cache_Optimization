@@ -1,0 +1,18 @@
+{
+  "model": "../models/mistral-7b-instruct",
+  "seed": 0,
+  "hot": 1024,
+  "cold": 2048,
+  "context": 16384,
+  "decode_steps": 50,
+  "teacher_file": "results/shadow_ablation_full/fixed_stream_20260929.json",
+  "prompt_file": "results/remediation_v3/latency_prompt.txt",
+  "backend": "Direct CPU + score batching, actual-query chunk128 placement, existing defaults",
+  "hypotheses": [
+    "Cold overflow after20steps adds substantial GPU/hostmetadata waits",
+    "Eviction kernel launches and tensor copies dominate even before overflow",
+    "Python lists/masks and visibleKV assembly dominate CPU policy criticalpath"
+  ],
+  "scope": "Diagnostic cProfile+CUDA/NVTX timeline; not performance gate. Capture decode+scores only, exclude model-load/fullprefill collection via cudaProfilerApi. No live backend changes.",
+  "stop": "Rank evidence-backed nextstage candidate; require4ms charged screen before any optimization, no sum nestedprofile times."
+}

@@ -1,0 +1,72 @@
+{
+  "scope": "Launch-only L40S prefill portability screen against causal GQA attention.",
+  "passed": true,
+  "upstream_commit": "ab0f495b10fc6509c1637af35779b29121fb7d3f",
+  "kernel_source_sha256": "af9ee0eb5ed951f6076e962a2471d39dbb703fa2ef881e14092372dc3d05ce23",
+  "runner_sha256": "6a607cc15768cad0aaef9a7685b7432e96935cff5942519d002f6a577dac70fc",
+  "adapter_sha256": "60dddf24857bf4fa92574cb7d97b3e234889bef6e2e2f9f0e5954ba1cbf986cb",
+  "runtime": {
+    "git_revision": "be7e700d84d46b47e32ba5b9870c8b71783b9e53",
+    "source_sha256": "e887226ca112a706c84c8513657b449e921fd53a28241dcd00a126ad0b984558",
+    "packages": {
+      "torch": "2.6.0+cu124",
+      "transformers": "4.50.0",
+      "datasets": "3.6.0",
+      "numpy": "1.26.4",
+      "accelerate": "not installed",
+      "huggingface_hub": "0.36.2",
+      "rouge": "1.0.1"
+    }
+  },
+  "checks": [
+    {
+      "prefix_tokens": 0,
+      "new_tokens": 512,
+      "max_abs_error": 0.009216547012329102,
+      "mean_abs_error": 0.00020959490211680532,
+      "launch": {
+        "original": {
+          "BLOCK_M": 128,
+          "BLOCK_N": 128,
+          "num_warps": 8,
+          "num_stages": 3
+        },
+        "num_stages": 1,
+        "compiled_shared_bytes": 65536
+      }
+    },
+    {
+      "prefix_tokens": 0,
+      "new_tokens": 1440,
+      "max_abs_error": 0.0077974796295166016,
+      "mean_abs_error": 0.0001344575866824016,
+      "launch": {
+        "original": {
+          "BLOCK_M": 128,
+          "BLOCK_N": 128,
+          "num_warps": 8,
+          "num_stages": 3
+        },
+        "num_stages": 1,
+        "compiled_shared_bytes": 65536
+      }
+    },
+    {
+      "prefix_tokens": 64,
+      "new_tokens": 512,
+      "max_abs_error": 0.003852248191833496,
+      "mean_abs_error": 0.00016539824719075114,
+      "launch": {
+        "original": {
+          "BLOCK_M": 128,
+          "BLOCK_N": 128,
+          "num_warps": 8,
+          "num_stages": 3
+        },
+        "num_stages": 1,
+        "compiled_shared_bytes": 65536
+      }
+    }
+  ],
+  "gpu": "NVIDIA L40S"
+}

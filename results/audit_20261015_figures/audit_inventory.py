@@ -1,0 +1,51 @@
+"""Exhaustive provenance of the 11 legacy figure pairs, using exact pixel replay."""
+import hashlib,json,subprocess
+from pathlib import Path
+ROOT=Path(__file__).resolve().parents[2];BASE=Path(__file__).resolve().parent
+sha=lambda p:hashlib.sha256(p.read_bytes()).hexdigest()
+read=lambda p:json.loads((ROOT/p).read_text())
+v3='results/remediation_v3/'
+legacyfair='results/final_equal_attended_frac075.json';legacyev='results/final_equal_vram_frac075.json'
+sweeps=sorted(str(p) for p in Path('results/clean_sweep_stt').glob('stt*.json'))
+fracs=sorted(str(p) for p in Path('results').glob('e2_frac*_short.json'))
+MAP={
+ 'fig1_accuracy_equivram':('v2_remediation_v3','experiments/plot_figures_v2.py',188,[v3+'equal_vram_merged.json'],'results[task][method].score; SE=std(sample_scores,ddof=1)/sqrt(n)','replace with final_prior_development rescored90 adapted/equalhot consumed-development predictions'),
+ 'fig7_accuracy_fair':('v2_remediation_v3','experiments/plot_figures_v2.py',188,[v3+'equal_attended_merged.json'],'results[task][method].score; row SE','replace with faithful_snap_development rescored60predictions/30pairs; initial payload boundary only'),
+ 'fig14_heatmap':('v2_remediation_v3','experiments/plot_figures_v2.py',374,[v3+'equal_vram_merged.json'],'results[task][method].score; best compressed argmax excluding full','replace with samefaithful30pairs, box all tied highest estimates across BOTHmethods'),
+ 'fig4_decode_scaling':('v2_remediation_v3','experiments/plot_figures_v2.py',261,[v3+'latency.json'],'results[method][context].itl_ms = rounded median of150raw perstep ms','retain visiblyhistorical until new registered faithfulbaseline context sweep; 1context timing cannot replace scaling'),
+ 'fig11_footprint':('v2_remediation_v3','experiments/plot_figures_v2.py',287,[v3+'equal_vram_merged.json'],'configured rows x32layers x8KVheads x128dim x2KV x2bytes /1e6; hypothetical geometries','retain as historical analytical configuration illustration, not measured native/faithful footprint'),
+ 'fig12_energy':('v2_remediation_v3','experiments/plot_figures_v2.py',316,[v3+'equal_vram_merged.json','src/cost_model.py'],'sum tasks modeled_energy_nj/1e9; events x2048elements priced using default CostModel; residual clamped max0','retain historical assumed traffic totals, rename residual otherbilledtraffic; current events need new model evaluation'),
+ 'fig2_latency_comparison':('publication_legacy_title','experiments/plot_publication_figures.py',375,[legacyfair],'cache_stats.modeled_latency_us/1000 bytask/method; totals not pertoken','retain historical analytical workload totals; replace current causal timing only after newgate'),
+ 'fig3_write_savings':('publication_legacy','experiments/plot_publication_figures.py',463,[legacyfair,*sweeps],'left paid_writes,writes_saved and100saved/(paid+saved); right unweighted mean task percentage by STTcapacity','retain historical with two distinct experiments/fractions named and token-event units corrected'),
+ 'fig6_migration_profile':('publication_legacy','experiments/plot_publication_figures.py',793,[legacyev],'stack demoted,promoted,promotions_deferred,dropped; sum labels/1000','retain historical logical action counts, deferrals not migration'),
+ 'fig8_frac_ablation':('frac_ablation','experiments/plot_frac_ablation.py',51,fracs,'mean taskscore; mean task100saved/(paid+saved); fraction parsed filename','retain historical pointestimates without noninferiority claim; needs new preregistered development ablation'),
+ 'fig15_frac_compare':('frac_compare','experiments/plot_frac_compare.py',65,['results/e2_frac1_0_short.json','results/e2_frac0_75_short.json','results/final_equal_vram.json','results/frac075_gov.json'],'per-taskscore and100saved/(paid+saved); GovReport from separate files','retain historical without accuracy-equivalence claim; no current validation inferred'),
+}
+findings=[
+ {'severity':'P1','id':'mixed_epochs','location':'experiments/plot_figures_v2.py:529; experiments/plot_frac_compare.py:66','figures':[1,2,3,6,7,8,12,14,15],'finding':'A single final folder combines old unversioned fraction inputs with remediation_v3 protocol-v2 scores, and all predate October13 correctness/prompt fixes. Fig1/14 TriviaQA78.27 and Fig15fraction.75 TriviaQA67.44 are different protocol results, not conflicting current estimates.','action':'Replace validated development quality panels; visibly label otherpanels historical with explicit source manifests.'},
+ {'severity':'P1','id':'unsupported_equivalence','location':'experiments/plot_frac_ablation.py:84; experiments/plot_frac_compare.py:109','figures':[8,15],'finding':'Negligible accuracy cost/sameaccuracy/accuracyholds claims are asserted without paired NI gate or interval; raw inputs lack sample IDs,predictions,runtime anddataset hashes. Fig8caption hardcodes7→83and−0.16, actual taskmean difference−0.168.','action':'Remove superiority/equivalence language; new independent claim requires locked protocol and appropriate data.'},
+ {'severity':'P1','id':'workload_totals_not_speed','location':'experiments/plot_publication_figures.py:380; experiments/plot_figures_v2.py:322','figures':[2,12],'finding':'Modeled latency/energy sum free-generation requests with unequal outputs. Example GovReport modelsteps: Full3619, adaptedSnap3047,Tieredfair2965. They cannot support pertoken/wholeloop speed or fixedwork energy conclusions.','action':'Label summed analytical workloadtraffic and unequalwork; keep measured timing separate.'},
+ {'severity':'P1','id':'wrong_event_units','location':'experiments/plot_publication_figures.py:559; experiments/plot_publication_figures.py:846','figures':[3,6],'finding':'Token pages label misidentifies per-layer token demotions as pages. Fig6stack includes hysteresis-denied promotions that perform no transfer; demoted count includes avoidedwrites. Sum is policyactions, not migrationtraffic.','action':'Name per-layer token events/actions; reserve bytes/pagewrites for explicit transfer accounting.'},
+ {'severity':'P2','id':'mixed_fraction_panels','location':'experiments/plot_publication_figures.py:500','figures':[3],'finding':'Leftfraction.75 six-task bars and rightfraction1 five-task STTbudget sweep appear under one efficiencyheading without disclosing different fraction/taskscope. Rightaverages taskratios instead of pooled saved/total.','action':'Explicit panelprotocols and ratioestimand.'},
+ {'severity':'P2','id':'hypothetical_capacity','location':'experiments/plot_figures_v2.py:287','figures':[11],'finding':'Fourbars are algebraic configurations from one equalhot config, not4measured runs. BF16GQA128KiB/token constant is correct for statedmodel; excludes packedduplicates,metadata,hostallocator roots and faithfulSnap queryhead expansion.','action':'Keep as analytical configuration illustration only; do not present as fullphysical footprint.'},
+ {'severity':'P2','id':'residual_and_live_costmodel','location':'experiments/plot_figures_v2.py:319','figures':[12],'finding':'Reconstructscomponents with LIVE importedCostModel while total is frozen; labels allremaining billedenergy attention and clamps negative residual tozero. Futurecost changes can silently changeor inflate stack; missingfields default0.','action':'Freeze assumptions/hash; call residual otherbilledtraffic; reject negative/missing accounting rather than conceal it.'},
+ {'severity':'P2','id':'row_uncertainty','location':'experiments/plot_figures_v2.py:85','figures':[1,7],'finding':'Legacy errorbars are rowstandarderrors ofrounded sample_scores, not confidenceintervals or document-group paired uncertainty. Dependence exists e.g.current5-row Multifield has4targetgroups.','action':'Rescore exact predictions; bootstrap paired targetdocumentgroups, labelconditional uncertainty.'},
+ {'severity':'P2','id':'heatmap_color_clipping','location':'experiments/plot_figures_v2.py:379','figures':[14],'finding':'vmax75 clips scores78.27/79.1to samecolor;colorbar omits points×100. Box merely bestpointestimate, not significance.','action':'Use0–100points colorrange; box ties across correctmethodset; state no significance.'},
+ {'severity':'P2','id':'literal_titles_not_config_validated','location':'experiments/plot_figures_v2.py:277; experiments/plot_publication_figures.py:342','figures':[1,4,7,11],'finding':'Hardware/model/contextdecode counts/capacities in captions are hardcoded; global sourcehash equality check doesnot validate them. GenericCLI can mislabel alternateinputs.','action':'Derive/validate supportedconfig beforeplot; manifestall actualconditions.'},
+]
+report={'schema':1,'scope':'All22files/11plotpairs currently in figures_final; no otherfigures or JPGdiagrams claimed reviewed','source_edits':False,'gpu_jobs':False,'inventories':[],'findings':findings,'no_invented_numeric_measurements_found':True,'limits':'Exactpixel reconstruction establishes renderer/input mapping, not scientific validity or sourceepoch equivalence. No newcurrentrun fabricated.'}
+for stem,(mode,script,line,inputs,recipe,disposition) in MAP.items():
+ artists=read(f'results/audit_20261015_figures/reproductions/{mode}/artists.json')
+ rec=next(r for r in artists if r['figure']==stem+'.png');assert rec['exact_pixels'],stem
+ files={ext:{'path':f'figures_final/{stem}.{ext}','sha256':sha(ROOT/f'figures_final/{stem}.{ext}')} for ext in ['png','pdf']}
+ text=subprocess.check_output(['pdftotext','-layout',str(ROOT/files['pdf']['path']),'-'],text=True)
+ inputmeta={}
+ for p in inputs:
+  path=ROOT/p;meta={'sha256':sha(path)}
+  if path.suffix=='.json':
+   d=json.loads(path.read_text());meta['config']=d.get('config');meta['sample_record_count']=sum(len(e.get('samples',[])) for r in d.get('results',{}).values() if isinstance(r,dict) for e in r.values() if isinstance(e,dict))
+  inputmeta[p]=meta
+ report['inventories'].append({'stem':stem,'files':files,'renderer':{'path':script,'sha256':sha(ROOT/script),'line':line},'input_artifacts':inputmeta,'aggregation':recipe,'extracted_pdf_text':text,'rendered_artist_values':rec,'exact_pixel_reproduction':True,'reproduction_mode':mode,'disposition':disposition})
+report['script_sha256']=sha(Path(__file__))
+out=BASE/'figure_provenance_audit.json';assert not out.exists();out.write_text(json.dumps(report,indent=2))
+print('11/11 PNGexactpixel reproductions;22files indexed;10ranked findings.')

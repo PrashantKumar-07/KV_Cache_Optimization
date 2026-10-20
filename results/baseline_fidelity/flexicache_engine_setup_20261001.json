@@ -1,0 +1,83 @@
+{
+  "scope": "isolated FlexiCache build setup; no model result yet",
+  "upstream_commit": "ab0f495b10fc6509c1637af35779b29121fb7d3f",
+  "worktree": "/data/nishant/tieredkv_external/flexicache_l40s_build",
+  "environment": "/data/nishant/tieredkv_external/flexicache_venv",
+  "torch": "2.6.0+cu124",
+  "transformers_target": "4.50.0",
+  "xgrammar_source_commit": "989222175c2a30fb7987d8bcce35bec1bf6817f2",
+  "dependency_install_pid": 3765604,
+  "dependency_install_session": 8656,
+  "state": "adapted_same_input_pair_feasibility_passed",
+  "updated_at_utc": "2026-10-01T12:22:50.171080+00:00",
+  "setup_incident": "xgrammar 0.1.16 is absent from the package index; build the exact released source tag instead of changing its version",
+  "offline_model_snapshot": "/data/nishant/tieredkv_external/flexicache_hf_cache/hub/models--mistralai--Mistral-7B-Instruct-v0.2/snapshots/63a8b081895390a26e140280378bc85ec8bce07a",
+  "build_session": 84236,
+  "build_script": "/data/nishant/tieredkv_external/build_flexicache_l40s_v2_20261001.sh",
+  "build_log": "/data/nishant/tieredkv_external/flexicache_engine_build_v2_20261001.log",
+  "pilot_runner": "experiments/run_flexicache_pilot.py",
+  "verified_checks": {
+    "torch_runtime": "2.6.0+cu124",
+    "device": "NVIDIA L40S",
+    "cuda_capability": [
+      8,
+      9
+    ],
+    "bf16_addition": "passed",
+    "model_manifest": "results/baseline_fidelity/model_sha256.txt",
+    "model_manifest_verification": "all 3 weight shards, config and tokenizer passed sha256sum -c",
+    "offline_model_resolution": "pinned revision resolves to verified local model and fast tokenizer",
+    "input_tokenization": "transformers 4.50.0: exactly 1440 frozen input IDs and matching SHA256",
+    "observation_tests": "4 passed",
+    "full_local_suite": "98 passed, one existing dependency warning",
+    "python_source_import_precheck": {
+      "passed": true,
+      "scope": "Python source import only; native package and CUDA platform detection remain unverified",
+      "log": "/data/nishant/tieredkv_external/flexicache_python_import_precheck_20261001.log"
+    },
+    "cpu_slot_screen": "storage screen passed; full-loop 0.35% gain failed 5% gate; rejected source archived and active hooks restored",
+    "native_import": "passed; exact worktree, torch2.6+cu124, TF4.50, native SHA recorded in import artifact",
+    "runtime_resolver_adapter": "scope/invalid-runtime regression tests pass; live pilot passed stream setup and reached JIT kernels",
+    "native_pool_allocation": "passed in failed v2 pilot: bf16 GPU/CPU KV and minmax tensor pools; no inference success",
+    "l40s_prefill_stage_screen": "3 causal/GQA cases pass registered tolerances at 65536 shared bytes, unchanged source and tiles",
+    "adapted_model_pair": "input/output/source/runtime/pools/transfers and nonempty scheduled allocations exact; idle poll counts differ; resources unmatched"
+  },
+  "dependency_install_exit_code": 0,
+  "dependency_manifest": "/data/nishant/tieredkv_external/flexicache_environment_20261001.txt",
+  "build_attempts": [
+    {
+      "session": 84152,
+      "exit_code": 1,
+      "log": "/data/nishant/tieredkv_external/flexicache_engine_build_20261001.log",
+      "cause": "CMake found /usr/bin/nvcc 11.5 while setup used CUDA 12.4; missing FA3 target"
+    },
+    {
+      "session": 84236,
+      "exit_code": null,
+      "log": "/data/nishant/tieredkv_external/flexicache_engine_build_v2_20261001.log",
+      "cause": "process and session missing; no terminal error in log; native package not installed",
+      "retained_ninja_entries": 223
+    }
+  ],
+  "pilot_pair_session": null,
+  "pilot_pair_script": "/data/nishant/tieredkv_external/run_flexicache_pair_v3_20261001.sh",
+  "pilot_pair_log": "/data/nishant/tieredkv_external/flexicache_pair_launcher_v3_20261001.log",
+  "pilot_pair_state": "outputs_validated_processes_gone_gpu0_cleanup_verified",
+  "resume_pid": 3855230,
+  "resume_script": "/data/nishant/tieredkv_external/resume_flexicache_build_20261001.py",
+  "resume_log": "/data/nishant/tieredkv_external/flexicache_engine_resume_20261001.log",
+  "resume_status": "/data/nishant/tieredkv_external/flexicache_resume_status_20261001.json",
+  "prior_pilot_failure": {
+    "output": "results/baseline_fidelity/flexicache_matched_input_pilot_20261001.json",
+    "cause": "ctypes cudart lookup selects CUDA13; error35 ignored by upstream priority query; CUDA12.4 validated success"
+  },
+  "pilot_pid": 3879497,
+  "pilot_pair_launcher_pid": 3879494,
+  "prior_shared_memory_failure": {
+    "output": "results/baseline_fidelity/flexicache_matched_input_pilot_v2_20261001.json",
+    "required_shared_bytes": 163840,
+    "hardware_shared_limit_bytes": 101376,
+    "cleanup": "process gone, launcher exited1, GPU0 returned16MiB before screen"
+  },
+  "pair_report": "results/baseline_fidelity/flexicache_matched_input_pair_report_20261001.json"
+}

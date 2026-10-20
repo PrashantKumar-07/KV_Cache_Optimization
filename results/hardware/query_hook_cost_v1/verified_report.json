@@ -1,0 +1,95 @@
+{
+  "verified": true,
+  "existing_hook_pattern_regression_screen_passed": false,
+  "guards": {
+    "median_decode": false,
+    "p95_decode": false,
+    "ttft": true
+  },
+  "ratios": {
+    "median_decode": 1.4060167270785644,
+    "p95_decode": 1.3579278560105992,
+    "ttft": 1.0067740651268553
+  },
+  "aggregate": {
+    "control": {
+      "median_decode_ms": 58.581345714628696,
+      "p95_decode_ms": 64.35519456863403,
+      "median_ttft_ms": 2177.8144845739007
+    },
+    "query": {
+      "median_decode_ms": 82.36635196954012,
+      "p95_decode_ms": 87.38971138373017,
+      "median_ttft_ms": 2192.567141726613
+    }
+  },
+  "blocks": [
+    {
+      "block": 0,
+      "control": {
+        "median_decode_ms": 58.61498787999153,
+        "p95_decode_ms": 64.69563487917185,
+        "median_ttft_ms": 2130.3100613877177
+      },
+      "query": {
+        "median_decode_ms": 82.57952518761158,
+        "p95_decode_ms": 87.57972689345479,
+        "median_ttft_ms": 2130.3070709109306
+      },
+      "median_decode_ratio": 1.408846579593006,
+      "p95_decode_ratio": 1.3537192587571354,
+      "ttft_ratio": 0.9999985962246335
+    },
+    {
+      "block": 1,
+      "control": {
+        "median_decode_ms": 58.583430014550686,
+        "p95_decode_ms": 64.30858969688416,
+        "median_ttft_ms": 2201.4270424842834
+      },
+      "query": {
+        "median_decode_ms": 80.78617975115776,
+        "p95_decode_ms": 86.99150020256639,
+        "median_ttft_ms": 2192.567141726613
+      },
+      "median_decode_ratio": 1.3789936801428742,
+      "p95_decode_ratio": 1.352719762827908,
+      "ttft_ratio": 0.9959753829735497
+    },
+    {
+      "block": 2,
+      "control": {
+        "median_decode_ms": 57.42755625396967,
+        "p95_decode_ms": 63.90104107558727,
+        "median_ttft_ms": 2206.9303821772337
+      },
+      "query": {
+        "median_decode_ms": 80.37827257066965,
+        "p95_decode_ms": 87.01443998143077,
+        "median_ttft_ms": 2201.8824396654963
+      },
+      "median_decode_ratio": 1.3996464034652967,
+      "p95_decode_ratio": 1.3617061399438408,
+      "ttft_ratio": 0.9977126861125736
+    }
+  ],
+  "measured_decode_forwards_per_arm": 300,
+  "quiet_compute_process_checks": 25,
+  "all_teacher_predictions_replayed": true,
+  "hooks_removed": true,
+  "ordinary_adoption": false,
+  "full_goal_complete": false,
+  "diagnostic_extra_cold_read_bytes": 0,
+  "disposition": "This unfused per-layer query-hook pattern alone exceeds the regression screen. Lower H2D alone is insufficient for this pattern; investigate reusing/fusing query math before an index implementation.",
+  "limits": "Diagnostic only, not retrieval/quality implementation, formal universal lower bound or resource measurement. Tests this existing unfused PyTorch hook pattern; fused/reused attention math may differ. No extra read costs, but concat/sorting bookkeeping included. FullP0/P1/P2 remain open. Before/after GPU0 compute PID checks only, no continuous utilization assurance.",
+  "evidence_sha256": {
+    "plan.json": "dc6eaf6d3dd3d79e98807e3f5f5cbf6e3909ee428c67b378bb423061fe3dceb3",
+    "timing_plan.json": "dc6eaf6d3dd3d79e98807e3f5f5cbf6e3909ee428c67b378bb423061fe3dceb3",
+    "implementation.json": "50ad96047b124641780493d9d020f706971c75a1b94cd842a7feaf14871a1c01",
+    "control_source.tar.gz": "4761d9ce2a0fe4bb42f297f14462a11ca4d58da91125fc55387957633dd4e677",
+    "implementation_source.tar.gz": "3269cac47f40cbd191ea88c753ddaf2a35786ba1e133db29b68c45213b4223b2",
+    "timing.json": "0ae10948dabf0b2befd802f33fdebfdd6ae19286723d77e5c9acd2a898d3ac90",
+    "job.json": "749d085334246177af2b37534972c1083c375551ad47dcb45e50bbada4a63a9d",
+    "verify_timing.py": "51039dc2f73cd819cee09199db1e08513299e6598d4fa9f71b281ac4466d7ed7"
+  }
+}

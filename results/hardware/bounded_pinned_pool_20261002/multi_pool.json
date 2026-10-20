@@ -1,0 +1,64 @@
+{
+  "passed": true,
+  "runtime": {
+    "git_revision": "be7e700d84d46b47e32ba5b9870c8b71783b9e53",
+    "source_sha256": "6687ce54f24b1372f958c406b037f650e492d82951611d59f1bb76364c4b692c",
+    "packages": {
+      "torch": "2.5.1+cu124",
+      "transformers": "5.15.0",
+      "datasets": "2.19.2",
+      "numpy": "2.2.6",
+      "accelerate": "1.14.0",
+      "huggingface_hub": "1.27.0",
+      "rouge": "1.0.1"
+    }
+  },
+  "checks": [
+    {
+      "requests": 2,
+      "layers": 2,
+      "streams": 1,
+      "rounds": 32,
+      "exact_read_observations": 128,
+      "overlap_flushes": 8,
+      "queued_write_resets": 1
+    },
+    {
+      "requests": 2,
+      "layers": 2,
+      "streams": 2,
+      "rounds": 32,
+      "exact_read_observations": 128,
+      "overlap_flushes": 8,
+      "queued_write_resets": 1
+    },
+    {
+      "requests": 4,
+      "layers": 2,
+      "streams": 1,
+      "rounds": 32,
+      "exact_read_observations": 256,
+      "overlap_flushes": 16,
+      "queued_write_resets": 1
+    },
+    {
+      "requests": 4,
+      "layers": 2,
+      "streams": 2,
+      "rounds": 32,
+      "exact_read_observations": 256,
+      "overlap_flushes": 16,
+      "queued_write_resets": 1
+    }
+  ],
+  "direct": false,
+  "bounded": true,
+  "source_sha256": {
+    "experiments/check_cpu_multi_pool.py": "be842186a973ac71b122cb67331860cb1ed294ebbac9cbdef54cdfa4d1527b27",
+    "experiments/cpu_batched_cache.py": "514aed658034ebdc0f3e1bc62c293cd7472c1eef3e0712e6f95995a33769d45b",
+    "experiments/cpu_slot_cache.py": "5eaec8fdb0e9d0d3316820f2129b55f66b8c11c3ed3579b6f16c97ee0a1fd293",
+    "experiments/direct_shared_pool.py": "accfa1d447fbb12f5854118fead36190f08df884ec5ee5e199a3d11368d88da3",
+    "experiments/bounded_pinned_pool.py": "3c0ef93cf38247e2317729b324367f8f7097c9026e11cc74caf69e79b6924192"
+  },
+  "limitations": "Synthetic cold storage with serialized Python host dispatch and overlapping CUDA streams. No model-serving/thread safety/throughput/saturation or allocator peak claim."
+}

@@ -1,0 +1,3 @@
+# CPU phase controller integration
+
+496 tests pass. Recorded4K12 and fresh16K50 correctness/native phases pass, no fallback. Scoped active+pinned+CPU433.333MiB vs541.077MiB. Quiet3ABBA300forwards/arm:58.928 to54.086ms median,8.218% gain/4.843ms saving. P95 improves8.758%; TTFT+1.399%, all guards pass. See verified_correctness.json, verified_resource.json, verified_cost.json. 8K/31.5K50-step parity passes. Forcedcold256-row recycling passes304 CPUreclaims. All12 development free-generation pairs pass597 CPUphase steps/19104 layer transitions and174 additional reclaims, no fallback. All owned jobs terminal. Joint faithful-baseline/quality and broader fallback/exclusive boundaries remain open. Research-only, no full completion claim.

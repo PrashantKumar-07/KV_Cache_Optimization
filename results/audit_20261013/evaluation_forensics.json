@@ -1,0 +1,119 @@
+{
+  "scope": "CPU-only audit of frozen artifacts; no new selection or model evaluation",
+  "script_sha256": "84942fd056a840e7a60efd0c07f8ea401177235283d36fb465cbddf7d18e53cf",
+  "source_sha256": {
+    "experiments/longbench_metrics.py": "de234e04effd346a90b6775eddd96e8583b7baea3455cf62168822949565b763",
+    "experiments/longbench_eval.py": "b72cab1cb8ef1b8b877cffae7dac7204414438e204c83d0ec81f6549498fdbd4",
+    "experiments/provenance.py": "8417e5ca02fae30d5ecfcf3bee711eea22ea0c6754fbd31d9c57a781715b6472",
+    "experiments/audit_unused_documents.py": "4077754a6e891ac37ce4393dbee93e419ede3f5e2e8528ef0255b9f01d0e714b"
+  },
+  "prompt_differences": {
+    "narrativeqa": {
+      "local": "You are given a story, which can be either a novel or a movie script, and a question. Answer the question as concisely as you can, using a single phrase if possible. Do not provide any explanation.\n\nStory: {context}\n\nNow, answer the following question based on the above story, as concisely as you can, using a single phrase if possible. Do not provide any explanation.\n\nQuestion: {input}\nAnswer:",
+      "reference": "You are given a story, which can be either a novel or a movie script, and a question. Answer the question asconcisely as you can, using a single phrase if possible. Do not provide any explanation.\n\nStory: {context}\n\nNow, answer the question based on the story asconcisely as you can, using a single phrase if possible. Do not provide any explanation.\n\nQuestion: {input}\n\nAnswer:"
+    },
+    "qasper": {
+      "local": "You are given a scientific article and a question. Answer the question as concisely as you can, using a single phrase or sentence if possible. If the question cannot be answered based on the information in the article, write \"unanswerable\". If the question is a yes/no question, answer \"yes\", \"no\", or \"unanswerable\". Do not provide any explanation.\n\nArticle: {context}\n\nAnswer the question based on the above article as concisely as you can, using a single phrase or sentence if possible. If the question cannot be answered based on the information in the article, write \"unanswerable\". If the question is a yes/no question, answer \"yes\", \"no\", or \"unanswerable\". Do not provide any explanation.\n\nQuestion: {input}\nAnswer:",
+      "reference": "You are given a scientific article and a question. Answer the question as concisely as you can, using a single phrase or sentence if possible. If the question cannot be answered based on the information in the article, write \"unanswerable\". If the question is a yes/no question, answer \"yes\", \"no\", or \"unanswerable\". Do not provide any explanation.\n\nArticle: {context}\n\n Answer the question based on the above article as concisely as you can, using a single phrase or sentence if possible. If the question cannot be answered based on the information in the article, write \"unanswerable\". If the question is a yes/no question, answer \"yes\", \"no\", or \"unanswerable\". Do not provide any explanation.\n\nQuestion: {input}\n\nAnswer:"
+    },
+    "qmsum": {
+      "local": "You are given a meeting transcript and a query containing the constraints and conditions for the desired summary. Write a summary of the meeting transcript that satisfies the query.\n\nTranscript:\n{context}\n\nQuery: {input}\nSummary:",
+      "reference": "You are given a meeting transcript and a query containing a question or instruction. Answer the query in one or more sentences.\n\nTranscript:\n{context}\n\nNow, answer the query based on the above meeting transcript in one or more sentences.\n\nQuery: {input}\nAnswer:"
+    },
+    "multi_news": {
+      "local": "You are given several news passages. Write a one-page summary of all news.\n\n{context}\n\nNow, write a one-page summary of all the news.\n\nSummary:",
+      "reference": "You are given several news passages. Write a one-page summary of all news. \n\nNews:\n{context}\n\nNow, write a one-page summary of all the news.\n\nSummary:"
+    },
+    "samsum": {
+      "local": "Summarize the following dialogue.\n\n{context}\n\nSummary:",
+      "reference": "Summarize the dialogue into a few short sentences. The following are some examples.\n\n{context}\n\n{input}"
+    },
+    "passage_count": {
+      "local": "There are some paragraphs below sourced from Wikipedia. Some of them may be duplicates. Please carefully read these paragraphs and determine how many unique paragraphs there are after removing duplicates. In other words, how many distinct paragraphs are there in total?\n\n{context}\n\nPlease enter the final count of unique paragraphs after removing duplicates. The output format should only contain the number, e.g., 1, 2, 3, and so on.\n\nThe count of unique paragraphs is:",
+      "reference": "There are some paragraphs below sourced from Wikipedia. Some of them may be duplicates. Please carefully read these paragraphs and determine how many unique paragraphs there are after removing duplicates. In other words, how many non-repeating paragraphs are there in total?\n\n{context}\n\nPlease enter the final count of unique paragraphs after removing duplicates. The output format should only contain the number, such as 1, 2, 3, and so on.\n\nThe final answer is: "
+    },
+    "passage_retrieval_en": {
+      "local": "The following are some paragraphs, each indicated by a numerical identifier []. Please read them and determine which paragraph the following summary corresponds to.\n\n{context}\n\nThe above is a set of paragraphs. Below is a summary.\n\nSummary: {input}\n\nPlease enter the identifier of the paragraph that the summary corresponds to. The answer format must be like \"Paragraph [id]\".",
+      "reference": "Here are 30 paragraphs from Wikipedia, along with an abstract. Please determine which paragraph the abstract is from.\n\n{context}\n\nThe following is an abstract.\n\n{input}\n\nPlease enter the number of the paragraph that the abstract is from. The answer format must be like \"Paragraph 1\", \"Paragraph 2\", etc.\n\nThe answer is: "
+    }
+  },
+  "default_six_task_prompt_differences": [
+    "qasper",
+    "narrativeqa"
+  ],
+  "samsum_missing_target": {
+    "source_file": "/data/nishant/Nishant/Prashant/Thesis/kv_cache/../hf_cache/datasets/downloads/extracted/5def9c7eaf83951e1cee75902d8611ef764ad88dd289e8f0bf97ff658a3eb83a/data/samsum_e.jsonl",
+    "sample_id": "66c33480a36461a45863d76ad2660cb901bf9adba410e50a379245ee7df15749",
+    "target_input_present_in_local_prompt": false,
+    "target_input_present_in_reference_prompt": true,
+    "scope": "Supported optional task; absent from six-task headline"
+  },
+  "triviaqa_identity": {
+    "source_sha256": "3c4cc5ca18f2578d1f6458d1219387c741c6fafad7e8518addea898c08ff0d73",
+    "rows": 300,
+    "distinct_contexts": 300,
+    "distinct_target_inputs": 222,
+    "historical_holdout_overlap": {
+      "realq_cpu_fresh_documents_20261001": {
+        "manifest_sha256": "b676a673af0296e0b9d47d115dcc92681f43e334f8d214a88e7340726a1f5750",
+        "inventory_sha256": "a2453e1c38e98383c9aacc732f6ed8fb228de46f1a47dacd05b2231eec34e171",
+        "selected_rows": 20,
+        "already_used_target_passages": [
+          {
+            "selected_source_index": 125,
+            "prior_source_index": 19
+          },
+          {
+            "selected_source_index": 229,
+            "prior_source_index": 9
+          }
+        ]
+      },
+      "snap_tier_envelope_fresh_quality_20261002": {
+        "manifest_sha256": "947c3482685044066bf43f9a179782cb8656d53a0a8430b546ce96071ccfe46a",
+        "inventory_sha256": "c65b57a73f949d55d16b22743c3d82fb73b3df9e19becd43284ef3d6a8eae22f",
+        "selected_rows": 20,
+        "already_used_target_passages": [
+          {
+            "selected_source_index": 43,
+            "prior_source_index": 65
+          },
+          {
+            "selected_source_index": 64,
+            "prior_source_index": 270
+          },
+          {
+            "selected_source_index": 148,
+            "prior_source_index": 284
+          },
+          {
+            "selected_source_index": 190,
+            "prior_source_index": 4
+          },
+          {
+            "selected_source_index": 245,
+            "prior_source_index": 15
+          }
+        ]
+      }
+    },
+    "readiness_20261003": {
+      "inventory_sha256": "05b46e67a7898977b41fe6bef3d1fc6dddf4925d0d4e45be4edf03d2320955b0",
+      "claimed_eligible_context_groups": 221,
+      "distinct_target_passages": 180,
+      "eligible_rows_with_already_used_targets": 29,
+      "unconsumed_target_passages_in_e_source": 151,
+      "scope": "Reinterprets existing context exclusion inventory in its E source; not new cross-variant selection"
+    }
+  },
+  "independent_rescore": {
+    "rows": 200,
+    "raw_sha256": "b7abfddd5aec500f7d880073edd2ccf3c573acaebe6f2bec4799b1087bbdda46",
+    "task_balanced_difference": -2.569852816994514,
+    "historical_row_bootstrap_ci95_reproduced": [
+      -5.293844006422849,
+      -0.507107896216452
+    ],
+    "interpretation": "Stored scores and numerical interval reproduce exactly; target leakage above invalidates the unused-document interpretation, not these arithmetic checks."
+  }
+}

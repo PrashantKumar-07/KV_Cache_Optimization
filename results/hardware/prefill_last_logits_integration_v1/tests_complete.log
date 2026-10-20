@@ -1,0 +1,51 @@
+........................................................................ [ 28%]
+.....................................................F.................. [ 57%]
+........................................................................ [ 85%]
+....................................                                     [100%]
+=================================== FAILURES ===================================
+___________ test_latency_profiler_last_logits_preserves_fixed_stream ___________
+
+    def test_latency_profiler_last_logits_preserves_fixed_stream():
+        from latency_profile import profile_one
+        from longbench_eval import FullCachePolicy
+        torch.manual_seed(0)
+        model = MistralForCausalLM(MistralConfig(hidden_size=16, intermediate_size=32,
+            num_hidden_layers=2, num_attention_heads=4, num_key_value_heads=2,
+            vocab_size=32, sliding_window=None, attn_implementation='eager')).eval()
+        predictions = []
+        for last in (False, True):
+            shapes = []
+            def after(module, positional, options, out):
+                shapes.append(list(out.logits.shape))
+            handle = model.register_forward_hook(after, with_kwargs=True)
+            try:
+>               result = profile_one(model, Tokenizer(), FullCachePolicy(), 8,
+                    n_decode=3, n_warmup=0, n_repeat=1, device='cpu',
+                    forced_token_ids=[1, 2, 3, 4], prefill_last_logits=last)
+
+tests/test_prefill_output_lifetime.py:95: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+../venv_kvcache/lib/python3.10/site-packages/torch/utils/_contextlib.py:116: in decorate_context
+    return func(*args, **kwargs)
+experiments/latency_profile.py:123: in profile_one
+    counters = ({k: after_stats[k] - before_stats[k]
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+.0 = <tuple_iterator object at 0x75a0682b25c0>
+
+>   counters = ({k: after_stats[k] - before_stats[k]
+                 for k in ('paid_writes', 'writes_saved', 'demoted',
+                           'promoted', 'decode_steps')}
+                if forced is not None else {})
+E   KeyError: 'paid_writes'
+
+experiments/latency_profile.py:123: KeyError
+=============================== warnings summary ===============================
+tests/test_review_regressions.py::test_flexicache_checks_preserve_existing_evidence[check_flexicache_transfers]
+  /usr/lib/python3.10/distutils/command/build_ext.py:13: DeprecationWarning: The distutils.sysconfig module is deprecated, use sysconfig instead
+    from distutils.sysconfig import customize_compiler, get_python_version
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ============================
+FAILED tests/test_prefill_output_lifetime.py::test_latency_profiler_last_logits_preserves_fixed_stream
+1 failed, 251 passed, 1 warning in 9.11s

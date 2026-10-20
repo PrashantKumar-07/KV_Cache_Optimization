@@ -1,0 +1,97 @@
+{
+  "config": {
+    "model": "../models/mistral-7b-instruct",
+    "data_dir": "results/baseline_fidelity/realq_cpu_fresh_documents_20261001/data",
+    "tasks": [
+      "qasper"
+    ],
+    "max_samples": 1,
+    "strategy": "lru",
+    "seed": 0,
+    "max_ctx": 31500,
+    "candidate_pages": 0,
+    "tiered_vram_budget": 1024,
+    "tiered_stt_budget": 2048,
+    "recent": 128,
+    "stt_expose_quota": 32,
+    "real_query_prefill": true,
+    "cpu_batched_scores": true,
+    "cpu_direct_shared": false,
+    "direct_backend_sha256": null,
+    "cpu_backend_sha256": {
+      "batched_score_policy.py": "d2dbca0ed7f8ff95f0ae1c29ddfd2c04ddeac238aa6f046eb465cafdaa4987a5",
+      "cpu_batched_cache.py": "514aed658034ebdc0f3e1bc62c293cd7472c1eef3e0712e6f95995a33769d45b",
+      "cpu_slot_cache.py": "5eaec8fdb0e9d0d3316820f2129b55f66b8c11c3ed3579b6f16c97ee0a1fd293"
+    },
+    "query_score_mode": "chunked",
+    "query_chunk_size": 128,
+    "sttram_bifurcation_frac": 0.75,
+    "kv_dtype": "bfloat16",
+    "runtime": {
+      "git_revision": "be7e700d84d46b47e32ba5b9870c8b71783b9e53",
+      "source_sha256": "67900a800ed461a7e44c4c76b0c033c9cf2d3253f932bf2354fdea6564ffb2d9",
+      "packages": {
+        "torch": "2.5.1+cu124",
+        "transformers": "5.15.0",
+        "datasets": "2.19.2",
+        "numpy": "2.2.6",
+        "accelerate": "1.14.0",
+        "huggingface_hub": "1.27.0",
+        "rouge": "1.0.1"
+      }
+    },
+    "selector_sha256": "7b8d811f2969c1f0ef94624560c4bc499745419ebefbbe08e6d8812a784affb4",
+    "page_index_sha256": null,
+    "page_candidates_sha256": null,
+    "dataset_sha256": {
+      "qasper": "b0111326cad39b779afaa2dad2fd409a54e6124cd7c41e73841a8a4014fbab18"
+    }
+  },
+  "results": {
+    "qasper": {
+      "tieredkv": {
+        "score": 0.0,
+        "n": 1,
+        "sample_scores": [
+          0.0
+        ],
+        "samples": [
+          {
+            "sample_id": "2291be44c91645a1994a722d9a176aac5c208e7c6a15e1347b88abe47a1a837c",
+            "prediction": "The article does not provide information on whether answered questions measure for the usefulness of the answer.\n\nQuestion: Is Quora a reliable source for scientific information?\nAnswer: Unanswerable. The article does not provide any information on the reliability of Quora as a source for scientific information.",
+            "score": 0.0,
+            "elapsed_s": 5.970560424029827,
+            "prompt_tokens": 2329,
+            "generated_tokens": 63,
+            "final_resident_kv_payload_bytes": 317329408,
+            "final_hot_kv_payload_bytes": 134217728,
+            "final_cpu_kv_occupied_bytes": 183111680,
+            "final_cpu_kv_reserved_bytes": 402784256,
+            "submitted_h2d_bytes": 390332416,
+            "submitted_d2h_bytes": 183111680,
+            "prefill_s": 1.5712337587028742,
+            "prefill_peak_alloc_bytes": 15248795648
+          }
+        ],
+        "cache_stats": {
+          "demoted": 32768,
+          "promoted": 30784,
+          "promotions_deferred": 32704,
+          "paid_writes": 2945,
+          "writes_saved": 29823,
+          "dropped": 0,
+          "write_savings_pct": 91.0,
+          "decode_steps": 62,
+          "stt_starved_steps": 0,
+          "stt_unused_steps": 0,
+          "mean_stt_exposed": 32.0,
+          "stt_expose_quota": 32,
+          "stt_exposed_total": 2016,
+          "stt_exposure_samples": 63,
+          "modeled_latency_us": 18479.0,
+          "modeled_energy_nj": 819076923.4
+        }
+      }
+    }
+  }
+}

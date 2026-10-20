@@ -1,0 +1,52 @@
+{
+  "created_utc": "2026-10-16T07:41:14.216880+00:00",
+  "prerequisite": "Complete successful reviewed initialqueue; verifylivePID whilewaiting",
+  "stages": [
+    {
+      "name": "gqa_preflight",
+      "script": "results/improvement_design_20261016/gqa_gpu_preflight.py",
+      "output": "results/improvement_design_20261016/gqa_gpu_proof.json",
+      "success": "verified",
+      "gpu": true,
+      "sha256": {
+        "results/improvement_design_20261016/gqa_gpu_preflight.py": "548a54fb2bb935c0cda0f5396eadd971401b33f6b402980340c455bb5a42044b",
+        "results/improvement_design_20261016/gqa_preflight_plan.json": "fe1f193c08f5b6c41fdf166f55169e6db405b36278f77f637ca81e0e957ac126",
+        "results/improvement_design_20261016/gqa_snap_adapter.py": "ee6ce071c722707cf62c9cf5ed005eca46ae26c0412eaa673e22338af6dbb09b"
+      }
+    },
+    {
+      "name": "gqa_complete_baseline",
+      "script": "results/gqa_baseline_20261016/run.py",
+      "output": "results/gqa_baseline_20261016/records/complete.json",
+      "success": "execution_complete",
+      "gpu": true,
+      "sha256": {
+        "results/gqa_baseline_20261016/run.py": "3d2250738bd66d93edd1a5beebf209c7348cee3e52ad63e67713e730dcc437fb",
+        "results/gqa_baseline_20261016/plan.json": "baf1c09016a2f7b38972cfb844c1226570add030401a7490c50231e7606afd1b"
+      }
+    },
+    {
+      "name": "verify_gqa_baseline",
+      "script": "results/gqa_baseline_20261016/verify.py",
+      "output": "results/gqa_baseline_20261016/verified_results.json",
+      "success": "verified",
+      "gpu": false,
+      "sha256": {
+        "results/gqa_baseline_20261016/verify.py": "43df29377a49a1cd8ca90fb83f9bc8ad61dbe03fc0d242333cd949fa8ba78c41",
+        "results/gqa_baseline_20261016/plan.json": "baf1c09016a2f7b38972cfb844c1226570add030401a7490c50231e7606afd1b"
+      }
+    },
+    {
+      "name": "whole_request_writes",
+      "script": "results/audit_20261016_headroom/analyze_whole_writes.py",
+      "output": "results/audit_20261016_headroom/whole_request_writes.json",
+      "success": "verified",
+      "gpu": false,
+      "sha256": {
+        "results/audit_20261016_headroom/analyze_whole_writes.py": "64d82f770908843d18c1d076deb4bde09c0187f69decfebe8e8a9f62084f64f9"
+      }
+    }
+  ],
+  "review": "Root source review ofofficialcausalmask/groupmean/pool/topk/gather/cleanup;14CPUtests independentlypassed andtiny1100tokenBF16 fullgenerator smoke passed; allrawsource/model/data hashes and prefilltokencontrols checked; no SOTA/equal-memory claim",
+  "policy": "No automatic retries or overwrites. Stop ifpreflightfails,priorqueuefails,GPU1occupied orverificationfails. All1474currentbaseline outcomesdescriptive onconsumeddata; not candidate tuning."
+}

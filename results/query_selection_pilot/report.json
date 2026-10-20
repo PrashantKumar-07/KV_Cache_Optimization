@@ -1,0 +1,81 @@
+{
+  "scope": "paired selected tasks/samples/model/seed; conditional bootstrap only",
+  "runtime": {
+    "git_revision": "be7e700d84d46b47e32ba5b9870c8b71783b9e53",
+    "source_sha256": "bcc2b8520906db2db0a85494d441a4e688e571a356f1f6bc00c6c493d71dc548",
+    "packages": {
+      "torch": "2.5.1+cu124",
+      "transformers": "5.15.0",
+      "datasets": "2.19.2",
+      "numpy": "2.2.6",
+      "accelerate": "1.14.0",
+      "huggingface_hub": "1.27.0",
+      "rouge": "1.0.1"
+    }
+  },
+  "selector_sha256": "d6326141d0bdf7cf23f4acccba35f9589b045991f86d1c0bf928aee293e5ebf2",
+  "control_directory": null,
+  "tasks": [
+    "qasper",
+    "narrativeqa",
+    "gov_report"
+  ],
+  "quality": {
+    "baseline": "lru",
+    "per_task": {
+      "qasper": {
+        "n": 5,
+        "mean_difference": 5.953114670734809,
+        "se": 4.5696532032357755
+      },
+      "narrativeqa": {
+        "n": 5,
+        "mean_difference": 0.24904507257448252,
+        "se": 2.5055404352033923
+      },
+      "gov_report": {
+        "n": 5,
+        "mean_difference": 6.0071173407938465,
+        "se": 2.436470552126504
+      }
+    },
+    "scores": {
+      "qasper": {
+        "tieredkv": 12.86,
+        "lru": 6.91
+      },
+      "narrativeqa": {
+        "tieredkv": 18.77,
+        "lru": 18.53
+      },
+      "gov_report": {
+        "tieredkv": 34.25,
+        "lru": 28.25
+      }
+    },
+    "task_balanced_mean_difference": 4.06975902803438,
+    "paired_bootstrap_95pct_interval": [
+      0.8502085996672332,
+      7.39060874190814
+    ],
+    "bootstrap_draws": 10000,
+    "seed": 0
+  },
+  "counters": {
+    "query": {
+      "paid_writes": 121681,
+      "writes_saved": 616457,
+      "promoted": 683098,
+      "demoted": 738138,
+      "decode_steps": 1720
+    },
+    "lru": {
+      "paid_writes": 73270,
+      "writes_saved": 727466,
+      "promoted": 752416,
+      "demoted": 800736,
+      "decode_steps": 1510
+    }
+  },
+  "caveat": "The same input samples can generate different output lengths. Separate-GPU per-request elapsed times are not a controlled latency comparison. STT tier is simulated on GPU."
+}

@@ -1,0 +1,44 @@
+{
+  "timestamp_utc": "2026-10-03T13:42:31.565420+00:00",
+  "resource_proof_sha256": "65c0a7ca317e05f4de0b13bcbbbe4a7ca52dd266f3a62b6009a5e95c7c763f39",
+  "comparison": "Faithful expanded-head/growing SnapKV capacity682 versus early-shared CPU649/1982; initial resident KV341MiB equal only. Fulltrajectory resource equality remains false. Diagnostic timing cannot close strict equality requirement.",
+  "settings": {
+    "context": 16384,
+    "decode": 50,
+    "blocks": 3,
+    "warmup": 1,
+    "repeat": 1,
+    "seed": 0,
+    "prefill_last_logits": true
+  },
+  "order": [
+    "snap",
+    "cpu",
+    "cpu",
+    "snap",
+    "snap",
+    "cpu",
+    "cpu",
+    "snap",
+    "snap",
+    "cpu",
+    "cpu",
+    "snap"
+  ],
+  "prompt": "results/remediation_v3/latency_prompt.txt",
+  "prompt_sha256": "18695714f26e35cb8d2b039ae9efb3b7e64291cbd7bcd91956efc07e16a732cd",
+  "teachers": "results/shadow_ablation_full/fixed_stream_20260929.json",
+  "teachers_sha256": "620ac3a383997c9afbc6a3f0b06acec9f261d5a2a5827bf5988e0bb5b69f12a2",
+  "cpu": "results/hardware/early_shared_cpu_phase_v1/cpu.json",
+  "cpu_sha256": "706e032b42051c086d203aab5d8040cd1102bef9618ce7f7656a5a5fd3fa3f2c",
+  "snap": "results/hardware/prompt_boundary_comparison_v1/snap.json",
+  "snap_sha256": "ca246a0b2a903d6e5dab1ebf59a922dcc934e9ff1143f0dd433d00b1e2a7f428",
+  "gates": {
+    "median_gain_min_pct": 5,
+    "median_saved_min_ms": 4,
+    "p95_worse_max_pct": 2,
+    "ttft_worse_max_pct": 10,
+    "prefill_worse_max_pct": 10
+  },
+  "stop": "Failed primary/guard stops expansion/adoption; no favorable retry or finalholdout tuning. Both arms must reproduce frozen per-arm predictions/state and CPU counters/nativeKV;25 quiet observations. Retain negative evidence."
+}

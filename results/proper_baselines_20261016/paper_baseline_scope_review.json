@@ -1,0 +1,84 @@
+{
+  "reviewed_utc": "2026-10-16T08:24:35.135814+00:00",
+  "scope": "Read-only comparison adequacy review; literature statements checked against primary official sources. No code built, model run, performance result inferred, or source algorithm edited.",
+  "local_evidence_reviewed": [
+    "results/audit_20261013/literature_review.md",
+    "results/proper_baselines_20261016/comparison_contract.json"
+  ],
+  "decision": {
+    "official_gqa_snapkv_plus_icecache_sufficient_for_global_sota_claim": false,
+    "sufficient_for_targeted_empirical_comparison": "Conditionally: a validated Mistral-7B / six-task / declared GPU+host-resource comparison against those named methods can be defensible. All correctness, resource, statistical and novelty gates still apply. This does not establish acceptance/publication readiness.",
+    "target_claim_template": "Under the stated simulated STT parameters and measured resource envelope, the proposed policy changes logical slow-tier write traffic by X while achieving quality Y relative to validated official SnapKV and IceCache on these workloads. Report measured CPU results separately and only if actually established.",
+    "global_sota": "Do not label a win over these two methods as global SOTA. Scope any superiority to the methods, model, tasks, budgets, precision and confidence interval actually tested.",
+    "write_novelty_warning": "An inclusive host copy that avoids repeated offloads is already explicit in FlexiCache. A write-aware contribution must demonstrate a distinct bounded-capacity/traffic-quality tradeoff against an existing write-once policy; repeated-demotion-only controls are insufficient."
+  },
+  "additional_comparisons_max_three": [
+    {
+      "rank": 1,
+      "method": "RocketKV",
+      "requirement": "Necessary before claiming stronger-than-modern-compression quality; not mandatory for an explicitly named SnapKV/IceCache-only comparison.",
+      "why": "Official two-stage permanent prompt compression plus dynamic sparse selection is a more recent direct Mistral quality comparator than SnapKV alone.",
+      "compatibility": "Official Mistral-7B-Instruct-v0.2 LongBench runner includes all six task families used here. Actual local weights/version must be matched. Accuracy runtime pins Torch 2.4.1 and Transformers 4.45.2; FlashAttention 2.6.3. Official efficiency runner targets Llama3.1, so Mistral quality support is not evidence of a validated Mistral latency path.",
+      "fairness": "Use upstream selector and sparse-attention algorithm unchanged, exact local token IDs/BF16/generation/scorers, official valid parameterization and all resident compressed KV plus auxiliary metadata. Report retained capacity separately from per-step attention budget. Establish runtime controls before timing.",
+      "primary_sources": [
+        "https://github.com/NVlabs/RocketKV",
+        "https://raw.githubusercontent.com/NVlabs/RocketKV/main/scripts/longbench/mistral-7b-instruct-v0.2.sh",
+        "https://raw.githubusercontent.com/NVlabs/RocketKV/main/requirements.txt",
+        "https://proceedings.mlr.press/v267/behnam25a.html"
+      ]
+    },
+    {
+      "rank": 2,
+      "method": "FlexiCache",
+      "requirement": "Necessary prior-art/write-accounting comparison for a claim of novel repeat-write avoidance. Full systems evaluation is required only for a direct FlexiCache superiority claim; citation alone cannot establish such a win.",
+      "why": "Paper section 3.3 retains complete stable-head host KV and offloads each stable-head page once. This directly challenges a broad no-repeat-write novelty claim.",
+      "compatibility": "Official metadata includes Mistral-7B-Instruct-v0.2. vLLM 0.8.2 with Torch 2.6.0 / Transformers 4.50.0 and H100 testbed differs from this harness. Official instructions allow CUDA architecture changes, but L40S kernels still require proof. Default 180GB pinned pool must be counted or transparently configured within the preregistered host envelope.",
+      "fairness": "No naive vLLM-versus-eager latency ratio. Preserve stable/unstable-head policy and sparse attention, use supplied model metadata or separate permitted profiling data, charge unstable full-GPU heads and retained full host copies. Replay actual baseline page traffic under identical declared simulated-STT assumptions if claiming write/energy advantages.",
+      "primary_sources": [
+        "https://github.com/NazmulTakbir/FlexiCache",
+        "https://proceedings.mlsys.org/paper_files/paper/2026/file/94bcb01789fccf15afe2764d8fe0f40e-Paper-Conference.pdf"
+      ]
+    },
+    {
+      "rank": 3,
+      "method": "FreeKV",
+      "requirement": "Conditional on a broad current CPU-retrieval latency/quality claim. Defer for a narrow simulated-STT policy paper; do not build merely to inflate baseline count.",
+      "why": "Official ICLR2026 implementation combines speculative retrieval with correction; relevant to a claim of superior CPU KV retrieval.",
+      "compatibility": "Current official model map lists Qwen/Llama/DeepSeek-distilled checkpoints, not Mistral; this is not proof Mistral is unsupported internally, but plug-compatible faithful Mistral support is unverified. Runtime pins Torch2.5.1/Transformers4.45.2/FlashInfer0.2.4 and FlashAttention2.6.3.",
+      "fairness": "Require official Mistral path validation or a separately registered shared supported model before claiming a proper comparison. Preserve speculative retrieval/correction. Do not use source/pred.py input repetition for a matched dataset test: its lines187-189 extend some contexts by repetition. Feed exactly common token IDs, report full host KV/index/workbuffers and actual correction transfers.",
+      "primary_sources": [
+        "https://github.com/sjtu-zhao-lab/FreeKV",
+        "https://openreview.net/pdf?id=wXAn7orB1H",
+        "https://raw.githubusercontent.com/sjtu-zhao-lab/FreeKV/main/config/model2path.json",
+        "https://raw.githubusercontent.com/sjtu-zhao-lab/FreeKV/main/requirements.txt",
+        "https://raw.githubusercontent.com/sjtu-zhao-lab/FreeKV/main/source/pred.py"
+      ]
+    }
+  ],
+  "other_methods": {
+    "ShadowKV": {
+      "decision": "Related work; conditional added experiment only if claiming high-throughput offloading or using a shared supported model. Do not silently port to Mistral and call it official reproduction.",
+      "reason": "Official model list is Llama/GLM/Yi/Phi, not Mistral. Its low-rank pre-RoPE key storage plus CPU value offload targets large batches and much longer contexts; rank/landmark/outlier storage must be charged. A100-oriented custom kernels need independent L40S correctness proof.",
+      "primary_sources": [
+        "https://github.com/ByteDance-Seed/ShadowKV",
+        "https://arxiv.org/abs/2410.21465"
+      ]
+    },
+    "Quest": {
+      "decision": "Relevant query-aware page-selection prior art, not a mandatory extra offload-system baseline. RocketKV already supplies a newer Mistral-compatible dynamic selector comparator for a broadened quality claim.",
+      "reason": "GPU full-KV sparse attention is a different memory tradeoff; never treat attended-token budget as total storage.",
+      "primary_sources": [
+        "https://proceedings.mlr.press/v235/tang24l.html",
+        "https://github.com/mit-han-lab/Quest"
+      ]
+    }
+  },
+  "immediate_priority": "Finish validated official GQA SnapKV and IceCache comparison before launching additional expensive systems. In parallel assess RocketKV compatibility and explicitly resolve FlexiCache novelty overlap. Freeze exact claims and resource envelopes prospectively; never choose new parameters from already consumed final outcomes.",
+  "proof_boundaries": [
+    "No selected baseline set alone proves SOTA or publication suitability.",
+    "Simulated STT traffic/energy is not physical device endurance/energy.",
+    "CPU DRAM wall-clock results are not simulated STT device latency.",
+    "Common initial1024 tokens alone does not match actual GPU/host ownership or growing decode trajectory.",
+    "Pin source commits before execution; these primary links describe reviewed current sources and are not immutable execution manifests."
+  ]
+}

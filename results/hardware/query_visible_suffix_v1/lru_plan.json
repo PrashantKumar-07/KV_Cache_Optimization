@@ -1,0 +1,28 @@
+{
+  "settings": {
+    "hot": 991,
+    "cold": 1090,
+    "quota": 32,
+    "context": 16384,
+    "decode": 50,
+    "warmup": 1,
+    "prefill_last_logits": true,
+    "seed": 0
+  },
+  "prompt": "results/remediation_v3/latency_prompt.txt",
+  "prompt_sha256": "18695714f26e35cb8d2b039ae9efb3b7e64291cbd7bcd91956efc07e16a732cd",
+  "teachers": "results/shadow_ablation_full/fixed_stream_20260929.json",
+  "teachers_sha256": "620ac3a383997c9afbc6a3f0b06acec9f261d5a2a5827bf5988e0bb5b69f12a2",
+  "quiet": "Capture physicalGPU0 compute PID list before loading and before/after each row; only this own model PID allowed. OtherGPU1 workload untouched. Contamination stops and invalidates speed/adoption claim.",
+  "timestamp_utc": "2026-10-03T05:07:37.438219+00:00",
+  "component_proof_sha256": "6b44ffe6c3cd35ce816756d1d2d0e626b5a86f8448b01c7e5440e12cb568f862",
+  "resource_proof_sha256": "c3638bbbe0334b10978201e07b50fa094e46dfca251ebf64ddc75e4dcf8848cd",
+  "control": "results/hardware/layerwise_prefill_placement_v1/control_shared.json",
+  "control_sha256": "9449721be00001a6e4ada6e243be61e1d100dc4eb6508afa0122c4c8d8275ee0",
+  "query_reference": "results/hardware/pool_query_selector_v1/resource.json",
+  "query_reference_sha256": "1c80e89e8b353b5e6ba6b62cfa60ae29a9fea1896f163d798ed26923afdbdda1",
+  "mechanism": "Fresh3ABBA ordinaryBulkLRU vs GPU-index fullquery with visible cold-suffix writes; onlycandidatecomposition differs from earlier query reference. Frozenstate/pred/counters/nativebytes/calls/indexmetadata andownhook cleanup must replay.",
+  "primary": "OrdinaryLRU regression guards: median/p95<=2%worse,TTFT<=10%worse; all frozenarmstate/pred/counters/nativebytes/calls/indexmetadata, quietGPU0 before/after12rows and ownhook cleanup.",
+  "stop": "Failing ordinaryLRU guard stops standalone suffix fullquery expansion/adoption regardless of7.85% component gain. No oldfullscan quality retry; a future lowertraffic mechanism requires separate preregistration.",
+  "limits": "One model/seed fixedteacher. No independentNI/quality, full512MiB/actual matched faithfulbaseline orphysicalSTT proof; before/afterGPUcomputePID observations only."
+}

@@ -1,0 +1,510 @@
+{
+  "config": {
+    "model": "../models/mistral-7b-instruct",
+    "data_dir": "results/baseline_fidelity/real_query_document_holdout_20260929/data",
+    "tasks": [
+      "qasper",
+      "narrativeqa",
+      "multifieldqa_en",
+      "hotpotqa",
+      "triviaqa",
+      "gov_report"
+    ],
+    "max_samples": 4,
+    "strategy": "lru",
+    "seed": 0,
+    "max_ctx": 31500,
+    "candidate_pages": 0,
+    "tiered_vram_budget": 992,
+    "tiered_stt_budget": 3104,
+    "recent": 128,
+    "stt_expose_quota": 32,
+    "real_query_prefill": false,
+    "query_score_mode": "chunked",
+    "query_chunk_size": 128,
+    "sttram_bifurcation_frac": 0.75,
+    "kv_dtype": "bfloat16",
+    "runtime": {
+      "git_revision": "be7e700d84d46b47e32ba5b9870c8b71783b9e53",
+      "source_sha256": "eea0cf48baa0804928f6f4a1c2674af3547dbac77cb2ea1b890805ba0473cd9e",
+      "packages": {
+        "torch": "2.5.1+cu124",
+        "transformers": "5.14.1",
+        "datasets": "5.0.0",
+        "numpy": "2.2.6",
+        "accelerate": "1.14.0",
+        "huggingface_hub": "1.24.0",
+        "rouge": "1.0.1"
+      }
+    },
+    "selector_sha256": "ecef20ea48be38f1ac9e5c9d0cce2fb89fa90c270dc968cf541a448d77b89876",
+    "page_index_sha256": null,
+    "page_candidates_sha256": null,
+    "dataset_sha256": {
+      "qasper": "197e050b53691b22f0981bb0bd4654ff4ff5af75367d747f4ea1954788d1e35e",
+      "narrativeqa": "769ea37c4e1b9bc3498f05f80d599a8a840099fcfefdbcbec49a0dc5f21b0d33",
+      "multifieldqa_en": "bca2d1cbfb0f934ec07da8c224d17aab6ef3331e5a1b688ab411f677daaccf10",
+      "hotpotqa": "e6be93ffa875a67c3ef2d566952b0f4cba6884232690adc940372f5cd439533f",
+      "triviaqa": "b52689833d121a06a24859e3449a2236813cf5f779db40ccc8bdd82c444a1a3a",
+      "gov_report": "0d21a3ed23407109bc692e68c7f93ff64335cd56c5f5b0efa5c06c9110376bd5"
+    }
+  },
+  "results": {
+    "qasper": {
+      "tieredkv": {
+        "score": 38.74,
+        "n": 4,
+        "sample_scores": [
+          28.57,
+          55.17,
+          16.67,
+          54.55
+        ],
+        "samples": [
+          {
+            "sample_id": "950566ddc9fbc71c39562ebce1ac7c23fb82e6a53863c469ab547ecb1fad6d28",
+            "prediction": "Experiments are conducted on the SQuAD dataset.",
+            "score": 28.57142857142857,
+            "elapsed_s": 2.055565569549799,
+            "prompt_tokens": 6201,
+            "generated_tokens": 12,
+            "final_resident_kv_payload_bytes": 441094144,
+            "prefill_s": 1.1319121345877647,
+            "prefill_peak_alloc_bytes": 16322549760
+          },
+          {
+            "sample_id": "c8684447d870b9c54239779003746113b7a9aa05e1bd3ebdb1d27c1444b430ec",
+            "prediction": "The method improvements of F1 for paraphrase identification are +0.58 for MRPC and +0.73 for QQP.",
+            "score": 55.17241379310344,
+            "elapsed_s": 3.202107874676585,
+            "prompt_tokens": 6341,
+            "generated_tokens": 33,
+            "final_resident_kv_payload_bytes": 443715584,
+            "prefill_s": 0.6973685435950756,
+            "prefill_peak_alloc_bytes": 16351009792
+          },
+          {
+            "sample_id": "56ffe7b3365aeed864ce2445aa908c1abe001d863720aea64364420a3505f443",
+            "prediction": "The datasets used to evaluate this paper are WN18 and FB15K.",
+            "score": 16.666666666666664,
+            "elapsed_s": 2.1297579742968082,
+            "prompt_tokens": 5751,
+            "generated_tokens": 20,
+            "final_resident_kv_payload_bytes": 442908672,
+            "prefill_s": 0.6360751204192638,
+            "prefill_peak_alloc_bytes": 16231073792
+          },
+          {
+            "sample_id": "b893b400a25523073a9c71d66e5da87dc673a96fb37cd28e59113e6930af176b",
+            "prediction": "The classifiers trained are KNN, SVM, and MLP.",
+            "score": 54.54545454545454,
+            "elapsed_s": 1.42873072065413,
+            "prompt_tokens": 2543,
+            "generated_tokens": 16,
+            "final_resident_kv_payload_bytes": 340312064,
+            "prefill_s": 0.269118070602417,
+            "prefill_peak_alloc_bytes": 15477007360
+          }
+        ],
+        "cache_stats": {
+          "demoted": 42272,
+          "promoted": 39808,
+          "promotions_deferred": 39040,
+          "paid_writes": 7138,
+          "writes_saved": 35134,
+          "dropped": 0,
+          "write_savings_pct": 83.1,
+          "decode_steps": 77,
+          "stt_starved_steps": 0,
+          "stt_unused_steps": 0,
+          "mean_stt_exposed": 32.0,
+          "stt_expose_quota": 32,
+          "stt_exposed_total": 2592,
+          "stt_exposure_samples": 81,
+          "modeled_latency_us": 23869.6,
+          "modeled_energy_nj": 989240492.0
+        }
+      }
+    },
+    "narrativeqa": {
+      "tieredkv": {
+        "score": 17.36,
+        "n": 4,
+        "sample_scores": [
+          0.0,
+          44.44,
+          25.0,
+          0.0
+        ],
+        "samples": [
+          {
+            "sample_id": "f35dc463310a7bfa49831bb32ea1d2b0a672417f3eec552528895a72e53ad81b",
+            "prediction": "Landsmann is ultimately a doctor.",
+            "score": 0.0,
+            "elapsed_s": 2.251927774399519,
+            "prompt_tokens": 13649,
+            "generated_tokens": 9,
+            "final_resident_kv_payload_bytes": 440213504,
+            "prefill_s": 1.6287866346538067,
+            "prefill_peak_alloc_bytes": 17909477376
+          },
+          {
+            "sample_id": "57723ef4355dad62436cf197b01e8d618129845d6ca00e6efeaf8ea0ba18e164",
+            "prediction": "Miranda writes her letters to her mother.",
+            "score": 44.44444444444445,
+            "elapsed_s": 3.3594202920794487,
+            "prompt_tokens": 20619,
+            "generated_tokens": 10,
+            "final_resident_kv_payload_bytes": 440541184,
+            "prefill_s": 2.6446685772389174,
+            "prefill_peak_alloc_bytes": 19654653952
+          },
+          {
+            "sample_id": "6a584635ffd66d31b18f15c9a1c9e2a5d47b81a15b5a4080f36959fee41e301f",
+            "prediction": "In front of the movie theater.",
+            "score": 25.0,
+            "elapsed_s": 5.096338976174593,
+            "prompt_tokens": 31500,
+            "generated_tokens": 8,
+            "final_resident_kv_payload_bytes": 440160256,
+            "prefill_s": 4.53822011128068,
+            "prefill_peak_alloc_bytes": 22379081728
+          },
+          {
+            "sample_id": "71ec57917f14f9572358fbacc1842cf8b9f130e6ddeed18da2c208f42509dfe9",
+            "prediction": "Falder worked at Cokeston's office after he got out of prison.",
+            "score": 0.0,
+            "elapsed_s": 5.906005742028356,
+            "prompt_tokens": 31500,
+            "generated_tokens": 18,
+            "final_resident_kv_payload_bytes": 441540608,
+            "prefill_s": 4.556892357766628,
+            "prefill_peak_alloc_bytes": 22379081728
+          }
+        ],
+        "cache_stats": {
+          "demoted": 23264,
+          "promoted": 21952,
+          "promotions_deferred": 20032,
+          "paid_writes": 5327,
+          "writes_saved": 17937,
+          "dropped": 0,
+          "write_savings_pct": 77.1,
+          "decode_steps": 41,
+          "stt_starved_steps": 0,
+          "stt_unused_steps": 0,
+          "mean_stt_exposed": 32.0,
+          "stt_expose_quota": 32,
+          "stt_exposed_total": 1440,
+          "stt_exposure_samples": 45,
+          "modeled_latency_us": 13282.6,
+          "modeled_energy_nj": 528085286.9
+        }
+      }
+    },
+    "multifieldqa_en": {
+      "tieredkv": {
+        "score": 39.41,
+        "n": 4,
+        "sample_scores": [
+          11.32,
+          68.75,
+          27.59,
+          50.0
+        ],
+        "samples": [
+          {
+            "sample_id": "5d600cf17ff028700b5c2a9555cc346920fce7e94605e967f255b93832fe0462",
+            "prediction": "The title of one of Kam W. Leong's publications in Journal of Controlled Release is \"Dang, J. M. and Leong, K. W., Natural polymers for controlled drug delivery systems: an overview.\" (Volume 12, Issue 8, 2006",
+            "score": 11.320754716981131,
+            "elapsed_s": 5.614597897976637,
+            "prompt_tokens": 5755,
+            "generated_tokens": 64,
+            "final_resident_kv_payload_bytes": 448192512,
+            "prefill_s": 0.6405114233493805,
+            "prefill_peak_alloc_bytes": 16231886848
+          },
+          {
+            "sample_id": "aa7711f24ee5b9167f0bf076079f69fb8313894418b0931a3a4e552f2efc4668",
+            "prediction": "The Tevatron Collider Run II started in 2001 and is expected to end in 2011.",
+            "score": 68.75000000000001,
+            "elapsed_s": 3.044016970321536,
+            "prompt_tokens": 7552,
+            "generated_tokens": 29,
+            "final_resident_kv_payload_bytes": 443703296,
+            "prefill_s": 0.8473993670195341,
+            "prefill_peak_alloc_bytes": 16597180928
+          },
+          {
+            "sample_id": "9ad16436b9b60211d69f0ea3489dcb7583c94bfd875656d103e3bbb3f022034c",
+            "prediction": "The authors used both simulated and real-world data in their experiments. In the first experiment, they used simulated data to evaluate the performance of their proposed method in a controlled environment. In the second experiment, they used real-world data from a wireless sensor network to validate the effectiveness of their method in practical scenarios",
+            "score": 27.586206896551722,
+            "elapsed_s": 5.709292048588395,
+            "prompt_tokens": 6689,
+            "generated_tokens": 64,
+            "final_resident_kv_payload_bytes": 448434176,
+            "prefill_s": 0.7378587611019611,
+            "prefill_peak_alloc_bytes": 16421750784
+          },
+          {
+            "sample_id": "9b98e63f17931f84938591274211096110986f8b8a46345c69ad2561f3cbc40c",
+            "prediction": "The parameter space V is divided into three subsets: V+, V0, and V-.",
+            "score": 50.0,
+            "elapsed_s": 2.2395697124302387,
+            "prompt_tokens": 6055,
+            "generated_tokens": 21,
+            "final_resident_kv_payload_bytes": 441868288,
+            "prefill_s": 0.6753982156515121,
+            "prefill_peak_alloc_bytes": 16292871168
+          }
+        ],
+        "cache_stats": {
+          "demoted": 92992,
+          "promoted": 87424,
+          "promotions_deferred": 90752,
+          "paid_writes": 10147,
+          "writes_saved": 82845,
+          "dropped": 0,
+          "write_savings_pct": 89.1,
+          "decode_steps": 174,
+          "stt_starved_steps": 0,
+          "stt_unused_steps": 0,
+          "mean_stt_exposed": 32.0,
+          "stt_expose_quota": 32,
+          "stt_exposed_total": 5696,
+          "stt_exposure_samples": 178,
+          "modeled_latency_us": 51730.8,
+          "modeled_energy_nj": 2230344089.6
+        }
+      }
+    },
+    "hotpotqa": {
+      "tieredkv": {
+        "score": 14.29,
+        "n": 4,
+        "sample_scores": [
+          0.0,
+          28.57,
+          28.57,
+          0.0
+        ],
+        "samples": [
+          {
+            "sample_id": "2c301a21c53946b3ef844d74cd22c71c3f624cf2f8a189072c17b1fdb20829d9",
+            "prediction": "The passage does not provide the number of visitors per year that the first stop of OC Transpo Route 97 attracts each year.",
+            "score": 0.0,
+            "elapsed_s": 3.410290250554681,
+            "prompt_tokens": 9710,
+            "generated_tokens": 30,
+            "final_resident_kv_payload_bytes": 443346944,
+            "prefill_s": 1.1260625086724758,
+            "prefill_peak_alloc_bytes": 17035859456
+          },
+          {
+            "sample_id": "e9aa999e0415d1e353775748a638efbd9631e42c6dc96e23c78ab5e76771365b",
+            "prediction": "Both Sum 41 and Passion Pit are bands.",
+            "score": 28.571428571428577,
+            "elapsed_s": 3.4929304905235767,
+            "prompt_tokens": 18967,
+            "generated_tokens": 14,
+            "final_resident_kv_payload_bytes": 441184256,
+            "prefill_s": 2.446191882714629,
+            "prefill_peak_alloc_bytes": 19241019392
+          },
+          {
+            "sample_id": "53185f7554a389058fcfcf96e889110e3f2ea10740e0ebe77367be7fe440d813",
+            "prediction": "Arrowhead Stadium has a capacity of 76,416.",
+            "score": 28.57142857142857,
+            "elapsed_s": 3.4439873676747084,
+            "prompt_tokens": 17303,
+            "generated_tokens": 17,
+            "final_resident_kv_payload_bytes": 441245696,
+            "prefill_s": 2.1758476234972477,
+            "prefill_peak_alloc_bytes": 18824380416
+          },
+          {
+            "sample_id": "c2c8390b9969b059cccdca6c0da739ae3c1e1131e25b1d133c2e3110218e6ce4",
+            "prediction": "The hijacked plane rammed by Heather Penney crashed in the passage not provided. The given passages only discuss Heather Penney's background and",
+            "score": 0.0,
+            "elapsed_s": 4.852341257035732,
+            "prompt_tokens": 18587,
+            "generated_tokens": 32,
+            "final_resident_kv_payload_bytes": 444715008,
+            "prefill_s": 2.4043708350509405,
+            "prefill_peak_alloc_bytes": 19145873408
+          }
+        ],
+        "cache_stats": {
+          "demoted": 48608,
+          "promoted": 45760,
+          "promotions_deferred": 45376,
+          "paid_writes": 7289,
+          "writes_saved": 41319,
+          "dropped": 0,
+          "write_savings_pct": 85.0,
+          "decode_steps": 89,
+          "stt_starved_steps": 0,
+          "stt_unused_steps": 0,
+          "mean_stt_exposed": 32.0,
+          "stt_expose_quota": 32,
+          "stt_exposed_total": 2976,
+          "stt_exposure_samples": 93,
+          "modeled_latency_us": 27248.1,
+          "modeled_energy_nj": 1142662234.1
+        }
+      }
+    },
+    "triviaqa": {
+      "tieredkv": {
+        "score": 91.67,
+        "n": 4,
+        "sample_scores": [
+          100.0,
+          100.0,
+          66.67,
+          100.0
+        ],
+        "samples": [
+          {
+            "sample_id": "44dd489ef5fbcee83c56f0a8db8088b31bb997f7f256d664bede64b3b674b5cd",
+            "prediction": "Mountain of Light",
+            "score": 100.0,
+            "elapsed_s": 1.0220500156283379,
+            "prompt_tokens": 6171,
+            "generated_tokens": 5,
+            "final_resident_kv_payload_bytes": 439615488,
+            "prefill_s": 0.698124622926116,
+            "prefill_peak_alloc_bytes": 16316451840
+          },
+          {
+            "sample_id": "120d7556d9c8c0f0d8db5f1c2b236d3a078cccff3fedb5b59dc1af5850418a70",
+            "prediction": "Steel",
+            "score": 100.0,
+            "elapsed_s": 1.0612218286842108,
+            "prompt_tokens": 7872,
+            "generated_tokens": 3,
+            "final_resident_kv_payload_bytes": 439484416,
+            "prefill_s": 0.8989186957478523,
+            "prefill_peak_alloc_bytes": 16662230528
+          },
+          {
+            "sample_id": "fa05fd42b306c8ff368b5f6327b255c9378ac256dd18e090469c764db5c03502",
+            "prediction": "Bumblebee bat",
+            "score": 66.66666666666666,
+            "elapsed_s": 1.4316651932895184,
+            "prompt_tokens": 9373,
+            "generated_tokens": 5,
+            "final_resident_kv_payload_bytes": 439627776,
+            "prefill_s": 1.1110113989561796,
+            "prefill_peak_alloc_bytes": 16967354368
+          },
+          {
+            "sample_id": "2fa6b55a4eb83f683e2d88bfc5a4ecf151eb024f8b6dc96958d07125d92de958",
+            "prediction": "Seasons in the Sun",
+            "score": 100.0,
+            "elapsed_s": 3.224734080955386,
+            "prompt_tokens": 21159,
+            "generated_tokens": 6,
+            "final_resident_kv_payload_bytes": 439910400,
+            "prefill_s": 2.822961186990142,
+            "prefill_peak_alloc_bytes": 19789860864
+          }
+        ],
+        "cache_stats": {
+          "demoted": 8544,
+          "promoted": 8064,
+          "promotions_deferred": 7296,
+          "paid_writes": 4395,
+          "writes_saved": 4149,
+          "dropped": 0,
+          "write_savings_pct": 48.6,
+          "decode_steps": 15,
+          "stt_starved_steps": 0,
+          "stt_unused_steps": 0,
+          "mean_stt_exposed": 32.0,
+          "stt_expose_quota": 32,
+          "stt_exposed_total": 608,
+          "stt_exposure_samples": 19,
+          "modeled_latency_us": 5675.5,
+          "modeled_energy_nj": 194820046.8
+        }
+      }
+    },
+    "gov_report": {
+      "tieredkv": {
+        "score": 23.28,
+        "n": 4,
+        "sample_scores": [
+          17.68,
+          20.98,
+          32.45,
+          22.02
+        ],
+        "samples": [
+          {
+            "sample_id": "f87f1bbfe0e620e3f457dfd6b340e5d148ffb69b843144ef8a31c434704bf6db",
+            "prediction": "The report outlines various websites and contact information for different government agencies and their respective services. The House of Representatives and Senate each have their own websites (house.gov and senate.gov) providing access to office information and services for House and Senate members.\n\nFor House members, key contacts include the House Library, which offers access to commercial databases and research services (housenet.house.gov/services/library/); the House Information Security Office, which provides IT security services (housenet.house.gov/services/itsecurity/); and the House Printing and Document Services, which offers printing, binding, and mailing services (housenet.house.gov/services/printing/).\n\nThe Senate's \"Webster\" website (webster.senate.gov) provides similar services for Senate members, including access to the Senate Library, IT services, and printing services.\n\nBoth chambers also have access to shared services, such as the Congressional Research Service (crsreports.congress.gov), which provides non-partisan research and analysis to congressional members and committees, and the Government Publishing Office (govinfo.gov), which provides free public access to official publications from all three branches of the Federal Government.\n\nAdditionally, the report lists various contact information for other government agencies, including the White House, the National Archives, the Office of Management and Budget, and the Government Accountability Office. These agencies offer a range of services, from managing the President's budget proposals to providing independent auditing and investigative services for Congress.",
+            "score": 17.67955756417693,
+            "elapsed_s": 27.611839529126883,
+            "prompt_tokens": 2343,
+            "generated_tokens": 340,
+            "final_resident_kv_payload_bytes": 362196992,
+            "prefill_s": 0.7391261626034975,
+            "prefill_peak_alloc_bytes": 15410103296
+          },
+          {
+            "sample_id": "9f042e65ab0cba87baf6384e74590266540d63485262c5b38bd77c5b2360653a",
+            "prediction": "The report outlines the role of the Military in providing healthcare services to its members. The Military Health System (MHS) is responsible for the health and well-being of over 1.3 million active duty members, their families, and retirees. The MHS includes a network of military hospitals, clinics, and other healthcare facilities.\n\nThe report highlights the challenges faced by the Military in ensuring adequate staffing of healthcare professionals, particularly in primary care and mental health. The Military Health System relies on a combination of active duty, National Guard and Reserve, and civilian healthcare professionals to meet its staffing needs.\n\nThe report also discusses various initiatives aimed at addressing the staffing challenges, including scholarships and loan repayment programs for healthcare students, recruitment and retention bonuses, and partnerships with civilian healthcare institutions.\n\nThe report notes that while these initiatives have had some success, more needs to be done to attract and retain a sufficient number of healthcare professionals to meet the Military's needs. The report recommends that the Military explore additional strategies, such as increasing compensation and offering more flexible work arrangements.\n\nThe report also touches on the importance of technology in improving healthcare delivery within the Military. Telehealth and electronic health records are identified as key areas where technology can be leveraged to improve access to care and reduce costs.\n\nOverall, the report underscores the importance of a well-funded and well-staffed Military Health System in ensuring the readiness and well-being of our military personnel. The report calls for continued investment in healthcare infrastructure, technology, and workforce development to meet the evolving healthcare needs of the Military.",
+            "score": 20.982142414700263,
+            "elapsed_s": 28.832383351400495,
+            "prompt_tokens": 8108,
+            "generated_tokens": 345,
+            "final_resident_kv_payload_bytes": 486682624,
+            "prefill_s": 0.9451525211334229,
+            "prefill_peak_alloc_bytes": 16710204928
+          },
+          {
+            "sample_id": "fec0f5709fee1499248f23ca23b0792a29306be0cb0c8031999939d9ada61028",
+            "prediction": "The report discusses the Veterans Affairs (VA) administration's handling of the Choice Program, which provides veterans with access to private healthcare services outside of the VA system. The program was implemented in response to waitlist scandals and long wait times for VA healthcare services. The report highlights several issues with the program, including long processing times for reimbursements to healthcare providers, lack of transparency and accountability, and inadequate customer service for providers.\n\nThe VA has made some progress in addressing these issues, such as increasing staffing and funding for the program, implementing new technology to streamline reimbursement processes, and improving communication with providers. However, the report identifies two key areas where more action is needed: ensuring that VA medical facilities are adhering to VA policy on processing SARs (Standard Authorization Requests) in a timely manner, and collecting data and monitoring compliance with contractual requirements for customer service for community providers.\n\nThe report recommends that the Undersecretary for Health implement software to monitor SAR timeliness and take corrective actions as necessary, and collect data and monitor compliance with customer service requirements for community providers. The VA agreed with these recommendations and is taking steps to address them. The report also notes that the VA is in the process of issuing a new RFP for the Veterans Community Care Program, which includes provider customer service performance requirements and metrics.",
+            "score": 32.44680805343199,
+            "elapsed_s": 24.56914103589952,
+            "prompt_tokens": 7333,
+            "generated_tokens": 296,
+            "final_resident_kv_payload_bytes": 480956416,
+            "prefill_s": 0.8246775437146425,
+            "prefill_peak_alloc_bytes": 16552663040
+          },
+          {
+            "sample_id": "1dc3fb4f839ea0e48ed184b9201a39ccbb0ac40604734aecd16aafbc1afba009",
+            "prediction": "The report discusses the efforts of the Small Business Administration (SBA) to enhance small business access to capital through various legislative measures and programs. The report highlights the Small Business Jobs Act of 2010, which provided additional funding for SBA programs and created new initiatives, such as crowdfunding and community innovation grants. The report also mentions the SBA's Surety Bond Program, which helps small businesses obtain bonds to bid on government contracts, and the 7(a) and 504 loan programs, which provide financing for small businesses.\n\nThe report also touches on the challenges faced by small businesses in accessing capital, including the economic downturn and tight credit markets. It notes that while the SBA's programs have helped some small businesses secure financing, more needs to be done to address the ongoing funding gap.\n\nThe report concludes by outlining three potential approaches for the 116th Congress to consider in order to further enhance small business access to capital: (1) continuing to support and expand existing SBA programs, (2) implementing new initiatives, such as expanding access to venture capital and angel investors, and (3) reducing regulatory burdens and taxes on small businesses to make it easier for them to access capital and grow their businesses.\n\nOverall, the report emphasizes the importance of small businesses to the economy and the need for continued efforts to ensure they have access to the capital they need to thrive.",
+            "score": 22.02247149283172,
+            "elapsed_s": 26.01063877902925,
+            "prompt_tokens": 12268,
+            "generated_tokens": 308,
+            "final_resident_kv_payload_bytes": 480817152,
+            "prefill_s": 1.450598793104291,
+            "prefill_peak_alloc_bytes": 17563696128
+          }
+        ],
+        "cache_stats": {
+          "demoted": 680096,
+          "promoted": 638976,
+          "promotions_deferred": 676864,
+          "paid_writes": 48358,
+          "writes_saved": 631738,
+          "dropped": 0,
+          "write_savings_pct": 92.9,
+          "decode_steps": 1285,
+          "stt_starved_steps": 0,
+          "stt_unused_steps": 0,
+          "mean_stt_exposed": 32.0,
+          "stt_expose_quota": 32,
+          "stt_exposed_total": 41248,
+          "stt_exposure_samples": 1289,
+          "modeled_latency_us": 372622.7,
+          "modeled_energy_nj": 16450747891.7
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,94 @@
+"""Research shared ownership with bounded deferred native gather/scatter."""
+from functools import partial
+from types import SimpleNamespace
+import numpy as np
+import torch
+from shared_decode_transition import SharedTransitionCache,SharedTransitionPolicy,SharedAppendLease
+from reserved_decode_append import capacity
+from native_reuse_visible import gather_into
+
+GROUP_LAYERS=8
+
+def gather_contract(state):
+    pair=state._hot_buffer
+    if pair is None or state.pending_keep is None:return False
+    key,value=pair;keep=np.asarray(state.pending_keep)
+    if key.ndim!=4 or key.shape!=value.shape or key.shape[0]!=1:return False
+    heads,old,dim=state.sram_k.shape
+    if (state.sram_v.shape!=(heads,old,dim) or keep.ndim!=1 or not np.issubdtype(keep.dtype,np.integer)
+            or np.any(keep<0) or np.any(keep>=old) or key.shape[1]!=heads or key.shape[3]!=dim
+            or state.sram_cum.shape!=state.sram_age.shape or state.sram_cum.shape!=(old,)):
+        return False
+    tensors=(key,value,state.sram_k,state.sram_v,state.sram_cum,state.sram_age)
+    if (any(t.device!=key.device or t.requires_grad for t in tensors)
+            or any(t.dtype!=torch.bfloat16 for t in tensors[:4])
+            or any(t.dtype!=torch.float32 or not t.is_contiguous() for t in tensors[4:])):return False
+    if capacity(key)<old or capacity(value)!=capacity(key):return False
+    if key.untyped_storage()._cdata==value.untyped_storage()._cdata:return False
+    return all(oldtensor.data_ptr()==raw.data_ptr() and oldtensor.stride()==raw.stride()[1:]
+        and oldtensor.untyped_storage()._cdata==raw.untyped_storage()._cdata
+        for oldtensor,raw in [(state.sram_k,key),(state.sram_v,value)])
+
+
+def bounded_gather(states):
+    """Validate full group; gather to distinct scratch before any alias writes."""
+    if not states or len(states)>GROUP_LAYERS or not all(gather_contract(s) for s in states):
+        raise ValueError('Invalid bounded shared gather contract')
+    first=states[0];heads,_,dim=first.sram_k.shape;rows=len(first.pending_keep);device=first.sram_k.device
+    if any((s.sram_k.shape[0],s.sram_k.shape[2],len(s.pending_keep),s.sram_k.device)!=(heads,dim,rows,device) for s in states):
+        raise ValueError('Heterogeneous bounded gather')
+    roots=[t.untyped_storage()._cdata for s in states for t in s._hot_buffer]
+    if len(set(roots))!=len(roots):raise ValueError('Cross-layer shared gather alias')
+    scratch=torch.empty((2,len(states),heads,rows,dim),dtype=torch.bfloat16,device=device)
+    proxies=[];destinations=[]
+    for i,s in enumerate(states):
+        key,value=s._hot_buffer;physical=capacity(key)
+        # Kernel source size is physical head pitch, not logical hot length.
+        proxies.append(SimpleNamespace(sram_k=key.as_strided((heads,physical,dim),key.stride()[1:]),
+            sram_v=value.as_strided((heads,physical,dim),value.stride()[1:]),
+            sram_cum=s.sram_cum,sram_age=s.sram_age,pending_keep=s.pending_keep))
+        destinations.append((scratch[0,i].unsqueeze(0),scratch[1,i].unsqueeze(0)))
+    gather_into(proxies,destinations)
+    for p in proxies:p.pending_keep=np.arange(rows,dtype=np.int32)
+    raw=[tuple(t.as_strided((1,heads,capacity(t),dim),t.stride()) for t in s._hot_buffer) for s in states]
+    gather_into(proxies,raw)
+    for s,p in zip(states,proxies):
+        s.sram_k,s.sram_v,s.sram_cum,s.sram_age=p.sram_k,p.sram_v,p.sram_cum,p.sram_age
+        s.pending_keep=None;s.batched_deferred_compactions+=1
+        s.reused_compactions=getattr(s,'reused_compactions',0)+1
+    return scratch.numel()*scratch.element_size()
+
+
+class DeferredOwnershipCache(SharedTransitionCache):
+    batched_deferred_compactions=0
+    def _compact_or_queue(self,victims):
+        fields=(self.sram_k,self.sram_v,self.sram_cum,self.sram_age)
+        if (self._hot_buffer is None or len(self.stt_pos)>self.cfg.sttram_capacity
+                or self.sram_k.device.type!='cuda' or not self._supported_hot_layout(fields)):
+            return super()._compact_or_queue(victims)
+        if self.pending_keep is not None:raise RuntimeError('Unconsumed deferred ownership compaction')
+        mask=np.ones(len(self.sram_pos),dtype=np.bool_);mask[victims]=False
+        keep=np.flatnonzero(mask).astype(np.int32)
+        self.sram_pos=np.asarray(self.sram_pos,dtype=np.int64)[keep].tolist()
+        self.sram_grace=torch.from_numpy(self.sram_grace.numpy()[keep])
+        self.pending_keep=keep
+
+
+class DeferredOwnershipPolicy(SharedTransitionPolicy):
+    def __init__(self,**options):
+        super().__init__(**options)
+        self.direct_cache_cls=partial(DeferredOwnershipCache,extra_slots=self.reserved_promotion_budget+self.max_decode_append)
+        self.bounded_scratch_peak_bytes=self.bounded_native_groups=0
+    def _visible_tuple(self,past):
+        groups={}
+        for s in self.layer_caches.values():
+            if s.pending_keep is not None and s.sram_k.device.type=='cuda' and gather_contract(s):
+                shape=(s.sram_k.shape[0],s.sram_k.shape[2],len(s.pending_keep),s.sram_k.device)
+                groups.setdefault(shape,[]).append(s)
+        for group in groups.values():
+            for start in range(0,len(group),GROUP_LAYERS):
+                size=bounded_gather(group[start:start+GROUP_LAYERS])
+                self.bounded_scratch_peak_bytes=max(size,self.bounded_scratch_peak_bytes);self.bounded_native_groups+=1
+        return super()._visible_tuple(past)
+    def reset(self):
+        super().reset();self.bounded_scratch_peak_bytes=self.bounded_native_groups=0

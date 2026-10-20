@@ -1,0 +1,113 @@
+{
+  "recorded_utc": "2026-10-16T07:23:01.061098+00:00",
+  "stage": "CPU-proven mechanism proposal; no GPU outcomes, source defaults unchanged",
+  "primary_outcomes_used_to_tune": false,
+  "mechanism": {
+    "name": "Exposure-calibrated actual-query prefill prior",
+    "observations": [
+      "src/attention.py:102-103 sums probability over all observation queries and query heads.",
+      "src/tiered_kv_cache.py:257-258 assigns that sum to cumulative score with age zero.",
+      "experiments/longbench_eval.py:1037-1048 adds head-mean, query-mean attention once per decode forward.",
+      "src/tiered_kv_cache.py:687 evicts by cumulative score divided by age clamped to one.",
+      "src/tiered_kv_cache.py:264 cold last-access is recency metadata, not a prefill cumulative score."
+    ],
+    "inference": "Prompt-hot evidence and subsequent decode evidence use inconsistent head units and exposure counts. This supplies an explicit retention prior strength dependent on model head count and window size.",
+    "not_proven": "The old strength could be beneficial; dimensional inconsistency alone does not prove quality degradation or invalidate preserved measured results.",
+    "fixed_change": "After unchanged actual-Q bifurcation, divide each prompt-hot cumulative prior by captured query-head count and set its age to captured observation-window length. No free strength parameter.",
+    "causal_interpretation": "The common window includes causal future-key zero probabilities. It is a window-average attention prior, not a per-token birth-conditioned attention estimate. Recent-window rows stay protected.",
+    "unchanged": [
+      "Initial hot/cold token IDs and K/V bytes",
+      "Cold recency exposure",
+      "Promotion/hysteresis",
+      "Sinks/recent window",
+      "Capacities and physical storage",
+      "Generation and scoring protocol"
+    ],
+    "CPU_proofs": "test_exposure_prior.py: 10 tests passed; initial payload identity, exact normalization, duplicated-head invariance, analytic uniform causal softmax, short/empty observations, actual multi-query decode averaging, missing-Q rejection.",
+    "implementation": "exposure_prior.py: ExposureCalibratedPriorMixin and ExposureCalibratedPriorPolicy"
+  },
+  "proposed_development_gate": {
+    "approval_status": "Proposal for root independent review and launch preregistration; not a launched frozen experiment",
+    "data": "Exactly original135 historical development rows. Do not select examples using new fullrun losses. Do not tune on the other1339 consumed rows.",
+    "candidate": "Single exposure-calibrated actual-Q Tiered hot992/cold2048/quota32, frac.75, sinks4/recent128, lambda0, BF16.",
+    "controls": "Reuse fullrun exact matching original135 tiered_hot992 and faithfulSnap1024 records only if generation/runtime/model/input hashes match. Source changes must be isolated and recorded.",
+    "primary": "Equal six-task aggregate paired gain against old Tiered >=1 point, document-cluster95% lower bound >0; no task mean loss >5 points; point gain against faithful Snap >0.",
+    "statistics": "Task-stratified target-document cluster bootstrap10000, seed0, target_document_v2; Qasper/Narrative repeated documents remain clustered.",
+    "failure_rule": "Stop candidate expansion on failure. Do not sweep prior multiplier/window or enlarge sample until CI passes.",
+    "resource_next_if_pass": "Full-model parity of unchanged prefill payload; fixed teacher-forced quiet ABBA timing and CPU+GPU scoped memory before any native adoption."
+  },
+  "prospective_independent_reserve": {
+    "file": "fresh_document_reserve.json",
+    "sha256": "dbf4070a94a793d4f68bae801b9c4b56605dcb3bbed27c77a4c33f2fb34f49ef",
+    "available": {
+      "2wikimqa": {
+        "rows": 200,
+        "document_groups": 200
+      },
+      "musique": {
+        "rows": 200,
+        "document_groups": 200
+      },
+      "qmsum": {
+        "rows": 200,
+        "document_groups": 35
+      },
+      "multi_news": {
+        "rows": 200,
+        "document_groups": 200
+      }
+    },
+    "selection": "Entire eligible population reserved before tuning. No new development records opened.",
+    "use_rule": "Only after candidate passes original135 development and separate resource gates; freeze candidate and comparator protocol before any generation.",
+    "limitations": "Exact casefold/whitespace whole-context and row-ID exclusion across all dataset variants and recorded results/manifests. Unrecorded manual outcomes, semantic near duplicates and partial Wikipedia overlap unverified. New tasks imply a new transfer-validation claim, not a new independent replication of old six-task performance."
+  },
+  "rejected_directions": [
+    {
+      "direction": "Per-KV-head retention",
+      "reason": "Already implemented grouped_retention.py and failed preregistered six-row gate. Do not resurrect as new head-allocation experiment under another name.",
+      "evidence": "results/audit_20261013/reviewer/grouped_pilot_verified.json"
+    },
+    {
+      "direction": "Current-query cold selection combination",
+      "reason": "Failed registered lower confidence bound gate. Do not expand to seek significance.",
+      "evidence": "results/audit_20261015_query_combination/verified_quality.json"
+    },
+    {
+      "direction": "Head-max importance",
+      "reason": "Existing historical broader-development screen already exists; do not duplicate without reading its failure and novelty evidence.",
+      "evidence": "results/baseline_fidelity/head_max_broader_dev_20261002/verified_report.json"
+    }
+  ],
+  "current_primary_literature_review": [
+    {
+      "url": "https://github.com/yuzhenmao/IceCache",
+      "checked": "2026-10-16",
+      "relevance": "Current CPU-offload comparator: dynamic M-DCI query-based page retrieval. Repository supports Mistral and separate BF16 branch. It recommends >=64 CPU threads; installation uses Torch2.4, FlashAttn2.6.1 and M-DCI/OpenBLAS. Isolated baseline environment is appropriate; do not mutate frozen current runtime."
+    },
+    {
+      "url": "https://github.com/FFY0/AdaKV",
+      "checked": "2026-10-16",
+      "relevance": "Head-wise adaptive cache allocation is established prior work. A head-specific residency variant cannot be claimed as new just because it preserves eight GQA KV heads."
+    },
+    {
+      "url": "https://github.com/Zefan-Cai/KVCache-Factory",
+      "checked": "2026-10-16",
+      "relevance": "Current unified comparison repository explicitly supports KV-head granularity for multiple methods, including SnapKV. Comparing only to legacy expanded32-head Snap layout does not establish a memory SOTA win. Validate GQA-efficient baseline before any such claim."
+    },
+    {
+      "url": "https://arxiv.org/abs/2306.14048",
+      "checked": "2026-10-16",
+      "relevance": "Accumulated historical attention retention is existing H2O prior art. Calibrating its evidence units is an engineering hypothesis, not a new fundamental algorithm by itself."
+    }
+  ],
+  "claim_boundary": "A passing calibration screen supports corrected retention quality on development only. SOTA superiority needs independent data, faithful current comparators, measured matched resource envelope and finite preregistered objective. A system Pareto claim may concern accuracy versus memory/latency/logical writes, but simulated STT device energy/endurance is not a measured hardware win.",
+  "initial_inventory_attempt": "First inventory attempt failed before output: Python splitlines split an embedded Unicode line separator in a valid JSON string. Fixed to literal newline JSONL parsing; no candidate outcomes were run.",
+  "files_sha256": {
+    "results/improvement_design_20261016/exposure_prior.py": "8ae5bb590484252fe44f4e33c7a3f2310bd19d1d901dfca681b5774e38d3cbb6",
+    "results/improvement_design_20261016/test_exposure_prior.py": "d9b738a983ff2afbd09a24c4c1a6455dccf1214396dfca7ed7494837d3c76a2b",
+    "results/improvement_design_20261016/cpu_tests.log": "a37fb76a532081ee7ce882301c31441393b4cdf8403a768500ce7dd9e8b0bfbf",
+    "src/attention.py": "f0bba3edc349563118be9d6218c129c960a0fb0eb4a9d6d02dac5d809f9e4420",
+    "src/tiered_kv_cache.py": "525ae02d75f2966216343e1f5034483e7c26095250e1397c86dc9fcd73995e89",
+    "experiments/longbench_eval.py": "189158c4dd0426a78452eea0c8d7c0bbdd1927b7dbce0dd07b0a193ddf89c33e"
+  }
+}

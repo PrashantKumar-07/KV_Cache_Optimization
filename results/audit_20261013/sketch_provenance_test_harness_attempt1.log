@@ -1,0 +1,107 @@
+...............................FFF..........                             [100%]
+=================================== FAILURES ===================================
+___ test_sketch_metadata_cost_uses_bound_dtype_not_cold_payload[cold_dtype0] ___
+
+cold_dtype = torch.bfloat16
+
+    @pytest.mark.parametrize('cold_dtype', [torch.bfloat16, torch.float8_e4m3fn])
+    def test_sketch_metadata_cost_uses_bound_dtype_not_cold_payload(cold_dtype):
+        from cost_model import DEFAULT_TIERS
+        cfg = TieredConfig(num_heads=2, head_dim=4, sram_capacity=4,
+            sttram_capacity=32, sink_size=1, window_size=2, page_size=16,
+            kv_dtype=torch.bfloat16, stt_kv_dtype=cold_dtype,
+            sttram_bifurcation_frac=1.0)
+        cache = TieredKVCache(cfg)
+        keys = torch.linspace(-1, 1, 2*36*4).reshape(2, 36, 4)
+        cache.initial_bifurcation(keys, keys, keys)
+        pages = cache._page_bounds()
+        bound_bytes = sum(lo.numel()*lo.element_size() + hi.numel()*hi.element_size()
+                          for _, _, lo, hi in pages)
+        assert bound_bytes == 64
+>       record = cache.step(torch.zeros(2, 4), torch.zeros(2, 4), torch.zeros(2, 4))
+E       TypeError: TieredKVCache.step() missing 1 required positional argument: 'new_pos'
+
+tests/test_october_audit.py:303: TypeError
+___ test_sketch_metadata_cost_uses_bound_dtype_not_cold_payload[cold_dtype1] ___
+
+cold_dtype = torch.float8_e4m3fn
+
+    @pytest.mark.parametrize('cold_dtype', [torch.bfloat16, torch.float8_e4m3fn])
+    def test_sketch_metadata_cost_uses_bound_dtype_not_cold_payload(cold_dtype):
+        from cost_model import DEFAULT_TIERS
+        cfg = TieredConfig(num_heads=2, head_dim=4, sram_capacity=4,
+            sttram_capacity=32, sink_size=1, window_size=2, page_size=16,
+            kv_dtype=torch.bfloat16, stt_kv_dtype=cold_dtype,
+            sttram_bifurcation_frac=1.0)
+        cache = TieredKVCache(cfg)
+        keys = torch.linspace(-1, 1, 2*36*4).reshape(2, 36, 4)
+        cache.initial_bifurcation(keys, keys, keys)
+        pages = cache._page_bounds()
+        bound_bytes = sum(lo.numel()*lo.element_size() + hi.numel()*hi.element_size()
+                          for _, _, lo, hi in pages)
+        assert bound_bytes == 64
+>       record = cache.step(torch.zeros(2, 4), torch.zeros(2, 4), torch.zeros(2, 4))
+E       TypeError: TieredKVCache.step() missing 1 required positional argument: 'new_pos'
+
+tests/test_october_audit.py:303: TypeError
+____________ test_query_evaluation_requires_model_artifact_identity ____________
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x77c8062d7850>
+tmp_path = PosixPath('/tmp/pytest-of-nishant/pytest-387/test_query_evaluation_requires0')
+
+    def test_query_evaluation_requires_model_artifact_identity(monkeypatch, tmp_path):
+        import evaluate_query_selection as runner
+        calls = []
+        def capture(location):
+            calls.append(location)
+            raise RuntimeError('identity captured before model loading')
+        monkeypatch.setattr(runner, 'model_artifact_identity', capture)
+        monkeypatch.setattr(sys, 'argv', ['query_eval', '--model', str(tmp_path)])
+        with pytest.raises(RuntimeError, match='identity captured'):
+>           runner.main()
+
+tests/test_october_audit.py:317: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+experiments/evaluate_query_selection.py:190: in main
+    args = p.parse_args()
+/usr/lib/python3.10/argparse.py:1845: in parse_args
+    args, argv = self.parse_known_args(args, namespace)
+/usr/lib/python3.10/argparse.py:1878: in parse_known_args
+    namespace, args = self._parse_known_args(args, namespace)
+/usr/lib/python3.10/argparse.py:2119: in _parse_known_args
+    self.error(_('the following arguments are required: %s') %
+/usr/lib/python3.10/argparse.py:2606: in error
+    self.exit(2, _('%(prog)s: error: %(message)s\n') % args)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = ArgumentParser(prog='query_eval', usage=None, description='Paired research probe: select visible cold KV with the current layer query.', formatter_class=<class 'argparse.HelpFormatter'>, conflict_handler='error', add_help=True)
+status = 2
+message = 'query_eval: error: the following arguments are required: --data-dir, --tasks, --strategy, --output\n'
+
+    def exit(self, status=0, message=None):
+        if message:
+            self._print_message(message, _sys.stderr)
+>       _sys.exit(status)
+E       SystemExit: 2
+
+/usr/lib/python3.10/argparse.py:2593: SystemExit
+----------------------------- Captured stderr call -----------------------------
+usage: query_eval [-h] [--model MODEL] [--prefill-last-logits] --data-dir
+                  DATA_DIR --tasks TASKS [TASKS ...]
+                  [--max-samples MAX_SAMPLES] --strategy
+                  {lru,query,centroid,indexed_centroid}
+                  [--candidate-pages CANDIDATE_PAGES]
+                  [--tiered-vram-budget TIERED_VRAM_BUDGET]
+                  [--tiered-stt-budget TIERED_STT_BUDGET]
+                  [--stt-expose-quota STT_EXPOSE_QUOTA] [--real-query-prefill]
+                  [--cpu-batched-scores] [--cpu-direct-shared]
+                  [--cpu-bounded-pool] [--cpu-fused-compaction]
+                  [--cpu-reuse-visible] [--cpu-bulk-promotion]
+                  [--query-score-mode {chunked,expanded}]
+                  [--query-chunk-size QUERY_CHUNK_SIZE] --output OUTPUT
+query_eval: error: the following arguments are required: --data-dir, --tasks, --strategy, --output
+=========================== short test summary info ============================
+FAILED tests/test_october_audit.py::test_sketch_metadata_cost_uses_bound_dtype_not_cold_payload[cold_dtype0]
+FAILED tests/test_october_audit.py::test_sketch_metadata_cost_uses_bound_dtype_not_cold_payload[cold_dtype1]
+FAILED tests/test_october_audit.py::test_query_evaluation_requires_model_artifact_identity
+3 failed, 41 passed in 4.05s

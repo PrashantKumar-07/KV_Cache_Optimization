@@ -1,0 +1,63 @@
+{
+  "date": "2026-10-13",
+  "reviewer": "/root/fix_review",
+  "record_type": "agent_observed_execution_transcription",
+  "scope": "Read-only review against frozen cost_source.tar.gz; CPU probes and one explicitly authorized tiny-model GPU1 integration. No full-model GPU run or repository implementation edits by this reviewer. Artifacts persisted afterward without rerunning GPU.",
+  "frozen_comparison_source": "results/hardware/cold_boundary_controller_v1/cost_source.tar.gz",
+  "initial_working_tree_evidence": ["results/audit_20261013/initial_tracked.patch", "results/audit_20261013/initial_source_manifest.json"],
+  "findings": [
+    {
+      "location": "experiments/longbench_eval.py:1174-1176 (before follow-up fixes)",
+      "problem": "Intermediate bounded-prefill resident tuple used cache storage dtype rather than model KV dtype. Default FP32 cache with BF16 model failed on chunk two.",
+      "cpu_probe": "_tiny_model().to(torch.bfloat16); FixedTokenizer(); TieredKVPolicy(sram_budget=4, stt_budget=4, start_size=1, recent_size=2, prefill_chunk_size=4); generate_with_policy(model, tokenizer, 'prompt', 2, policy, 'cpu')",
+      "observed_before": "RuntimeError: Expected query, key, and value to have the same dtype, but got query.dtype: c10::BFloat16 key.dtype: float and value.dtype: float instead. Full prefill (chunk=0) passed.",
+      "disposition": "Root fixed carried tuple dtype conversion and added BF16 regressions for FP32/BF16 storage. Latest targeted suite passed."
+    },
+    {
+      "location": "experiments/longbench_eval.py:1171-1172; experiments/direct_shared_pool.py:65/75 (before follow-up fixes)",
+      "problem": "New token_positions/prompt_length kwargs were not accepted or forwarded by DirectScorePolicy._bifurcate, causing an immediate TypeError for bounded prefill and its descendants.",
+      "cpu_probe": "DirectScorePolicy(sram_budget=4, stt_budget=4, start_size=1, recent_size=2, prefill_chunk_size=4) with float32 _tiny_model and FixedTokenizer via generate_with_policy(...,2,...,'cpu')",
+      "observed_before": "TypeError DirectScorePolicy._bifurcate() got an unexpected keyword argument 'token_positions'",
+      "disposition": "Root forwarded prefill kwargs through overrides. GPU1 tiny-model Direct parity subsequently passed."
+    },
+    {
+      "location": "experiments/longbench_eval.py bounded-prefill reset; experiments/evaluate_query_selection.py PromptQueryCapture",
+      "problem": "Bounded prefill reset cleared captured queries after the forward; initialized=True suppressed later captures. Combined mode silently used proxy scoring.",
+      "cpu_probe": "Install PromptQueryCapture on _tiny_model and TieredKVPolicy(..., prefill_chunk_size=4); record prompt_q_by_layer length after each forward and before each placement.",
+      "observed_before": {"full_prefill_captured_counts": [2,0], "full_prefill_consumed_counts": [2], "bounded_captured_counts": [2,0,0,0,0,0], "bounded_consumed_counts": [0,0,0,0,0]},
+      "disposition": "Root added explicit unsupported-mode rejection before installing hooks, with a regression test."
+    },
+    {
+      "location": "experiments/provenance.py:model_artifact_identity and runtime_identity",
+      "problem": "Artifact fingerprint omitted vocab.txt/custom model Python and runtime fingerprint omitted vendored SnapKV code loaded by snapkv_adapter.py.",
+      "cpu_probe": "Temporary local model directory with config.json/model.safetensors/vocab.txt/modeling_custom.py: mutate vocab.txt and modeling_custom.py, compare model_artifact_identity.",
+      "observed_before": "Identity unchanged; only config.json and model.safetensors were hashed.",
+      "disposition": "Root expanded recursive artifact formats and included sota source/config in runtime identity. Added tokenizer/code mutation tests; reviewer inspected latest source."
+    }
+  ],
+  "cpu_validation": {
+    "exact_command": "../venv_kvcache/bin/python -m pytest -q tests/test_october_audit.py tests/test_batched_score_multitoken.py tests/test_native_controller.py tests/test_bulk_promotion_cli.py",
+    "working_directory": "/data/nishant/Nishant/Prashant/Thesis/kv_cache",
+    "observed_output": "62 passed in 3.83s",
+    "new_execution_when_record_saved": false
+  },
+  "inventory_review": {
+    "artifact": "results/audit_20261013/unused_target_documents.json",
+    "scope": "All six recorded task source files; compare normalized target context, or TriviaQA input before final newline Question delimiter.",
+    "observed_exact_cross_task_duplicate_documents": 0,
+    "conclusion": "Task-prefixed grouping does not currently admit exact cross-task duplicate target documents. No additional contamination finding identified."
+  },
+  "gpu_validation": {
+    "authorization": "Root explicitly authorized tiny CUDA only on GPU1 after its preceding jobs had finished.",
+    "idle_checks": ["nvidia-smi --query-gpu=index,memory.used,memory.total --format=csv,noheader", "nvidia-smi --query-compute-apps=gpu_uuid,pid,process_name,used_gpu_memory --format=csv,noheader"],
+    "observed_idle_gpu_output": ["0, 14 MiB, 46068 MiB", "1, 14 MiB, 46068 MiB"],
+    "observed_compute_processes": [],
+    "exact_original_command_artifact": "results/audit_20261013/reviewer/original_gpu_command.sh",
+    "saved_reproducer_command": "CUDA_VISIBLE_DEVICES=1 ../venv_kvcache/bin/python results/audit_20261013/reviewer/direct_bounded_parity.py",
+    "scope": "Random 2-layer BF16 Mistral, hidden512, intermediate768, 4 query heads, 2 KV heads, head_dim128, vocab128, seed127; fixed 20-token prompt; chunk4; gen3. Compare ordinary GPU cache to DirectScorePolicy at hot/cold=(8,16),(32,32). Exact generated text, SRAM/STT positions, and bitwise K payload parity only; V payload was not separately checked. Prompt length20 and repeated reset manager cleanup checked.",
+    "agent_observed_output": {"device":"CUDA_VISIBLE_DEVICES=1","passed":true,"checks":[{"hot":8,"cold":16,"prediction":"4 115 115","parity":true},{"hot":32,"cold":32,"prediction":"4 115 115","parity":true}],"peak_allocated_bytes":16939520},
+    "new_gpu_execution_when_record_saved": false,
+    "limitations": "Tiny-model integration proof; no long-context, full-model, latency, task-quality, or total-system-memory claim. Original command output is transcribed from tool execution; no contemporaneous source manifest was captured."
+  },
+  "conclusion_after_followup_fixes": "No additional high-risk defect found in sink/recent chronology, ordinary/native/AST hysteresis, or current exact-target inventory. This record does not claim the separate ongoing reproduction jobs have completed."
+}

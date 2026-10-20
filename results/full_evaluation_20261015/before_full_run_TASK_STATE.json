@@ -1,0 +1,207 @@
+{
+  "schema": 1,
+  "updated_utc": "2026-10-15T17:28:34.356132+00:00",
+  "objective": "Complete research/engineering audit, correctness fixes, fair reproducible improvements and validated figures before writing four-page IEEE paper",
+  "user_constraints": [
+    "Paper work paused until audit/fixes/improvement evaluation finish",
+    "STT is simulated; no physical STT hardware requirement",
+    "Preserve historical raw outcomes and user preexisting dirty changes",
+    "Do not tune on consumed or final holdouts",
+    "Use server GPUs/CPU wisely; keep measurements honest",
+    "Consolidate superseded generated markdown only after review; retain evidence and useful history",
+    "15 October: verify and correct figures and flow diagram while preserving visual style; use actual evaluated values; improve toward SOTA then draft and refine IEEE paper.",
+    "Latest correction: original figure scientific questions, five-method comparisons and visual design must be preserved. Fig3 remove fraction1budget sweep; onlypaid/avoided writes. Architecture explicitly authorized redesign intoattractiveconcretepaperdiagram. Do notsubstitute2/3armdevelopmentpilots fororiginalfigures."
+  ],
+  "initial_revision": "be7e700d84d46b47e32ba5b9870c8b71783b9e53",
+  "test_evidence": "results/audit_20261015_figures/final_source_suite.log",
+  "suite_passed": 602,
+  "semantic_before": "results/audit_20261013/core_before.json",
+  "semantic_after": "results/audit_20261013/core_after.json",
+  "frozen_improvement": "results/hardware/cold_boundary_controller_v1/verified_cost.json",
+  "current_source_manifest": "results/audit_20261013/snap_projection_reuse_gpu/plan.json",
+  "running_jobs": [],
+  "completed_model_checks": "results/hardware/cold_boundary_audit_20261013/verified_audit_stress.json",
+  "data_inventory": "results/audit_20261013/unused_target_documents.json",
+  "next_actions": [
+    "NoownedGPUjobs. Qualitycombination90predictionsverifiedFAILSregisteredadvancement; stopitandpreserveall90raw. Independentverifierforfairtiming completeREJECTnative speed. Do notsummarizeasSOTA achieved.",
+    "Preserveoriginalfigurecontracts and5methods; fullcurrentrerunsneededtopopulate samefigures. Existing2/3armdevelopmentplots remainseparate. NewfairSnapdata maybeadditionalfigure only, not replacementfororiginalquestion.",
+    "Ifquerycombinationpassesdevelopmentgate, nativepricedretrievalintegration+independentqualitystillneeded. Fails:stopcandidateexpansion. Currentfairnative latencyreject meansSOTAgoalnotachieved.",
+    "Write/currentablation/sourcebackedmodelenergy/widergeneration/context/model andprojectwidefilecoverage remainopen; paperpaused untilcorrectness/evaluationgates finish."
+  ],
+  "completion": {
+    "audit": "in_progress",
+    "correctness": "602fullsuitepasses. Reusable root593epoch independentlypasses16K/8Kfullmodelparity+steadyresourceguards. CurrentSnapconstructorrollback+optinprojectionreuse passesCPUand16Kfullmodelbyteequivalence; independentreviewpending. Wholeproject audit and widercontexts/freegeneration remainopen.",
+    "development_reproduction": "Final prior-preserving source epoch90 predictions independently rescored. H2O35.69098, Snap32.37183, Tiered35.60505; Tiered-Snap3.23322 conditional rowCI[-0.69133,8.87431]. Equalhot only, adapted baselines; no significance/fairresource/SOTA claim.",
+    "improvement": "Actual-query development quality and resource gates pass; medianITL ratio0.96608,p950.99893,TTFT1.03945, prefillpeak1.00180. Internal only; no independent quality/SOTA/adoption. Groupedretention failed, expansion stopped.",
+    "independent_quality": "not_done",
+    "figures": "Originalscientificquestions/stylepreservedafterusercorrection,valuestraceactualarchivedevaluations andscopelabeled. Currentfinalfigurepackneeds full5-method source-matched reruns, notdifferentpilotfigures. Fig3budgetpanelremoved,newarchitecturedeployed.",
+    "paper": "paused_by_user",
+    "faithful_baseline": "30 current-model development pairs, initial held KV tensor452MiB matching boundary only; Tiered-Snap -0.27588pts cluster95%[-1.88699,1.28606], no superiority. Full resource trajectories/timing still open."
+  },
+  "resume_policy": "Read this state and linked raw evidence; check hashes/runtime/source and processes; use new output paths on mismatch; never infer completion from markdown or old agent reports.",
+  "documentation_cleanup": {
+    "state": "Full unique prose of4specified docs reviewed; exact archive verified. Projectwide fullfile review incomplete: keep originals per user condition.",
+    "reviewed_candidates": [
+      "REMEDIATION_CHECKLIST.md",
+      "SUBMISSION_SPRINT.md",
+      "AUDIT_VERIFICATION.md",
+      "TIEREDKV_INDEPENDENT_AUDIT.md"
+    ],
+    "action": "archive exact checksummed copies; retain useful unique failure/scope history; replace outdated inbound refs with current audit. Do not touch frozen result documentation.",
+    "archive_manifest": "results/audit_20261013/documentation_archive/manifest.json",
+    "review_evidence": "results/audit_20261013/reviewer/documentation_review.json"
+  },
+  "completed_quality_screens": {
+    "actual_query": "results/audit_20261013/actual_query_development/verified_quality.json",
+    "grouped_retention": "results/audit_20261013/reviewer/grouped_pilot_verified.json",
+    "final_prior_development": "results/audit_20261013/final_prior_development/verified_quality.json",
+    "faithful_snap_development": "results/audit_20261013/faithful_snap_development/verified_quality.json"
+  },
+  "resume_commands": [
+    "cd /data/nishant/Nishant/Prashant/Thesis/kv_cache",
+    "cat AGENTS.md START_HERE.md TASK_STATE.json",
+    "ps -u nishant -o pid,etime,args | rg \"longbench|run_arm|check_cost|check_stress\"",
+    "nvidia-smi --query-compute-apps=pid,process_name,used_memory --format=csv,noheader",
+    "../venv_kvcache/bin/python -m pytest -q"
+  ],
+  "source_change_after_frozen_pilot": {
+    "experiments/grouped_retention.py": "fa6b8f78dca8535ba9f1c59c0ec1a0ab1f2f46d4e12b5670f515fc97a5e2b598",
+    "tests/test_grouped_retention.py": "c6db1438c03aabad065c9683a208211dda9cd4e5ee9cb12c573f512778d78817"
+  },
+  "frozen_pilot_source_proof": "results/audit_20261013/reviewer/grouped_source_before_guards_v2.json",
+  "remaining_findings": [
+    {
+      "finding": "Standalone sketch boundary explicitly ideal persistent bounds; construction/maintenance/index storage excluded",
+      "status": "Documented in corrected source and reviewer report; full-K alternative traffic sensitivity available CPUprobe, no device/fullsystem claim."
+    },
+    {
+      "finding": "Historical actual_query/grouped quality pilots omitted modelweight artifactsha",
+      "status": "Future query/timing runner captures model_artifact_identity. Historical exactweightbytes not attested; retain limitation, do not retroactively relabel."
+    },
+    {
+      "finding": "FP8 boundmetadata width + MiB leakage label",
+      "status": "Fixed;44 focused checks and560 full checks pass. Beforeprobes sourceepoch retained; independent follow-up review active."
+    }
+  ],
+  "completed_resource_screens": {
+    "actual_query": "results/audit_20261013/actual_query_resources/verified_resources.json",
+    "current_controller": "results/audit_20261013/current_controller_resources/verified_resources.json",
+    "exact_controller": "results/audit_20261013/exact_controller_resources/verified_resources.json",
+    "reusable_root": "results/audit_20261013/reusable_root_resources/verified_resources.json"
+  },
+  "independent_fix_review": "results/audit_20261013/reviewer/simulation_boundary_fixed_review.md",
+  "completed_model_checks_current": "results/audit_20261013/reviewer/verified_current_controller_parity.json",
+  "current_controller_resource_screen": {
+    "state": "independently verified; rejected512MiB memoryguard",
+    "median_itl_control_ms": 79.49579786509275,
+    "median_itl_candidate_ms": 50.709737464785576,
+    "scoped_memory_MiB": 741.6546630859375,
+    "adopted": false,
+    "proof": "results/audit_20261013/current_controller_resources/verified_resources.json"
+  },
+  "completed_model_checks_exact": "results/audit_20261013/exact_controller/verified_parity.json",
+  "exact_controller_resource_screen": {
+    "state": "Independently verified, REJECTED TTFTguard, noadoption",
+    "median_itl_control_ms": 77.96258851885796,
+    "median_itl_candidate_ms": 50.17843283712864,
+    "scoped_memory_MiB": 493.6546630859375,
+    "median_ttft_ratio": 1.12582847,
+    "registered_ttft_ceiling": 1.1,
+    "proof": "results/audit_20261013/exact_controller_resources/verified_resources.json"
+  },
+  "new_stress_diagnostics": {
+    "8192_cold256": "51fullvocab/51x32KV traces/predictions exact; strict41/50nativecoldcoveragefail. Corrected rootrawcheck: TOTALcold reaches256, LIVE192->242;300layertransitions loseoldcoldpositions. Previous reviewer conflatedlive/total, so no-overflow/recycling claim invalid. Newdiagnostic localizes9decode visibility rejections to pending_keep afterbulkfallback; no correctness mismatch.",
+    "31500_cold2048": "Harness precondition failure: frozen prompt30907tokens, fewer than31500. No forward diagnostic completed; preserve evidence.",
+    "paths": [
+      "results/audit_20261013/exact_stress_8192_cold256",
+      "results/audit_20261013/exact_stress_31500_cold2048"
+    ]
+  },
+  "independent_diagnostics": "results/audit_20261013/reviewer/verified_failed_exact_stress.json",
+  "allocation_cause_probe": "results/audit_20261013/allocation_diagnosis/observed.json",
+  "independent_hook_fix_review": "results/audit_20261013/reviewer/hook_registration_fixed_review.json",
+  "completed_diagnostics": "results/audit_20261013/exact_visibility_rejection_diagnostic/verified_diagnostic.json",
+  "completed_model_checks_handoff": "results/audit_20261013/compaction_handoff_parity/verified_parity.json",
+  "reusable_root_prototype": {
+    "implementation": "experiments/reusable_exact_root.py",
+    "tests": "tests/test_reusable_exact_root.py",
+    "state": "593test source epoch independently verified two-context fullmodelparity + steadyresource screen pass; optin only, no defaultadoption/SOTA",
+    "failed_attempts_preserved": [
+      "results/audit_20261013/reusable_root_focused.log",
+      "results/audit_20261013/reusable_root_partial_init_before.log"
+    ],
+    "scope": "Serial creationthread/sameCUDAcontext BF16; root retained andchargedidle, activeleaseonlyreleasesafterfullreset+attachedunregisteredcachecleanup. No defaultchanges."
+  },
+  "deadline": {
+    "exact_date": "unknown",
+    "user_update": "2026-10-14: submission will not be within2\u20133weeks; no paper-first shortcut",
+    "planning": "Prioritize research correctness/fairbaselines/independent validation; paper remains paused until audit/fixes/evaluation gates complete."
+  },
+  "completed_model_checks_reusable": "results/audit_20261013/reusable_root_parity/verified_parity.json",
+  "reusable_root_resource_screen": {
+    "state": "independently verified steadyrequests all registeredguardsPASS; noadoption",
+    "median_itl_control_ms": 78.44656985253096,
+    "median_itl_candidate_ms": 50.222115591168404,
+    "median_ttft_ratio": 1.0508318622153254,
+    "scoped_memory_MiB": 493.6546630859375,
+    "proof": "results/audit_20261013/reusable_root_resources/verified_resources.json",
+    "scope": "One16Kteacherstream, preloadedmodel, serialsamecontext exactrootreuse chargedidle. Ordered startup observations separate/noncausal. OriginalfreshallocatorTTFTfailure preserved. Frozenplan scope has erroneous unordered adjective; actual protocol/execution control then candidate."
+  },
+  "snap_constructor_fix": {
+    "before": "results/audit_20261013/reviewer/snap_constructor_rollback_before.json",
+    "tests": "results/audit_20261013/snap_rollback_focused.log",
+    "scope": "Rollback partialhook acquisition and restore changedheadgroups; idempotentclose cannot restorestale settings twice. Successfulselector math unchanged. No fresh independentagent review available; prior agent hitusage limit after savingresource verifier."
+  },
+  "completed_resource_trajectory": "results/audit_20261013/current_snap_resource_trajectory/verified_diagnostic.json",
+  "resource_trajectory_stage_review": "results/audit_20261013/current_snap_resource_trajectory/snapshot_stage_review.json",
+  "snap_projection_reuse": {
+    "state": "602tests + frozen16Kfullmodel equivalence PASS:51finitefullvocabarrays byteexact,51x32KVhashesexact, predictionsmatcholdfaithfultrajectory,32Q+32Kprefillprojectioncallsremoved, allhooks/groupsrestored. Rootexecutableverification; independentreviewpending. DefaultFalse unchanged; no timinggainclaim.",
+    "implementation": "experiments/snapkv_adapter.py",
+    "tests": "tests/test_snap_projection_reuse.py",
+    "plan": "results/audit_20261013/snap_projection_reuse_gpu/plan.json",
+    "proof": "results/audit_20261013/snap_projection_reuse_gpu/verified_parity.json"
+  },
+  "figures_audit": {
+    "archive": "results/audit_20261015_figures/original_figures_manifest.json",
+    "inventory": "results/audit_20261015_figures/figure_provenance_audit.json",
+    "flow": "results/audit_20261015_figures/flow/tieredkv_flow_diagram_academic_validated.svg",
+    "flow_state": "CorrectededitableSVG/PDF/PNG reviewedvisuallyroot; sourcedtwotiermodel; originalsarchived, deploymentpending",
+    "plots": "results/audit_20261015_figures/validated/provenance.json",
+    "state": "Userrejectedchangedquestions. CORRECTED:original5methodcomparisons1/7/14 restoredfromactualarchivedsources inoriginalstyle withfootnote currentrerunsneeded.2per-taskmodeledcost/4five-methodscaling/8fractiontradeoff restoredsamequestions.3singlepaid/avoidedwriteswithoutbudget sweep. Separate2/3armdevplots underfigures_final/development.6/11/12/15keptlikedstyle. Newlandscapepaperarchitectureconcretebuffers/control/shadowwrites replacesabstractposter; SVG/PDF/PNG. Raworiginal24archive preserved.",
+    "metrics": "results/audit_20261015_figures/metrics/reference_equivalence.json",
+    "deployment": "results/audit_20261015_figures/deployment_validation.json",
+    "latest_correction": "results/audit_20261015_figures/user_requested_correction.json"
+  },
+  "current_work": {
+    "fair_baseline": "results/audit_20261015_fair_snap/prepare_plan.py +run_benchmark.py beingindependentlyprepared; preregister3contexts8192/16384/30000 beforeGPUlaunch, 600steps/arm/context, correctedpostHFcommitdiagnostic",
+    "quality_improvement": "Proposedexistingactual-queryprefill+current-queryretrieval combination vsactualprefill/LRU andfaithfulSnap on30consumeddevrows; architecturepreflightreviewinprogress. Notimplementednewnativequerypath,noSOTAorindependentclaim."
+  },
+  "queued_jobs": [],
+  "fair_benchmark_first_failure": {
+    "path": "results/audit_20261015_fair_snap/benchmark.json",
+    "timed_rows": 0,
+    "cause": "Transformerslazypermanentoutputcapturehooks falselyflaggedasownedleak;CPUplainmodelreproduced, isolateddiagnosticmatches64decoder/attentionmodulehooks",
+    "diagnostic": "results/audit_20261015_hook_diagnostic/benchmark.json",
+    "revision": "Explicitframeworkhookinitone1token beforeallsnapshots; noalgorithm/config/guardchange; originalrawpreserved"
+  },
+  "completed_fair_timing": "results/audit_20261015_fair_snap_v2/independently_verified_benchmark.json",
+  "fair_timing_outcome": "REJECTEDnativeadvancement all3contexts:Snap~25.74/25.84/25.79ms vsnative53.10/53.72/53.34ms, allITL/p95/TTFTguardsfail, bothscoped512MiBpass.600steps/arm/context/77quiet/55leasesfinal0; noSOTAspeedclaim.",
+  "query_combination_outcome": {
+    "proof": "results/audit_20261015_query_combination/verified_quality.json",
+    "state": "Complete90predictions;LRU/Snap controls exactoldscreen; fullrawrescoring+source/modeldata checks; advancementFAILED stopcombinationexpansion, notadopted",
+    "scope": "Consumeddevelopmentonly, ordinaryGPUalgorithmicquality, no nativequery/SOTAclaim",
+    "metrics": {
+      "query_minus_lru_points": 2.923977742317939,
+      "CI95": [
+        -0.2938790318898818,
+        6.666233377265901
+      ],
+      "query_minus_snap_points": 2.6480941043810167,
+      "CI95_vs_snap": [
+        -0.29780895397923884,
+        6.4843824439408255
+      ]
+    }
+  },
+  "latest_user_response_focus": "Addressfiguredesignerror; originalscientificquestions/fivemethodsrestored,Fig3singlepaid/avoided,architecturelandscaperedesign. LinksnewFig3andarchitectureforreview, archiveddatapendingcurrentreruns explicitly."
+}

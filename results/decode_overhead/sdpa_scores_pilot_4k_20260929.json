@@ -1,0 +1,125 @@
+{
+  "config": {
+    "model": "../models/mistral-7b-instruct",
+    "prompt_file": "results/remediation_v3/latency_prompt.txt",
+    "stream_file": "results/shadow_ablation_full/fixed_stream_20260929.json",
+    "output": "results/decode_overhead/sdpa_scores_pilot_4k_20260929.json",
+    "ctx_len": 4096,
+    "decode": 5,
+    "warmup": 0,
+    "repeat": 1,
+    "order": [
+      "eager",
+      "sdpa"
+    ],
+    "prompt_sha256": "18695714f26e35cb8d2b039ae9efb3b7e64291cbd7bcd91956efc07e16a732cd",
+    "teacher_token_sha256": "bb85d5e5270735a2a1ff089c74f2d7eeb1a7ddd41b4361c97e190913d4f32f67",
+    "driver_sha256": "84e5523b4edb153784f998956f6054941e578a4dacdb5a633c90eecbae0479f9",
+    "profile_sha256": "f9db2b8fba3eef1e6a8d3f396dce983b4137271a6e649e220c98b35ee361f267",
+    "runtime": {
+      "git_revision": "be7e700d84d46b47e32ba5b9870c8b71783b9e53",
+      "source_sha256": "3f8d6b080dcf0e609a257271a673f5cba847973650a8a8c4ecb3746382207380",
+      "packages": {
+        "torch": "2.5.1+cu124",
+        "transformers": "5.14.1",
+        "datasets": "5.0.0",
+        "numpy": "2.2.6",
+        "accelerate": "1.14.0",
+        "huggingface_hub": "1.24.0",
+        "rouge": "1.0.1"
+      }
+    },
+    "scope": "same-process full-loop fixed-token model+policy timing"
+  },
+  "results": {
+    "0_eager": {
+      "timing_scope": "end_to_end_model_policy_token",
+      "ttft_ms": 815.305,
+      "itl_ms": 84.531,
+      "mean_itl_ms": 91.3004957139492,
+      "forward_ms": 25.137199088931084,
+      "peak_memory_gb": 15.141817344,
+      "prefill_peak_memory_gb": 15.81470464,
+      "trials": [
+        {
+          "ttft_ms": 815.3047040104866,
+          "step_ms": [
+            144.36239190399647,
+            71.07018120586872,
+            85.4843407869339,
+            71.05464115738869,
+            84.53092351555824
+          ],
+          "forward_ms": [
+            62.908682972192764,
+            25.137199088931084,
+            25.10853111743927,
+            25.144170969724655,
+            25.105999782681465
+          ],
+          "prefill_peak_memory_gb": 15.81470464,
+          "decode_peak_memory_gb": 15.141817344,
+          "predicted_token_ids": [
+            1263,
+            18577,
+            28809,
+            592,
+            7616
+          ],
+          "prefill_forward_ms": 682.8511133790016,
+          "paid_writes": 1211,
+          "writes_saved": 1957,
+          "demoted": 3168,
+          "promoted": 3008,
+          "decode_steps": 5
+        }
+      ],
+      "final_state_sha256": "6cdec623ccc1639145f9ff4fe0b54b2b0bf8702b44f5e6dc131011c5a24ed6ad"
+    },
+    "1_sdpa": {
+      "timing_scope": "end_to_end_model_policy_token",
+      "ttft_ms": 413.182,
+      "itl_ms": 87.842,
+      "mean_itl_ms": 83.48931409418583,
+      "forward_ms": 25.90143494307995,
+      "peak_memory_gb": 15.153216512,
+      "prefill_peak_memory_gb": 15.820078592,
+      "trials": [
+        {
+          "ttft_ms": 413.18182833492756,
+          "step_ms": [
+            92.52375178039074,
+            74.7832041233778,
+            87.84214220941067,
+            74.22193884849548,
+            88.07553350925446
+          ],
+          "forward_ms": [
+            30.95981851220131,
+            25.90075694024563,
+            25.93100816011429,
+            25.90143494307995,
+            25.84574557840824
+          ],
+          "prefill_peak_memory_gb": 15.820078592,
+          "decode_peak_memory_gb": 15.153216512,
+          "predicted_token_ids": [
+            1263,
+            18577,
+            28809,
+            592,
+            7616
+          ],
+          "prefill_forward_ms": 349.207628518343,
+          "paid_writes": 1213,
+          "writes_saved": 1955,
+          "demoted": 3168,
+          "promoted": 3008,
+          "decode_steps": 5
+        }
+      ],
+      "final_state_sha256": "4862dc6bc999199a09c21916a16bbc1c3751985c6cf402f8dacb2b8dcb9dee48"
+    }
+  },
+  "policy_output_parity": false
+}

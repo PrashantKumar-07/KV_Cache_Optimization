@@ -1,0 +1,4935 @@
+{
+  "plan_sha256": "05c691eacc4982df1aeb2a35508a7d42fd871430a72601b9cbbbb92d8a2678ea",
+  "task": "hotpotqa",
+  "physical_file_row_index": 246,
+  "global_row_index": 820,
+  "shard": 0,
+  "shards": 2,
+  "sample_id": "31bde772df6d5aeec2039e1c2cfa5177fd7988609b1bae0c161effcd584cf07b",
+  "input_ids_sha256": "a93e7168d6101e350fe65ba54b5a3569d79b4b4ec5bcc30b8e334635cdcfce8e",
+  "prompt_sha256": "d9ee4d92a1464aa92a83f346c67518dea763531a0a2a8815a2912f50a62b9f9b",
+  "untruncated_prompt_tokens": 15017,
+  "arm": "tiered_hot1024",
+  "dataset_length": 9601,
+  "metric_function": "qa_f1_score",
+  "requested_backends": {
+    "prefill": "sdpa",
+    "decode": "eager"
+  },
+  "balanced_arm_order": [
+    "streamingllm",
+    "h2o_adapted",
+    "snapkv_adapted",
+    "tiered_hot1024",
+    "tiered_hot992",
+    "snapkv_faithful",
+    "full"
+  ],
+  "prediction": "The Nobel Prize in Physics was won by Eugene Wigner in 1963.",
+  "scored_prediction": "The Nobel Prize in Physics was won by Eugene Wigner in 1963.",
+  "score": 30.76923076923077,
+  "answers": [
+    "Nobel Prize"
+  ],
+  "generated_token_ids": [
+    415,
+    11189,
+    301,
+    19751,
+    297,
+    12051,
+    1063,
+    403,
+    1747,
+    486,
+    18234,
+    1860,
+    394,
+    603,
+    263,
+    297,
+    28705,
+    28740,
+    28774,
+    28784,
+    28770,
+    28723,
+    2
+  ],
+  "prompt_tokens": 15017,
+  "generated_tokens": 23,
+  "all_model_logits_finite": true,
+  "geometry_after_prefill_before_first_decode": {
+    "layers": [
+      {
+        "layer": 0,
+        "visible_k": {
+          "shape": [
+            1,
+            8,
+            1056,
+            128
+          ],
+          "dtype": "torch.bfloat16",
+          "device": "cuda:0",
+          "logical_bytes": 2162688,
+          "backing_storage_bytes": 2162688
+        },
+        "visible_v": {
+          "shape": [
+            1,
+            8,
+            1056,
+            128
+          ],
+          "dtype": "torch.bfloat16",
+          "device": "cuda:0",
+          "logical_bytes": 2162688,
+          "backing_storage_bytes": 2162688
+        },
+        "tier_payloads": {
+          "sram_k": {
+            "shape": [
+              8,
+              1024,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 2097152,
+            "backing_storage_bytes": 2097152
+          },
+          "sram_v": {
+            "shape": [
+              8,
+              1024,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 2097152,
+            "backing_storage_bytes": 2097152
+          },
+          "stt_k": {
+            "shape": [
+              8,
+              1536,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 3145728,
+            "backing_storage_bytes": 3145728
+          },
+          "stt_v": {
+            "shape": [
+              8,
+              1536,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 3145728,
+            "backing_storage_bytes": 3145728
+          }
+        },
+        "cold_live_rows": 1536,
+        "cold_shadow_rows": 0
+      },
+      {
+        "layer": 1,
+        "visible_k": {
+          "shape": [
+            1,
+            8,
+            1056,
+            128
+          ],
+          "dtype": "torch.bfloat16",
+          "device": "cuda:0",
+          "logical_bytes": 2162688,
+          "backing_storage_bytes": 2162688
+        },
+        "visible_v": {
+          "shape": [
+            1,
+            8,
+            1056,
+            128
+          ],
+          "dtype": "torch.bfloat16",
+          "device": "cuda:0",
+          "logical_bytes": 2162688,
+          "backing_storage_bytes": 2162688
+        },
+        "tier_payloads": {
+          "sram_k": {
+            "shape": [
+              8,
+              1024,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 2097152,
+            "backing_storage_bytes": 2097152
+          },
+          "sram_v": {
+            "shape": [
+              8,
+              1024,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 2097152,
+            "backing_storage_bytes": 2097152
+          },
+          "stt_k": {
+            "shape": [
+              8,
+              1536,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 3145728,
+            "backing_storage_bytes": 3145728
+          },
+          "stt_v": {
+            "shape": [
+              8,
+              1536,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 3145728,
+            "backing_storage_bytes": 3145728
+          }
+        },
+        "cold_live_rows": 1536,
+        "cold_shadow_rows": 0
+      },
+      {
+        "layer": 2,
+        "visible_k": {
+          "shape": [
+            1,
+            8,
+            1056,
+            128
+          ],
+          "dtype": "torch.bfloat16",
+          "device": "cuda:0",
+          "logical_bytes": 2162688,
+          "backing_storage_bytes": 2162688
+        },
+        "visible_v": {
+          "shape": [
+            1,
+            8,
+            1056,
+            128
+          ],
+          "dtype": "torch.bfloat16",
+          "device": "cuda:0",
+          "logical_bytes": 2162688,
+          "backing_storage_bytes": 2162688
+        },
+        "tier_payloads": {
+          "sram_k": {
+            "shape": [
+              8,
+              1024,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 2097152,
+            "backing_storage_bytes": 2097152
+          },
+          "sram_v": {
+            "shape": [
+              8,
+              1024,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 2097152,
+            "backing_storage_bytes": 2097152
+          },
+          "stt_k": {
+            "shape": [
+              8,
+              1536,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 3145728,
+            "backing_storage_bytes": 3145728
+          },
+          "stt_v": {
+            "shape": [
+              8,
+              1536,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 3145728,
+            "backing_storage_bytes": 3145728
+          }
+        },
+        "cold_live_rows": 1536,
+        "cold_shadow_rows": 0
+      },
+      {
+        "layer": 3,
+        "visible_k": {
+          "shape": [
+            1,
+            8,
+            1056,
+            128
+          ],
+          "dtype": "torch.bfloat16",
+          "device": "cuda:0",
+          "logical_bytes": 2162688,
+          "backing_storage_bytes": 2162688
+        },
+        "visible_v": {
+          "shape": [
+            1,
+            8,
+            1056,
+            128
+          ],
+          "dtype": "torch.bfloat16",
+          "device": "cuda:0",
+          "logical_bytes": 2162688,
+          "backing_storage_bytes": 2162688
+        },
+        "tier_payloads": {
+          "sram_k": {
+            "shape": [
+              8,
+              1024,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 2097152,
+            "backing_storage_bytes": 2097152
+          },
+          "sram_v": {
+            "shape": [
+              8,
+              1024,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 2097152,
+            "backing_storage_bytes": 2097152
+          },
+          "stt_k": {
+            "shape": [
+              8,
+              1536,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 3145728,
+            "backing_storage_bytes": 3145728
+          },
+          "stt_v": {
+            "shape": [
+              8,
+              1536,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 3145728,
+            "backing_storage_bytes": 3145728
+          }
+        },
+        "cold_live_rows": 1536,
+        "cold_shadow_rows": 0
+      },
+      {
+        "layer": 4,
+        "visible_k": {
+          "shape": [
+            1,
+            8,
+            1056,
+            128
+          ],
+          "dtype": "torch.bfloat16",
+          "device": "cuda:0",
+          "logical_bytes": 2162688,
+          "backing_storage_bytes": 2162688
+        },
+        "visible_v": {
+          "shape": [
+            1,
+            8,
+            1056,
+            128
+          ],
+          "dtype": "torch.bfloat16",
+          "device": "cuda:0",
+          "logical_bytes": 2162688,
+          "backing_storage_bytes": 2162688
+        },
+        "tier_payloads": {
+          "sram_k": {
+            "shape": [
+              8,
+              1024,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 2097152,
+            "backing_storage_bytes": 2097152
+          },
+          "sram_v": {
+            "shape": [
+              8,
+              1024,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 2097152,
+            "backing_storage_bytes": 2097152
+          },
+          "stt_k": {
+            "shape": [
+              8,
+              1536,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 3145728,
+            "backing_storage_bytes": 3145728
+          },
+          "stt_v": {
+            "shape": [
+              8,
+              1536,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 3145728,
+            "backing_storage_bytes": 3145728
+          }
+        },
+        "cold_live_rows": 1536,
+        "cold_shadow_rows": 0
+      },
+      {
+        "layer": 5,
+        "visible_k": {
+          "shape": [
+            1,
+            8,
+            1056,
+            128
+          ],
+          "dtype": "torch.bfloat16",
+          "device": "cuda:0",
+          "logical_bytes": 2162688,
+          "backing_storage_bytes": 2162688
+        },
+        "visible_v": {
+          "shape": [
+            1,
+            8,
+            1056,
+            128
+          ],
+          "dtype": "torch.bfloat16",
+          "device": "cuda:0",
+          "logical_bytes": 2162688,
+          "backing_storage_bytes": 2162688
+        },
+        "tier_payloads": {
+          "sram_k": {
+            "shape": [
+              8,
+              1024,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 2097152,
+            "backing_storage_bytes": 2097152
+          },
+          "sram_v": {
+            "shape": [
+              8,
+              1024,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 2097152,
+            "backing_storage_bytes": 2097152
+          },
+          "stt_k": {
+            "shape": [
+              8,
+              1536,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 3145728,
+            "backing_storage_bytes": 3145728
+          },
+          "stt_v": {
+            "shape": [
+              8,
+              1536,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 3145728,
+            "backing_storage_bytes": 3145728
+          }
+        },
+        "cold_live_rows": 1536,
+        "cold_shadow_rows": 0
+      },
+      {
+        "layer": 6,
+        "visible_k": {
+          "shape": [
+            1,
+            8,
+            1056,
+            128
+          ],
+          "dtype": "torch.bfloat16",
+          "device": "cuda:0",
+          "logical_bytes": 2162688,
+          "backing_storage_bytes": 2162688
+        },
+        "visible_v": {
+          "shape": [
+            1,
+            8,
+            1056,
+            128
+          ],
+          "dtype": "torch.bfloat16",
+          "device": "cuda:0",
+          "logical_bytes": 2162688,
+          "backing_storage_bytes": 2162688
+        },
+        "tier_payloads": {
+          "sram_k": {
+            "shape": [
+              8,
+              1024,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 2097152,
+            "backing_storage_bytes": 2097152
+          },
+          "sram_v": {
+            "shape": [
+              8,
+              1024,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 2097152,
+            "backing_storage_bytes": 2097152
+          },
+          "stt_k": {
+            "shape": [
+              8,
+              1536,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 3145728,
+            "backing_storage_bytes": 3145728
+          },
+          "stt_v": {
+            "shape": [
+              8,
+              1536,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 3145728,
+            "backing_storage_bytes": 3145728
+          }
+        },
+        "cold_live_rows": 1536,
+        "cold_shadow_rows": 0
+      },
+      {
+        "layer": 7,
+        "visible_k": {
+          "shape": [
+            1,
+            8,
+            1056,
+            128
+          ],
+          "dtype": "torch.bfloat16",
+          "device": "cuda:0",
+          "logical_bytes": 2162688,
+          "backing_storage_bytes": 2162688
+        },
+        "visible_v": {
+          "shape": [
+            1,
+            8,
+            1056,
+            128
+          ],
+          "dtype": "torch.bfloat16",
+          "device": "cuda:0",
+          "logical_bytes": 2162688,
+          "backing_storage_bytes": 2162688
+        },
+        "tier_payloads": {
+          "sram_k": {
+            "shape": [
+              8,
+              1024,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 2097152,
+            "backing_storage_bytes": 2097152
+          },
+          "sram_v": {
+            "shape": [
+              8,
+              1024,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 2097152,
+            "backing_storage_bytes": 2097152
+          },
+          "stt_k": {
+            "shape": [
+              8,
+              1536,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 3145728,
+            "backing_storage_bytes": 3145728
+          },
+          "stt_v": {
+            "shape": [
+              8,
+              1536,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 3145728,
+            "backing_storage_bytes": 3145728
+          }
+        },
+        "cold_live_rows": 1536,
+        "cold_shadow_rows": 0
+      },
+      {
+        "layer": 8,
+        "visible_k": {
+          "shape": [
+            1,
+            8,
+            1056,
+            128
+          ],
+          "dtype": "torch.bfloat16",
+          "device": "cuda:0",
+          "logical_bytes": 2162688,
+          "backing_storage_bytes": 2162688
+        },
+        "visible_v": {
+          "shape": [
+            1,
+            8,
+            1056,
+            128
+          ],
+          "dtype": "torch.bfloat16",
+          "device": "cuda:0",
+          "logical_bytes": 2162688,
+          "backing_storage_bytes": 2162688
+        },
+        "tier_payloads": {
+          "sram_k": {
+            "shape": [
+              8,
+              1024,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 2097152,
+            "backing_storage_bytes": 2097152
+          },
+          "sram_v": {
+            "shape": [
+              8,
+              1024,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 2097152,
+            "backing_storage_bytes": 2097152
+          },
+          "stt_k": {
+            "shape": [
+              8,
+              1536,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 3145728,
+            "backing_storage_bytes": 3145728
+          },
+          "stt_v": {
+            "shape": [
+              8,
+              1536,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 3145728,
+            "backing_storage_bytes": 3145728
+          }
+        },
+        "cold_live_rows": 1536,
+        "cold_shadow_rows": 0
+      },
+      {
+        "layer": 9,
+        "visible_k": {
+          "shape": [
+            1,
+            8,
+            1056,
+            128
+          ],
+          "dtype": "torch.bfloat16",
+          "device": "cuda:0",
+          "logical_bytes": 2162688,
+          "backing_storage_bytes": 2162688
+        },
+        "visible_v": {
+          "shape": [
+            1,
+            8,
+            1056,
+            128
+          ],
+          "dtype": "torch.bfloat16",
+          "device": "cuda:0",
+          "logical_bytes": 2162688,
+          "backing_storage_bytes": 2162688
+        },
+        "tier_payloads": {
+          "sram_k": {
+            "shape": [
+              8,
+              1024,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 2097152,
+            "backing_storage_bytes": 2097152
+          },
+          "sram_v": {
+            "shape": [
+              8,
+              1024,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 2097152,
+            "backing_storage_bytes": 2097152
+          },
+          "stt_k": {
+            "shape": [
+              8,
+              1536,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 3145728,
+            "backing_storage_bytes": 3145728
+          },
+          "stt_v": {
+            "shape": [
+              8,
+              1536,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 3145728,
+            "backing_storage_bytes": 3145728
+          }
+        },
+        "cold_live_rows": 1536,
+        "cold_shadow_rows": 0
+      },
+      {
+        "layer": 10,
+        "visible_k": {
+          "shape": [
+            1,
+            8,
+            1056,
+            128
+          ],
+          "dtype": "torch.bfloat16",
+          "device": "cuda:0",
+          "logical_bytes": 2162688,
+          "backing_storage_bytes": 2162688
+        },
+        "visible_v": {
+          "shape": [
+            1,
+            8,
+            1056,
+            128
+          ],
+          "dtype": "torch.bfloat16",
+          "device": "cuda:0",
+          "logical_bytes": 2162688,
+          "backing_storage_bytes": 2162688
+        },
+        "tier_payloads": {
+          "sram_k": {
+            "shape": [
+              8,
+              1024,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 2097152,
+            "backing_storage_bytes": 2097152
+          },
+          "sram_v": {
+            "shape": [
+              8,
+              1024,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 2097152,
+            "backing_storage_bytes": 2097152
+          },
+          "stt_k": {
+            "shape": [
+              8,
+              1536,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 3145728,
+            "backing_storage_bytes": 3145728
+          },
+          "stt_v": {
+            "shape": [
+              8,
+              1536,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 3145728,
+            "backing_storage_bytes": 3145728
+          }
+        },
+        "cold_live_rows": 1536,
+        "cold_shadow_rows": 0
+      },
+      {
+        "layer": 11,
+        "visible_k": {
+          "shape": [
+            1,
+            8,
+            1056,
+            128
+          ],
+          "dtype": "torch.bfloat16",
+          "device": "cuda:0",
+          "logical_bytes": 2162688,
+          "backing_storage_bytes": 2162688
+        },
+        "visible_v": {
+          "shape": [
+            1,
+            8,
+            1056,
+            128
+          ],
+          "dtype": "torch.bfloat16",
+          "device": "cuda:0",
+          "logical_bytes": 2162688,
+          "backing_storage_bytes": 2162688
+        },
+        "tier_payloads": {
+          "sram_k": {
+            "shape": [
+              8,
+              1024,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 2097152,
+            "backing_storage_bytes": 2097152
+          },
+          "sram_v": {
+            "shape": [
+              8,
+              1024,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 2097152,
+            "backing_storage_bytes": 2097152
+          },
+          "stt_k": {
+            "shape": [
+              8,
+              1536,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 3145728,
+            "backing_storage_bytes": 3145728
+          },
+          "stt_v": {
+            "shape": [
+              8,
+              1536,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 3145728,
+            "backing_storage_bytes": 3145728
+          }
+        },
+        "cold_live_rows": 1536,
+        "cold_shadow_rows": 0
+      },
+      {
+        "layer": 12,
+        "visible_k": {
+          "shape": [
+            1,
+            8,
+            1056,
+            128
+          ],
+          "dtype": "torch.bfloat16",
+          "device": "cuda:0",
+          "logical_bytes": 2162688,
+          "backing_storage_bytes": 2162688
+        },
+        "visible_v": {
+          "shape": [
+            1,
+            8,
+            1056,
+            128
+          ],
+          "dtype": "torch.bfloat16",
+          "device": "cuda:0",
+          "logical_bytes": 2162688,
+          "backing_storage_bytes": 2162688
+        },
+        "tier_payloads": {
+          "sram_k": {
+            "shape": [
+              8,
+              1024,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 2097152,
+            "backing_storage_bytes": 2097152
+          },
+          "sram_v": {
+            "shape": [
+              8,
+              1024,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 2097152,
+            "backing_storage_bytes": 2097152
+          },
+          "stt_k": {
+            "shape": [
+              8,
+              1536,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 3145728,
+            "backing_storage_bytes": 3145728
+          },
+          "stt_v": {
+            "shape": [
+              8,
+              1536,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 3145728,
+            "backing_storage_bytes": 3145728
+          }
+        },
+        "cold_live_rows": 1536,
+        "cold_shadow_rows": 0
+      },
+      {
+        "layer": 13,
+        "visible_k": {
+          "shape": [
+            1,
+            8,
+            1056,
+            128
+          ],
+          "dtype": "torch.bfloat16",
+          "device": "cuda:0",
+          "logical_bytes": 2162688,
+          "backing_storage_bytes": 2162688
+        },
+        "visible_v": {
+          "shape": [
+            1,
+            8,
+            1056,
+            128
+          ],
+          "dtype": "torch.bfloat16",
+          "device": "cuda:0",
+          "logical_bytes": 2162688,
+          "backing_storage_bytes": 2162688
+        },
+        "tier_payloads": {
+          "sram_k": {
+            "shape": [
+              8,
+              1024,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 2097152,
+            "backing_storage_bytes": 2097152
+          },
+          "sram_v": {
+            "shape": [
+              8,
+              1024,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 2097152,
+            "backing_storage_bytes": 2097152
+          },
+          "stt_k": {
+            "shape": [
+              8,
+              1536,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 3145728,
+            "backing_storage_bytes": 3145728
+          },
+          "stt_v": {
+            "shape": [
+              8,
+              1536,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 3145728,
+            "backing_storage_bytes": 3145728
+          }
+        },
+        "cold_live_rows": 1536,
+        "cold_shadow_rows": 0
+      },
+      {
+        "layer": 14,
+        "visible_k": {
+          "shape": [
+            1,
+            8,
+            1056,
+            128
+          ],
+          "dtype": "torch.bfloat16",
+          "device": "cuda:0",
+          "logical_bytes": 2162688,
+          "backing_storage_bytes": 2162688
+        },
+        "visible_v": {
+          "shape": [
+            1,
+            8,
+            1056,
+            128
+          ],
+          "dtype": "torch.bfloat16",
+          "device": "cuda:0",
+          "logical_bytes": 2162688,
+          "backing_storage_bytes": 2162688
+        },
+        "tier_payloads": {
+          "sram_k": {
+            "shape": [
+              8,
+              1024,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 2097152,
+            "backing_storage_bytes": 2097152
+          },
+          "sram_v": {
+            "shape": [
+              8,
+              1024,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 2097152,
+            "backing_storage_bytes": 2097152
+          },
+          "stt_k": {
+            "shape": [
+              8,
+              1536,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 3145728,
+            "backing_storage_bytes": 3145728
+          },
+          "stt_v": {
+            "shape": [
+              8,
+              1536,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 3145728,
+            "backing_storage_bytes": 3145728
+          }
+        },
+        "cold_live_rows": 1536,
+        "cold_shadow_rows": 0
+      },
+      {
+        "layer": 15,
+        "visible_k": {
+          "shape": [
+            1,
+            8,
+            1056,
+            128
+          ],
+          "dtype": "torch.bfloat16",
+          "device": "cuda:0",
+          "logical_bytes": 2162688,
+          "backing_storage_bytes": 2162688
+        },
+        "visible_v": {
+          "shape": [
+            1,
+            8,
+            1056,
+            128
+          ],
+          "dtype": "torch.bfloat16",
+          "device": "cuda:0",
+          "logical_bytes": 2162688,
+          "backing_storage_bytes": 2162688
+        },
+        "tier_payloads": {
+          "sram_k": {
+            "shape": [
+              8,
+              1024,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 2097152,
+            "backing_storage_bytes": 2097152
+          },
+          "sram_v": {
+            "shape": [
+              8,
+              1024,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 2097152,
+            "backing_storage_bytes": 2097152
+          },
+          "stt_k": {
+            "shape": [
+              8,
+              1536,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 3145728,
+            "backing_storage_bytes": 3145728
+          },
+          "stt_v": {
+            "shape": [
+              8,
+              1536,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 3145728,
+            "backing_storage_bytes": 3145728
+          }
+        },
+        "cold_live_rows": 1536,
+        "cold_shadow_rows": 0
+      },
+      {
+        "layer": 16,
+        "visible_k": {
+          "shape": [
+            1,
+            8,
+            1056,
+            128
+          ],
+          "dtype": "torch.bfloat16",
+          "device": "cuda:0",
+          "logical_bytes": 2162688,
+          "backing_storage_bytes": 2162688
+        },
+        "visible_v": {
+          "shape": [
+            1,
+            8,
+            1056,
+            128
+          ],
+          "dtype": "torch.bfloat16",
+          "device": "cuda:0",
+          "logical_bytes": 2162688,
+          "backing_storage_bytes": 2162688
+        },
+        "tier_payloads": {
+          "sram_k": {
+            "shape": [
+              8,
+              1024,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 2097152,
+            "backing_storage_bytes": 2097152
+          },
+          "sram_v": {
+            "shape": [
+              8,
+              1024,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 2097152,
+            "backing_storage_bytes": 2097152
+          },
+          "stt_k": {
+            "shape": [
+              8,
+              1536,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 3145728,
+            "backing_storage_bytes": 3145728
+          },
+          "stt_v": {
+            "shape": [
+              8,
+              1536,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 3145728,
+            "backing_storage_bytes": 3145728
+          }
+        },
+        "cold_live_rows": 1536,
+        "cold_shadow_rows": 0
+      },
+      {
+        "layer": 17,
+        "visible_k": {
+          "shape": [
+            1,
+            8,
+            1056,
+            128
+          ],
+          "dtype": "torch.bfloat16",
+          "device": "cuda:0",
+          "logical_bytes": 2162688,
+          "backing_storage_bytes": 2162688
+        },
+        "visible_v": {
+          "shape": [
+            1,
+            8,
+            1056,
+            128
+          ],
+          "dtype": "torch.bfloat16",
+          "device": "cuda:0",
+          "logical_bytes": 2162688,
+          "backing_storage_bytes": 2162688
+        },
+        "tier_payloads": {
+          "sram_k": {
+            "shape": [
+              8,
+              1024,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 2097152,
+            "backing_storage_bytes": 2097152
+          },
+          "sram_v": {
+            "shape": [
+              8,
+              1024,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 2097152,
+            "backing_storage_bytes": 2097152
+          },
+          "stt_k": {
+            "shape": [
+              8,
+              1536,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 3145728,
+            "backing_storage_bytes": 3145728
+          },
+          "stt_v": {
+            "shape": [
+              8,
+              1536,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 3145728,
+            "backing_storage_bytes": 3145728
+          }
+        },
+        "cold_live_rows": 1536,
+        "cold_shadow_rows": 0
+      },
+      {
+        "layer": 18,
+        "visible_k": {
+          "shape": [
+            1,
+            8,
+            1056,
+            128
+          ],
+          "dtype": "torch.bfloat16",
+          "device": "cuda:0",
+          "logical_bytes": 2162688,
+          "backing_storage_bytes": 2162688
+        },
+        "visible_v": {
+          "shape": [
+            1,
+            8,
+            1056,
+            128
+          ],
+          "dtype": "torch.bfloat16",
+          "device": "cuda:0",
+          "logical_bytes": 2162688,
+          "backing_storage_bytes": 2162688
+        },
+        "tier_payloads": {
+          "sram_k": {
+            "shape": [
+              8,
+              1024,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 2097152,
+            "backing_storage_bytes": 2097152
+          },
+          "sram_v": {
+            "shape": [
+              8,
+              1024,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 2097152,
+            "backing_storage_bytes": 2097152
+          },
+          "stt_k": {
+            "shape": [
+              8,
+              1536,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 3145728,
+            "backing_storage_bytes": 3145728
+          },
+          "stt_v": {
+            "shape": [
+              8,
+              1536,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 3145728,
+            "backing_storage_bytes": 3145728
+          }
+        },
+        "cold_live_rows": 1536,
+        "cold_shadow_rows": 0
+      },
+      {
+        "layer": 19,
+        "visible_k": {
+          "shape": [
+            1,
+            8,
+            1056,
+            128
+          ],
+          "dtype": "torch.bfloat16",
+          "device": "cuda:0",
+          "logical_bytes": 2162688,
+          "backing_storage_bytes": 2162688
+        },
+        "visible_v": {
+          "shape": [
+            1,
+            8,
+            1056,
+            128
+          ],
+          "dtype": "torch.bfloat16",
+          "device": "cuda:0",
+          "logical_bytes": 2162688,
+          "backing_storage_bytes": 2162688
+        },
+        "tier_payloads": {
+          "sram_k": {
+            "shape": [
+              8,
+              1024,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 2097152,
+            "backing_storage_bytes": 2097152
+          },
+          "sram_v": {
+            "shape": [
+              8,
+              1024,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 2097152,
+            "backing_storage_bytes": 2097152
+          },
+          "stt_k": {
+            "shape": [
+              8,
+              1536,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 3145728,
+            "backing_storage_bytes": 3145728
+          },
+          "stt_v": {
+            "shape": [
+              8,
+              1536,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 3145728,
+            "backing_storage_bytes": 3145728
+          }
+        },
+        "cold_live_rows": 1536,
+        "cold_shadow_rows": 0
+      },
+      {
+        "layer": 20,
+        "visible_k": {
+          "shape": [
+            1,
+            8,
+            1056,
+            128
+          ],
+          "dtype": "torch.bfloat16",
+          "device": "cuda:0",
+          "logical_bytes": 2162688,
+          "backing_storage_bytes": 2162688
+        },
+        "visible_v": {
+          "shape": [
+            1,
+            8,
+            1056,
+            128
+          ],
+          "dtype": "torch.bfloat16",
+          "device": "cuda:0",
+          "logical_bytes": 2162688,
+          "backing_storage_bytes": 2162688
+        },
+        "tier_payloads": {
+          "sram_k": {
+            "shape": [
+              8,
+              1024,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 2097152,
+            "backing_storage_bytes": 2097152
+          },
+          "sram_v": {
+            "shape": [
+              8,
+              1024,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 2097152,
+            "backing_storage_bytes": 2097152
+          },
+          "stt_k": {
+            "shape": [
+              8,
+              1536,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 3145728,
+            "backing_storage_bytes": 3145728
+          },
+          "stt_v": {
+            "shape": [
+              8,
+              1536,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 3145728,
+            "backing_storage_bytes": 3145728
+          }
+        },
+        "cold_live_rows": 1536,
+        "cold_shadow_rows": 0
+      },
+      {
+        "layer": 21,
+        "visible_k": {
+          "shape": [
+            1,
+            8,
+            1056,
+            128
+          ],
+          "dtype": "torch.bfloat16",
+          "device": "cuda:0",
+          "logical_bytes": 2162688,
+          "backing_storage_bytes": 2162688
+        },
+        "visible_v": {
+          "shape": [
+            1,
+            8,
+            1056,
+            128
+          ],
+          "dtype": "torch.bfloat16",
+          "device": "cuda:0",
+          "logical_bytes": 2162688,
+          "backing_storage_bytes": 2162688
+        },
+        "tier_payloads": {
+          "sram_k": {
+            "shape": [
+              8,
+              1024,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 2097152,
+            "backing_storage_bytes": 2097152
+          },
+          "sram_v": {
+            "shape": [
+              8,
+              1024,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 2097152,
+            "backing_storage_bytes": 2097152
+          },
+          "stt_k": {
+            "shape": [
+              8,
+              1536,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 3145728,
+            "backing_storage_bytes": 3145728
+          },
+          "stt_v": {
+            "shape": [
+              8,
+              1536,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 3145728,
+            "backing_storage_bytes": 3145728
+          }
+        },
+        "cold_live_rows": 1536,
+        "cold_shadow_rows": 0
+      },
+      {
+        "layer": 22,
+        "visible_k": {
+          "shape": [
+            1,
+            8,
+            1056,
+            128
+          ],
+          "dtype": "torch.bfloat16",
+          "device": "cuda:0",
+          "logical_bytes": 2162688,
+          "backing_storage_bytes": 2162688
+        },
+        "visible_v": {
+          "shape": [
+            1,
+            8,
+            1056,
+            128
+          ],
+          "dtype": "torch.bfloat16",
+          "device": "cuda:0",
+          "logical_bytes": 2162688,
+          "backing_storage_bytes": 2162688
+        },
+        "tier_payloads": {
+          "sram_k": {
+            "shape": [
+              8,
+              1024,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 2097152,
+            "backing_storage_bytes": 2097152
+          },
+          "sram_v": {
+            "shape": [
+              8,
+              1024,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 2097152,
+            "backing_storage_bytes": 2097152
+          },
+          "stt_k": {
+            "shape": [
+              8,
+              1536,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 3145728,
+            "backing_storage_bytes": 3145728
+          },
+          "stt_v": {
+            "shape": [
+              8,
+              1536,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 3145728,
+            "backing_storage_bytes": 3145728
+          }
+        },
+        "cold_live_rows": 1536,
+        "cold_shadow_rows": 0
+      },
+      {
+        "layer": 23,
+        "visible_k": {
+          "shape": [
+            1,
+            8,
+            1056,
+            128
+          ],
+          "dtype": "torch.bfloat16",
+          "device": "cuda:0",
+          "logical_bytes": 2162688,
+          "backing_storage_bytes": 2162688
+        },
+        "visible_v": {
+          "shape": [
+            1,
+            8,
+            1056,
+            128
+          ],
+          "dtype": "torch.bfloat16",
+          "device": "cuda:0",
+          "logical_bytes": 2162688,
+          "backing_storage_bytes": 2162688
+        },
+        "tier_payloads": {
+          "sram_k": {
+            "shape": [
+              8,
+              1024,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 2097152,
+            "backing_storage_bytes": 2097152
+          },
+          "sram_v": {
+            "shape": [
+              8,
+              1024,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 2097152,
+            "backing_storage_bytes": 2097152
+          },
+          "stt_k": {
+            "shape": [
+              8,
+              1536,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 3145728,
+            "backing_storage_bytes": 3145728
+          },
+          "stt_v": {
+            "shape": [
+              8,
+              1536,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 3145728,
+            "backing_storage_bytes": 3145728
+          }
+        },
+        "cold_live_rows": 1536,
+        "cold_shadow_rows": 0
+      },
+      {
+        "layer": 24,
+        "visible_k": {
+          "shape": [
+            1,
+            8,
+            1056,
+            128
+          ],
+          "dtype": "torch.bfloat16",
+          "device": "cuda:0",
+          "logical_bytes": 2162688,
+          "backing_storage_bytes": 2162688
+        },
+        "visible_v": {
+          "shape": [
+            1,
+            8,
+            1056,
+            128
+          ],
+          "dtype": "torch.bfloat16",
+          "device": "cuda:0",
+          "logical_bytes": 2162688,
+          "backing_storage_bytes": 2162688
+        },
+        "tier_payloads": {
+          "sram_k": {
+            "shape": [
+              8,
+              1024,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 2097152,
+            "backing_storage_bytes": 2097152
+          },
+          "sram_v": {
+            "shape": [
+              8,
+              1024,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 2097152,
+            "backing_storage_bytes": 2097152
+          },
+          "stt_k": {
+            "shape": [
+              8,
+              1536,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 3145728,
+            "backing_storage_bytes": 3145728
+          },
+          "stt_v": {
+            "shape": [
+              8,
+              1536,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 3145728,
+            "backing_storage_bytes": 3145728
+          }
+        },
+        "cold_live_rows": 1536,
+        "cold_shadow_rows": 0
+      },
+      {
+        "layer": 25,
+        "visible_k": {
+          "shape": [
+            1,
+            8,
+            1056,
+            128
+          ],
+          "dtype": "torch.bfloat16",
+          "device": "cuda:0",
+          "logical_bytes": 2162688,
+          "backing_storage_bytes": 2162688
+        },
+        "visible_v": {
+          "shape": [
+            1,
+            8,
+            1056,
+            128
+          ],
+          "dtype": "torch.bfloat16",
+          "device": "cuda:0",
+          "logical_bytes": 2162688,
+          "backing_storage_bytes": 2162688
+        },
+        "tier_payloads": {
+          "sram_k": {
+            "shape": [
+              8,
+              1024,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 2097152,
+            "backing_storage_bytes": 2097152
+          },
+          "sram_v": {
+            "shape": [
+              8,
+              1024,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 2097152,
+            "backing_storage_bytes": 2097152
+          },
+          "stt_k": {
+            "shape": [
+              8,
+              1536,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 3145728,
+            "backing_storage_bytes": 3145728
+          },
+          "stt_v": {
+            "shape": [
+              8,
+              1536,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 3145728,
+            "backing_storage_bytes": 3145728
+          }
+        },
+        "cold_live_rows": 1536,
+        "cold_shadow_rows": 0
+      },
+      {
+        "layer": 26,
+        "visible_k": {
+          "shape": [
+            1,
+            8,
+            1056,
+            128
+          ],
+          "dtype": "torch.bfloat16",
+          "device": "cuda:0",
+          "logical_bytes": 2162688,
+          "backing_storage_bytes": 2162688
+        },
+        "visible_v": {
+          "shape": [
+            1,
+            8,
+            1056,
+            128
+          ],
+          "dtype": "torch.bfloat16",
+          "device": "cuda:0",
+          "logical_bytes": 2162688,
+          "backing_storage_bytes": 2162688
+        },
+        "tier_payloads": {
+          "sram_k": {
+            "shape": [
+              8,
+              1024,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 2097152,
+            "backing_storage_bytes": 2097152
+          },
+          "sram_v": {
+            "shape": [
+              8,
+              1024,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 2097152,
+            "backing_storage_bytes": 2097152
+          },
+          "stt_k": {
+            "shape": [
+              8,
+              1536,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 3145728,
+            "backing_storage_bytes": 3145728
+          },
+          "stt_v": {
+            "shape": [
+              8,
+              1536,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 3145728,
+            "backing_storage_bytes": 3145728
+          }
+        },
+        "cold_live_rows": 1536,
+        "cold_shadow_rows": 0
+      },
+      {
+        "layer": 27,
+        "visible_k": {
+          "shape": [
+            1,
+            8,
+            1056,
+            128
+          ],
+          "dtype": "torch.bfloat16",
+          "device": "cuda:0",
+          "logical_bytes": 2162688,
+          "backing_storage_bytes": 2162688
+        },
+        "visible_v": {
+          "shape": [
+            1,
+            8,
+            1056,
+            128
+          ],
+          "dtype": "torch.bfloat16",
+          "device": "cuda:0",
+          "logical_bytes": 2162688,
+          "backing_storage_bytes": 2162688
+        },
+        "tier_payloads": {
+          "sram_k": {
+            "shape": [
+              8,
+              1024,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 2097152,
+            "backing_storage_bytes": 2097152
+          },
+          "sram_v": {
+            "shape": [
+              8,
+              1024,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 2097152,
+            "backing_storage_bytes": 2097152
+          },
+          "stt_k": {
+            "shape": [
+              8,
+              1536,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 3145728,
+            "backing_storage_bytes": 3145728
+          },
+          "stt_v": {
+            "shape": [
+              8,
+              1536,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 3145728,
+            "backing_storage_bytes": 3145728
+          }
+        },
+        "cold_live_rows": 1536,
+        "cold_shadow_rows": 0
+      },
+      {
+        "layer": 28,
+        "visible_k": {
+          "shape": [
+            1,
+            8,
+            1056,
+            128
+          ],
+          "dtype": "torch.bfloat16",
+          "device": "cuda:0",
+          "logical_bytes": 2162688,
+          "backing_storage_bytes": 2162688
+        },
+        "visible_v": {
+          "shape": [
+            1,
+            8,
+            1056,
+            128
+          ],
+          "dtype": "torch.bfloat16",
+          "device": "cuda:0",
+          "logical_bytes": 2162688,
+          "backing_storage_bytes": 2162688
+        },
+        "tier_payloads": {
+          "sram_k": {
+            "shape": [
+              8,
+              1024,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 2097152,
+            "backing_storage_bytes": 2097152
+          },
+          "sram_v": {
+            "shape": [
+              8,
+              1024,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 2097152,
+            "backing_storage_bytes": 2097152
+          },
+          "stt_k": {
+            "shape": [
+              8,
+              1536,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 3145728,
+            "backing_storage_bytes": 3145728
+          },
+          "stt_v": {
+            "shape": [
+              8,
+              1536,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 3145728,
+            "backing_storage_bytes": 3145728
+          }
+        },
+        "cold_live_rows": 1536,
+        "cold_shadow_rows": 0
+      },
+      {
+        "layer": 29,
+        "visible_k": {
+          "shape": [
+            1,
+            8,
+            1056,
+            128
+          ],
+          "dtype": "torch.bfloat16",
+          "device": "cuda:0",
+          "logical_bytes": 2162688,
+          "backing_storage_bytes": 2162688
+        },
+        "visible_v": {
+          "shape": [
+            1,
+            8,
+            1056,
+            128
+          ],
+          "dtype": "torch.bfloat16",
+          "device": "cuda:0",
+          "logical_bytes": 2162688,
+          "backing_storage_bytes": 2162688
+        },
+        "tier_payloads": {
+          "sram_k": {
+            "shape": [
+              8,
+              1024,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 2097152,
+            "backing_storage_bytes": 2097152
+          },
+          "sram_v": {
+            "shape": [
+              8,
+              1024,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 2097152,
+            "backing_storage_bytes": 2097152
+          },
+          "stt_k": {
+            "shape": [
+              8,
+              1536,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 3145728,
+            "backing_storage_bytes": 3145728
+          },
+          "stt_v": {
+            "shape": [
+              8,
+              1536,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 3145728,
+            "backing_storage_bytes": 3145728
+          }
+        },
+        "cold_live_rows": 1536,
+        "cold_shadow_rows": 0
+      },
+      {
+        "layer": 30,
+        "visible_k": {
+          "shape": [
+            1,
+            8,
+            1056,
+            128
+          ],
+          "dtype": "torch.bfloat16",
+          "device": "cuda:0",
+          "logical_bytes": 2162688,
+          "backing_storage_bytes": 2162688
+        },
+        "visible_v": {
+          "shape": [
+            1,
+            8,
+            1056,
+            128
+          ],
+          "dtype": "torch.bfloat16",
+          "device": "cuda:0",
+          "logical_bytes": 2162688,
+          "backing_storage_bytes": 2162688
+        },
+        "tier_payloads": {
+          "sram_k": {
+            "shape": [
+              8,
+              1024,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 2097152,
+            "backing_storage_bytes": 2097152
+          },
+          "sram_v": {
+            "shape": [
+              8,
+              1024,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 2097152,
+            "backing_storage_bytes": 2097152
+          },
+          "stt_k": {
+            "shape": [
+              8,
+              1536,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 3145728,
+            "backing_storage_bytes": 3145728
+          },
+          "stt_v": {
+            "shape": [
+              8,
+              1536,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 3145728,
+            "backing_storage_bytes": 3145728
+          }
+        },
+        "cold_live_rows": 1536,
+        "cold_shadow_rows": 0
+      },
+      {
+        "layer": 31,
+        "visible_k": {
+          "shape": [
+            1,
+            8,
+            1056,
+            128
+          ],
+          "dtype": "torch.bfloat16",
+          "device": "cuda:0",
+          "logical_bytes": 2162688,
+          "backing_storage_bytes": 2162688
+        },
+        "visible_v": {
+          "shape": [
+            1,
+            8,
+            1056,
+            128
+          ],
+          "dtype": "torch.bfloat16",
+          "device": "cuda:0",
+          "logical_bytes": 2162688,
+          "backing_storage_bytes": 2162688
+        },
+        "tier_payloads": {
+          "sram_k": {
+            "shape": [
+              8,
+              1024,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 2097152,
+            "backing_storage_bytes": 2097152
+          },
+          "sram_v": {
+            "shape": [
+              8,
+              1024,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 2097152,
+            "backing_storage_bytes": 2097152
+          },
+          "stt_k": {
+            "shape": [
+              8,
+              1536,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 3145728,
+            "backing_storage_bytes": 3145728
+          },
+          "stt_v": {
+            "shape": [
+              8,
+              1536,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 3145728,
+            "backing_storage_bytes": 3145728
+          }
+        },
+        "cold_live_rows": 1536,
+        "cold_shadow_rows": 0
+      }
+    ],
+    "unique_payload_backing_bytes": 473956352,
+    "scope": "visible KV and tier hot/cold payload tensor storages; excludes metadata, weights, activations, allocator reserve"
+  },
+  "geometry_after_last_model_call_and_policy_commit": {
+    "layers": [
+      {
+        "layer": 0,
+        "visible_k": {
+          "shape": [
+            1,
+            8,
+            1056,
+            128
+          ],
+          "dtype": "torch.bfloat16",
+          "device": "cuda:0",
+          "logical_bytes": 2162688,
+          "backing_storage_bytes": 2162688
+        },
+        "visible_v": {
+          "shape": [
+            1,
+            8,
+            1056,
+            128
+          ],
+          "dtype": "torch.bfloat16",
+          "device": "cuda:0",
+          "logical_bytes": 2162688,
+          "backing_storage_bytes": 2162688
+        },
+        "tier_payloads": {
+          "sram_k": {
+            "shape": [
+              8,
+              1024,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 2097152,
+            "backing_storage_bytes": 2097152
+          },
+          "sram_v": {
+            "shape": [
+              8,
+              1024,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 2097152,
+            "backing_storage_bytes": 2097152
+          },
+          "stt_k": {
+            "shape": [
+              8,
+              1588,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 3252224,
+            "backing_storage_bytes": 3252224
+          },
+          "stt_v": {
+            "shape": [
+              8,
+              1588,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 3252224,
+            "backing_storage_bytes": 3252224
+          }
+        },
+        "cold_live_rows": 1558,
+        "cold_shadow_rows": 30
+      },
+      {
+        "layer": 1,
+        "visible_k": {
+          "shape": [
+            1,
+            8,
+            1056,
+            128
+          ],
+          "dtype": "torch.bfloat16",
+          "device": "cuda:0",
+          "logical_bytes": 2162688,
+          "backing_storage_bytes": 2162688
+        },
+        "visible_v": {
+          "shape": [
+            1,
+            8,
+            1056,
+            128
+          ],
+          "dtype": "torch.bfloat16",
+          "device": "cuda:0",
+          "logical_bytes": 2162688,
+          "backing_storage_bytes": 2162688
+        },
+        "tier_payloads": {
+          "sram_k": {
+            "shape": [
+              8,
+              1024,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 2097152,
+            "backing_storage_bytes": 2097152
+          },
+          "sram_v": {
+            "shape": [
+              8,
+              1024,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 2097152,
+            "backing_storage_bytes": 2097152
+          },
+          "stt_k": {
+            "shape": [
+              8,
+              1588,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 3252224,
+            "backing_storage_bytes": 3252224
+          },
+          "stt_v": {
+            "shape": [
+              8,
+              1588,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 3252224,
+            "backing_storage_bytes": 3252224
+          }
+        },
+        "cold_live_rows": 1558,
+        "cold_shadow_rows": 30
+      },
+      {
+        "layer": 2,
+        "visible_k": {
+          "shape": [
+            1,
+            8,
+            1056,
+            128
+          ],
+          "dtype": "torch.bfloat16",
+          "device": "cuda:0",
+          "logical_bytes": 2162688,
+          "backing_storage_bytes": 2162688
+        },
+        "visible_v": {
+          "shape": [
+            1,
+            8,
+            1056,
+            128
+          ],
+          "dtype": "torch.bfloat16",
+          "device": "cuda:0",
+          "logical_bytes": 2162688,
+          "backing_storage_bytes": 2162688
+        },
+        "tier_payloads": {
+          "sram_k": {
+            "shape": [
+              8,
+              1024,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 2097152,
+            "backing_storage_bytes": 2097152
+          },
+          "sram_v": {
+            "shape": [
+              8,
+              1024,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 2097152,
+            "backing_storage_bytes": 2097152
+          },
+          "stt_k": {
+            "shape": [
+              8,
+              1588,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 3252224,
+            "backing_storage_bytes": 3252224
+          },
+          "stt_v": {
+            "shape": [
+              8,
+              1588,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 3252224,
+            "backing_storage_bytes": 3252224
+          }
+        },
+        "cold_live_rows": 1558,
+        "cold_shadow_rows": 30
+      },
+      {
+        "layer": 3,
+        "visible_k": {
+          "shape": [
+            1,
+            8,
+            1056,
+            128
+          ],
+          "dtype": "torch.bfloat16",
+          "device": "cuda:0",
+          "logical_bytes": 2162688,
+          "backing_storage_bytes": 2162688
+        },
+        "visible_v": {
+          "shape": [
+            1,
+            8,
+            1056,
+            128
+          ],
+          "dtype": "torch.bfloat16",
+          "device": "cuda:0",
+          "logical_bytes": 2162688,
+          "backing_storage_bytes": 2162688
+        },
+        "tier_payloads": {
+          "sram_k": {
+            "shape": [
+              8,
+              1024,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 2097152,
+            "backing_storage_bytes": 2097152
+          },
+          "sram_v": {
+            "shape": [
+              8,
+              1024,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 2097152,
+            "backing_storage_bytes": 2097152
+          },
+          "stt_k": {
+            "shape": [
+              8,
+              1588,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 3252224,
+            "backing_storage_bytes": 3252224
+          },
+          "stt_v": {
+            "shape": [
+              8,
+              1588,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 3252224,
+            "backing_storage_bytes": 3252224
+          }
+        },
+        "cold_live_rows": 1558,
+        "cold_shadow_rows": 30
+      },
+      {
+        "layer": 4,
+        "visible_k": {
+          "shape": [
+            1,
+            8,
+            1056,
+            128
+          ],
+          "dtype": "torch.bfloat16",
+          "device": "cuda:0",
+          "logical_bytes": 2162688,
+          "backing_storage_bytes": 2162688
+        },
+        "visible_v": {
+          "shape": [
+            1,
+            8,
+            1056,
+            128
+          ],
+          "dtype": "torch.bfloat16",
+          "device": "cuda:0",
+          "logical_bytes": 2162688,
+          "backing_storage_bytes": 2162688
+        },
+        "tier_payloads": {
+          "sram_k": {
+            "shape": [
+              8,
+              1024,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 2097152,
+            "backing_storage_bytes": 2097152
+          },
+          "sram_v": {
+            "shape": [
+              8,
+              1024,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 2097152,
+            "backing_storage_bytes": 2097152
+          },
+          "stt_k": {
+            "shape": [
+              8,
+              1588,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 3252224,
+            "backing_storage_bytes": 3252224
+          },
+          "stt_v": {
+            "shape": [
+              8,
+              1588,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 3252224,
+            "backing_storage_bytes": 3252224
+          }
+        },
+        "cold_live_rows": 1558,
+        "cold_shadow_rows": 30
+      },
+      {
+        "layer": 5,
+        "visible_k": {
+          "shape": [
+            1,
+            8,
+            1056,
+            128
+          ],
+          "dtype": "torch.bfloat16",
+          "device": "cuda:0",
+          "logical_bytes": 2162688,
+          "backing_storage_bytes": 2162688
+        },
+        "visible_v": {
+          "shape": [
+            1,
+            8,
+            1056,
+            128
+          ],
+          "dtype": "torch.bfloat16",
+          "device": "cuda:0",
+          "logical_bytes": 2162688,
+          "backing_storage_bytes": 2162688
+        },
+        "tier_payloads": {
+          "sram_k": {
+            "shape": [
+              8,
+              1024,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 2097152,
+            "backing_storage_bytes": 2097152
+          },
+          "sram_v": {
+            "shape": [
+              8,
+              1024,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 2097152,
+            "backing_storage_bytes": 2097152
+          },
+          "stt_k": {
+            "shape": [
+              8,
+              1588,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 3252224,
+            "backing_storage_bytes": 3252224
+          },
+          "stt_v": {
+            "shape": [
+              8,
+              1588,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 3252224,
+            "backing_storage_bytes": 3252224
+          }
+        },
+        "cold_live_rows": 1558,
+        "cold_shadow_rows": 30
+      },
+      {
+        "layer": 6,
+        "visible_k": {
+          "shape": [
+            1,
+            8,
+            1056,
+            128
+          ],
+          "dtype": "torch.bfloat16",
+          "device": "cuda:0",
+          "logical_bytes": 2162688,
+          "backing_storage_bytes": 2162688
+        },
+        "visible_v": {
+          "shape": [
+            1,
+            8,
+            1056,
+            128
+          ],
+          "dtype": "torch.bfloat16",
+          "device": "cuda:0",
+          "logical_bytes": 2162688,
+          "backing_storage_bytes": 2162688
+        },
+        "tier_payloads": {
+          "sram_k": {
+            "shape": [
+              8,
+              1024,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 2097152,
+            "backing_storage_bytes": 2097152
+          },
+          "sram_v": {
+            "shape": [
+              8,
+              1024,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 2097152,
+            "backing_storage_bytes": 2097152
+          },
+          "stt_k": {
+            "shape": [
+              8,
+              1588,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 3252224,
+            "backing_storage_bytes": 3252224
+          },
+          "stt_v": {
+            "shape": [
+              8,
+              1588,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 3252224,
+            "backing_storage_bytes": 3252224
+          }
+        },
+        "cold_live_rows": 1558,
+        "cold_shadow_rows": 30
+      },
+      {
+        "layer": 7,
+        "visible_k": {
+          "shape": [
+            1,
+            8,
+            1056,
+            128
+          ],
+          "dtype": "torch.bfloat16",
+          "device": "cuda:0",
+          "logical_bytes": 2162688,
+          "backing_storage_bytes": 2162688
+        },
+        "visible_v": {
+          "shape": [
+            1,
+            8,
+            1056,
+            128
+          ],
+          "dtype": "torch.bfloat16",
+          "device": "cuda:0",
+          "logical_bytes": 2162688,
+          "backing_storage_bytes": 2162688
+        },
+        "tier_payloads": {
+          "sram_k": {
+            "shape": [
+              8,
+              1024,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 2097152,
+            "backing_storage_bytes": 2097152
+          },
+          "sram_v": {
+            "shape": [
+              8,
+              1024,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 2097152,
+            "backing_storage_bytes": 2097152
+          },
+          "stt_k": {
+            "shape": [
+              8,
+              1588,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 3252224,
+            "backing_storage_bytes": 3252224
+          },
+          "stt_v": {
+            "shape": [
+              8,
+              1588,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 3252224,
+            "backing_storage_bytes": 3252224
+          }
+        },
+        "cold_live_rows": 1558,
+        "cold_shadow_rows": 30
+      },
+      {
+        "layer": 8,
+        "visible_k": {
+          "shape": [
+            1,
+            8,
+            1056,
+            128
+          ],
+          "dtype": "torch.bfloat16",
+          "device": "cuda:0",
+          "logical_bytes": 2162688,
+          "backing_storage_bytes": 2162688
+        },
+        "visible_v": {
+          "shape": [
+            1,
+            8,
+            1056,
+            128
+          ],
+          "dtype": "torch.bfloat16",
+          "device": "cuda:0",
+          "logical_bytes": 2162688,
+          "backing_storage_bytes": 2162688
+        },
+        "tier_payloads": {
+          "sram_k": {
+            "shape": [
+              8,
+              1024,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 2097152,
+            "backing_storage_bytes": 2097152
+          },
+          "sram_v": {
+            "shape": [
+              8,
+              1024,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 2097152,
+            "backing_storage_bytes": 2097152
+          },
+          "stt_k": {
+            "shape": [
+              8,
+              1588,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 3252224,
+            "backing_storage_bytes": 3252224
+          },
+          "stt_v": {
+            "shape": [
+              8,
+              1588,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 3252224,
+            "backing_storage_bytes": 3252224
+          }
+        },
+        "cold_live_rows": 1558,
+        "cold_shadow_rows": 30
+      },
+      {
+        "layer": 9,
+        "visible_k": {
+          "shape": [
+            1,
+            8,
+            1056,
+            128
+          ],
+          "dtype": "torch.bfloat16",
+          "device": "cuda:0",
+          "logical_bytes": 2162688,
+          "backing_storage_bytes": 2162688
+        },
+        "visible_v": {
+          "shape": [
+            1,
+            8,
+            1056,
+            128
+          ],
+          "dtype": "torch.bfloat16",
+          "device": "cuda:0",
+          "logical_bytes": 2162688,
+          "backing_storage_bytes": 2162688
+        },
+        "tier_payloads": {
+          "sram_k": {
+            "shape": [
+              8,
+              1024,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 2097152,
+            "backing_storage_bytes": 2097152
+          },
+          "sram_v": {
+            "shape": [
+              8,
+              1024,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 2097152,
+            "backing_storage_bytes": 2097152
+          },
+          "stt_k": {
+            "shape": [
+              8,
+              1588,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 3252224,
+            "backing_storage_bytes": 3252224
+          },
+          "stt_v": {
+            "shape": [
+              8,
+              1588,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 3252224,
+            "backing_storage_bytes": 3252224
+          }
+        },
+        "cold_live_rows": 1558,
+        "cold_shadow_rows": 30
+      },
+      {
+        "layer": 10,
+        "visible_k": {
+          "shape": [
+            1,
+            8,
+            1056,
+            128
+          ],
+          "dtype": "torch.bfloat16",
+          "device": "cuda:0",
+          "logical_bytes": 2162688,
+          "backing_storage_bytes": 2162688
+        },
+        "visible_v": {
+          "shape": [
+            1,
+            8,
+            1056,
+            128
+          ],
+          "dtype": "torch.bfloat16",
+          "device": "cuda:0",
+          "logical_bytes": 2162688,
+          "backing_storage_bytes": 2162688
+        },
+        "tier_payloads": {
+          "sram_k": {
+            "shape": [
+              8,
+              1024,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 2097152,
+            "backing_storage_bytes": 2097152
+          },
+          "sram_v": {
+            "shape": [
+              8,
+              1024,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 2097152,
+            "backing_storage_bytes": 2097152
+          },
+          "stt_k": {
+            "shape": [
+              8,
+              1588,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 3252224,
+            "backing_storage_bytes": 3252224
+          },
+          "stt_v": {
+            "shape": [
+              8,
+              1588,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 3252224,
+            "backing_storage_bytes": 3252224
+          }
+        },
+        "cold_live_rows": 1558,
+        "cold_shadow_rows": 30
+      },
+      {
+        "layer": 11,
+        "visible_k": {
+          "shape": [
+            1,
+            8,
+            1056,
+            128
+          ],
+          "dtype": "torch.bfloat16",
+          "device": "cuda:0",
+          "logical_bytes": 2162688,
+          "backing_storage_bytes": 2162688
+        },
+        "visible_v": {
+          "shape": [
+            1,
+            8,
+            1056,
+            128
+          ],
+          "dtype": "torch.bfloat16",
+          "device": "cuda:0",
+          "logical_bytes": 2162688,
+          "backing_storage_bytes": 2162688
+        },
+        "tier_payloads": {
+          "sram_k": {
+            "shape": [
+              8,
+              1024,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 2097152,
+            "backing_storage_bytes": 2097152
+          },
+          "sram_v": {
+            "shape": [
+              8,
+              1024,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 2097152,
+            "backing_storage_bytes": 2097152
+          },
+          "stt_k": {
+            "shape": [
+              8,
+              1588,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 3252224,
+            "backing_storage_bytes": 3252224
+          },
+          "stt_v": {
+            "shape": [
+              8,
+              1588,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 3252224,
+            "backing_storage_bytes": 3252224
+          }
+        },
+        "cold_live_rows": 1558,
+        "cold_shadow_rows": 30
+      },
+      {
+        "layer": 12,
+        "visible_k": {
+          "shape": [
+            1,
+            8,
+            1056,
+            128
+          ],
+          "dtype": "torch.bfloat16",
+          "device": "cuda:0",
+          "logical_bytes": 2162688,
+          "backing_storage_bytes": 2162688
+        },
+        "visible_v": {
+          "shape": [
+            1,
+            8,
+            1056,
+            128
+          ],
+          "dtype": "torch.bfloat16",
+          "device": "cuda:0",
+          "logical_bytes": 2162688,
+          "backing_storage_bytes": 2162688
+        },
+        "tier_payloads": {
+          "sram_k": {
+            "shape": [
+              8,
+              1024,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 2097152,
+            "backing_storage_bytes": 2097152
+          },
+          "sram_v": {
+            "shape": [
+              8,
+              1024,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 2097152,
+            "backing_storage_bytes": 2097152
+          },
+          "stt_k": {
+            "shape": [
+              8,
+              1588,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 3252224,
+            "backing_storage_bytes": 3252224
+          },
+          "stt_v": {
+            "shape": [
+              8,
+              1588,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 3252224,
+            "backing_storage_bytes": 3252224
+          }
+        },
+        "cold_live_rows": 1558,
+        "cold_shadow_rows": 30
+      },
+      {
+        "layer": 13,
+        "visible_k": {
+          "shape": [
+            1,
+            8,
+            1056,
+            128
+          ],
+          "dtype": "torch.bfloat16",
+          "device": "cuda:0",
+          "logical_bytes": 2162688,
+          "backing_storage_bytes": 2162688
+        },
+        "visible_v": {
+          "shape": [
+            1,
+            8,
+            1056,
+            128
+          ],
+          "dtype": "torch.bfloat16",
+          "device": "cuda:0",
+          "logical_bytes": 2162688,
+          "backing_storage_bytes": 2162688
+        },
+        "tier_payloads": {
+          "sram_k": {
+            "shape": [
+              8,
+              1024,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 2097152,
+            "backing_storage_bytes": 2097152
+          },
+          "sram_v": {
+            "shape": [
+              8,
+              1024,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 2097152,
+            "backing_storage_bytes": 2097152
+          },
+          "stt_k": {
+            "shape": [
+              8,
+              1588,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 3252224,
+            "backing_storage_bytes": 3252224
+          },
+          "stt_v": {
+            "shape": [
+              8,
+              1588,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 3252224,
+            "backing_storage_bytes": 3252224
+          }
+        },
+        "cold_live_rows": 1558,
+        "cold_shadow_rows": 30
+      },
+      {
+        "layer": 14,
+        "visible_k": {
+          "shape": [
+            1,
+            8,
+            1056,
+            128
+          ],
+          "dtype": "torch.bfloat16",
+          "device": "cuda:0",
+          "logical_bytes": 2162688,
+          "backing_storage_bytes": 2162688
+        },
+        "visible_v": {
+          "shape": [
+            1,
+            8,
+            1056,
+            128
+          ],
+          "dtype": "torch.bfloat16",
+          "device": "cuda:0",
+          "logical_bytes": 2162688,
+          "backing_storage_bytes": 2162688
+        },
+        "tier_payloads": {
+          "sram_k": {
+            "shape": [
+              8,
+              1024,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 2097152,
+            "backing_storage_bytes": 2097152
+          },
+          "sram_v": {
+            "shape": [
+              8,
+              1024,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 2097152,
+            "backing_storage_bytes": 2097152
+          },
+          "stt_k": {
+            "shape": [
+              8,
+              1588,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 3252224,
+            "backing_storage_bytes": 3252224
+          },
+          "stt_v": {
+            "shape": [
+              8,
+              1588,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 3252224,
+            "backing_storage_bytes": 3252224
+          }
+        },
+        "cold_live_rows": 1558,
+        "cold_shadow_rows": 30
+      },
+      {
+        "layer": 15,
+        "visible_k": {
+          "shape": [
+            1,
+            8,
+            1056,
+            128
+          ],
+          "dtype": "torch.bfloat16",
+          "device": "cuda:0",
+          "logical_bytes": 2162688,
+          "backing_storage_bytes": 2162688
+        },
+        "visible_v": {
+          "shape": [
+            1,
+            8,
+            1056,
+            128
+          ],
+          "dtype": "torch.bfloat16",
+          "device": "cuda:0",
+          "logical_bytes": 2162688,
+          "backing_storage_bytes": 2162688
+        },
+        "tier_payloads": {
+          "sram_k": {
+            "shape": [
+              8,
+              1024,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 2097152,
+            "backing_storage_bytes": 2097152
+          },
+          "sram_v": {
+            "shape": [
+              8,
+              1024,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 2097152,
+            "backing_storage_bytes": 2097152
+          },
+          "stt_k": {
+            "shape": [
+              8,
+              1588,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 3252224,
+            "backing_storage_bytes": 3252224
+          },
+          "stt_v": {
+            "shape": [
+              8,
+              1588,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 3252224,
+            "backing_storage_bytes": 3252224
+          }
+        },
+        "cold_live_rows": 1558,
+        "cold_shadow_rows": 30
+      },
+      {
+        "layer": 16,
+        "visible_k": {
+          "shape": [
+            1,
+            8,
+            1056,
+            128
+          ],
+          "dtype": "torch.bfloat16",
+          "device": "cuda:0",
+          "logical_bytes": 2162688,
+          "backing_storage_bytes": 2162688
+        },
+        "visible_v": {
+          "shape": [
+            1,
+            8,
+            1056,
+            128
+          ],
+          "dtype": "torch.bfloat16",
+          "device": "cuda:0",
+          "logical_bytes": 2162688,
+          "backing_storage_bytes": 2162688
+        },
+        "tier_payloads": {
+          "sram_k": {
+            "shape": [
+              8,
+              1024,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 2097152,
+            "backing_storage_bytes": 2097152
+          },
+          "sram_v": {
+            "shape": [
+              8,
+              1024,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 2097152,
+            "backing_storage_bytes": 2097152
+          },
+          "stt_k": {
+            "shape": [
+              8,
+              1588,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 3252224,
+            "backing_storage_bytes": 3252224
+          },
+          "stt_v": {
+            "shape": [
+              8,
+              1588,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 3252224,
+            "backing_storage_bytes": 3252224
+          }
+        },
+        "cold_live_rows": 1558,
+        "cold_shadow_rows": 30
+      },
+      {
+        "layer": 17,
+        "visible_k": {
+          "shape": [
+            1,
+            8,
+            1056,
+            128
+          ],
+          "dtype": "torch.bfloat16",
+          "device": "cuda:0",
+          "logical_bytes": 2162688,
+          "backing_storage_bytes": 2162688
+        },
+        "visible_v": {
+          "shape": [
+            1,
+            8,
+            1056,
+            128
+          ],
+          "dtype": "torch.bfloat16",
+          "device": "cuda:0",
+          "logical_bytes": 2162688,
+          "backing_storage_bytes": 2162688
+        },
+        "tier_payloads": {
+          "sram_k": {
+            "shape": [
+              8,
+              1024,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 2097152,
+            "backing_storage_bytes": 2097152
+          },
+          "sram_v": {
+            "shape": [
+              8,
+              1024,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 2097152,
+            "backing_storage_bytes": 2097152
+          },
+          "stt_k": {
+            "shape": [
+              8,
+              1588,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 3252224,
+            "backing_storage_bytes": 3252224
+          },
+          "stt_v": {
+            "shape": [
+              8,
+              1588,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 3252224,
+            "backing_storage_bytes": 3252224
+          }
+        },
+        "cold_live_rows": 1558,
+        "cold_shadow_rows": 30
+      },
+      {
+        "layer": 18,
+        "visible_k": {
+          "shape": [
+            1,
+            8,
+            1056,
+            128
+          ],
+          "dtype": "torch.bfloat16",
+          "device": "cuda:0",
+          "logical_bytes": 2162688,
+          "backing_storage_bytes": 2162688
+        },
+        "visible_v": {
+          "shape": [
+            1,
+            8,
+            1056,
+            128
+          ],
+          "dtype": "torch.bfloat16",
+          "device": "cuda:0",
+          "logical_bytes": 2162688,
+          "backing_storage_bytes": 2162688
+        },
+        "tier_payloads": {
+          "sram_k": {
+            "shape": [
+              8,
+              1024,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 2097152,
+            "backing_storage_bytes": 2097152
+          },
+          "sram_v": {
+            "shape": [
+              8,
+              1024,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 2097152,
+            "backing_storage_bytes": 2097152
+          },
+          "stt_k": {
+            "shape": [
+              8,
+              1588,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 3252224,
+            "backing_storage_bytes": 3252224
+          },
+          "stt_v": {
+            "shape": [
+              8,
+              1588,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 3252224,
+            "backing_storage_bytes": 3252224
+          }
+        },
+        "cold_live_rows": 1558,
+        "cold_shadow_rows": 30
+      },
+      {
+        "layer": 19,
+        "visible_k": {
+          "shape": [
+            1,
+            8,
+            1056,
+            128
+          ],
+          "dtype": "torch.bfloat16",
+          "device": "cuda:0",
+          "logical_bytes": 2162688,
+          "backing_storage_bytes": 2162688
+        },
+        "visible_v": {
+          "shape": [
+            1,
+            8,
+            1056,
+            128
+          ],
+          "dtype": "torch.bfloat16",
+          "device": "cuda:0",
+          "logical_bytes": 2162688,
+          "backing_storage_bytes": 2162688
+        },
+        "tier_payloads": {
+          "sram_k": {
+            "shape": [
+              8,
+              1024,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 2097152,
+            "backing_storage_bytes": 2097152
+          },
+          "sram_v": {
+            "shape": [
+              8,
+              1024,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 2097152,
+            "backing_storage_bytes": 2097152
+          },
+          "stt_k": {
+            "shape": [
+              8,
+              1588,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 3252224,
+            "backing_storage_bytes": 3252224
+          },
+          "stt_v": {
+            "shape": [
+              8,
+              1588,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 3252224,
+            "backing_storage_bytes": 3252224
+          }
+        },
+        "cold_live_rows": 1558,
+        "cold_shadow_rows": 30
+      },
+      {
+        "layer": 20,
+        "visible_k": {
+          "shape": [
+            1,
+            8,
+            1056,
+            128
+          ],
+          "dtype": "torch.bfloat16",
+          "device": "cuda:0",
+          "logical_bytes": 2162688,
+          "backing_storage_bytes": 2162688
+        },
+        "visible_v": {
+          "shape": [
+            1,
+            8,
+            1056,
+            128
+          ],
+          "dtype": "torch.bfloat16",
+          "device": "cuda:0",
+          "logical_bytes": 2162688,
+          "backing_storage_bytes": 2162688
+        },
+        "tier_payloads": {
+          "sram_k": {
+            "shape": [
+              8,
+              1024,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 2097152,
+            "backing_storage_bytes": 2097152
+          },
+          "sram_v": {
+            "shape": [
+              8,
+              1024,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 2097152,
+            "backing_storage_bytes": 2097152
+          },
+          "stt_k": {
+            "shape": [
+              8,
+              1588,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 3252224,
+            "backing_storage_bytes": 3252224
+          },
+          "stt_v": {
+            "shape": [
+              8,
+              1588,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 3252224,
+            "backing_storage_bytes": 3252224
+          }
+        },
+        "cold_live_rows": 1558,
+        "cold_shadow_rows": 30
+      },
+      {
+        "layer": 21,
+        "visible_k": {
+          "shape": [
+            1,
+            8,
+            1056,
+            128
+          ],
+          "dtype": "torch.bfloat16",
+          "device": "cuda:0",
+          "logical_bytes": 2162688,
+          "backing_storage_bytes": 2162688
+        },
+        "visible_v": {
+          "shape": [
+            1,
+            8,
+            1056,
+            128
+          ],
+          "dtype": "torch.bfloat16",
+          "device": "cuda:0",
+          "logical_bytes": 2162688,
+          "backing_storage_bytes": 2162688
+        },
+        "tier_payloads": {
+          "sram_k": {
+            "shape": [
+              8,
+              1024,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 2097152,
+            "backing_storage_bytes": 2097152
+          },
+          "sram_v": {
+            "shape": [
+              8,
+              1024,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 2097152,
+            "backing_storage_bytes": 2097152
+          },
+          "stt_k": {
+            "shape": [
+              8,
+              1588,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 3252224,
+            "backing_storage_bytes": 3252224
+          },
+          "stt_v": {
+            "shape": [
+              8,
+              1588,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 3252224,
+            "backing_storage_bytes": 3252224
+          }
+        },
+        "cold_live_rows": 1558,
+        "cold_shadow_rows": 30
+      },
+      {
+        "layer": 22,
+        "visible_k": {
+          "shape": [
+            1,
+            8,
+            1056,
+            128
+          ],
+          "dtype": "torch.bfloat16",
+          "device": "cuda:0",
+          "logical_bytes": 2162688,
+          "backing_storage_bytes": 2162688
+        },
+        "visible_v": {
+          "shape": [
+            1,
+            8,
+            1056,
+            128
+          ],
+          "dtype": "torch.bfloat16",
+          "device": "cuda:0",
+          "logical_bytes": 2162688,
+          "backing_storage_bytes": 2162688
+        },
+        "tier_payloads": {
+          "sram_k": {
+            "shape": [
+              8,
+              1024,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 2097152,
+            "backing_storage_bytes": 2097152
+          },
+          "sram_v": {
+            "shape": [
+              8,
+              1024,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 2097152,
+            "backing_storage_bytes": 2097152
+          },
+          "stt_k": {
+            "shape": [
+              8,
+              1588,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 3252224,
+            "backing_storage_bytes": 3252224
+          },
+          "stt_v": {
+            "shape": [
+              8,
+              1588,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 3252224,
+            "backing_storage_bytes": 3252224
+          }
+        },
+        "cold_live_rows": 1558,
+        "cold_shadow_rows": 30
+      },
+      {
+        "layer": 23,
+        "visible_k": {
+          "shape": [
+            1,
+            8,
+            1056,
+            128
+          ],
+          "dtype": "torch.bfloat16",
+          "device": "cuda:0",
+          "logical_bytes": 2162688,
+          "backing_storage_bytes": 2162688
+        },
+        "visible_v": {
+          "shape": [
+            1,
+            8,
+            1056,
+            128
+          ],
+          "dtype": "torch.bfloat16",
+          "device": "cuda:0",
+          "logical_bytes": 2162688,
+          "backing_storage_bytes": 2162688
+        },
+        "tier_payloads": {
+          "sram_k": {
+            "shape": [
+              8,
+              1024,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 2097152,
+            "backing_storage_bytes": 2097152
+          },
+          "sram_v": {
+            "shape": [
+              8,
+              1024,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 2097152,
+            "backing_storage_bytes": 2097152
+          },
+          "stt_k": {
+            "shape": [
+              8,
+              1588,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 3252224,
+            "backing_storage_bytes": 3252224
+          },
+          "stt_v": {
+            "shape": [
+              8,
+              1588,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 3252224,
+            "backing_storage_bytes": 3252224
+          }
+        },
+        "cold_live_rows": 1558,
+        "cold_shadow_rows": 30
+      },
+      {
+        "layer": 24,
+        "visible_k": {
+          "shape": [
+            1,
+            8,
+            1056,
+            128
+          ],
+          "dtype": "torch.bfloat16",
+          "device": "cuda:0",
+          "logical_bytes": 2162688,
+          "backing_storage_bytes": 2162688
+        },
+        "visible_v": {
+          "shape": [
+            1,
+            8,
+            1056,
+            128
+          ],
+          "dtype": "torch.bfloat16",
+          "device": "cuda:0",
+          "logical_bytes": 2162688,
+          "backing_storage_bytes": 2162688
+        },
+        "tier_payloads": {
+          "sram_k": {
+            "shape": [
+              8,
+              1024,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 2097152,
+            "backing_storage_bytes": 2097152
+          },
+          "sram_v": {
+            "shape": [
+              8,
+              1024,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 2097152,
+            "backing_storage_bytes": 2097152
+          },
+          "stt_k": {
+            "shape": [
+              8,
+              1588,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 3252224,
+            "backing_storage_bytes": 3252224
+          },
+          "stt_v": {
+            "shape": [
+              8,
+              1588,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 3252224,
+            "backing_storage_bytes": 3252224
+          }
+        },
+        "cold_live_rows": 1558,
+        "cold_shadow_rows": 30
+      },
+      {
+        "layer": 25,
+        "visible_k": {
+          "shape": [
+            1,
+            8,
+            1056,
+            128
+          ],
+          "dtype": "torch.bfloat16",
+          "device": "cuda:0",
+          "logical_bytes": 2162688,
+          "backing_storage_bytes": 2162688
+        },
+        "visible_v": {
+          "shape": [
+            1,
+            8,
+            1056,
+            128
+          ],
+          "dtype": "torch.bfloat16",
+          "device": "cuda:0",
+          "logical_bytes": 2162688,
+          "backing_storage_bytes": 2162688
+        },
+        "tier_payloads": {
+          "sram_k": {
+            "shape": [
+              8,
+              1024,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 2097152,
+            "backing_storage_bytes": 2097152
+          },
+          "sram_v": {
+            "shape": [
+              8,
+              1024,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 2097152,
+            "backing_storage_bytes": 2097152
+          },
+          "stt_k": {
+            "shape": [
+              8,
+              1588,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 3252224,
+            "backing_storage_bytes": 3252224
+          },
+          "stt_v": {
+            "shape": [
+              8,
+              1588,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 3252224,
+            "backing_storage_bytes": 3252224
+          }
+        },
+        "cold_live_rows": 1558,
+        "cold_shadow_rows": 30
+      },
+      {
+        "layer": 26,
+        "visible_k": {
+          "shape": [
+            1,
+            8,
+            1056,
+            128
+          ],
+          "dtype": "torch.bfloat16",
+          "device": "cuda:0",
+          "logical_bytes": 2162688,
+          "backing_storage_bytes": 2162688
+        },
+        "visible_v": {
+          "shape": [
+            1,
+            8,
+            1056,
+            128
+          ],
+          "dtype": "torch.bfloat16",
+          "device": "cuda:0",
+          "logical_bytes": 2162688,
+          "backing_storage_bytes": 2162688
+        },
+        "tier_payloads": {
+          "sram_k": {
+            "shape": [
+              8,
+              1024,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 2097152,
+            "backing_storage_bytes": 2097152
+          },
+          "sram_v": {
+            "shape": [
+              8,
+              1024,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 2097152,
+            "backing_storage_bytes": 2097152
+          },
+          "stt_k": {
+            "shape": [
+              8,
+              1588,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 3252224,
+            "backing_storage_bytes": 3252224
+          },
+          "stt_v": {
+            "shape": [
+              8,
+              1588,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 3252224,
+            "backing_storage_bytes": 3252224
+          }
+        },
+        "cold_live_rows": 1558,
+        "cold_shadow_rows": 30
+      },
+      {
+        "layer": 27,
+        "visible_k": {
+          "shape": [
+            1,
+            8,
+            1056,
+            128
+          ],
+          "dtype": "torch.bfloat16",
+          "device": "cuda:0",
+          "logical_bytes": 2162688,
+          "backing_storage_bytes": 2162688
+        },
+        "visible_v": {
+          "shape": [
+            1,
+            8,
+            1056,
+            128
+          ],
+          "dtype": "torch.bfloat16",
+          "device": "cuda:0",
+          "logical_bytes": 2162688,
+          "backing_storage_bytes": 2162688
+        },
+        "tier_payloads": {
+          "sram_k": {
+            "shape": [
+              8,
+              1024,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 2097152,
+            "backing_storage_bytes": 2097152
+          },
+          "sram_v": {
+            "shape": [
+              8,
+              1024,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 2097152,
+            "backing_storage_bytes": 2097152
+          },
+          "stt_k": {
+            "shape": [
+              8,
+              1588,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 3252224,
+            "backing_storage_bytes": 3252224
+          },
+          "stt_v": {
+            "shape": [
+              8,
+              1588,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 3252224,
+            "backing_storage_bytes": 3252224
+          }
+        },
+        "cold_live_rows": 1558,
+        "cold_shadow_rows": 30
+      },
+      {
+        "layer": 28,
+        "visible_k": {
+          "shape": [
+            1,
+            8,
+            1056,
+            128
+          ],
+          "dtype": "torch.bfloat16",
+          "device": "cuda:0",
+          "logical_bytes": 2162688,
+          "backing_storage_bytes": 2162688
+        },
+        "visible_v": {
+          "shape": [
+            1,
+            8,
+            1056,
+            128
+          ],
+          "dtype": "torch.bfloat16",
+          "device": "cuda:0",
+          "logical_bytes": 2162688,
+          "backing_storage_bytes": 2162688
+        },
+        "tier_payloads": {
+          "sram_k": {
+            "shape": [
+              8,
+              1024,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 2097152,
+            "backing_storage_bytes": 2097152
+          },
+          "sram_v": {
+            "shape": [
+              8,
+              1024,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 2097152,
+            "backing_storage_bytes": 2097152
+          },
+          "stt_k": {
+            "shape": [
+              8,
+              1588,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 3252224,
+            "backing_storage_bytes": 3252224
+          },
+          "stt_v": {
+            "shape": [
+              8,
+              1588,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 3252224,
+            "backing_storage_bytes": 3252224
+          }
+        },
+        "cold_live_rows": 1558,
+        "cold_shadow_rows": 30
+      },
+      {
+        "layer": 29,
+        "visible_k": {
+          "shape": [
+            1,
+            8,
+            1056,
+            128
+          ],
+          "dtype": "torch.bfloat16",
+          "device": "cuda:0",
+          "logical_bytes": 2162688,
+          "backing_storage_bytes": 2162688
+        },
+        "visible_v": {
+          "shape": [
+            1,
+            8,
+            1056,
+            128
+          ],
+          "dtype": "torch.bfloat16",
+          "device": "cuda:0",
+          "logical_bytes": 2162688,
+          "backing_storage_bytes": 2162688
+        },
+        "tier_payloads": {
+          "sram_k": {
+            "shape": [
+              8,
+              1024,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 2097152,
+            "backing_storage_bytes": 2097152
+          },
+          "sram_v": {
+            "shape": [
+              8,
+              1024,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 2097152,
+            "backing_storage_bytes": 2097152
+          },
+          "stt_k": {
+            "shape": [
+              8,
+              1588,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 3252224,
+            "backing_storage_bytes": 3252224
+          },
+          "stt_v": {
+            "shape": [
+              8,
+              1588,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 3252224,
+            "backing_storage_bytes": 3252224
+          }
+        },
+        "cold_live_rows": 1558,
+        "cold_shadow_rows": 30
+      },
+      {
+        "layer": 30,
+        "visible_k": {
+          "shape": [
+            1,
+            8,
+            1056,
+            128
+          ],
+          "dtype": "torch.bfloat16",
+          "device": "cuda:0",
+          "logical_bytes": 2162688,
+          "backing_storage_bytes": 2162688
+        },
+        "visible_v": {
+          "shape": [
+            1,
+            8,
+            1056,
+            128
+          ],
+          "dtype": "torch.bfloat16",
+          "device": "cuda:0",
+          "logical_bytes": 2162688,
+          "backing_storage_bytes": 2162688
+        },
+        "tier_payloads": {
+          "sram_k": {
+            "shape": [
+              8,
+              1024,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 2097152,
+            "backing_storage_bytes": 2097152
+          },
+          "sram_v": {
+            "shape": [
+              8,
+              1024,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 2097152,
+            "backing_storage_bytes": 2097152
+          },
+          "stt_k": {
+            "shape": [
+              8,
+              1588,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 3252224,
+            "backing_storage_bytes": 3252224
+          },
+          "stt_v": {
+            "shape": [
+              8,
+              1588,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 3252224,
+            "backing_storage_bytes": 3252224
+          }
+        },
+        "cold_live_rows": 1558,
+        "cold_shadow_rows": 30
+      },
+      {
+        "layer": 31,
+        "visible_k": {
+          "shape": [
+            1,
+            8,
+            1056,
+            128
+          ],
+          "dtype": "torch.bfloat16",
+          "device": "cuda:0",
+          "logical_bytes": 2162688,
+          "backing_storage_bytes": 2162688
+        },
+        "visible_v": {
+          "shape": [
+            1,
+            8,
+            1056,
+            128
+          ],
+          "dtype": "torch.bfloat16",
+          "device": "cuda:0",
+          "logical_bytes": 2162688,
+          "backing_storage_bytes": 2162688
+        },
+        "tier_payloads": {
+          "sram_k": {
+            "shape": [
+              8,
+              1024,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 2097152,
+            "backing_storage_bytes": 2097152
+          },
+          "sram_v": {
+            "shape": [
+              8,
+              1024,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 2097152,
+            "backing_storage_bytes": 2097152
+          },
+          "stt_k": {
+            "shape": [
+              8,
+              1588,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 3252224,
+            "backing_storage_bytes": 3252224
+          },
+          "stt_v": {
+            "shape": [
+              8,
+              1588,
+              128
+            ],
+            "dtype": "torch.bfloat16",
+            "device": "cuda:0",
+            "logical_bytes": 3252224,
+            "backing_storage_bytes": 3252224
+          }
+        },
+        "cold_live_rows": 1558,
+        "cold_shadow_rows": 30
+      }
+    ],
+    "unique_payload_backing_bytes": 480772096,
+    "scope": "visible KV and tier hot/cold payload tensor storages; excludes metadata, weights, activations, allocator reserve"
+  },
+  "decode_attended_width": {
+    "layer_calls": 704,
+    "min": 1057,
+    "max": 1057,
+    "sum": 744128,
+    "per_layer_sum": [
+      23254,
+      23254,
+      23254,
+      23254,
+      23254,
+      23254,
+      23254,
+      23254,
+      23254,
+      23254,
+      23254,
+      23254,
+      23254,
+      23254,
+      23254,
+      23254,
+      23254,
+      23254,
+      23254,
+      23254,
+      23254,
+      23254,
+      23254,
+      23254,
+      23254,
+      23254,
+      23254,
+      23254,
+      23254,
+      23254,
+      23254,
+      23254
+    ]
+  },
+  "cache_stats": {
+    "demoted": 11648,
+    "promoted": 10944,
+    "promotions_deferred": 11584,
+    "paid_writes": 1664,
+    "writes_saved": 9984,
+    "dropped": 0,
+    "write_savings_pct": 85.7,
+    "decode_steps": 22,
+    "stt_starved_steps": 0,
+    "stt_unused_steps": 0,
+    "mean_stt_exposed": 32.0,
+    "stt_expose_quota": 32,
+    "stt_exposed_total": 736,
+    "stt_exposure_samples": 23,
+    "modeled_latency_us": 6768.0,
+    "modeled_energy_nj": 291332161.5
+  },
+  "descriptive_elapsed_seconds_not_latency_benchmark": 3.7632144894450903,
+  "hooks_and_groups_restored": true,
+  "execution_complete": true
+}

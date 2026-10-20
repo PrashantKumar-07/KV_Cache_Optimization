@@ -1,0 +1,17 @@
+{
+  "review": "No blocking issue found for development-only actual-Q prior calibration",
+  "candidate_sha256": "8ae5bb590484252fe44f4e33c7a3f2310bd19d1d901dfca681b5774e38d3cbb6",
+  "independent_tests": "10 passed in2.56s",
+  "source_facts": {
+    "prefill": "gqa_causal_importance sums Q-head and query-position evidence; Mistral32heads and128observations",
+    "decode": "update_scores adds head-mean query-mean once per forward",
+    "initial_age": "zero in original",
+    "eviction": "sram_cum/sram_age.clamp(min1)"
+  },
+  "candidate_assessment": "Divide cumulative prior by actual Q-head count and set age to observation count; initial payload selection remains identical because super bifurcates before normalization. Base reset/None/short/empty/failure contracts and MRO preserved.",
+  "limits": [
+    "Pooled full-context prompt prior differs from sparse decode distribution; empirical improvement remains unproven",
+    "Cumulative scores additionally affect shadow-backup reclaim ordering; do not describe effect as exclusively hot eviction",
+    "Result-local development candidate; no mutation of frozen benchmark source or claim to repair prior held-out results"
+  ]
+}

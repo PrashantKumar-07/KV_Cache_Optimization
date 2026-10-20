@@ -1,0 +1,3571 @@
+{
+  "schema": 1,
+  "scope": "All22files/11plotpairs currently in figures_final; no otherfigures or JPGdiagrams claimed reviewed",
+  "source_edits": false,
+  "gpu_jobs": false,
+  "inventories": [
+    {
+      "stem": "fig1_accuracy_equivram",
+      "files": {
+        "png": {
+          "path": "figures_final/fig1_accuracy_equivram.png",
+          "sha256": "5d9fcd775ec353e096435a488ef3942e1ea8fbc072afbbe232c56b0bdb0ca072"
+        },
+        "pdf": {
+          "path": "figures_final/fig1_accuracy_equivram.pdf",
+          "sha256": "92c9f930eb45277328c848565e0a4609aac0c49839996e8a65d0e83640ca026a"
+        }
+      },
+      "renderer": {
+        "path": "experiments/plot_figures_v2.py",
+        "sha256": "f64f3117742ac7bcbcb44263a5d7290c21f6bea6d60d752762aaabe2b3971f5f",
+        "line": 188
+      },
+      "input_artifacts": {
+        "results/remediation_v3/equal_vram_merged.json": {
+          "sha256": "d2de6b8384e942a9a8075b171443ef5b5d32cb486523e6e039e7fb2cce07ef1b",
+          "config": {
+            "model": "../models/mistral-7b-instruct",
+            "budget": 1024,
+            "tiered_vram_budget": 1024,
+            "tiered_stt_budget": 2048,
+            "tiered_stt_expose": null,
+            "sttram_bifurcation_frac": 0.75,
+            "sink": 4,
+            "recent": 128,
+            "max_ctx": 31500,
+            "seed": 0,
+            "tiered_kv_dtype": "bfloat16",
+            "page_size": 16,
+            "promote_top_pages": 2,
+            "stt_live_floor": 1,
+            "write_aware_lambda": 0.0,
+            "runtime": {
+              "git_revision": "be7e700d84d46b47e32ba5b9870c8b71783b9e53",
+              "source_sha256": "c5db18225a65ab143ed3194d51c8d701606bdfca04b34665f3d87c824ecce727",
+              "packages": {
+                "torch": "2.5.1+cu124",
+                "transformers": "5.15.0",
+                "datasets": "2.19.2",
+                "numpy": "2.2.6",
+                "accelerate": "1.14.0",
+                "huggingface_hub": "1.27.0",
+                "rouge": "1.0.1"
+              }
+            },
+            "protocol": "task_chat_exclusions_v2",
+            "data_dir": "../hf_cache/datasets/downloads/extracted/5def9c7eaf83951e1cee75902d8611ef764ad88dd289e8f0bf97ff658a3eb83a/data",
+            "tasks": [
+              "multifieldqa_en",
+              "qasper",
+              "narrativeqa",
+              "hotpotqa",
+              "triviaqa",
+              "gov_report"
+            ],
+            "methods": [
+              "full",
+              "streamingllm",
+              "h2o",
+              "snapkv",
+              "tieredkv"
+            ],
+            "samples_per_task": {
+              "multifieldqa_en": 25,
+              "qasper": 25,
+              "narrativeqa": 25,
+              "hotpotqa": 25,
+              "triviaqa": 25,
+              "gov_report": 10
+            },
+            "dataset_sha256_by_task": {
+              "multifieldqa_en": "678a51335e3c90e0dd43bf1131045e4f2859cc693e7eded89cc6a1ee8d18faff",
+              "qasper": "97d95c01221a17a2ce51f9180d65a671bf2998504a2ff0cccffe97e9b08444d8",
+              "narrativeqa": "0fb8d08ba5cdad4b74244224b0dc2e8b41ee6b850d954a13eb2d282621ce2f71",
+              "hotpotqa": "26a90a291cca5b2515bf466c6c3d1f57d8a4e67b0cf5aa39e1834913a15e6309",
+              "triviaqa": "3c4cc5ca18f2578d1f6458d1219387c741c6fafad7e8518addea898c08ff0d73",
+              "gov_report": "0a3902fcf3d49f228549f02a2ef1ae84dbe8578b8be3d4611d54459487bdef84"
+            }
+          },
+          "sample_record_count": 675
+        }
+      },
+      "aggregation": "results[task][method].score; SE=std(sample_scores,ddof=1)/sqrt(n)",
+      "extracted_pdf_text": "                                                                                                    LongBench accuracy: equal logical VRAM\n                             100\n\n\n\n\n                                                                                                                                                                                          79.1\n\n\n\n\n                                                                                                                                                                                                               78.3\n                                                                                                                                                                                   78.3\n\n\n\n\n                                                                                                                                                                                                        75.9\n                                                                                                                                                                                                 73.2\nScore (F1 / ROUGE-L \u00d7 100)\n\n\n\n\n                              80\n                                   61.0\n\n\n                                                 56.4\n\n\n                                                               55.2\n                                                        54.6\n\n\n\n\n                                                                                                                                                48.7\n                                          48.4\n                              60\n\n\n\n\n                                                                                                                                                              39.3\n\n\n                                                                                                                                                                            37.9\n                                                                                                                                                                     37.3\n                                                                                                                                                       34.4\n                                                                      29.6\n\n\n\n\n                                                                                                                                                                                                                      32.2\n                              40\n\n\n\n\n                                                                                                                                                                                                                                           28.5\n                                                                                                                                                                                                                                    27.1\n\n\n                                                                                                                                                                                                                                                  26.9\n                                                                                                                                                                                                                             26.6\n                                                                                                                                19.0\n                                                                                                                                       18.6\n                                                                                                                  17.6\n                                                                                                           17.3\n\n\n                                                                                                                         15.4\n                                                                                                  13.3\n                                                                             12.8\n\n\n                                                                                           11.5\n                                                                                    11.5\n                              20\n\n\n\n                               0\n                                   MultiFieldQA                              Qasper                         NarrativeQA                                HotpotQA                           TriviaQA                       GovReport\n\n\n                                                                         Full Cache                      StreamingLLM                         H2O                     SnapKV              TieredKV (Ours)\n\n\n\n                                                                                            Baseline adaptations; error bars = standard errors across samples.\n\f",
+      "rendered_artist_values": {
+        "figure": "fig1_accuracy_equivram.png",
+        "axes": [
+          {
+            "title": "LongBench accuracy: equal logical VRAM",
+            "xlabel": "",
+            "ylabel": "Score (F1 / ROUGE-L $\\times$ 100)",
+            "ylim": [
+              0.0,
+              101.28149815557755
+            ],
+            "xticklabels": [
+              "MultiFieldQA",
+              "Qasper",
+              "NarrativeQA",
+              "HotpotQA",
+              "TriviaQA",
+              "GovReport"
+            ],
+            "bars": [
+              {
+                "x": -0.33456,
+                "y": 0,
+                "width": 0.12512,
+                "height": 60.95
+              },
+              {
+                "x": 0.66544,
+                "y": 0,
+                "width": 0.12512,
+                "height": 29.55
+              },
+              {
+                "x": 1.66544,
+                "y": 0,
+                "width": 0.12512,
+                "height": 17.3
+              },
+              {
+                "x": 2.66544,
+                "y": 0,
+                "width": 0.12512,
+                "height": 48.67
+              },
+              {
+                "x": 3.66544,
+                "y": 0,
+                "width": 0.12512,
+                "height": 78.3
+              },
+              {
+                "x": 4.665439999999999,
+                "y": 0,
+                "width": 0.12512,
+                "height": 32.23
+              },
+              {
+                "x": -0.19856000000000001,
+                "y": 0,
+                "width": 0.12512,
+                "height": 48.43
+              },
+              {
+                "x": 0.8014399999999999,
+                "y": 0,
+                "width": 0.12512,
+                "height": 12.8
+              },
+              {
+                "x": 1.80144,
+                "y": 0,
+                "width": 0.12512,
+                "height": 17.65
+              },
+              {
+                "x": 2.80144,
+                "y": 0,
+                "width": 0.12512,
+                "height": 34.43
+              },
+              {
+                "x": 3.80144,
+                "y": 0,
+                "width": 0.12512,
+                "height": 79.1
+              },
+              {
+                "x": 4.8014399999999995,
+                "y": 0,
+                "width": 0.12512,
+                "height": 26.6
+              },
+              {
+                "x": -0.06256,
+                "y": 0,
+                "width": 0.12512,
+                "height": 56.37
+              },
+              {
+                "x": 0.93744,
+                "y": 0,
+                "width": 0.12512,
+                "height": 11.47
+              },
+              {
+                "x": 1.93744,
+                "y": 0,
+                "width": 0.12512,
+                "height": 15.4
+              },
+              {
+                "x": 2.93744,
+                "y": 0,
+                "width": 0.12512,
+                "height": 39.27
+              },
+              {
+                "x": 3.93744,
+                "y": 0,
+                "width": 0.12512,
+                "height": 73.2
+              },
+              {
+                "x": 4.93744,
+                "y": 0,
+                "width": 0.12512,
+                "height": 27.07
+              },
+              {
+                "x": 0.07344,
+                "y": 0,
+                "width": 0.12512,
+                "height": 54.61
+              },
+              {
+                "x": 1.0734400000000002,
+                "y": 0,
+                "width": 0.12512,
+                "height": 11.54
+              },
+              {
+                "x": 2.07344,
+                "y": 0,
+                "width": 0.12512,
+                "height": 18.98
+              },
+              {
+                "x": 3.07344,
+                "y": 0,
+                "width": 0.12512,
+                "height": 37.32
+              },
+              {
+                "x": 4.07344,
+                "y": 0,
+                "width": 0.12512,
+                "height": 75.87
+              },
+              {
+                "x": 5.07344,
+                "y": 0,
+                "width": 0.12512,
+                "height": 28.49
+              },
+              {
+                "x": 0.20944000000000002,
+                "y": 0,
+                "width": 0.12512,
+                "height": 55.25
+              },
+              {
+                "x": 1.20944,
+                "y": 0,
+                "width": 0.12512,
+                "height": 13.28
+              },
+              {
+                "x": 2.2094400000000003,
+                "y": 0,
+                "width": 0.12512,
+                "height": 18.63
+              },
+              {
+                "x": 3.2094400000000003,
+                "y": 0,
+                "width": 0.12512,
+                "height": 37.93
+              },
+              {
+                "x": 4.20944,
+                "y": 0,
+                "width": 0.12512,
+                "height": 78.27
+              },
+              {
+                "x": 5.20944,
+                "y": 0,
+                "width": 0.12512,
+                "height": 26.93
+              }
+            ],
+            "lines": [
+              {
+                "label": "_nolegend_",
+                "x": [
+                  -0.272,
+                  0.728,
+                  1.728,
+                  2.7279999999999998,
+                  3.7279999999999998,
+                  4.728
+                ],
+                "y": [
+                  53.37081641863717,
+                  25.04662339571739,
+                  13.500243204273902,
+                  40.80968878902792,
+                  71.62438794116974,
+                  31.116812185158714
+                ]
+              },
+              {
+                "label": "_nolegend_",
+                "x": [
+                  -0.272,
+                  0.728,
+                  1.728,
+                  2.7279999999999998,
+                  3.7279999999999998,
+                  4.728
+                ],
+                "y": [
+                  68.52918358136284,
+                  34.05337660428261,
+                  21.099756795726098,
+                  56.53031121097208,
+                  84.97561205883025,
+                  33.34318781484128
+                ]
+              },
+              {
+                "label": "_nolegend_",
+                "x": [
+                  -0.136,
+                  0.8639999999999999,
+                  1.8639999999999999,
+                  2.864,
+                  3.864,
+                  4.864
+                ],
+                "y": [
+                  41.39744214670082,
+                  10.019124461612854,
+                  13.958859151969406,
+                  27.270142643878998,
+                  72.36822190205291,
+                  25.290401206475817
+                ]
+              },
+              {
+                "label": "_nolegend_",
+                "x": [
+                  -0.136,
+                  0.8639999999999999,
+                  1.8639999999999999,
+                  2.864,
+                  3.864,
+                  4.864
+                ],
+                "y": [
+                  55.46255785329918,
+                  15.580875538387147,
+                  21.34114084803059,
+                  41.589857356121,
+                  85.83177809794708,
+                  27.909598793524186
+                ]
+              },
+              {
+                "label": "_nolegend_",
+                "x": [
+                  0.0,
+                  1.0,
+                  2.0,
+                  3.0,
+                  4.0,
+                  5.0
+                ],
+                "y": [
+                  49.48305908451849,
+                  9.322200111742251,
+                  11.51147445595806,
+                  31.749465557998334,
+                  65.96445120533349,
+                  26.0191835978102
+                ]
+              },
+              {
+                "label": "_nolegend_",
+                "x": [
+                  0.0,
+                  1.0,
+                  2.0,
+                  3.0,
+                  4.0,
+                  5.0
+                ],
+                "y": [
+                  63.25694091548151,
+                  13.61779988825775,
+                  19.28852554404194,
+                  46.79053444200167,
+                  80.43554879466652,
+                  28.1208164021898
+                ]
+              },
+              {
+                "label": "_nolegend_",
+                "x": [
+                  0.136,
+                  1.1360000000000001,
+                  2.136,
+                  3.136,
+                  4.136,
+                  5.136
+                ],
+                "y": [
+                  47.920839307257346,
+                  8.956813629126486,
+                  14.705514390401266,
+                  29.92847182873077,
+                  68.78740506876188,
+                  27.547403998405347
+                ]
+              },
+              {
+                "label": "_nolegend_",
+                "x": [
+                  0.136,
+                  1.1360000000000001,
+                  2.136,
+                  3.136,
+                  4.136,
+                  5.136
+                ],
+                "y": [
+                  61.29916069274265,
+                  14.123186370873512,
+                  23.254485609598735,
+                  44.71152817126923,
+                  82.95259493123812,
+                  29.43259600159465
+                ]
+              },
+              {
+                "label": "_nolegend_",
+                "x": [
+                  0.272,
+                  1.272,
+                  2.2720000000000002,
+                  3.2720000000000002,
+                  4.272,
+                  5.272
+                ],
+                "y": [
+                  48.63340498141227,
+                  10.808773036188972,
+                  14.420545216618507,
+                  30.556806474803473,
+                  71.28788921886797,
+                  25.89312858399253
+                ]
+              },
+              {
+                "label": "_nolegend_",
+                "x": [
+                  0.272,
+                  1.272,
+                  2.2720000000000002,
+                  3.2720000000000002,
+                  4.272,
+                  5.272
+                ],
+                "y": [
+                  61.86659501858773,
+                  15.751226963811026,
+                  22.83945478338149,
+                  45.30319352519653,
+                  85.25211078113202,
+                  27.966871416007468
+                ]
+              }
+            ],
+            "images": [],
+            "texts": [
+              "61.0",
+              "48.4",
+              "56.4",
+              "54.6",
+              "55.2",
+              "29.6",
+              "12.8",
+              "11.5",
+              "11.5",
+              "13.3",
+              "17.3",
+              "17.6",
+              "15.4",
+              "19.0",
+              "18.6",
+              "48.7",
+              "34.4",
+              "39.3",
+              "37.3",
+              "37.9",
+              "78.3",
+              "79.1",
+              "73.2",
+              "75.9",
+              "78.3",
+              "32.2",
+              "26.6",
+              "27.1",
+              "28.5",
+              "26.9"
+            ]
+          }
+        ],
+        "figure_texts": [
+          "Baseline adaptations; error bars = standard errors across samples."
+        ],
+        "reference_sha256": "5d9fcd775ec353e096435a488ef3942e1ea8fbc072afbbe232c56b0bdb0ca072",
+        "regenerated_sha256": "5d9fcd775ec353e096435a488ef3942e1ea8fbc072afbbe232c56b0bdb0ca072",
+        "same_shape": true,
+        "exact_pixels": true,
+        "shape": [
+          1250,
+          2825,
+          4
+        ],
+        "reference_shape": [
+          1250,
+          2825,
+          4
+        ],
+        "different_pixel_fraction": 0.0
+      },
+      "exact_pixel_reproduction": true,
+      "reproduction_mode": "v2_remediation_v3",
+      "disposition": "replace with final_prior_development rescored90 adapted/equalhot consumed-development predictions"
+    },
+    {
+      "stem": "fig7_accuracy_fair",
+      "files": {
+        "png": {
+          "path": "figures_final/fig7_accuracy_fair.png",
+          "sha256": "abe2a70788005821ed3d70a63ace20fba2724a947aeaa3049dbd34ed8942b8eb"
+        },
+        "pdf": {
+          "path": "figures_final/fig7_accuracy_fair.pdf",
+          "sha256": "5c02cbfb310d7ca03af8cc933ca49cde351175dac67fc92b2509c092da16bea3"
+        }
+      },
+      "renderer": {
+        "path": "experiments/plot_figures_v2.py",
+        "sha256": "f64f3117742ac7bcbcb44263a5d7290c21f6bea6d60d752762aaabe2b3971f5f",
+        "line": 188
+      },
+      "input_artifacts": {
+        "results/remediation_v3/equal_attended_merged.json": {
+          "sha256": "9eff9add531d3b5d5398b430eb3a5bad776ff1c68518643ab7cc3c0dbae9ee59",
+          "config": {
+            "model": "../models/mistral-7b-instruct",
+            "budget": 1024,
+            "tiered_vram_budget": 992,
+            "tiered_stt_budget": 2048,
+            "tiered_stt_expose": null,
+            "sttram_bifurcation_frac": 0.75,
+            "sink": 4,
+            "recent": 128,
+            "max_ctx": 31500,
+            "seed": 0,
+            "tiered_kv_dtype": "bfloat16",
+            "page_size": 16,
+            "promote_top_pages": 2,
+            "stt_live_floor": 1,
+            "write_aware_lambda": 0.0,
+            "runtime": {
+              "git_revision": "be7e700d84d46b47e32ba5b9870c8b71783b9e53",
+              "source_sha256": "c5db18225a65ab143ed3194d51c8d701606bdfca04b34665f3d87c824ecce727",
+              "packages": {
+                "torch": "2.5.1+cu124",
+                "transformers": "5.15.0",
+                "datasets": "2.19.2",
+                "numpy": "2.2.6",
+                "accelerate": "1.14.0",
+                "huggingface_hub": "1.27.0",
+                "rouge": "1.0.1"
+              }
+            },
+            "protocol": "task_chat_exclusions_v2",
+            "data_dir": "../hf_cache/datasets/downloads/extracted/5def9c7eaf83951e1cee75902d8611ef764ad88dd289e8f0bf97ff658a3eb83a/data",
+            "tasks": [
+              "multifieldqa_en",
+              "qasper",
+              "narrativeqa",
+              "hotpotqa",
+              "triviaqa",
+              "gov_report"
+            ],
+            "methods": [
+              "full",
+              "streamingllm",
+              "h2o",
+              "snapkv",
+              "tieredkv"
+            ],
+            "samples_per_task": {
+              "multifieldqa_en": 25,
+              "qasper": 25,
+              "narrativeqa": 25,
+              "hotpotqa": 25,
+              "triviaqa": 25,
+              "gov_report": 10
+            },
+            "dataset_sha256_by_task": {
+              "multifieldqa_en": "678a51335e3c90e0dd43bf1131045e4f2859cc693e7eded89cc6a1ee8d18faff",
+              "qasper": "97d95c01221a17a2ce51f9180d65a671bf2998504a2ff0cccffe97e9b08444d8",
+              "narrativeqa": "0fb8d08ba5cdad4b74244224b0dc2e8b41ee6b850d954a13eb2d282621ce2f71",
+              "hotpotqa": "26a90a291cca5b2515bf466c6c3d1f57d8a4e67b0cf5aa39e1834913a15e6309",
+              "triviaqa": "3c4cc5ca18f2578d1f6458d1219387c741c6fafad7e8518addea898c08ff0d73",
+              "gov_report": "0a3902fcf3d49f228549f02a2ef1ae84dbe8578b8be3d4611d54459487bdef84"
+            }
+          },
+          "sample_record_count": 675
+        }
+      },
+      "aggregation": "results[task][method].score; row SE",
+      "extracted_pdf_text": "                                                                                    LongBench accuracy: matched attended cache budget\n                             100\n\n\n\n\n                                                                                                                                                                                          79.1\n\n\n\n\n                                                                                                                                                                                                               78.3\n                                                                                                                                                                                   78.3\n\n\n\n\n                                                                                                                                                                                                        75.9\n                                                                                                                                                                                                 73.2\nScore (F1 / ROUGE-L \u00d7 100)\n\n\n\n\n                              80\n                                   61.0\n\n\n                                                 56.4\n\n\n                                                               55.3\n                                                        54.6\n\n\n\n\n                                                                                                                                                48.7\n                                          48.4\n                              60\n\n\n\n\n                                                                                                                                                              39.3\n                                                                                                                                                                     37.3\n                                                                                                                                                       34.4\n\n\n\n\n                                                                                                                                                                            33.3\n                                                                      29.6\n\n\n\n\n                                                                                                                                                                                                                      32.2\n                              40\n\n\n\n\n                                                                                                                                                                                                                                           28.5\n                                                                                                                                                                                                                                                  27.2\n                                                                                                                                                                                                                                    27.1\n                                                                                                                                                                                                                             26.6\n                                                                                                                                19.0\n                                                                                                                  17.6\n                                                                                                           17.3\n\n\n\n\n                                                                                                                                       16.8\n                                                                                                                         15.4\n                                                                             12.8\n\n\n\n\n                                                                                                  12.4\n                                                                                           11.5\n                                                                                    11.5\n                              20\n\n\n\n                               0\n                                   MultiFieldQA                              Qasper                         NarrativeQA                                HotpotQA                           TriviaQA                       GovReport\n\n\n                                                                         Full Cache                      StreamingLLM                         H2O                     SnapKV              TieredKV (Ours)\n\n\n\n                                                                        Adapted baselines; TieredKV: 992 fast + \u226432 slow; baselines: 1024 fast. Error bars = SE.\n\f",
+      "rendered_artist_values": {
+        "figure": "fig7_accuracy_fair.png",
+        "axes": [
+          {
+            "title": "LongBench accuracy: matched attended cache budget",
+            "xlabel": "",
+            "ylabel": "Score (F1 / ROUGE-L $\\times$ 100)",
+            "ylim": [
+              0.0,
+              101.28149815557755
+            ],
+            "xticklabels": [
+              "MultiFieldQA",
+              "Qasper",
+              "NarrativeQA",
+              "HotpotQA",
+              "TriviaQA",
+              "GovReport"
+            ],
+            "bars": [
+              {
+                "x": -0.33456,
+                "y": 0,
+                "width": 0.12512,
+                "height": 60.95
+              },
+              {
+                "x": 0.66544,
+                "y": 0,
+                "width": 0.12512,
+                "height": 29.55
+              },
+              {
+                "x": 1.66544,
+                "y": 0,
+                "width": 0.12512,
+                "height": 17.3
+              },
+              {
+                "x": 2.66544,
+                "y": 0,
+                "width": 0.12512,
+                "height": 48.67
+              },
+              {
+                "x": 3.66544,
+                "y": 0,
+                "width": 0.12512,
+                "height": 78.3
+              },
+              {
+                "x": 4.665439999999999,
+                "y": 0,
+                "width": 0.12512,
+                "height": 32.23
+              },
+              {
+                "x": -0.19856000000000001,
+                "y": 0,
+                "width": 0.12512,
+                "height": 48.43
+              },
+              {
+                "x": 0.8014399999999999,
+                "y": 0,
+                "width": 0.12512,
+                "height": 12.8
+              },
+              {
+                "x": 1.80144,
+                "y": 0,
+                "width": 0.12512,
+                "height": 17.65
+              },
+              {
+                "x": 2.80144,
+                "y": 0,
+                "width": 0.12512,
+                "height": 34.43
+              },
+              {
+                "x": 3.80144,
+                "y": 0,
+                "width": 0.12512,
+                "height": 79.1
+              },
+              {
+                "x": 4.8014399999999995,
+                "y": 0,
+                "width": 0.12512,
+                "height": 26.6
+              },
+              {
+                "x": -0.06256,
+                "y": 0,
+                "width": 0.12512,
+                "height": 56.37
+              },
+              {
+                "x": 0.93744,
+                "y": 0,
+                "width": 0.12512,
+                "height": 11.47
+              },
+              {
+                "x": 1.93744,
+                "y": 0,
+                "width": 0.12512,
+                "height": 15.4
+              },
+              {
+                "x": 2.93744,
+                "y": 0,
+                "width": 0.12512,
+                "height": 39.27
+              },
+              {
+                "x": 3.93744,
+                "y": 0,
+                "width": 0.12512,
+                "height": 73.2
+              },
+              {
+                "x": 4.93744,
+                "y": 0,
+                "width": 0.12512,
+                "height": 27.07
+              },
+              {
+                "x": 0.07344,
+                "y": 0,
+                "width": 0.12512,
+                "height": 54.61
+              },
+              {
+                "x": 1.0734400000000002,
+                "y": 0,
+                "width": 0.12512,
+                "height": 11.54
+              },
+              {
+                "x": 2.07344,
+                "y": 0,
+                "width": 0.12512,
+                "height": 18.98
+              },
+              {
+                "x": 3.07344,
+                "y": 0,
+                "width": 0.12512,
+                "height": 37.32
+              },
+              {
+                "x": 4.07344,
+                "y": 0,
+                "width": 0.12512,
+                "height": 75.87
+              },
+              {
+                "x": 5.07344,
+                "y": 0,
+                "width": 0.12512,
+                "height": 28.49
+              },
+              {
+                "x": 0.20944000000000002,
+                "y": 0,
+                "width": 0.12512,
+                "height": 55.26
+              },
+              {
+                "x": 1.20944,
+                "y": 0,
+                "width": 0.12512,
+                "height": 12.37
+              },
+              {
+                "x": 2.2094400000000003,
+                "y": 0,
+                "width": 0.12512,
+                "height": 16.79
+              },
+              {
+                "x": 3.2094400000000003,
+                "y": 0,
+                "width": 0.12512,
+                "height": 33.26
+              },
+              {
+                "x": 4.20944,
+                "y": 0,
+                "width": 0.12512,
+                "height": 78.27
+              },
+              {
+                "x": 5.20944,
+                "y": 0,
+                "width": 0.12512,
+                "height": 27.22
+              }
+            ],
+            "lines": [
+              {
+                "label": "_nolegend_",
+                "x": [
+                  -0.272,
+                  0.728,
+                  1.728,
+                  2.7279999999999998,
+                  3.7279999999999998,
+                  4.728
+                ],
+                "y": [
+                  53.37081641863717,
+                  25.04662339571739,
+                  13.500243204273902,
+                  40.80968878902792,
+                  71.62438794116974,
+                  31.116812185158714
+                ]
+              },
+              {
+                "label": "_nolegend_",
+                "x": [
+                  -0.272,
+                  0.728,
+                  1.728,
+                  2.7279999999999998,
+                  3.7279999999999998,
+                  4.728
+                ],
+                "y": [
+                  68.52918358136284,
+                  34.05337660428261,
+                  21.099756795726098,
+                  56.53031121097208,
+                  84.97561205883025,
+                  33.34318781484128
+                ]
+              },
+              {
+                "label": "_nolegend_",
+                "x": [
+                  -0.136,
+                  0.8639999999999999,
+                  1.8639999999999999,
+                  2.864,
+                  3.864,
+                  4.864
+                ],
+                "y": [
+                  41.39744214670082,
+                  10.019124461612854,
+                  13.958859151969406,
+                  27.270142643878998,
+                  72.36822190205291,
+                  25.290401206475817
+                ]
+              },
+              {
+                "label": "_nolegend_",
+                "x": [
+                  -0.136,
+                  0.8639999999999999,
+                  1.8639999999999999,
+                  2.864,
+                  3.864,
+                  4.864
+                ],
+                "y": [
+                  55.46255785329918,
+                  15.580875538387147,
+                  21.34114084803059,
+                  41.589857356121,
+                  85.83177809794708,
+                  27.909598793524186
+                ]
+              },
+              {
+                "label": "_nolegend_",
+                "x": [
+                  0.0,
+                  1.0,
+                  2.0,
+                  3.0,
+                  4.0,
+                  5.0
+                ],
+                "y": [
+                  49.48305908451849,
+                  9.322200111742251,
+                  11.51147445595806,
+                  31.749465557998334,
+                  65.96445120533349,
+                  26.0191835978102
+                ]
+              },
+              {
+                "label": "_nolegend_",
+                "x": [
+                  0.0,
+                  1.0,
+                  2.0,
+                  3.0,
+                  4.0,
+                  5.0
+                ],
+                "y": [
+                  63.25694091548151,
+                  13.61779988825775,
+                  19.28852554404194,
+                  46.79053444200167,
+                  80.43554879466652,
+                  28.1208164021898
+                ]
+              },
+              {
+                "label": "_nolegend_",
+                "x": [
+                  0.136,
+                  1.1360000000000001,
+                  2.136,
+                  3.136,
+                  4.136,
+                  5.136
+                ],
+                "y": [
+                  47.920839307257346,
+                  8.956813629126486,
+                  14.705514390401266,
+                  29.92847182873077,
+                  68.78740506876188,
+                  27.547403998405347
+                ]
+              },
+              {
+                "label": "_nolegend_",
+                "x": [
+                  0.136,
+                  1.1360000000000001,
+                  2.136,
+                  3.136,
+                  4.136,
+                  5.136
+                ],
+                "y": [
+                  61.29916069274265,
+                  14.123186370873512,
+                  23.254485609598735,
+                  44.71152817126923,
+                  82.95259493123812,
+                  29.43259600159465
+                ]
+              },
+              {
+                "label": "_nolegend_",
+                "x": [
+                  0.272,
+                  1.272,
+                  2.2720000000000002,
+                  3.2720000000000002,
+                  4.272,
+                  5.272
+                ],
+                "y": [
+                  48.647070102695274,
+                  9.587225145051555,
+                  13.073718089272557,
+                  26.452092955002,
+                  71.28788921886797,
+                  25.901433606778433
+                ]
+              },
+              {
+                "label": "_nolegend_",
+                "x": [
+                  0.272,
+                  1.272,
+                  2.2720000000000002,
+                  3.2720000000000002,
+                  4.272,
+                  5.272
+                ],
+                "y": [
+                  61.87292989730472,
+                  15.152774854948444,
+                  20.50628191072744,
+                  40.067907044997995,
+                  85.25211078113202,
+                  28.538566393221565
+                ]
+              }
+            ],
+            "images": [],
+            "texts": [
+              "61.0",
+              "48.4",
+              "56.4",
+              "54.6",
+              "55.3",
+              "29.6",
+              "12.8",
+              "11.5",
+              "11.5",
+              "12.4",
+              "17.3",
+              "17.6",
+              "15.4",
+              "19.0",
+              "16.8",
+              "48.7",
+              "34.4",
+              "39.3",
+              "37.3",
+              "33.3",
+              "78.3",
+              "79.1",
+              "73.2",
+              "75.9",
+              "78.3",
+              "32.2",
+              "26.6",
+              "27.1",
+              "28.5",
+              "27.2"
+            ]
+          }
+        ],
+        "figure_texts": [
+          "Adapted baselines; TieredKV: 992 fast + \u226432 slow; baselines: 1024 fast. Error bars = SE."
+        ],
+        "reference_sha256": "abe2a70788005821ed3d70a63ace20fba2724a947aeaa3049dbd34ed8942b8eb",
+        "regenerated_sha256": "abe2a70788005821ed3d70a63ace20fba2724a947aeaa3049dbd34ed8942b8eb",
+        "same_shape": true,
+        "exact_pixels": true,
+        "shape": [
+          1250,
+          2825,
+          4
+        ],
+        "reference_shape": [
+          1250,
+          2825,
+          4
+        ],
+        "different_pixel_fraction": 0.0
+      },
+      "exact_pixel_reproduction": true,
+      "reproduction_mode": "v2_remediation_v3",
+      "disposition": "replace with faithful_snap_development rescored60predictions/30pairs; initial payload boundary only"
+    },
+    {
+      "stem": "fig14_heatmap",
+      "files": {
+        "png": {
+          "path": "figures_final/fig14_heatmap.png",
+          "sha256": "aa450e072fc3bd7d555b79d174bc760a4320ac92c2ac4bf4db252586484f7c89"
+        },
+        "pdf": {
+          "path": "figures_final/fig14_heatmap.pdf",
+          "sha256": "cdde70184666a77833c98c1d8b535c601b67a3614d4b82da6925a4a113624e96"
+        }
+      },
+      "renderer": {
+        "path": "experiments/plot_figures_v2.py",
+        "sha256": "f64f3117742ac7bcbcb44263a5d7290c21f6bea6d60d752762aaabe2b3971f5f",
+        "line": 374
+      },
+      "input_artifacts": {
+        "results/remediation_v3/equal_vram_merged.json": {
+          "sha256": "d2de6b8384e942a9a8075b171443ef5b5d32cb486523e6e039e7fb2cce07ef1b",
+          "config": {
+            "model": "../models/mistral-7b-instruct",
+            "budget": 1024,
+            "tiered_vram_budget": 1024,
+            "tiered_stt_budget": 2048,
+            "tiered_stt_expose": null,
+            "sttram_bifurcation_frac": 0.75,
+            "sink": 4,
+            "recent": 128,
+            "max_ctx": 31500,
+            "seed": 0,
+            "tiered_kv_dtype": "bfloat16",
+            "page_size": 16,
+            "promote_top_pages": 2,
+            "stt_live_floor": 1,
+            "write_aware_lambda": 0.0,
+            "runtime": {
+              "git_revision": "be7e700d84d46b47e32ba5b9870c8b71783b9e53",
+              "source_sha256": "c5db18225a65ab143ed3194d51c8d701606bdfca04b34665f3d87c824ecce727",
+              "packages": {
+                "torch": "2.5.1+cu124",
+                "transformers": "5.15.0",
+                "datasets": "2.19.2",
+                "numpy": "2.2.6",
+                "accelerate": "1.14.0",
+                "huggingface_hub": "1.27.0",
+                "rouge": "1.0.1"
+              }
+            },
+            "protocol": "task_chat_exclusions_v2",
+            "data_dir": "../hf_cache/datasets/downloads/extracted/5def9c7eaf83951e1cee75902d8611ef764ad88dd289e8f0bf97ff658a3eb83a/data",
+            "tasks": [
+              "multifieldqa_en",
+              "qasper",
+              "narrativeqa",
+              "hotpotqa",
+              "triviaqa",
+              "gov_report"
+            ],
+            "methods": [
+              "full",
+              "streamingllm",
+              "h2o",
+              "snapkv",
+              "tieredkv"
+            ],
+            "samples_per_task": {
+              "multifieldqa_en": 25,
+              "qasper": 25,
+              "narrativeqa": 25,
+              "hotpotqa": 25,
+              "triviaqa": 25,
+              "gov_report": 10
+            },
+            "dataset_sha256_by_task": {
+              "multifieldqa_en": "678a51335e3c90e0dd43bf1131045e4f2859cc693e7eded89cc6a1ee8d18faff",
+              "qasper": "97d95c01221a17a2ce51f9180d65a671bf2998504a2ff0cccffe97e9b08444d8",
+              "narrativeqa": "0fb8d08ba5cdad4b74244224b0dc2e8b41ee6b850d954a13eb2d282621ce2f71",
+              "hotpotqa": "26a90a291cca5b2515bf466c6c3d1f57d8a4e67b0cf5aa39e1834913a15e6309",
+              "triviaqa": "3c4cc5ca18f2578d1f6458d1219387c741c6fafad7e8518addea898c08ff0d73",
+              "gov_report": "0a3902fcf3d49f228549f02a2ef1ae84dbe8578b8be3d4611d54459487bdef84"
+            }
+          },
+          "sample_record_count": 675
+        }
+      },
+      "aggregation": "results[task][method].score; best compressed argmax excluding full",
+      "extracted_pdf_text": "               LongBench Score Heatmap (boxed = best compressed method)\n\n\nMultiFieldQA       61.0           48.4       56.4    54.6         55.2\n                                                                               70\n\n\n   HotpotQA        48.7           34.4       39.3    37.3         37.9         60\n\n\n\n\n                                                                                    F1 / ROUGE-L\n                                                                               50\n    TriviaQA       78.3           79.1       73.2    75.9         78.3\n\n\n                                                                               40\n     Qasper        29.6           12.8       11.5    11.5         13.3\n\n                                                                               30\n\nNarrativeQA        17.3           17.6       15.4    19.0         18.6\n                                                                               20\n\n\n  GovReport        32.2           26.6       27.1    28.5         26.9\n                                                                               10\n\n                 Full Cache   StreamingLLM   H2O    SnapKV   TieredKV (Ours)\n\f",
+      "rendered_artist_values": {
+        "figure": "fig14_heatmap.png",
+        "axes": [
+          {
+            "title": "LongBench Score Heatmap (boxed = best compressed method)",
+            "xlabel": "",
+            "ylabel": "",
+            "ylim": [
+              5.5,
+              -0.5
+            ],
+            "xticklabels": [
+              "Full Cache",
+              "StreamingLLM",
+              "H2O",
+              "SnapKV",
+              "TieredKV (Ours)"
+            ],
+            "bars": [],
+            "lines": [],
+            "images": [
+              [
+                [
+                  60.95,
+                  48.43,
+                  56.37,
+                  54.61,
+                  55.25
+                ],
+                [
+                  48.67,
+                  34.43,
+                  39.27,
+                  37.32,
+                  37.93
+                ],
+                [
+                  78.3,
+                  79.1,
+                  73.2,
+                  75.87,
+                  78.27
+                ],
+                [
+                  29.55,
+                  12.8,
+                  11.47,
+                  11.54,
+                  13.28
+                ],
+                [
+                  17.3,
+                  17.65,
+                  15.4,
+                  18.98,
+                  18.63
+                ],
+                [
+                  32.23,
+                  26.6,
+                  27.07,
+                  28.49,
+                  26.93
+                ]
+              ]
+            ],
+            "texts": [
+              "61.0",
+              "48.4",
+              "56.4",
+              "54.6",
+              "55.2",
+              "48.7",
+              "34.4",
+              "39.3",
+              "37.3",
+              "37.9",
+              "78.3",
+              "79.1",
+              "73.2",
+              "75.9",
+              "78.3",
+              "29.6",
+              "12.8",
+              "11.5",
+              "11.5",
+              "13.3",
+              "17.3",
+              "17.6",
+              "15.4",
+              "19.0",
+              "18.6",
+              "32.2",
+              "26.6",
+              "27.1",
+              "28.5",
+              "26.9"
+            ]
+          },
+          {
+            "title": "",
+            "xlabel": "",
+            "ylabel": "F1 / ROUGE-L",
+            "ylim": [
+              10.0,
+              75.0
+            ],
+            "xticklabels": [],
+            "bars": [],
+            "lines": [],
+            "images": [],
+            "texts": []
+          }
+        ],
+        "figure_texts": [],
+        "reference_sha256": "aa450e072fc3bd7d555b79d174bc760a4320ac92c2ac4bf4db252586484f7c89",
+        "regenerated_sha256": "aa450e072fc3bd7d555b79d174bc760a4320ac92c2ac4bf4db252586484f7c89",
+        "same_shape": true,
+        "exact_pixels": true,
+        "shape": [
+          1326,
+          2360,
+          4
+        ],
+        "reference_shape": [
+          1326,
+          2360,
+          4
+        ],
+        "different_pixel_fraction": 0.0
+      },
+      "exact_pixel_reproduction": true,
+      "reproduction_mode": "v2_remediation_v3",
+      "disposition": "replace with samefaithful30pairs, box all tied highest estimates across BOTHmethods"
+    },
+    {
+      "stem": "fig4_decode_scaling",
+      "files": {
+        "png": {
+          "path": "figures_final/fig4_decode_scaling.png",
+          "sha256": "2280ce8a1172c702d3458318be4a5f6a94ce283bdfa1c47c770097103b6ca228"
+        },
+        "pdf": {
+          "path": "figures_final/fig4_decode_scaling.pdf",
+          "sha256": "3103b7f60f9dcff7854ae547c32c2755218945c6256123a518fe699661ddab6f"
+        }
+      },
+      "renderer": {
+        "path": "experiments/plot_figures_v2.py",
+        "sha256": "f64f3117742ac7bcbcb44263a5d7290c21f6bea6d60d752762aaabe2b3971f5f",
+        "line": 261
+      },
+      "input_artifacts": {
+        "results/remediation_v3/latency.json": {
+          "sha256": "2840e6e20f3698883b95f0c38b24dbc36fce478f810b5f8fe9ef9d0721708994",
+          "config": {
+            "model": "../models/mistral-7b-instruct",
+            "ctx_lens": [
+              512,
+              1024,
+              2048,
+              4096,
+              8192,
+              16384
+            ],
+            "budget": 1024,
+            "tiered_vram_budget": null,
+            "tiered_stt_budget": null,
+            "sttram_bifurcation_frac": 0.75,
+            "n_decode": 50,
+            "n_repeat": 3,
+            "n_warmup": 1,
+            "methods": [
+              "full",
+              "streamingllm",
+              "h2o",
+              "snapkv",
+              "tieredkv"
+            ],
+            "device": "cuda",
+            "prompt_file": "results/remediation_v3/latency_prompt.txt",
+            "seed": 0,
+            "runtime": {
+              "git_revision": "be7e700d84d46b47e32ba5b9870c8b71783b9e53",
+              "source_sha256": "c5db18225a65ab143ed3194d51c8d701606bdfca04b34665f3d87c824ecce727",
+              "packages": {
+                "torch": "2.5.1+cu124",
+                "transformers": "5.15.0",
+                "datasets": "2.19.2",
+                "numpy": "2.2.6",
+                "accelerate": "1.14.0",
+                "huggingface_hub": "1.27.0",
+                "rouge": "1.0.1"
+              }
+            },
+            "timing_scope": "end_to_end_model_policy_token",
+            "prompt_kind": "real_text",
+            "prompt_sha256": "18695714f26e35cb8d2b039ae9efb3b7e64291cbd7bcd91956efc07e16a732cd",
+            "generation": "fixed_length_ignores_eos",
+            "schema_version": 2
+          },
+          "sample_record_count": 0
+        }
+      },
+      "aggregation": "results[method][context].itl_ms = rounded median of150raw perstep ms",
+      "extracted_pdf_text": "                                                                Decode latency including attention feedback and cache policy\n                                       120\n                                             Full Cache\nEnd-to-end decode latency (ms/token)\n\n\n                                             StreamingLLM\n                                             H2O\n                                       100   SnapKV\n                                             TieredKV (Ours)\n\n\n                                        80\n\n\n\n\n                                        60\n\n\n\n\n                                        40\n\n\n\n\n                                        20\n                                                                 103                                                                                      104\n                                                                                             Context length (tokens)\n\n                                                    Mistral-7B-Instruct on L40S; real GovReport prompt, 50 fixed decode tokens. STT-RAM is simulated on GPU.\n\f",
+      "rendered_artist_values": {
+        "figure": "fig4_decode_scaling.png",
+        "axes": [
+          {
+            "title": "Decode latency including attention feedback and cache policy",
+            "xlabel": "Context length (tokens)",
+            "ylabel": "End-to-end decode latency (ms/token)",
+            "ylim": [
+              19.870649999999998,
+              120.35235
+            ],
+            "xticklabels": [
+              "$\\mathdefault{10^{1}}$",
+              "$\\mathdefault{10^{2}}$",
+              "$\\mathdefault{10^{3}}$",
+              "$\\mathdefault{10^{4}}$",
+              "$\\mathdefault{10^{5}}$",
+              "$\\mathdefault{10^{6}}$"
+            ],
+            "bars": [],
+            "lines": [
+              {
+                "label": "Full Cache",
+                "x": [
+                  512,
+                  1024,
+                  2048,
+                  4096,
+                  8192,
+                  16384
+                ],
+                "y": [
+                  24.438,
+                  24.989,
+                  26.027,
+                  28.911,
+                  40.037,
+                  61.701
+                ]
+              },
+              {
+                "label": "StreamingLLM",
+                "x": [
+                  512,
+                  1024,
+                  2048,
+                  4096,
+                  8192,
+                  16384
+                ],
+                "y": [
+                  24.439,
+                  25.721,
+                  25.737,
+                  25.741,
+                  25.732,
+                  25.734
+                ]
+              },
+              {
+                "label": "H2O",
+                "x": [
+                  512,
+                  1024,
+                  2048,
+                  4096,
+                  8192,
+                  16384
+                ],
+                "y": [
+                  25.685,
+                  34.488,
+                  34.498,
+                  34.494,
+                  34.449,
+                  34.417
+                ]
+              },
+              {
+                "label": "SnapKV",
+                "x": [
+                  512,
+                  1024,
+                  2048,
+                  4096,
+                  8192,
+                  16384
+                ],
+                "y": [
+                  25.67,
+                  34.409,
+                  34.404,
+                  34.414,
+                  34.4,
+                  34.423
+                ]
+              },
+              {
+                "label": "TieredKV (Ours)",
+                "x": [
+                  512,
+                  1024,
+                  2048,
+                  4096,
+                  8192,
+                  16384
+                ],
+                "y": [
+                  37.927,
+                  101.706,
+                  109.753,
+                  115.611,
+                  115.785,
+                  115.701
+                ]
+              }
+            ],
+            "images": [],
+            "texts": []
+          }
+        ],
+        "figure_texts": [
+          "Mistral-7B-Instruct on L40S; real GovReport prompt, 50 fixed decode tokens. STT-RAM is simulated on GPU."
+        ],
+        "reference_sha256": "2280ce8a1172c702d3458318be4a5f6a94ce283bdfa1c47c770097103b6ca228",
+        "regenerated_sha256": "2280ce8a1172c702d3458318be4a5f6a94ce283bdfa1c47c770097103b6ca228",
+        "same_shape": true,
+        "exact_pixels": true,
+        "shape": [
+          1358,
+          2796,
+          4
+        ],
+        "reference_shape": [
+          1358,
+          2796,
+          4
+        ],
+        "different_pixel_fraction": 0.0
+      },
+      "exact_pixel_reproduction": true,
+      "reproduction_mode": "v2_remediation_v3",
+      "disposition": "retain visiblyhistorical until new registered faithfulbaseline context sweep; 1context timing cannot replace scaling"
+    },
+    {
+      "stem": "fig11_footprint",
+      "files": {
+        "png": {
+          "path": "figures_final/fig11_footprint.png",
+          "sha256": "3a4b0f73964c9812a3daaca3062fb10d51829913ba362371a246f24f1fb94742"
+        },
+        "pdf": {
+          "path": "figures_final/fig11_footprint.pdf",
+          "sha256": "b52c1cf9887612e1eecb9a3550b23003dced05c0d789acdecc791e713ea486b1"
+        }
+      },
+      "renderer": {
+        "path": "experiments/plot_figures_v2.py",
+        "sha256": "f64f3117742ac7bcbcb44263a5d7290c21f6bea6d60d752762aaabe2b3971f5f",
+        "line": 287
+      },
+      "input_artifacts": {
+        "results/remediation_v3/equal_vram_merged.json": {
+          "sha256": "d2de6b8384e942a9a8075b171443ef5b5d32cb486523e6e039e7fb2cce07ef1b",
+          "config": {
+            "model": "../models/mistral-7b-instruct",
+            "budget": 1024,
+            "tiered_vram_budget": 1024,
+            "tiered_stt_budget": 2048,
+            "tiered_stt_expose": null,
+            "sttram_bifurcation_frac": 0.75,
+            "sink": 4,
+            "recent": 128,
+            "max_ctx": 31500,
+            "seed": 0,
+            "tiered_kv_dtype": "bfloat16",
+            "page_size": 16,
+            "promote_top_pages": 2,
+            "stt_live_floor": 1,
+            "write_aware_lambda": 0.0,
+            "runtime": {
+              "git_revision": "be7e700d84d46b47e32ba5b9870c8b71783b9e53",
+              "source_sha256": "c5db18225a65ab143ed3194d51c8d701606bdfca04b34665f3d87c824ecce727",
+              "packages": {
+                "torch": "2.5.1+cu124",
+                "transformers": "5.15.0",
+                "datasets": "2.19.2",
+                "numpy": "2.2.6",
+                "accelerate": "1.14.0",
+                "huggingface_hub": "1.27.0",
+                "rouge": "1.0.1"
+              }
+            },
+            "protocol": "task_chat_exclusions_v2",
+            "data_dir": "../hf_cache/datasets/downloads/extracted/5def9c7eaf83951e1cee75902d8611ef764ad88dd289e8f0bf97ff658a3eb83a/data",
+            "tasks": [
+              "multifieldqa_en",
+              "qasper",
+              "narrativeqa",
+              "hotpotqa",
+              "triviaqa",
+              "gov_report"
+            ],
+            "methods": [
+              "full",
+              "streamingllm",
+              "h2o",
+              "snapkv",
+              "tieredkv"
+            ],
+            "samples_per_task": {
+              "multifieldqa_en": 25,
+              "qasper": 25,
+              "narrativeqa": 25,
+              "hotpotqa": 25,
+              "triviaqa": 25,
+              "gov_report": 10
+            },
+            "dataset_sha256_by_task": {
+              "multifieldqa_en": "678a51335e3c90e0dd43bf1131045e4f2859cc693e7eded89cc6a1ee8d18faff",
+              "qasper": "97d95c01221a17a2ce51f9180d65a671bf2998504a2ff0cccffe97e9b08444d8",
+              "narrativeqa": "0fb8d08ba5cdad4b74244224b0dc2e8b41ee6b850d954a13eb2d282621ce2f71",
+              "hotpotqa": "26a90a291cca5b2515bf466c6c3d1f57d8a4e67b0cf5aa39e1834913a15e6309",
+              "triviaqa": "3c4cc5ca18f2578d1f6458d1219387c741c6fafad7e8518addea898c08ff0d73",
+              "gov_report": "0a3902fcf3d49f228549f02a2ef1ae84dbe8578b8be3d4611d54459487bdef84"
+            }
+          },
+          "sample_record_count": 675
+        }
+      },
+      "aggregation": "configured rows x32layers x8KVheads x128dim x2KV x2bytes /1e6; hypothetical geometries",
+      "extracted_pdf_text": "                                                                      Configured capacity, not measured GPU allocation or actual occupancy\n                                                 500\nLogical KV capacity (MB, bf16, Mistral-7B GQA)\n\n\n\n                                                                                               402.7 MB                       398.5 MB\n                                                                                      \u22641056 cached tokens attended   \u22641024 cached tokens attended\n                                                 400\n\n\n\n\n                                                 300\n\n\n\n\n                                                 200\n\n                                                                134.2 MB                                                                                     134.2 MB\n                                                       \u22641024 cached tokens attended                                                                 \u2264373 cached tokens attended\n\n                                                 100\n\n\n\n\n                                                   0\n                                                          Baseline compressed           TieredKV equal VRAM          TieredKV matched attention       TieredKV equal total\n\f",
+      "rendered_artist_values": {
+        "figure": "fig11_footprint.png",
+        "axes": [
+          {
+            "title": "Configured capacity, not measured GPU allocation or actual occupancy",
+            "xlabel": "",
+            "ylabel": "Logical KV capacity (MB, bf16, Mistral-7B GQA)",
+            "ylim": [
+              0.0,
+              503.31648
+            ],
+            "xticklabels": [
+              "Baseline compressed",
+              "TieredKV equal VRAM",
+              "TieredKV matched attention",
+              "TieredKV equal total"
+            ],
+            "bars": [
+              {
+                "x": -0.4,
+                "y": 0,
+                "width": 0.8,
+                "height": 134.217728
+              },
+              {
+                "x": 0.6,
+                "y": 0,
+                "width": 0.8,
+                "height": 402.653184
+              },
+              {
+                "x": 1.6,
+                "y": 0,
+                "width": 0.8,
+                "height": 398.45888
+              },
+              {
+                "x": 2.6,
+                "y": 0,
+                "width": 0.8,
+                "height": 134.217728
+              }
+            ],
+            "lines": [],
+            "images": [],
+            "texts": [
+              "134.2 MB\n\u22641024 cached tokens attended",
+              "402.7 MB\n\u22641056 cached tokens attended",
+              "398.5 MB\n\u22641024 cached tokens attended",
+              "134.2 MB\n\u2264373 cached tokens attended"
+            ]
+          }
+        ],
+        "figure_texts": [],
+        "reference_sha256": "3a4b0f73964c9812a3daaca3062fb10d51829913ba362371a246f24f1fb94742",
+        "regenerated_sha256": "3a4b0f73964c9812a3daaca3062fb10d51829913ba362371a246f24f1fb94742",
+        "same_shape": true,
+        "exact_pixels": true,
+        "shape": [
+          1268,
+          2795,
+          4
+        ],
+        "reference_shape": [
+          1268,
+          2795,
+          4
+        ],
+        "different_pixel_fraction": 0.0
+      },
+      "exact_pixel_reproduction": true,
+      "reproduction_mode": "v2_remediation_v3",
+      "disposition": "retain as historical analytical configuration illustration, not measured native/faithful footprint"
+    },
+    {
+      "stem": "fig12_energy",
+      "files": {
+        "png": {
+          "path": "figures_final/fig12_energy.png",
+          "sha256": "1f2387156fbed4ce2228c6d3926f2010eeec61307bcb4c8e68577c0cf041b20d"
+        },
+        "pdf": {
+          "path": "figures_final/fig12_energy.pdf",
+          "sha256": "0f8f485c29e27f288a28e10e2eb1bc11559d2f4c7aa8d6d500c19c1776f3c966"
+        }
+      },
+      "renderer": {
+        "path": "experiments/plot_figures_v2.py",
+        "sha256": "f64f3117742ac7bcbcb44263a5d7290c21f6bea6d60d752762aaabe2b3971f5f",
+        "line": 316
+      },
+      "input_artifacts": {
+        "results/remediation_v3/equal_vram_merged.json": {
+          "sha256": "d2de6b8384e942a9a8075b171443ef5b5d32cb486523e6e039e7fb2cce07ef1b",
+          "config": {
+            "model": "../models/mistral-7b-instruct",
+            "budget": 1024,
+            "tiered_vram_budget": 1024,
+            "tiered_stt_budget": 2048,
+            "tiered_stt_expose": null,
+            "sttram_bifurcation_frac": 0.75,
+            "sink": 4,
+            "recent": 128,
+            "max_ctx": 31500,
+            "seed": 0,
+            "tiered_kv_dtype": "bfloat16",
+            "page_size": 16,
+            "promote_top_pages": 2,
+            "stt_live_floor": 1,
+            "write_aware_lambda": 0.0,
+            "runtime": {
+              "git_revision": "be7e700d84d46b47e32ba5b9870c8b71783b9e53",
+              "source_sha256": "c5db18225a65ab143ed3194d51c8d701606bdfca04b34665f3d87c824ecce727",
+              "packages": {
+                "torch": "2.5.1+cu124",
+                "transformers": "5.15.0",
+                "datasets": "2.19.2",
+                "numpy": "2.2.6",
+                "accelerate": "1.14.0",
+                "huggingface_hub": "1.27.0",
+                "rouge": "1.0.1"
+              }
+            },
+            "protocol": "task_chat_exclusions_v2",
+            "data_dir": "../hf_cache/datasets/downloads/extracted/5def9c7eaf83951e1cee75902d8611ef764ad88dd289e8f0bf97ff658a3eb83a/data",
+            "tasks": [
+              "multifieldqa_en",
+              "qasper",
+              "narrativeqa",
+              "hotpotqa",
+              "triviaqa",
+              "gov_report"
+            ],
+            "methods": [
+              "full",
+              "streamingllm",
+              "h2o",
+              "snapkv",
+              "tieredkv"
+            ],
+            "samples_per_task": {
+              "multifieldqa_en": 25,
+              "qasper": 25,
+              "narrativeqa": 25,
+              "hotpotqa": 25,
+              "triviaqa": 25,
+              "gov_report": 10
+            },
+            "dataset_sha256_by_task": {
+              "multifieldqa_en": "678a51335e3c90e0dd43bf1131045e4f2859cc693e7eded89cc6a1ee8d18faff",
+              "qasper": "97d95c01221a17a2ce51f9180d65a671bf2998504a2ff0cccffe97e9b08444d8",
+              "narrativeqa": "0fb8d08ba5cdad4b74244224b0dc2e8b41ee6b850d954a13eb2d282621ce2f71",
+              "hotpotqa": "26a90a291cca5b2515bf466c6c3d1f57d8a4e67b0cf5aa39e1834913a15e6309",
+              "triviaqa": "3c4cc5ca18f2578d1f6458d1219387c741c6fafad7e8518addea898c08ff0d73",
+              "gov_report": "0a3902fcf3d49f228549f02a2ef1ae84dbe8578b8be3d4611d54459487bdef84"
+            }
+          },
+          "sample_record_count": 675
+        },
+        "src/cost_model.py": {
+          "sha256": "e77909a57342da8fd70dc16de5d8a9999d183269de76bbfff05fc900e6078fca"
+        }
+      },
+      "aggregation": "sum tasks modeled_energy_nj/1e9; events x2048elements priced using default CostModel; residual clamped max0",
+      "extracted_pdf_text": "Modeled decode KV-traffic energy, 6 tasks (Jo\n                                                      446.0 J total\n                                                                      Decode KV-Traffic Energy: Analytical Split from Event Counters\n\n                                                400\n\n                                                350\n\n                                                300\n\n                                                250\n                                                        446.0 J\n                                                200\n\n                                                150\n\n                                                100\n                                                                                    73.2 J total                 71.2 J total                  75.1 J total               70.4 J total\n                                                 50                                                                                              75.1 J\n                                                                                      73.2 J                       71.2 J                                                   69.0 J\n\n                                                  0\n                                                      Full Cache                 StreamingLLM                       H2O                         SnapKV                 TieredKV (Ours)\n\n\n                                                                                                    Promote                     Demote\n                                                                                Attention                                                               Drop\n                                                                                                    (STT read +                 (VRAM read +\n                                                                                reads                                                                   (STT retire)\n                                                                                                    VRAM write)                 STT write)\n\n\n\n                                                                  Assumed STT 2/8 pJ per bit; excludes prefill, compute, and system power. No STT device measured.\n\f",
+      "rendered_artist_values": {
+        "figure": "fig12_energy.png",
+        "axes": [
+          {
+            "title": "Decode KV-Traffic Energy: Analytical Split from Event Counters",
+            "xlabel": "",
+            "ylabel": "Modeled decode KV-traffic energy, 6 tasks (Joules)",
+            "ylim": [
+              0.0,
+              445.99059519890005
+            ],
+            "xticklabels": [
+              "Full Cache",
+              "StreamingLLM",
+              "H2O",
+              "SnapKV",
+              "TieredKV (Ours)"
+            ],
+            "bars": [
+              {
+                "x": -0.3,
+                "y": 0.0,
+                "width": 0.6,
+                "height": 445.99059519890005
+              },
+              {
+                "x": 0.7,
+                "y": 0.0,
+                "width": 0.6,
+                "height": 73.2207576513
+              },
+              {
+                "x": 1.7,
+                "y": 0.0,
+                "width": 0.6,
+                "height": 71.2364827608
+              },
+              {
+                "x": 2.7,
+                "y": 0.0,
+                "width": 0.6,
+                "height": 75.1406080327
+              },
+              {
+                "x": 3.7,
+                "y": 0.0,
+                "width": 0.6,
+                "height": 68.99116277764
+              },
+              {
+                "x": -0.3,
+                "y": 445.99059519890005,
+                "width": 0.6,
+                "height": 0.0
+              },
+              {
+                "x": 0.7,
+                "y": 73.2207576513,
+                "width": 0.6,
+                "height": 0.0
+              },
+              {
+                "x": 1.7,
+                "y": 71.2364827608,
+                "width": 0.6,
+                "height": 0.0
+              },
+              {
+                "x": 2.7,
+                "y": 75.1406080327,
+                "width": 0.6,
+                "height": 0.0
+              },
+              {
+                "x": 3.7,
+                "y": 68.99116277764,
+                "width": 0.6,
+                "height": 1.2288681574399902
+              },
+              {
+                "x": -0.3,
+                "y": 445.99059519890005,
+                "width": 0.6,
+                "height": 0.0
+              },
+              {
+                "x": 0.7,
+                "y": 73.2207576513,
+                "width": 0.6,
+                "height": 0.0
+              },
+              {
+                "x": 1.7,
+                "y": 71.2364827608,
+                "width": 0.6,
+                "height": 0.0
+              },
+              {
+                "x": 2.7,
+                "y": 75.1406080327,
+                "width": 0.6,
+                "height": 0.0
+              },
+              {
+                "x": 3.7,
+                "y": 70.22003093508,
+                "width": 0.6,
+                "height": 0.2222306099200182
+              },
+              {
+                "x": -0.3,
+                "y": 445.99059519890005,
+                "width": 0.6,
+                "height": 0.0
+              },
+              {
+                "x": 0.7,
+                "y": 73.2207576513,
+                "width": 0.6,
+                "height": 0.0
+              },
+              {
+                "x": 1.7,
+                "y": 71.2364827608,
+                "width": 0.6,
+                "height": 0.0
+              },
+              {
+                "x": 2.7,
+                "y": 75.1406080327,
+                "width": 0.6,
+                "height": 0.0
+              },
+              {
+                "x": 3.7,
+                "y": 70.44226154500001,
+                "width": 0.6,
+                "height": 0.0
+              }
+            ],
+            "lines": [],
+            "images": [],
+            "texts": [
+              "446.0 J",
+              "73.2 J",
+              "71.2 J",
+              "75.1 J",
+              "69.0 J",
+              "446.0 J total",
+              "73.2 J total",
+              "71.2 J total",
+              "75.1 J total",
+              "70.4 J total"
+            ]
+          }
+        ],
+        "figure_texts": [
+          "Assumed STT 2/8 pJ per bit; excludes prefill, compute, and system power. No STT device measured."
+        ],
+        "reference_sha256": "1f2387156fbed4ce2228c6d3926f2010eeec61307bcb4c8e68577c0cf041b20d",
+        "regenerated_sha256": "1f2387156fbed4ce2228c6d3926f2010eeec61307bcb4c8e68577c0cf041b20d",
+        "same_shape": true,
+        "exact_pixels": true,
+        "shape": [
+          1356,
+          2795,
+          4
+        ],
+        "reference_shape": [
+          1356,
+          2795,
+          4
+        ],
+        "different_pixel_fraction": 0.0
+      },
+      "exact_pixel_reproduction": true,
+      "reproduction_mode": "v2_remediation_v3",
+      "disposition": "retain historical assumed traffic totals, rename residual otherbilledtraffic; current events need new model evaluation"
+    },
+    {
+      "stem": "fig2_latency_comparison",
+      "files": {
+        "png": {
+          "path": "figures_final/fig2_latency_comparison.png",
+          "sha256": "60b0a47b5349d75d3083fe9a10aae6627289e0e037bef48b5a23cf96eb861293"
+        },
+        "pdf": {
+          "path": "figures_final/fig2_latency_comparison.pdf",
+          "sha256": "f658f6144e397e2546e06203eef177e369061c2fb7b776e0337dc5c97e8a854f"
+        }
+      },
+      "renderer": {
+        "path": "experiments/plot_publication_figures.py",
+        "sha256": "74ce1ee148d4e7f94d2897bc5215052ba4af7ce535f896a6a58cfe2b53010bdc",
+        "line": 375
+      },
+      "input_artifacts": {
+        "results/final_equal_attended_frac075.json": {
+          "sha256": "d45d50bc03021b0590644b3194baa4ea49551d3d804e639626b90c829ce5c992",
+          "config": {
+            "model": "/data/nishant/Nishant/Prashant/models/mistral-7b-instruct",
+            "budget": 1024,
+            "tasks": [
+              "multifieldqa_en",
+              "hotpotqa",
+              "triviaqa",
+              "qasper",
+              "narrativeqa",
+              "gov_report"
+            ],
+            "methods": [
+              "full",
+              "streamingllm",
+              "h2o",
+              "snapkv",
+              "tieredkv"
+            ],
+            "tiered_vram_budget": 992,
+            "tiered_stt_budget": 2048,
+            "tiered_stt_expose": 32,
+            "sttram_bifurcation_frac": 0.75,
+            "max_ctx": 31500,
+            "max_samples": 25,
+            "seed": 0,
+            "tiered_kv_dtype": "bfloat16"
+          },
+          "sample_record_count": 0
+        }
+      },
+      "aggregation": "cache_stats.modeled_latency_us/1000 bytask/method; totals not pertoken",
+      "extracted_pdf_text": "                                                                      Modeled Decode Latency \u2014 TieredKV vs. SOTA (Fair / Iso-VRAM)\n                              4000   Full Cache\n                                     StreamingLLM                                                                                                                                       2294\n                                     H2 O\n                              2000                                                                                                                          1494\nModeled Decode Latency (ms)\n\n\n\n\n                                     SnapKV\n                                     TieredKV (Ours)\n                                                                                                                                                                                                             862\n                              1000                                                                                            717\n                                                                                                                                                                                                       473\n                                                                                                                                                                                           420\n                                                                                                                                                                                                 426\n                               500   363\n                                                                                                                                                      302\n\n                                                             214        200                                                         173\n                                                                                                                                                157\n                                                                                                   168\n                               200         120                                                                                            146\n                                                       102                                                                                                                        130\n                                                                                             120\n                                                 110\n                                                                                                                        101\n                                                                                                                                                                        83\n                               100                                                      62\n                                                                              56                                   52                                              63        64\n                                                                                   57                    48\n                                                                                                              46\n                                50\n\n\n\n\n                                     MultiFieldQA                          HotpotQA                      TriviaQA                   Qasper                   NarrativeQA                  GovReport\n\n\n                                                             Latency: analytical model (GPU VRAM \u2194 STT-RAM tier bandwidth). TieredKV latency includes migration overhead.\n\f",
+      "rendered_artist_values": {
+        "figure": "fig2_latency_comparison.png",
+        "axes": [
+          {
+            "title": "Modeled Decode Latency \u2014 TieredKV vs. SOTA (Fair / Iso-VRAM)",
+            "xlabel": "",
+            "ylabel": "Modeled Decode Latency (ms)",
+            "ylim": [
+              20.0,
+              5200.0
+            ],
+            "xticklabels": [
+              "MultiFieldQA",
+              "HotpotQA",
+              "TriviaQA",
+              "Qasper",
+              "NarrativeQA",
+              "GovReport"
+            ],
+            "bars": [
+              {
+                "x": -0.33456,
+                "y": 0,
+                "width": 0.12512,
+                "height": 362.7861
+              },
+              {
+                "x": 0.66544,
+                "y": 0,
+                "width": 0.12512,
+                "height": 200.1944
+              },
+              {
+                "x": 1.66544,
+                "y": 0,
+                "width": 0.12512,
+                "height": 168.1118
+              },
+              {
+                "x": 2.66544,
+                "y": 0,
+                "width": 0.12512,
+                "height": 717.4655
+              },
+              {
+                "x": 3.66544,
+                "y": 0,
+                "width": 0.12512,
+                "height": 1493.997
+              },
+              {
+                "x": 4.665439999999999,
+                "y": 0,
+                "width": 0.12512,
+                "height": 2293.978
+              },
+              {
+                "x": -0.19856000000000001,
+                "y": 0,
+                "width": 0.12512,
+                "height": 120.08139999999999
+              },
+              {
+                "x": 0.8014399999999999,
+                "y": 0,
+                "width": 0.12512,
+                "height": 56.1848
+              },
+              {
+                "x": 1.80144,
+                "y": 0,
+                "width": 0.12512,
+                "height": 48.156800000000004
+              },
+              {
+                "x": 2.80144,
+                "y": 0,
+                "width": 0.12512,
+                "height": 173.0539
+              },
+              {
+                "x": 3.80144,
+                "y": 0,
+                "width": 0.12512,
+                "height": 63.225199999999994
+              },
+              {
+                "x": 4.8014399999999995,
+                "y": 0,
+                "width": 0.12512,
+                "height": 420.20709999999997
+              },
+              {
+                "x": -0.06256,
+                "y": 0,
+                "width": 0.12512,
+                "height": 110.29469999999999
+              },
+              {
+                "x": 0.93744,
+                "y": 0,
+                "width": 0.12512,
+                "height": 56.6509
+              },
+              {
+                "x": 1.93744,
+                "y": 0,
+                "width": 0.12512,
+                "height": 46.1373
+              },
+              {
+                "x": 2.93744,
+                "y": 0,
+                "width": 0.12512,
+                "height": 146.0239
+              },
+              {
+                "x": 3.93744,
+                "y": 0,
+                "width": 0.12512,
+                "height": 82.6433
+              },
+              {
+                "x": 4.93744,
+                "y": 0,
+                "width": 0.12512,
+                "height": 426.4209
+              },
+              {
+                "x": 0.07344,
+                "y": 0,
+                "width": 0.12512,
+                "height": 102.06139999999999
+              },
+              {
+                "x": 1.0734400000000002,
+                "y": 0,
+                "width": 0.12512,
+                "height": 61.621900000000004
+              },
+              {
+                "x": 2.07344,
+                "y": 0,
+                "width": 0.12512,
+                "height": 52.351099999999995
+              },
+              {
+                "x": 3.07344,
+                "y": 0,
+                "width": 0.12512,
+                "height": 157.20870000000002
+              },
+              {
+                "x": 4.07344,
+                "y": 0,
+                "width": 0.12512,
+                "height": 64.1573
+              },
+              {
+                "x": 5.07344,
+                "y": 0,
+                "width": 0.12512,
+                "height": 473.335
+              },
+              {
+                "x": 0.20944000000000002,
+                "y": 0,
+                "width": 0.12512,
+                "height": 213.78470000000002
+              },
+              {
+                "x": 1.20944,
+                "y": 0,
+                "width": 0.12512,
+                "height": 120.4134
+              },
+              {
+                "x": 2.2094400000000003,
+                "y": 0,
+                "width": 0.12512,
+                "height": 101.1023
+              },
+              {
+                "x": 3.2094400000000003,
+                "y": 0,
+                "width": 0.12512,
+                "height": 301.9131
+              },
+              {
+                "x": 4.20944,
+                "y": 0,
+                "width": 0.12512,
+                "height": 130.182
+              },
+              {
+                "x": 5.20944,
+                "y": 0,
+                "width": 0.12512,
+                "height": 861.8417
+              }
+            ],
+            "lines": [],
+            "images": [],
+            "texts": [
+              "363",
+              "200",
+              "168",
+              "717",
+              "1494",
+              "2294",
+              "120",
+              "56",
+              "48",
+              "173",
+              "63",
+              "420",
+              "110",
+              "57",
+              "46",
+              "146",
+              "83",
+              "426",
+              "102",
+              "62",
+              "52",
+              "157",
+              "64",
+              "473",
+              "214",
+              "120",
+              "101",
+              "302",
+              "130",
+              "862"
+            ]
+          }
+        ],
+        "figure_texts": [
+          "Latency: analytical model (GPU VRAM \u2194 STT-RAM tier bandwidth). TieredKV latency includes migration overhead."
+        ],
+        "reference_sha256": "60b0a47b5349d75d3083fe9a10aae6627289e0e037bef48b5a23cf96eb861293",
+        "regenerated_sha256": "60b0a47b5349d75d3083fe9a10aae6627289e0e037bef48b5a23cf96eb861293",
+        "same_shape": true,
+        "exact_pixels": true,
+        "shape": [
+          1244,
+          2821,
+          4
+        ],
+        "reference_shape": [
+          1244,
+          2821,
+          4
+        ],
+        "different_pixel_fraction": 0.0
+      },
+      "exact_pixel_reproduction": true,
+      "reproduction_mode": "publication_legacy_title",
+      "disposition": "retain historical analytical workload totals; replace current causal timing only after newgate"
+    },
+    {
+      "stem": "fig3_write_savings",
+      "files": {
+        "png": {
+          "path": "figures_final/fig3_write_savings.png",
+          "sha256": "d52d914f806cee3815054ea76275683c707729056603c9f91ce126614d08c641"
+        },
+        "pdf": {
+          "path": "figures_final/fig3_write_savings.pdf",
+          "sha256": "a20471073c540e390fc8705d97b17a7dc84d35e46cabe9584905be4c16104fb3"
+        }
+      },
+      "renderer": {
+        "path": "experiments/plot_publication_figures.py",
+        "sha256": "74ce1ee148d4e7f94d2897bc5215052ba4af7ce535f896a6a58cfe2b53010bdc",
+        "line": 463
+      },
+      "input_artifacts": {
+        "results/final_equal_attended_frac075.json": {
+          "sha256": "d45d50bc03021b0590644b3194baa4ea49551d3d804e639626b90c829ce5c992",
+          "config": {
+            "model": "/data/nishant/Nishant/Prashant/models/mistral-7b-instruct",
+            "budget": 1024,
+            "tasks": [
+              "multifieldqa_en",
+              "hotpotqa",
+              "triviaqa",
+              "qasper",
+              "narrativeqa",
+              "gov_report"
+            ],
+            "methods": [
+              "full",
+              "streamingllm",
+              "h2o",
+              "snapkv",
+              "tieredkv"
+            ],
+            "tiered_vram_budget": 992,
+            "tiered_stt_budget": 2048,
+            "tiered_stt_expose": 32,
+            "sttram_bifurcation_frac": 0.75,
+            "max_ctx": 31500,
+            "max_samples": 25,
+            "seed": 0,
+            "tiered_kv_dtype": "bfloat16"
+          },
+          "sample_record_count": 0
+        },
+        "results/clean_sweep_stt/stt1024.json": {
+          "sha256": "c1565d7ef7780b5e7ab8e4f4e185fecc498afe783e185c403594b02d6e7b7bc9",
+          "config": {
+            "model": "/data/nishant/Nishant/Prashant/models/mistral-7b-instruct",
+            "budget": 1024,
+            "tasks": [
+              "multifieldqa_en",
+              "qasper",
+              "narrativeqa",
+              "hotpotqa",
+              "triviaqa"
+            ],
+            "methods": [
+              "tieredkv"
+            ],
+            "tiered_vram_budget": 1024,
+            "tiered_stt_budget": 1024,
+            "tiered_stt_expose": null,
+            "sttram_bifurcation_frac": 1.0,
+            "max_ctx": 31500,
+            "max_samples": 25,
+            "seed": 0,
+            "tiered_kv_dtype": "bfloat16"
+          },
+          "sample_record_count": 0
+        },
+        "results/clean_sweep_stt/stt2048.json": {
+          "sha256": "c97c56f381347876a395ae788af8edb138cf400d43f2d8ed15bb3faf188447ac",
+          "config": {
+            "model": "/data/nishant/Nishant/Prashant/models/mistral-7b-instruct",
+            "budget": 1024,
+            "tasks": [
+              "multifieldqa_en",
+              "qasper",
+              "narrativeqa",
+              "hotpotqa",
+              "triviaqa"
+            ],
+            "methods": [
+              "tieredkv"
+            ],
+            "tiered_vram_budget": 1024,
+            "tiered_stt_budget": 2048,
+            "tiered_stt_expose": null,
+            "sttram_bifurcation_frac": 1.0,
+            "max_ctx": 31500,
+            "max_samples": 25,
+            "seed": 0,
+            "tiered_kv_dtype": "bfloat16"
+          },
+          "sample_record_count": 0
+        },
+        "results/clean_sweep_stt/stt3072.json": {
+          "sha256": "03701b5f110cb855858d65a9666c66ecc27524ee21305dc3512165b9536bb205",
+          "config": {
+            "model": "/data/nishant/Nishant/Prashant/models/mistral-7b-instruct",
+            "budget": 1024,
+            "tasks": [
+              "multifieldqa_en",
+              "qasper",
+              "narrativeqa",
+              "hotpotqa",
+              "triviaqa"
+            ],
+            "methods": [
+              "tieredkv"
+            ],
+            "tiered_vram_budget": 1024,
+            "tiered_stt_budget": 3072,
+            "tiered_stt_expose": null,
+            "sttram_bifurcation_frac": 1.0,
+            "max_ctx": 31500,
+            "max_samples": 25,
+            "seed": 0,
+            "tiered_kv_dtype": "bfloat16"
+          },
+          "sample_record_count": 0
+        },
+        "results/clean_sweep_stt/stt512.json": {
+          "sha256": "67b89ccaf67d6fcc301df41e7887171af3321cfef7be89f6586c7d11f5f9058d",
+          "config": {
+            "model": "/data/nishant/Nishant/Prashant/models/mistral-7b-instruct",
+            "budget": 1024,
+            "tasks": [
+              "multifieldqa_en",
+              "qasper",
+              "narrativeqa",
+              "hotpotqa",
+              "triviaqa"
+            ],
+            "methods": [
+              "tieredkv"
+            ],
+            "tiered_vram_budget": 1024,
+            "tiered_stt_budget": 512,
+            "tiered_stt_expose": null,
+            "sttram_bifurcation_frac": 1.0,
+            "max_ctx": 31500,
+            "max_samples": 25,
+            "seed": 0,
+            "tiered_kv_dtype": "bfloat16"
+          },
+          "sample_record_count": 0
+        }
+      },
+      "aggregation": "left paid_writes,writes_saved and100saved/(paid+saved); right unweighted mean task percentage by STTcapacity",
+      "extracted_pdf_text": "                                                                                                                        TieredKV STT-RAM Write Efficiency\n\n                                                          STT-RAM Write Traffic: Paid vs. Saved (Fair)                                                                                           Write Savings vs. STT Budget (Ablation)\n                                                         Paid writes                                                                  92.5% saved                                100   Higher STT budget \u2192 more backup reuse \u2192 fewer paid writes.\nSTT-RAM Write Events (token pages)\n\n\n\n\n                                     1600k\n                                                         Writes saved\n\n                                     1400k\n                                                                                                                                                                                  80\n\n\n\n\n                                                                                                                                                        Avg. Write Savings (%)\n                                     1200k\n\n                                     1000k                                                                                                                                        60\n\n                                      800k\n                                                                                                                                                                                  40\n                                      600k                                                        88.2% saved\n\n                                                85.5% saved                                                                                                                                                                                                 20%\n                                      400k\n                                                                                                                    83.1% saved                                                   20\n                                                                 81.2% saved78.2% saved\n                                      200k                                                                                                                                                                                             7%\n                                                                                                                                                                                                       4%\n                                                                                                                                                                                       2%\n                                            0                                                                                                                                      0\n                                                                                                                                                                                       500           1000           1500            2000            2500   3000\n                                                    QA            ot QA                QA             spe\n                                                                                                         r                 QA             ort\n                                                iel\n                                                   d\n                                                               tp                  via              Qa                  ive             ep\n                                            ltiF            Ho                 Tri                             r   r a t\n                                                                                                                                 GovR                                                                          STT-RAM Budget (tokens)\n                                       Mu                                                                    Na\n                                                MultiFieldQA        HotpotQA           TriviaQA          Qasper         NarrativeQA      GovReport\n\n                                     Paid                  55k              39k               38k                 64k             39k            118k\n\n                                     Saved                324k             170k              137k             476k               192k           1450k\n\n                                     Saved %             85.5%            81.2%             78.2%            88.2%              83.1%           92.5%\n\f",
+      "rendered_artist_values": {
+        "figure": "fig3_write_savings.png",
+        "axes": [
+          {
+            "title": "STT-RAM Write Traffic: Paid vs. Saved (Fair)",
+            "xlabel": "",
+            "ylabel": "STT-RAM Write Events (token pages)",
+            "ylim": [
+              0.0,
+              1756518.4000000001
+            ],
+            "xticklabels": [
+              "MultiFieldQA",
+              "HotpotQA",
+              "TriviaQA",
+              "Qasper",
+              "NarrativeQA",
+              "GovReport"
+            ],
+            "bars": [
+              {
+                "x": -0.275,
+                "y": 0,
+                "width": 0.55,
+                "height": 55114
+              },
+              {
+                "x": 0.725,
+                "y": 0,
+                "width": 0.55,
+                "height": 39297
+              },
+              {
+                "x": 1.725,
+                "y": 0,
+                "width": 0.55,
+                "height": 38203
+              },
+              {
+                "x": 2.725,
+                "y": 0,
+                "width": 0.55,
+                "height": 63758
+              },
+              {
+                "x": 3.725,
+                "y": 0,
+                "width": 0.55,
+                "height": 38908
+              },
+              {
+                "x": 4.725,
+                "y": 0,
+                "width": 0.55,
+                "height": 118004
+              },
+              {
+                "x": -0.275,
+                "y": 55114,
+                "width": 0.55,
+                "height": 324278
+              },
+              {
+                "x": 0.725,
+                "y": 39297,
+                "width": 0.55,
+                "height": 170175
+              },
+              {
+                "x": 1.725,
+                "y": 38203,
+                "width": 0.55,
+                "height": 137381
+              },
+              {
+                "x": 2.725,
+                "y": 63758,
+                "width": 0.55,
+                "height": 476274
+              },
+              {
+                "x": 3.725,
+                "y": 38908,
+                "width": 0.55,
+                "height": 191588
+              },
+              {
+                "x": 4.725,
+                "y": 118004,
+                "width": 0.55,
+                "height": 1450316
+              }
+            ],
+            "lines": [],
+            "images": [],
+            "texts": [
+              "85.5% saved",
+              "81.2% saved",
+              "78.2% saved",
+              "88.2% saved",
+              "83.1% saved",
+              "92.5% saved"
+            ]
+          },
+          {
+            "title": "Write Savings vs. STT Budget (Ablation)",
+            "xlabel": "STT-RAM Budget (tokens)",
+            "ylabel": "Avg. Write Savings (%)",
+            "ylim": [
+              0.0,
+              105.0
+            ],
+            "xticklabels": [
+              "0",
+              "500",
+              "1000",
+              "1500",
+              "2000",
+              "2500",
+              "3000",
+              "3500"
+            ],
+            "bars": [],
+            "lines": [
+              {
+                "label": "_child0",
+                "x": [
+                  512,
+                  1024,
+                  2048,
+                  3072
+                ],
+                "y": [
+                  1.8244655415935718,
+                  4.449069536231648,
+                  7.1938985775375075,
+                  19.996073078328237
+                ]
+              }
+            ],
+            "images": [],
+            "texts": [
+              "2%",
+              "4%",
+              "7%",
+              "20%",
+              "Higher STT budget \u2192 more backup reuse \u2192 fewer paid writes."
+            ]
+          }
+        ],
+        "figure_texts": [
+          "TieredKV STT-RAM Write Efficiency"
+        ],
+        "reference_sha256": "d52d914f806cee3815054ea76275683c707729056603c9f91ce126614d08c641",
+        "regenerated_sha256": "d52d914f806cee3815054ea76275683c707729056603c9f91ce126614d08c641",
+        "same_shape": true,
+        "exact_pixels": true,
+        "shape": [
+          1554,
+          3241,
+          4
+        ],
+        "reference_shape": [
+          1554,
+          3241,
+          4
+        ],
+        "different_pixel_fraction": 0.0
+      },
+      "exact_pixel_reproduction": true,
+      "reproduction_mode": "publication_legacy",
+      "disposition": "retain historical with two distinct experiments/fractions named and token-event units corrected"
+    },
+    {
+      "stem": "fig6_migration_profile",
+      "files": {
+        "png": {
+          "path": "figures_final/fig6_migration_profile.png",
+          "sha256": "8222bc776b268df04e0b58432095c923f3684f0de92e2ffa38989112ce2e8c34"
+        },
+        "pdf": {
+          "path": "figures_final/fig6_migration_profile.pdf",
+          "sha256": "3616267b2e6f81a9a44f4aa1873e5ce0780b857c5e9021fc58117c99c30e7068"
+        }
+      },
+      "renderer": {
+        "path": "experiments/plot_publication_figures.py",
+        "sha256": "74ce1ee148d4e7f94d2897bc5215052ba4af7ce535f896a6a58cfe2b53010bdc",
+        "line": 793
+      },
+      "input_artifacts": {
+        "results/final_equal_vram_frac075.json": {
+          "sha256": "2410e1e3ccc977b22510a8dc5de3ab7a11e6f2ba99cfa3475f1a680c17d605a8",
+          "config": {
+            "model": "/data/nishant/Nishant/Prashant/models/mistral-7b-instruct",
+            "budget": 1024,
+            "tasks": [
+              "multifieldqa_en",
+              "hotpotqa",
+              "triviaqa",
+              "qasper",
+              "narrativeqa",
+              "gov_report"
+            ],
+            "methods": [
+              "full",
+              "streamingllm",
+              "h2o",
+              "snapkv",
+              "tieredkv"
+            ],
+            "tiered_vram_budget": 1024,
+            "tiered_stt_budget": 2048,
+            "tiered_stt_expose": null,
+            "sttram_bifurcation_frac": 0.75,
+            "max_ctx": 31500,
+            "max_samples": 25,
+            "seed": 0,
+            "tiered_kv_dtype": "bfloat16"
+          },
+          "sample_record_count": 0
+        }
+      },
+      "aggregation": "stack demoted,promoted,promotions_deferred,dropped; sum labels/1000",
+      "extracted_pdf_text": "                                                                        TieredKV Migration Profile per Task (Equal-VRAM Setting)\n                                                         Demoted (VRAM\u2192STT)\n                                                                                                                                                            4141k\n                                                         Promoted (STT\u2192VRAM)\nToken Migration Events (cumulative)\n\n\n\n                                      4000k              Deferred promotions (hysteresis-denied)\n                                                         Dropped (evicted)\n\n\n\n                                      3000k\n\n\n\n\n                                      2000k\n\n                                                                                                                      1340k\n                                                          1126k\n                                      1000k\n                                                                                592k                                                       626k\n                                                                                                         499k\n\n\n\n                                         0\n                                                               A                A                     QA              per               QA                    t\n                                                         ldQ                 otQ                   via                               ive                   por\n                                                   Fie                     tp                 Tri               Qas                at                 Re\n                                          M   ulti                      Ho                                                    Narr                Gov\n\f",
+      "rendered_artist_values": {
+        "figure": "fig6_migration_profile.png",
+        "axes": [
+          {
+            "title": "TieredKV Migration Profile per Task (Equal-VRAM Setting)",
+            "xlabel": "",
+            "ylabel": "Token Migration Events (cumulative)",
+            "ylim": [
+              0.0,
+              4637911.04
+            ],
+            "xticklabels": [
+              "MultiFieldQA",
+              "HotpotQA",
+              "TriviaQA",
+              "Qasper",
+              "NarrativeQA",
+              "GovReport"
+            ],
+            "bars": [
+              {
+                "x": -0.275,
+                "y": 0,
+                "width": 0.55,
+                "height": 388896
+              },
+              {
+                "x": 0.725,
+                "y": 0,
+                "width": 0.55,
+                "height": 206272
+              },
+              {
+                "x": 1.725,
+                "y": 0,
+                "width": 0.55,
+                "height": 175584
+              },
+              {
+                "x": 2.725,
+                "y": 0,
+                "width": 0.55,
+                "height": 459840
+              },
+              {
+                "x": 3.725,
+                "y": 0,
+                "width": 0.55,
+                "height": 217920
+              },
+              {
+                "x": 4.725,
+                "y": 0,
+                "width": 0.55,
+                "height": 1409984
+              },
+              {
+                "x": -0.275,
+                "y": 388896,
+                "width": 0.55,
+                "height": 365856
+              },
+              {
+                "x": 0.725,
+                "y": 206272,
+                "width": 0.55,
+                "height": 194208
+              },
+              {
+                "x": 1.725,
+                "y": 175584,
+                "width": 0.55,
+                "height": 165472
+              },
+              {
+                "x": 2.725,
+                "y": 459840,
+                "width": 0.55,
+                "height": 432320
+              },
+              {
+                "x": 3.725,
+                "y": 217920,
+                "width": 0.55,
+                "height": 205152
+              },
+              {
+                "x": 4.725,
+                "y": 1409984,
+                "width": 0.55,
+                "height": 1324640
+              },
+              {
+                "x": -0.275,
+                "y": 754752,
+                "width": 0.55,
+                "height": 371424
+              },
+              {
+                "x": 0.725,
+                "y": 400480,
+                "width": 0.55,
+                "height": 191840
+              },
+              {
+                "x": 1.725,
+                "y": 341056,
+                "width": 0.55,
+                "height": 158112
+              },
+              {
+                "x": 2.725,
+                "y": 892160,
+                "width": 0.55,
+                "height": 448320
+              },
+              {
+                "x": 3.725,
+                "y": 423072,
+                "width": 0.55,
+                "height": 203424
+              },
+              {
+                "x": 4.725,
+                "y": 2734624,
+                "width": 0.55,
+                "height": 1406368
+              },
+              {
+                "x": -0.275,
+                "y": 1126176,
+                "width": 0.55,
+                "height": 0
+              },
+              {
+                "x": 0.725,
+                "y": 592320,
+                "width": 0.55,
+                "height": 0
+              },
+              {
+                "x": 1.725,
+                "y": 499168,
+                "width": 0.55,
+                "height": 0
+              },
+              {
+                "x": 2.725,
+                "y": 1340480,
+                "width": 0.55,
+                "height": 0
+              },
+              {
+                "x": 3.725,
+                "y": 626496,
+                "width": 0.55,
+                "height": 0
+              },
+              {
+                "x": 4.725,
+                "y": 4140992,
+                "width": 0.55,
+                "height": 0
+              }
+            ],
+            "lines": [],
+            "images": [],
+            "texts": [
+              "1126k",
+              "592k",
+              "499k",
+              "1340k",
+              "626k",
+              "4141k"
+            ]
+          }
+        ],
+        "figure_texts": [],
+        "reference_sha256": "8222bc776b268df04e0b58432095c923f3684f0de92e2ffa38989112ce2e8c34",
+        "regenerated_sha256": "8222bc776b268df04e0b58432095c923f3684f0de92e2ffa38989112ce2e8c34",
+        "same_shape": true,
+        "exact_pixels": true,
+        "shape": [
+          1201,
+          2491,
+          4
+        ],
+        "reference_shape": [
+          1201,
+          2491,
+          4
+        ],
+        "different_pixel_fraction": 0.0
+      },
+      "exact_pixel_reproduction": true,
+      "reproduction_mode": "publication_legacy",
+      "disposition": "retain historical logical action counts, deferrals not migration"
+    },
+    {
+      "stem": "fig8_frac_ablation",
+      "files": {
+        "png": {
+          "path": "figures_final/fig8_frac_ablation.png",
+          "sha256": "c75f1a5d9100309f96dece6a81795c6a9b2f5760369d9d4252ce3cd3843d68ad"
+        },
+        "pdf": {
+          "path": "figures_final/fig8_frac_ablation.pdf",
+          "sha256": "b29b5dc79375792cdd77ca34e5777b8e03242a57d862da5b20b922f11d20c7c0"
+        }
+      },
+      "renderer": {
+        "path": "experiments/plot_frac_ablation.py",
+        "sha256": "9ceb464f7ceb5566afc8db0f31e851ab665499033e92cf024422f94dab36c08c",
+        "line": 51
+      },
+      "input_artifacts": {
+        "results/e2_frac0_25_short.json": {
+          "sha256": "c98d11d07223f426bea464a1d3aa4ea28487f54fa24b9ec91e6b9706297459a6",
+          "config": {
+            "model": "/data/nishant/Nishant/Prashant/models/mistral-7b-instruct",
+            "budget": 1024,
+            "tasks": [
+              "multifieldqa_en",
+              "qasper",
+              "narrativeqa",
+              "hotpotqa",
+              "triviaqa"
+            ],
+            "methods": [
+              "tieredkv"
+            ],
+            "tiered_vram_budget": 1024,
+            "tiered_stt_budget": 2048,
+            "tiered_stt_expose": null,
+            "sttram_bifurcation_frac": 0.25,
+            "max_ctx": 31500,
+            "max_samples": 25,
+            "seed": 0,
+            "tiered_kv_dtype": "bfloat16"
+          },
+          "sample_record_count": 0
+        },
+        "results/e2_frac0_5_short.json": {
+          "sha256": "c541b5908941cf0a825bc136b9bf2f137239e677123b7c8aeff4acb2b4661b31",
+          "config": {
+            "model": "/data/nishant/Nishant/Prashant/models/mistral-7b-instruct",
+            "budget": 1024,
+            "tasks": [
+              "multifieldqa_en",
+              "qasper",
+              "narrativeqa",
+              "hotpotqa",
+              "triviaqa"
+            ],
+            "methods": [
+              "tieredkv"
+            ],
+            "tiered_vram_budget": 1024,
+            "tiered_stt_budget": 2048,
+            "tiered_stt_expose": null,
+            "sttram_bifurcation_frac": 0.5,
+            "max_ctx": 31500,
+            "max_samples": 25,
+            "seed": 0,
+            "tiered_kv_dtype": "bfloat16"
+          },
+          "sample_record_count": 0
+        },
+        "results/e2_frac0_75_short.json": {
+          "sha256": "053a19dc7a248212897969aefcdd5b50b5cd01782e045d85e9723ad5e6fd5ac9",
+          "config": {
+            "model": "/data/nishant/Nishant/Prashant/models/mistral-7b-instruct",
+            "budget": 1024,
+            "tasks": [
+              "multifieldqa_en",
+              "qasper",
+              "narrativeqa",
+              "hotpotqa",
+              "triviaqa"
+            ],
+            "methods": [
+              "tieredkv"
+            ],
+            "tiered_vram_budget": 1024,
+            "tiered_stt_budget": 2048,
+            "tiered_stt_expose": null,
+            "sttram_bifurcation_frac": 0.75,
+            "max_ctx": 31500,
+            "max_samples": 25,
+            "seed": 0,
+            "tiered_kv_dtype": "bfloat16"
+          },
+          "sample_record_count": 0
+        },
+        "results/e2_frac1_0_short.json": {
+          "sha256": "a3aaf36d130779ae6aa3d05f09147c43bdea4bba2e3efb8e46ddf660229ba346",
+          "config": {
+            "model": "/data/nishant/Nishant/Prashant/models/mistral-7b-instruct",
+            "budget": 1024,
+            "tasks": [
+              "multifieldqa_en",
+              "qasper",
+              "narrativeqa",
+              "hotpotqa",
+              "triviaqa"
+            ],
+            "methods": [
+              "tieredkv"
+            ],
+            "tiered_vram_budget": 1024,
+            "tiered_stt_budget": 2048,
+            "tiered_stt_expose": null,
+            "sttram_bifurcation_frac": 1.0,
+            "max_ctx": 31500,
+            "max_samples": 25,
+            "seed": 0,
+            "tiered_kv_dtype": "bfloat16"
+          },
+          "sample_record_count": 0
+        }
+      },
+      "aggregation": "mean taskscore; mean task100saved/(paid+saved); fraction parsed filename",
+      "extracted_pdf_text": "                              Headroom Trade-off: Reserving STT-RAM Restores Write Savings\n                                 at Negligible Accuracy Cost (frac=0.75 operating point)\n                        38.7                                                                          100\n                 38.7\n\n                 38.6\n                                                  38.5                                                80\n                 38.5\n\n\n\n\n                                                                                                            Write savings (%)\nAvg F1 (\u00d7 100)\n\n\n\n\n                 38.4\n                                                                                                      60\n\n                 38.3\n\n                 38.2                                                                                 40\n                                                                         38.1\n\n                 38.1\n                                                                                                      20\n                 38.0\n                                                                                               37.9\n\n                 37.9\n                                                                                                      0\n                        1.0        0.9      0.8          0.7    0.6      0.5       0.4   0.3\n                                          STT-RAM bifurcation fraction (headroom \u2190 )\n\f",
+      "rendered_artist_values": {
+        "figure": "fig8_frac_ablation.png",
+        "axes": [
+          {
+            "title": "Headroom Trade-off: Reserving STT-RAM Restores Write Savings\nat Negligible Accuracy Cost (frac=0.75 operating point)",
+            "xlabel": "STT-RAM bifurcation fraction (headroom $\\leftarrow$)",
+            "ylabel": "Avg F1 ($\\times$ 100)",
+            "ylim": [
+              37.880199999999995,
+              38.7118
+            ],
+            "xticklabels": [
+              "0.2",
+              "0.3",
+              "0.4",
+              "0.5",
+              "0.6",
+              "0.7",
+              "0.8",
+              "0.9",
+              "1.0",
+              "1.1"
+            ],
+            "bars": [],
+            "lines": [
+              {
+                "label": "Avg F1 (5 tasks)",
+                "x": [
+                  0.25,
+                  0.5,
+                  0.75,
+                  1.0
+                ],
+                "y": [
+                  37.91799999999999,
+                  38.14,
+                  38.506,
+                  38.674
+                ]
+              }
+            ],
+            "images": [],
+            "texts": [
+              "37.9",
+              "38.1",
+              "38.5",
+              "38.7"
+            ]
+          },
+          {
+            "title": "",
+            "xlabel": "",
+            "ylabel": "Write savings (%)",
+            "ylim": [
+              0.0,
+              100.0
+            ],
+            "xticklabels": [
+              "0.2",
+              "0.3",
+              "0.4",
+              "0.5",
+              "0.6",
+              "0.7",
+              "0.8",
+              "0.9",
+              "1.0",
+              "1.1"
+            ],
+            "bars": [],
+            "lines": [
+              {
+                "label": "Write savings %",
+                "x": [
+                  0.25,
+                  0.5,
+                  0.75,
+                  1.0
+                ],
+                "y": [
+                  83.41999586034319,
+                  83.14297259038722,
+                  82.88490720833151,
+                  7.193898577537508
+                ]
+              }
+            ],
+            "images": [],
+            "texts": []
+          }
+        ],
+        "figure_texts": [],
+        "reference_sha256": "c75f1a5d9100309f96dece6a81795c6a9b2f5760369d9d4252ce3cd3843d68ad",
+        "regenerated_sha256": "c75f1a5d9100309f96dece6a81795c6a9b2f5760369d9d4252ce3cd3843d68ad",
+        "same_shape": true,
+        "exact_pixels": true,
+        "shape": [
+          1199,
+          2189,
+          4
+        ],
+        "reference_shape": [
+          1199,
+          2189,
+          4
+        ],
+        "different_pixel_fraction": 0.0
+      },
+      "exact_pixel_reproduction": true,
+      "reproduction_mode": "frac_ablation",
+      "disposition": "retain historical pointestimates without noninferiority claim; needs new preregistered development ablation"
+    },
+    {
+      "stem": "fig15_frac_compare",
+      "files": {
+        "png": {
+          "path": "figures_final/fig15_frac_compare.png",
+          "sha256": "007ee4cbe8e65ac9576d532055bb76fee0e6c5869549d762a700a586a3553b03"
+        },
+        "pdf": {
+          "path": "figures_final/fig15_frac_compare.pdf",
+          "sha256": "49b130eddfef5f1e136feaad75af5ed941869dcceb6e330bbfc2f9ac25fce883"
+        }
+      },
+      "renderer": {
+        "path": "experiments/plot_frac_compare.py",
+        "sha256": "db7284a63a62832363ab31f0c3acec942af84e0ad314c69c187301f36e77ecdc",
+        "line": 65
+      },
+      "input_artifacts": {
+        "results/e2_frac1_0_short.json": {
+          "sha256": "a3aaf36d130779ae6aa3d05f09147c43bdea4bba2e3efb8e46ddf660229ba346",
+          "config": {
+            "model": "/data/nishant/Nishant/Prashant/models/mistral-7b-instruct",
+            "budget": 1024,
+            "tasks": [
+              "multifieldqa_en",
+              "qasper",
+              "narrativeqa",
+              "hotpotqa",
+              "triviaqa"
+            ],
+            "methods": [
+              "tieredkv"
+            ],
+            "tiered_vram_budget": 1024,
+            "tiered_stt_budget": 2048,
+            "tiered_stt_expose": null,
+            "sttram_bifurcation_frac": 1.0,
+            "max_ctx": 31500,
+            "max_samples": 25,
+            "seed": 0,
+            "tiered_kv_dtype": "bfloat16"
+          },
+          "sample_record_count": 0
+        },
+        "results/e2_frac0_75_short.json": {
+          "sha256": "053a19dc7a248212897969aefcdd5b50b5cd01782e045d85e9723ad5e6fd5ac9",
+          "config": {
+            "model": "/data/nishant/Nishant/Prashant/models/mistral-7b-instruct",
+            "budget": 1024,
+            "tasks": [
+              "multifieldqa_en",
+              "qasper",
+              "narrativeqa",
+              "hotpotqa",
+              "triviaqa"
+            ],
+            "methods": [
+              "tieredkv"
+            ],
+            "tiered_vram_budget": 1024,
+            "tiered_stt_budget": 2048,
+            "tiered_stt_expose": null,
+            "sttram_bifurcation_frac": 0.75,
+            "max_ctx": 31500,
+            "max_samples": 25,
+            "seed": 0,
+            "tiered_kv_dtype": "bfloat16"
+          },
+          "sample_record_count": 0
+        },
+        "results/final_equal_vram.json": {
+          "sha256": "61501694ad52ff4b3d22c074626446c4dd8f3ad9600bb3fead528b2f3eb73cb9",
+          "config": {
+            "model": "/data/nishant/Nishant/Prashant/models/mistral-7b-instruct",
+            "budget": 1024,
+            "tasks": [
+              "multifieldqa_en",
+              "hotpotqa",
+              "triviaqa",
+              "qasper",
+              "narrativeqa",
+              "gov_report"
+            ],
+            "methods": [
+              "full",
+              "streamingllm",
+              "h2o",
+              "snapkv",
+              "tieredkv"
+            ],
+            "tiered_vram_budget": 1024,
+            "tiered_stt_budget": 2048,
+            "tiered_stt_expose": null,
+            "sttram_bifurcation_frac": 1.0,
+            "max_ctx": 31500,
+            "max_samples": 25,
+            "seed": 0,
+            "tiered_kv_dtype": "bfloat16"
+          },
+          "sample_record_count": 0
+        },
+        "results/frac075_gov.json": {
+          "sha256": "fc3417baf8d0bc84dc6a037db7179baf7c1116c798ae7f2faa29331e2f5de1d7",
+          "config": {
+            "model": "/data/nishant/Nishant/Prashant/models/mistral-7b-instruct",
+            "budget": 1024,
+            "tasks": [
+              "gov_report"
+            ],
+            "methods": [
+              "tieredkv"
+            ],
+            "tiered_vram_budget": 1024,
+            "tiered_stt_budget": 2048,
+            "tiered_stt_expose": null,
+            "sttram_bifurcation_frac": 0.75,
+            "max_ctx": 31500,
+            "max_samples": 10,
+            "seed": 0,
+            "tiered_kv_dtype": "bfloat16"
+          },
+          "sample_record_count": 0
+        }
+      },
+      "aggregation": "per-taskscore and100saved/(paid+saved); GovReport from separate files",
+      "extracted_pdf_text": "                                                       Bifurcation Fraction: Same Accuracy, Far Fewer Paid Writes (TieredKV, VRAM=1024 + STT=2048)\n\n\n                                                              (a) Accuracy holds at frac = 0.75                                                                                                   (b) Write savings at frac = 0.75\n                                      80\n                                                                                                                       frac = 1.0 (finals)                                            frac = 1.0 (finals)\n                                                                                                                                                                         100\nTieredKV Score (F1 / ROUGE-L \u00d7 100)\n\n\n\n\n                                                                                        67.4                           frac = 0.75                                                    frac = 0.75                                                            92.2%\n                                      70                                         67.2                                                                                                                                             87.4%\n                                                                                                                                                                                      85.6%\n\n\n\n\n                                                                                                                                             STT-RAM Write Savings (%)\n                                                                                                                                                                                                      80.8%                                    82.5%\n                                                                                                                                                                                                                    78.2%\n                                      60       57.2 55.2                                                                                                                  80\n\n\n                                      50\n                                                                                                                                                                          60\n                                                                       37.9\n                                      40                      38.0\n\n\n                                                                                                                                      26.9\n                                      30                                                                                                                                  40\n                                                                                                                               26.1\n\n                                                                                                                      18.6\n                                                                                                               18.6\n                                      20                                                                                                                                          22.3%\n                                                                                                        13.3\n                                                                                                                                                                                                                                                         18.2%\n                                                                                                 12.3                                                                     20\n                                      10                                                                                                                                                                        10.0%\n                                                                                                                                                                                                                              3.7%\n                                                                                                                                                                                                0.0%                                       0.0%\n                                       0                                                                                                                                   0\n\n                                            eldQ\n                                                 A                QA          iaQ\n                                                                                   A              per              QA          ort                                                 QA             Q A\n                                                                                                                                                                                                              iaQ\n                                                                                                                                                                                                                   A           per             QA          ort\n                                          Fi                pot           Triv                 Qas            tive          Rep                                                ield           pot        Triv               Qas           tive         Rep\n                                      ulti            Hot                                            Na r r a         G o v                                                ltiF           Hot                                     Na r ra         G ov\n                         M                                                                                                                                               Mu\n\f",
+      "rendered_artist_values": {
+        "figure": "fig15_frac_compare.png",
+        "axes": [
+          {
+            "title": "(a) Accuracy holds at frac = 0.75",
+            "xlabel": "",
+            "ylabel": "TieredKV Score (F1 / ROUGE-L $\\times$ 100)",
+            "ylim": [
+              0.0,
+              82.2768
+            ],
+            "xticklabels": [
+              "MultiFieldQA",
+              "HotpotQA",
+              "TriviaQA",
+              "Qasper",
+              "NarrativeQA",
+              "GovReport"
+            ],
+            "bars": [
+              {
+                "x": -0.34,
+                "y": 0,
+                "width": 0.34,
+                "height": 57.19
+              },
+              {
+                "x": 0.6599999999999999,
+                "y": 0,
+                "width": 0.34,
+                "height": 38.05
+              },
+              {
+                "x": 1.6600000000000001,
+                "y": 0,
+                "width": 0.34,
+                "height": 67.21
+              },
+              {
+                "x": 2.66,
+                "y": 0,
+                "width": 0.34,
+                "height": 12.34
+              },
+              {
+                "x": 3.66,
+                "y": 0,
+                "width": 0.34,
+                "height": 18.58
+              },
+              {
+                "x": 4.66,
+                "y": 0,
+                "width": 0.34,
+                "height": 26.1
+              },
+              {
+                "x": 2.7755575615628914e-17,
+                "y": 0,
+                "width": 0.33999999999999997,
+                "height": 55.25
+              },
+              {
+                "x": 1.0,
+                "y": 0,
+                "width": 0.33999999999999997,
+                "height": 37.93
+              },
+              {
+                "x": 2.0,
+                "y": 0,
+                "width": 0.33999999999999997,
+                "height": 67.44
+              },
+              {
+                "x": 3.0,
+                "y": 0,
+                "width": 0.33999999999999997,
+                "height": 13.28
+              },
+              {
+                "x": 4.0,
+                "y": 0,
+                "width": 0.33999999999999997,
+                "height": 18.63
+              },
+              {
+                "x": 5.0,
+                "y": 0,
+                "width": 0.33999999999999997,
+                "height": 26.93
+              }
+            ],
+            "lines": [],
+            "images": [],
+            "texts": [
+              "57.2",
+              "55.2",
+              "38.0",
+              "37.9",
+              "67.2",
+              "67.4",
+              "12.3",
+              "13.3",
+              "18.6",
+              "18.6",
+              "26.1",
+              "26.9"
+            ]
+          },
+          {
+            "title": "(b) Write savings at frac = 0.75",
+            "xlabel": "",
+            "ylabel": "STT-RAM Write Savings (%)",
+            "ylim": [
+              0.0,
+              108.0
+            ],
+            "xticklabels": [
+              "MultiFieldQA",
+              "HotpotQA",
+              "TriviaQA",
+              "Qasper",
+              "NarrativeQA",
+              "GovReport"
+            ],
+            "bars": [
+              {
+                "x": -0.34,
+                "y": 0,
+                "width": 0.34,
+                "height": 22.26450999048525
+              },
+              {
+                "x": 0.6599999999999999,
+                "y": 0,
+                "width": 0.34,
+                "height": 0.015513496742165685
+              },
+              {
+                "x": 1.6600000000000001,
+                "y": 0,
+                "width": 0.34,
+                "height": 9.997332034149963
+              },
+              {
+                "x": 2.66,
+                "y": 0,
+                "width": 0.34,
+                "height": 3.69213736631016
+              },
+              {
+                "x": 3.66,
+                "y": 0,
+                "width": 0.34,
+                "height": 0.0
+              },
+              {
+                "x": 4.66,
+                "y": 0,
+                "width": 0.34,
+                "height": 18.243305846381915
+              },
+              {
+                "x": 2.7755575615628914e-17,
+                "y": 0,
+                "width": 0.33999999999999997,
+                "height": 85.59049205957376
+              },
+              {
+                "x": 1.0,
+                "y": 0,
+                "width": 0.33999999999999997,
+                "height": 80.82725721377598
+              },
+              {
+                "x": 2.0,
+                "y": 0,
+                "width": 0.33999999999999997,
+                "height": 78.156893566612
+              },
+              {
+                "x": 3.0,
+                "y": 0,
+                "width": 0.33999999999999997,
+                "height": 87.38843945720251
+              },
+              {
+                "x": 4.0,
+                "y": 0,
+                "width": 0.33999999999999997,
+                "height": 82.4614537444934
+              },
+              {
+                "x": 5.0,
+                "y": 0,
+                "width": 0.33999999999999997,
+                "height": 92.24707514411512
+              }
+            ],
+            "lines": [],
+            "images": [],
+            "texts": [
+              "22.3%",
+              "85.6%",
+              "0.0%",
+              "80.8%",
+              "10.0%",
+              "78.2%",
+              "3.7%",
+              "87.4%",
+              "0.0%",
+              "82.5%",
+              "18.2%",
+              "92.2%"
+            ]
+          }
+        ],
+        "figure_texts": [
+          "Bifurcation Fraction: Same Accuracy, Far Fewer Paid Writes (TieredKV, VRAM=1024 + STT=2048)"
+        ],
+        "reference_sha256": "007ee4cbe8e65ac9576d532055bb76fee0e6c5869549d762a700a586a3553b03",
+        "regenerated_sha256": "007ee4cbe8e65ac9576d532055bb76fee0e6c5869549d762a700a586a3553b03",
+        "same_shape": true,
+        "exact_pixels": true,
+        "shape": [
+          1325,
+          3245,
+          4
+        ],
+        "reference_shape": [
+          1325,
+          3245,
+          4
+        ],
+        "different_pixel_fraction": 0.0
+      },
+      "exact_pixel_reproduction": true,
+      "reproduction_mode": "frac_compare",
+      "disposition": "retain historical without accuracy-equivalence claim; no current validation inferred"
+    }
+  ],
+  "findings": [
+    {
+      "severity": "P1",
+      "id": "mixed_epochs",
+      "location": "experiments/plot_figures_v2.py:529; experiments/plot_frac_compare.py:66",
+      "figures": [
+        1,
+        2,
+        3,
+        6,
+        7,
+        8,
+        12,
+        14,
+        15
+      ],
+      "finding": "A single final folder combines old unversioned fraction inputs with remediation_v3 protocol-v2 scores, and all predate October13 correctness/prompt fixes. Fig1/14 TriviaQA78.27 and Fig15fraction.75 TriviaQA67.44 are different protocol results, not conflicting current estimates.",
+      "action": "Replace validated development quality panels; visibly label otherpanels historical with explicit source manifests."
+    },
+    {
+      "severity": "P1",
+      "id": "unsupported_equivalence",
+      "location": "experiments/plot_frac_ablation.py:84; experiments/plot_frac_compare.py:109",
+      "figures": [
+        8,
+        15
+      ],
+      "finding": "Negligible accuracy cost/sameaccuracy/accuracyholds claims are asserted without paired NI gate or interval; raw inputs lack sample IDs,predictions,runtime anddataset hashes. Fig8caption hardcodes7\u219283and\u22120.16, actual taskmean difference\u22120.168.",
+      "action": "Remove superiority/equivalence language; new independent claim requires locked protocol and appropriate data."
+    },
+    {
+      "severity": "P1",
+      "id": "workload_totals_not_speed",
+      "location": "experiments/plot_publication_figures.py:380; experiments/plot_figures_v2.py:322",
+      "figures": [
+        2,
+        12
+      ],
+      "finding": "Modeled latency/energy sum free-generation requests with unequal outputs. Example GovReport modelsteps: Full3619, adaptedSnap3047,Tieredfair2965. They cannot support pertoken/wholeloop speed or fixedwork energy conclusions.",
+      "action": "Label summed analytical workloadtraffic and unequalwork; keep measured timing separate."
+    },
+    {
+      "severity": "P1",
+      "id": "wrong_event_units",
+      "location": "experiments/plot_publication_figures.py:559; experiments/plot_publication_figures.py:846",
+      "figures": [
+        3,
+        6
+      ],
+      "finding": "Token pages label misidentifies per-layer token demotions as pages. Fig6stack includes hysteresis-denied promotions that perform no transfer; demoted count includes avoidedwrites. Sum is policyactions, not migrationtraffic.",
+      "action": "Name per-layer token events/actions; reserve bytes/pagewrites for explicit transfer accounting."
+    },
+    {
+      "severity": "P2",
+      "id": "mixed_fraction_panels",
+      "location": "experiments/plot_publication_figures.py:500",
+      "figures": [
+        3
+      ],
+      "finding": "Leftfraction.75 six-task bars and rightfraction1 five-task STTbudget sweep appear under one efficiencyheading without disclosing different fraction/taskscope. Rightaverages taskratios instead of pooled saved/total.",
+      "action": "Explicit panelprotocols and ratioestimand."
+    },
+    {
+      "severity": "P2",
+      "id": "hypothetical_capacity",
+      "location": "experiments/plot_figures_v2.py:287",
+      "figures": [
+        11
+      ],
+      "finding": "Fourbars are algebraic configurations from one equalhot config, not4measured runs. BF16GQA128KiB/token constant is correct for statedmodel; excludes packedduplicates,metadata,hostallocator roots and faithfulSnap queryhead expansion.",
+      "action": "Keep as analytical configuration illustration only; do not present as fullphysical footprint."
+    },
+    {
+      "severity": "P2",
+      "id": "residual_and_live_costmodel",
+      "location": "experiments/plot_figures_v2.py:319",
+      "figures": [
+        12
+      ],
+      "finding": "Reconstructscomponents with LIVE importedCostModel while total is frozen; labels allremaining billedenergy attention and clamps negative residual tozero. Futurecost changes can silently changeor inflate stack; missingfields default0.",
+      "action": "Freeze assumptions/hash; call residual otherbilledtraffic; reject negative/missing accounting rather than conceal it."
+    },
+    {
+      "severity": "P2",
+      "id": "row_uncertainty",
+      "location": "experiments/plot_figures_v2.py:85",
+      "figures": [
+        1,
+        7
+      ],
+      "finding": "Legacy errorbars are rowstandarderrors ofrounded sample_scores, not confidenceintervals or document-group paired uncertainty. Dependence exists e.g.current5-row Multifield has4targetgroups.",
+      "action": "Rescore exact predictions; bootstrap paired targetdocumentgroups, labelconditional uncertainty."
+    },
+    {
+      "severity": "P2",
+      "id": "heatmap_color_clipping",
+      "location": "experiments/plot_figures_v2.py:379",
+      "figures": [
+        14
+      ],
+      "finding": "vmax75 clips scores78.27/79.1to samecolor;colorbar omits points\u00d7100. Box merely bestpointestimate, not significance.",
+      "action": "Use0\u2013100points colorrange; box ties across correctmethodset; state no significance."
+    },
+    {
+      "severity": "P2",
+      "id": "literal_titles_not_config_validated",
+      "location": "experiments/plot_figures_v2.py:277; experiments/plot_publication_figures.py:342",
+      "figures": [
+        1,
+        4,
+        7,
+        11
+      ],
+      "finding": "Hardware/model/contextdecode counts/capacities in captions are hardcoded; global sourcehash equality check doesnot validate them. GenericCLI can mislabel alternateinputs.",
+      "action": "Derive/validate supportedconfig beforeplot; manifestall actualconditions."
+    }
+  ],
+  "no_invented_numeric_measurements_found": true,
+  "limits": "Exactpixel reconstruction establishes renderer/input mapping, not scientific validity or sourceepoch equivalence. No newcurrentrun fabricated.",
+  "script_sha256": "5d60e1b955de8fbe222fb86358a3cbef4825af52c2b61a8519e91f12dd1a3639"
+}

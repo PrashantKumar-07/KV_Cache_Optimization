@@ -1,0 +1,298 @@
+{
+  "config": {
+    "model": "../models/mistral-7b-instruct",
+    "data_dir": "../hf_cache/datasets/downloads/extracted/5def9c7eaf83951e1cee75902d8611ef764ad88dd289e8f0bf97ff658a3eb83a/data",
+    "tasks": [
+      "multifieldqa_en"
+    ],
+    "max_samples": 25,
+    "capacity": 961,
+    "window": 32,
+    "attn_implementation": "sdpa",
+    "runtime": {
+      "git_revision": "be7e700d84d46b47e32ba5b9870c8b71783b9e53",
+      "source_sha256": "a93b716ddb51dfc500b00043cf9eba2d98967d67eb9052b1ba0f38039bf057ec",
+      "packages": {
+        "torch": "2.5.1+cu124",
+        "transformers": "5.14.1",
+        "datasets": "5.0.0",
+        "numpy": "2.2.6",
+        "accelerate": "1.14.0",
+        "huggingface_hub": "1.24.0",
+        "rouge": "1.0.1"
+      }
+    },
+    "seed": 0,
+    "max_ctx": 31500,
+    "source_files": {
+      "/data/nishant/Nishant/Prashant/Project/kv_cache/experiments/evaluate_snapkv_adapter.py": "5533e29960c876ac179d14fe4cdda4852e71e167d4d7358f02ad15c74dfdc574",
+      "/data/nishant/Nishant/Prashant/Project/kv_cache/experiments/snapkv_adapter.py": "8d44929bcd4440431332608eb14f4660008ca284ded84dcb824dca3dbad19eab",
+      "sota/snapkv/snapkv/monkeypatch/snapkv_utils.py": "d7eddeaf361d9d38be991be734752c831b09f9c95a6e777ac17e7262ca2b4cf5"
+    },
+    "dataset_sha256": {
+      "multifieldqa_en": "678a51335e3c90e0dd43bf1131045e4f2859cc693e7eded89cc6a1ee8d18faff"
+    }
+  },
+  "results": {
+    "multifieldqa_en": {
+      "snapkv_upstream_selector": {
+        "score": 61.88,
+        "n": 25,
+        "sample_scores": [
+          60.0,
+          100.0,
+          0.0,
+          75.0,
+          52.94,
+          23.08,
+          100.0,
+          95.24,
+          100.0,
+          10.26,
+          100.0,
+          40.0,
+          28.57,
+          30.77,
+          37.74,
+          21.05,
+          100.0,
+          100.0,
+          100.0,
+          30.0,
+          100.0,
+          95.65,
+          100.0,
+          28.57,
+          18.18
+        ],
+        "samples": [
+          {
+            "sample_id": "b3a9da1dd79b69143f46fb4ea37f3159f11a4585b68604cbda50c0adf4da65a1",
+            "prediction": "Permanent yellow spot damage on the screen.",
+            "score": 60.0,
+            "elapsed_s": 1.4953816775232553,
+            "prompt_tokens": 6689,
+            "generated_tokens": 11,
+            "final_kv_payload_bytes": 509083648
+          },
+          {
+            "sample_id": "66fbe72f15b70e8c8cc090467f3ac90f03c8fb6063e3346cd82d7778cd7b1cf9",
+            "prediction": "Vice Admiral",
+            "score": 100.0,
+            "elapsed_s": 0.418302146717906,
+            "prompt_tokens": 3463,
+            "generated_tokens": 3,
+            "final_kv_payload_bytes": 504889344
+          },
+          {
+            "sample_id": "49117774123dc2f3ec95d7bbc61950987252760875cec6cac53ff18be0913744",
+            "prediction": "William Rokebye",
+            "score": 0.0,
+            "elapsed_s": 1.0566772911697626,
+            "prompt_tokens": 8098,
+            "generated_tokens": 5,
+            "final_kv_payload_bytes": 505937920
+          },
+          {
+            "sample_id": "816c7d4d2ca3f7843b2d0f795c0617530c81f992857280a719dc8801a10592cf",
+            "prediction": "South West Ultras",
+            "score": 74.99999999999999,
+            "elapsed_s": 0.2911074012517929,
+            "prompt_tokens": 1892,
+            "generated_tokens": 5,
+            "final_kv_payload_bytes": 505937920
+          },
+          {
+            "sample_id": "670c6b828aaca397f191fff5fc6422ec944d1f3e88cfa9c9a853369093e10caa",
+            "prediction": "The recommended space for using the VR headset is at least 2 meters by 2 meters in an open and safe indoor area.",
+            "score": 52.94117647058824,
+            "elapsed_s": 1.4587110802531242,
+            "prompt_tokens": 6683,
+            "generated_tokens": 29,
+            "final_kv_payload_bytes": 518520832
+          },
+          {
+            "sample_id": "b5aa922e57ebd8e83979d6316ffa84c5fcee60fdaf902b636cfdae5c7337fa5e",
+            "prediction": "The correct expression for the derivative of the function is:\n\nf'(x) = \nbegin{cases}\nfrac{6x^2sin(x^2)+2xcos(x^2)-2}{3x^2}, & if x != 0\n0, & if x",
+            "score": 23.076923076923077,
+            "elapsed_s": 1.9923810418695211,
+            "prompt_tokens": 3939,
+            "generated_tokens": 64,
+            "final_kv_payload_bytes": 536870912
+          },
+          {
+            "sample_id": "1ef75e875cd535f724067bb2465c1a7be297dcaf9f772d8bfb11d15a80b0ecd0",
+            "prediction": "Brooksley Born received the John F. Kennedy Profiles in Courage Award in 2009.",
+            "score": 100.0,
+            "elapsed_s": 0.8970236405730247,
+            "prompt_tokens": 3200,
+            "generated_tokens": 24,
+            "final_kv_payload_bytes": 515899392
+          },
+          {
+            "sample_id": "9e631666dcc5bd183c0033d49fb175661c8f715d1cc455f731ad8524778a9f58",
+            "prediction": "Margaret Way started self-publishing her books as e-books in mid-July 2013.",
+            "score": 95.23809523809523,
+            "elapsed_s": 0.9082644935697317,
+            "prompt_tokens": 3027,
+            "generated_tokens": 25,
+            "final_kv_payload_bytes": 516423680
+          },
+          {
+            "sample_id": "60792e15b02b6ff023ac91e40ae2c750eef4b481719c3449836e2c4ab399408b",
+            "prediction": "Long Term Capital Management (LTCM)",
+            "score": 100.0,
+            "elapsed_s": 0.558501461520791,
+            "prompt_tokens": 3271,
+            "generated_tokens": 10,
+            "final_kv_payload_bytes": 508559360
+          },
+          {
+            "sample_id": "cafe9dcc25e422aa17c7622e59035325ad45cf446584407c4955ede2291d1f7d",
+            "prediction": "In the short-time regime, the anisotropic order parameter m follows a Gaussian theory with m ~ t^(1/2) and g, the Binder cumulant of the lowest transverse mode, being zero. However, the alternative order parameter O distinguishes between driven (IDLG,",
+            "score": 10.256410256410255,
+            "elapsed_s": 1.7374316416680813,
+            "prompt_tokens": 1440,
+            "generated_tokens": 64,
+            "final_kv_payload_bytes": 536870912
+          },
+          {
+            "sample_id": "b430431aa6ae3b3a7724cd01365dfe1d3be5ef68c3544af7f0a2255da45af955",
+            "prediction": "June 1, 1999.",
+            "score": 100.0,
+            "elapsed_s": 0.5888280440121889,
+            "prompt_tokens": 3269,
+            "generated_tokens": 11,
+            "final_kv_payload_bytes": 509083648
+          },
+          {
+            "sample_id": "d370ead831576861750a1dd06e5e00de7a562472241d778236013dcf8125b0de",
+            "prediction": "The 2017 general election was held on 23 September.",
+            "score": 40.0,
+            "elapsed_s": 0.9797884617000818,
+            "prompt_tokens": 5237,
+            "generated_tokens": 17,
+            "final_kv_payload_bytes": 512229376
+          },
+          {
+            "sample_id": "94a6811ae3ea251bd9a42f8c11fd800ecc5015f2d1db94278294866d78c26607",
+            "prediction": "The maximum velocity of a blob or depletion follows a square root dependence on the amplitude and size, as given by Eq.~\ref{eq:vmax_theo}. For small amplitudes, the maximum velocity is approximately proportional to the amplitude, as shown in Eq.~\ref{eq:linear}.",
+            "score": 28.57142857142857,
+            "elapsed_s": 2.390620179474354,
+            "prompt_tokens": 6817,
+            "generated_tokens": 64,
+            "final_kv_payload_bytes": 536870912
+          },
+          {
+            "sample_id": "0d5a2deb0638b139b39e6baeca8ba8d34b396ddfef035d44b3a26e3286949d69",
+            "prediction": "The NLMS algorithm is engaged in the PLMS-PPIC method.",
+            "score": 30.769230769230766,
+            "elapsed_s": 1.0844066236168146,
+            "prompt_tokens": 6250,
+            "generated_tokens": 16,
+            "final_kv_payload_bytes": 511705088
+          },
+          {
+            "sample_id": "9244d184859cf7be0809e42b7144c0e6c0acef950b1049eb0ce4e9db7c6f48c0",
+            "prediction": "The interlayer Berry connection polarizability is a band geometric quantity that measures the k-space curl of the interlayer Berry connection over the occupied states in twisted bilayer systems. It is a characteristic of interlayer-hybridized electronic states and plays a crucial role in the crossed nonlinear dynamical Hall",
+            "score": 37.73584905660377,
+            "elapsed_s": 2.177165323868394,
+            "prompt_tokens": 5336,
+            "generated_tokens": 64,
+            "final_kv_payload_bytes": 536870912
+          },
+          {
+            "sample_id": "3bdd616bd5e74bb0151a3123784012ac275844f9ba97d020b5e9acdaae335e73",
+            "prediction": "Fuller's Ranch, located near Galva.",
+            "score": 21.052631578947363,
+            "elapsed_s": 0.679972056299448,
+            "prompt_tokens": 3648,
+            "generated_tokens": 13,
+            "final_kv_payload_bytes": 510132224
+          },
+          {
+            "sample_id": "64723773121bedc91a6107f70824c5f60a2ed968ad495c3a0a72da70b9b8298f",
+            "prediction": "McPherson",
+            "score": 100.0,
+            "elapsed_s": 0.45471944846212864,
+            "prompt_tokens": 3654,
+            "generated_tokens": 4,
+            "final_kv_payload_bytes": 505413632
+          },
+          {
+            "sample_id": "28e1f08b8ff7fcdc5b641c95b4fbf2b77cf8e6ac2ad55de27ebe93556f71ad80",
+            "prediction": "McPherson County is located in the U.S. state of Kansas.",
+            "score": 100.0,
+            "elapsed_s": 0.7814691066741943,
+            "prompt_tokens": 3641,
+            "generated_tokens": 17,
+            "final_kv_payload_bytes": 512229376
+          },
+          {
+            "sample_id": "688c72ffb7d527872a3d20b835bf6562a0a1ae15ac070c1cb21487004132b1a2",
+            "prediction": "Jacob C. Landau",
+            "score": 100.0,
+            "elapsed_s": 0.456881670281291,
+            "prompt_tokens": 3268,
+            "generated_tokens": 6,
+            "final_kv_payload_bytes": 506462208
+          },
+          {
+            "sample_id": "096cd62bbdac3b74dcbc9b429fdd4a128c819ec673291d84f3c8e1e36813e855",
+            "prediction": "BERT and RoBERTa models with a linear layer on top were used for dialect identification.",
+            "score": 30.0,
+            "elapsed_s": 0.8763258438557386,
+            "prompt_tokens": 3500,
+            "generated_tokens": 21,
+            "final_kv_payload_bytes": 514326528
+          },
+          {
+            "sample_id": "040d501d8278d9cf15b19a5ea085e8531de8524990549b7031071560c6288d4e",
+            "prediction": "The club's headquarters are located on Jivani Street 2 of the Malatia-Sebastia District, Yerevan.",
+            "score": 100.0,
+            "elapsed_s": 0.956003587692976,
+            "prompt_tokens": 1844,
+            "generated_tokens": 31,
+            "final_kv_payload_bytes": 519569408
+          },
+          {
+            "sample_id": "cef95ddb4741e166422f87da1ead0c5973b2b1c94fa00275c79b275a8d80b0d0",
+            "prediction": "Margaret Way was born in Brisbane and died in Cleveland, Queensland.",
+            "score": 95.65217391304348,
+            "elapsed_s": 0.7104760352522135,
+            "prompt_tokens": 3022,
+            "generated_tokens": 17,
+            "final_kv_payload_bytes": 512229376
+          },
+          {
+            "sample_id": "16a3ca3f07c8585a7c2f1d6ec5e58bf503b104b08d2f97aa1a22d1a73dd6cd83",
+            "prediction": "FC Banants",
+            "score": 100.0,
+            "elapsed_s": 0.26501080952584743,
+            "prompt_tokens": 1896,
+            "generated_tokens": 4,
+            "final_kv_payload_bytes": 505413632
+          },
+          {
+            "sample_id": "35832afeafbedec5fb4f7502543bd820e85b6ca76f53652c422681ae237d5955",
+            "prediction": "The club won the Armenian Premier League for the first time in the 2013\u201314 season.",
+            "score": 28.571428571428577,
+            "elapsed_s": 0.7951647210866213,
+            "prompt_tokens": 1896,
+            "generated_tokens": 25,
+            "final_kv_payload_bytes": 516423680
+          },
+          {
+            "sample_id": "abdcc0c0654b9136bcb9e86324603930bc892a4bc0d12520e11d564ffc8c9370",
+            "prediction": "The population of McPherson County according to the 2020 census was 30,223.",
+            "score": 18.181818181818183,
+            "elapsed_s": 1.0084080826491117,
+            "prompt_tokens": 3662,
+            "generated_tokens": 26,
+            "final_kv_payload_bytes": 516947968
+          }
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,447 @@
+{
+  "scope": "Python line trace of evict_and_demote during one 8K prefill+16 decode run; time attributed to previous line including called functions and host waits",
+  "config": {
+    "ctx": 8192,
+    "decode": 16,
+    "device": "cuda:0",
+    "model": "../models/mistral-7b-instruct",
+    "prompt_sha256": "18695714f26e35cb8d2b039ae9efb3b7e64291cbd7bcd91956efc07e16a732cd",
+    "runtime": {
+      "git_revision": "be7e700d84d46b47e32ba5b9870c8b71783b9e53",
+      "source_sha256": "1da28a4a5ece5e7038932e0b7481ffc9f2b2b3d353ea0fd4640d32ec588d8d4c",
+      "packages": {
+        "torch": "2.5.1+cu124",
+        "transformers": "5.14.1",
+        "datasets": "5.0.0",
+        "numpy": "2.2.6",
+        "accelerate": "1.14.0",
+        "huggingface_hub": "1.24.0",
+        "rouge": "1.0.1"
+      }
+    }
+  },
+  "observed_itl_ms": 135.565,
+  "rows": [
+    {
+      "line": 742,
+      "total_ms": 158.75046513974667,
+      "count": 6900,
+      "text": "self.stt_last_access[back] = self._t"
+    },
+    {
+      "line": 676,
+      "total_ms": 88.88263441622257,
+      "count": 512,
+      "text": "hard = self._hard_protected_mask()"
+    },
+    {
+      "line": 783,
+      "total_ms": 81.42452128231525,
+      "count": 512,
+      "text": "self.sram_k = self.sram_k[:, keep, :]"
+    },
+    {
+      "line": 784,
+      "total_ms": 76.82857476174831,
+      "count": 512,
+      "text": "self.sram_v = self.sram_v[:, keep, :]"
+    },
+    {
+      "line": 785,
+      "total_ms": 54.812220856547356,
+      "count": 512,
+      "text": "self.sram_pos = [self.sram_pos[i] for i in keep]"
+    },
+    {
+      "line": 642,
+      "total_ms": 43.63710805773735,
+      "count": 512,
+      "text": "self.append_tokens(new_k, new_v, new_pos)"
+    },
+    {
+      "line": 697,
+      "total_ms": 39.47342187166214,
+      "count": 512,
+      "text": "cand_soft[soft] = float(\"inf\")"
+    },
+    {
+      "line": 701,
+      "total_ms": 37.06280514597893,
+      "count": 512,
+      "text": "else int(torch.isfinite(cand_soft).sum().item()))"
+    },
+    {
+      "line": 746,
+      "total_ms": 35.86876951158047,
+      "count": 6900,
+      "text": "self.stt_peek_streak[back] = 0"
+    },
+    {
+      "line": 741,
+      "total_ms": 35.2507084608078,
+      "count": 6900,
+      "text": "self.stt_shadow[back] = False"
+    },
+    {
+      "line": 786,
+      "total_ms": 28.73368375003338,
+      "count": 512,
+      "text": "self.sram_cum = self.sram_cum[keep_mask]"
+    },
+    {
+      "line": 787,
+      "total_ms": 24.683361873030663,
+      "count": 512,
+      "text": "self.sram_age = self.sram_age[keep_mask]"
+    },
+    {
+      "line": 736,
+      "total_ms": 23.909015581011772,
+      "count": 8992,
+      "text": "for victim in victims:"
+    },
+    {
+      "line": 739,
+      "total_ms": 23.093270137906075,
+      "count": 8480,
+      "text": "back = backup_by_pos.get(vpos, -1)"
+    },
+    {
+      "line": 738,
+      "total_ms": 22.329285740852356,
+      "count": 8480,
+      "text": "vpos = self.sram_pos[victim]"
+    },
+    {
+      "line": 737,
+      "total_ms": 22.054769098758698,
+      "count": 8480,
+      "text": "demoted += 1"
+    },
+    {
+      "line": 740,
+      "total_ms": 21.82372286915779,
+      "count": 8480,
+      "text": "if back >= 0:"
+    },
+    {
+      "line": 698,
+      "total_ms": 19.442303106188774,
+      "count": 512,
+      "text": "order = torch.argsort(cand_soft, stable=True)"
+    },
+    {
+      "line": 747,
+      "total_ms": 18.662646412849426,
+      "count": 6900,
+      "text": "writes_saved += 1"
+    },
+    {
+      "line": 756,
+      "total_ms": 15.140770003199577,
+      "count": 256,
+      "text": "self.stt_k, self.sram_k[:, no_backup_victims, :])"
+    },
+    {
+      "line": 782,
+      "total_ms": 14.280140399932861,
+      "count": 512,
+      "text": "keep = torch.where(keep_mask)[0].tolist()"
+    },
+    {
+      "line": 703,
+      "total_ms": 11.781545355916023,
+      "count": 512,
+      "text": "victims = order[:take].tolist()"
+    },
+    {
+      "line": 678,
+      "total_ms": 11.767303571105003,
+      "count": 512,
+      "text": "cand = self.sram_cum / self.sram_age.clamp(min=1)"
+    },
+    {
+      "line": 758,
+      "total_ms": 11.658994480967522,
+      "count": 256,
+      "text": "self.stt_v, self.sram_v[:, no_backup_victims, :])"
+    },
+    {
+      "line": 732,
+      "total_ms": 9.244183078408241,
+      "count": 512,
+      "text": "shadow_idx0 = torch.where(self.stt_shadow)[0].tolist()"
+    },
+    {
+      "line": 781,
+      "total_ms": 9.116241708397865,
+      "count": 512,
+      "text": "keep_mask[victims] = False"
+    },
+    {
+      "line": 788,
+      "total_ms": 8.523950353264809,
+      "count": 512,
+      "text": "self.sram_grace = self.sram_grace[keep_mask]"
+    },
+    {
+      "line": 696,
+      "total_ms": 7.722778245806694,
+      "count": 512,
+      "text": "cand_soft = cand.clone()"
+    },
+    {
+      "line": 733,
+      "total_ms": 7.008407264947891,
+      "count": 512,
+      "text": "backup_by_pos = {self.stt_pos[i]: i for i in shadow_idx0}"
+    },
+    {
+      "line": 755,
+      "total_ms": 6.953295320272446,
+      "count": 512,
+      "text": "self.stt_k = self.append_stt_storage("
+    },
+    {
+      "line": 757,
+      "total_ms": 5.033368244767189,
+      "count": 512,
+      "text": "self.stt_v = self.append_stt_storage("
+    },
+    {
+      "line": 762,
+      "total_ms": 4.571529105305672,
+      "count": 512,
+      "text": "torch.full((len(no_backup_victims),), float(self._t),"
+    },
+    {
+      "line": 749,
+      "total_ms": 4.280330613255501,
+      "count": 1580,
+      "text": "no_backup_victims.append(victim)"
+    },
+    {
+      "line": 780,
+      "total_ms": 4.128586500883102,
+      "count": 512,
+      "text": "keep_mask = torch.ones(len(self.sram_pos), dtype=torch.bool)"
+    },
+    {
+      "line": 760,
+      "total_ms": 3.8308892399072647,
+      "count": 512,
+      "text": "self.stt_last_access = torch.cat(["
+    },
+    {
+      "line": 765,
+      "total_ms": 3.4435801208019257,
+      "count": 512,
+      "text": "self.stt_shadow = torch.cat("
+    },
+    {
+      "line": 699,
+      "total_ms": 3.3179353922605515,
+      "count": 1024,
+      "text": "n_avail = (len(soft) - int(soft.sum().item())"
+    },
+    {
+      "line": 879,
+      "total_ms": 3.243720158934593,
+      "count": 512,
+      "text": "self.sram_grace.fill_(False)"
+    },
+    {
+      "line": 677,
+      "total_ms": 2.781221643090248,
+      "count": 512,
+      "text": "soft = hard | self.sram_grace"
+    },
+    {
+      "line": 636,
+      "total_ms": 2.5556888431310654,
+      "count": 512,
+      "text": "dropped = 0"
+    },
+    {
+      "line": 673,
+      "total_ms": 2.3603085428476334,
+      "count": 512,
+      "text": "n_over = len(self.sram_pos) - cfg.sram_capacity"
+    },
+    {
+      "line": 771,
+      "total_ms": 2.1739210933446884,
+      "count": 512,
+      "text": "self.stt_was_vram_resident = torch.cat("
+    },
+    {
+      "line": 774,
+      "total_ms": 2.1399613469839096,
+      "count": 512,
+      "text": "self.stt_peek_streak = torch.cat(["
+    },
+    {
+      "line": 635,
+      "total_ms": 2.119166776537895,
+      "count": 512,
+      "text": "cfg = self.cfg"
+    },
+    {
+      "line": 702,
+      "total_ms": 2.0920075476169586,
+      "count": 512,
+      "text": "take = min(n_over, n_avail)"
+    },
+    {
+      "line": 731,
+      "total_ms": 2.085050567984581,
+      "count": 512,
+      "text": "if cfg.inclusive and self.stt_shadow.numel():"
+    },
+    {
+      "line": 674,
+      "total_ms": 2.0444784313440323,
+      "count": 512,
+      "text": "victims = []"
+    },
+    {
+      "line": 637,
+      "total_ms": 1.9648447632789612,
+      "count": 512,
+      "text": "demoted = 0"
+    },
+    {
+      "line": 735,
+      "total_ms": 1.9071362912654877,
+      "count": 512,
+      "text": "no_backup_victims = []"
+    },
+    {
+      "line": 700,
+      "total_ms": 1.8801577389240265,
+      "count": 512,
+      "text": "if cfg.fast_finite_victims"
+    },
+    {
+      "line": 680,
+      "total_ms": 1.8596276640892029,
+      "count": 512,
+      "text": "if cfg.write_aware_lambda > 0 and cfg.inclusive:"
+    },
+    {
+      "line": 766,
+      "total_ms": 1.8351133912801743,
+      "count": 256,
+      "text": "[self.stt_shadow, torch.zeros(len(no_backup_victims), dtype=torch.bool)]"
+    },
+    {
+      "line": 639,
+      "total_ms": 1.8016323447227478,
+      "count": 512,
+      "text": "reclaimed = 0"
+    },
+    {
+      "line": 772,
+      "total_ms": 1.788560301065445,
+      "count": 256,
+      "text": "[self.stt_was_vram_resident, torch.ones(len(no_backup_victims), dtype=torch.bool)]"
+    },
+    {
+      "line": 638,
+      "total_ms": 1.7881263047456741,
+      "count": 512,
+      "text": "writes_saved = 0"
+    },
+    {
+      "line": 640,
+      "total_ms": 1.7724595963954926,
+      "count": 512,
+      "text": "self.last_floor_protected = 0"
+    },
+    {
+      "line": 705,
+      "total_ms": 1.7603766173124313,
+      "count": 512,
+      "text": "remaining = n_over - take"
+    },
+    {
+      "line": 675,
+      "total_ms": 1.7398558557033539,
+      "count": 512,
+      "text": "if n_over > 0:"
+    },
+    {
+      "line": 808,
+      "total_ms": 1.6466565430164337,
+      "count": 512,
+      "text": "n_over = len(self.stt_pos) - cfg.sttram_capacity"
+    },
+    {
+      "line": 706,
+      "total_ms": 1.5616603195667267,
+      "count": 512,
+      "text": "if remaining > 0:"
+    },
+    {
+      "line": 759,
+      "total_ms": 1.5584342181682587,
+      "count": 256,
+      "text": "self.stt_pos += [self.sram_pos[v] for v in no_backup_victims]"
+    },
+    {
+      "line": 730,
+      "total_ms": 1.5503428876399994,
+      "count": 512,
+      "text": "backup_by_pos = {}"
+    },
+    {
+      "line": 809,
+      "total_ms": 1.4184527099132538,
+      "count": 512,
+      "text": "if n_over > 0:"
+    },
+    {
+      "line": 881,
+      "total_ms": 1.3692677021026611,
+      "count": 512,
+      "text": "return demoted, dropped, writes_saved, reclaimed"
+    },
+    {
+      "line": 751,
+      "total_ms": 1.3615787029266357,
+      "count": 512,
+      "text": "if no_backup_victims:"
+    },
+    {
+      "line": 779,
+      "total_ms": 1.3464689254760742,
+      "count": 512,
+      "text": "if victims:"
+    },
+    {
+      "line": 776,
+      "total_ms": 1.186048611998558,
+      "count": 256,
+      "text": "torch.zeros(len(no_backup_victims), dtype=cfg.dtype),"
+    },
+    {
+      "line": 763,
+      "total_ms": 0.7065162062644958,
+      "count": 256,
+      "text": "device=cfg.device, dtype=cfg.dtype),"
+    },
+    {
+      "line": 775,
+      "total_ms": 0.6718132644891739,
+      "count": 256,
+      "text": "self.stt_peek_streak,"
+    },
+    {
+      "line": 761,
+      "total_ms": 0.6667524576187134,
+      "count": 256,
+      "text": "self.stt_last_access,"
+    }
+  ],
+  "limitations": "Trace heavily perturbs timing and asynchronous GPU work may appear at a later synchronization line; use only for hotspot localization."
+}

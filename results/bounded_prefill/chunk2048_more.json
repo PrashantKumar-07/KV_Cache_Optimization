@@ -1,0 +1,197 @@
+{
+  "config": {
+    "model": "../models/mistral-7b-instruct",
+    "budget": 1024,
+    "tiered_vram_budget": 1024,
+    "tiered_stt_budget": 2048,
+    "tiered_stt_expose": 32,
+    "sttram_bifurcation_frac": 0.75,
+    "sink": 4,
+    "recent": 128,
+    "max_samples": 5,
+    "tasks": [
+      "narrativeqa",
+      "gov_report"
+    ],
+    "max_ctx": 31500,
+    "seed": 0,
+    "tiered_kv_dtype": "bfloat16",
+    "tiered_stt_kv_dtype": "same",
+    "tiered_prefill_chunk_size": 2048,
+    "page_size": 16,
+    "promote_top_pages": 2,
+    "stt_live_floor": 1,
+    "write_aware_lambda": 0.0,
+    "tiered_inclusive": true,
+    "runtime": {
+      "git_revision": "be7e700d84d46b47e32ba5b9870c8b71783b9e53",
+      "source_sha256": "0575be28249a8f1ba90426321649c3ecd25d6c30b5e31c18023471149feb8dba",
+      "packages": {
+        "torch": "2.5.1+cu124",
+        "transformers": "5.15.0",
+        "datasets": "2.19.2",
+        "numpy": "2.2.6",
+        "accelerate": "1.14.0",
+        "huggingface_hub": "1.27.0",
+        "rouge": "1.0.1"
+      }
+    },
+    "protocol": "task_chat_exclusions_v2",
+    "data_dir": "../hf_cache/datasets/downloads/extracted/5def9c7eaf83951e1cee75902d8611ef764ad88dd289e8f0bf97ff658a3eb83a/data",
+    "dataset_sha256": {
+      "narrativeqa": "0fb8d08ba5cdad4b74244224b0dc2e8b41ee6b850d954a13eb2d282621ce2f71",
+      "gov_report": "0a3902fcf3d49f228549f02a2ef1ae84dbe8578b8be3d4611d54459487bdef84"
+    },
+    "methods": [
+      "tieredkv"
+    ]
+  },
+  "results": {
+    "narrativeqa": {
+      "tieredkv": {
+        "score": 16.46,
+        "n": 5,
+        "sample_scores": [
+          13.33,
+          15.38,
+          25.0,
+          28.57,
+          0.0
+        ],
+        "samples": [
+          {
+            "sample_id": "27a07bedff812ae2c3fece3ac4a1f1db11f00793a3598fa94f1fa286ea347cb9",
+            "prediction": "Saltram is living off the income from The Coxon Fund.",
+            "score": 13.333333333333334,
+            "elapsed_s": 7.217968372628093,
+            "prompt_tokens": 31500,
+            "generated_tokens": 16
+          },
+          {
+            "sample_id": "dfeb4058f4507fa2d2a6f80f6c230cc08e3c7eaa8221bead1ccee5ba90a57488",
+            "prediction": "Ann is emotionally unavailable.",
+            "score": 15.384615384615383,
+            "elapsed_s": 5.5315411780029535,
+            "prompt_tokens": 31500,
+            "generated_tokens": 7
+          },
+          {
+            "sample_id": "b75b8f1d9f0027543e6f4d84ca94997765d41f9a6eda749df309b0070caee3d8",
+            "prediction": "The witch lives on the island of Atlas.",
+            "score": 25.0,
+            "elapsed_s": 2.6164614129811525,
+            "prompt_tokens": 9674,
+            "generated_tokens": 11
+          },
+          {
+            "sample_id": "5f2d99ab2d103d5f04d78f3e7a3b76f633fabeab2eb86a785cf76ed7ac77249e",
+            "prediction": "Crito visited Socrates to persuade him to escape from prison.",
+            "score": 28.571428571428566,
+            "elapsed_s": 3.251849565654993,
+            "prompt_tokens": 9887,
+            "generated_tokens": 16
+          },
+          {
+            "sample_id": "254d602c75f8a37865dd7b4a2b7efbb25194b5064a29a07d7038b92d6add6c3d",
+            "prediction": "Baron Henry spared Otto's life.",
+            "score": 0.0,
+            "elapsed_s": 5.940377444028854,
+            "prompt_tokens": 31500,
+            "generated_tokens": 10
+          }
+        ],
+        "cache_stats": {
+          "demoted": 30688,
+          "promoted": 28928,
+          "promotions_deferred": 27392,
+          "paid_writes": 6679,
+          "writes_saved": 24009,
+          "dropped": 0,
+          "write_savings_pct": 78.2,
+          "decode_steps": 55,
+          "stt_starved_steps": 0,
+          "stt_unused_steps": 0,
+          "mean_stt_exposed": 32.0,
+          "stt_expose_quota": 32,
+          "stt_exposed_total": 3616,
+          "stt_exposure_samples": 113,
+          "modeled_latency_us": 17884.8,
+          "modeled_energy_nj": 730008518.7
+        }
+      }
+    },
+    "gov_report": {
+      "tieredkv": {
+        "score": 29.58,
+        "n": 5,
+        "sample_scores": [
+          34.46,
+          33.52,
+          30.6,
+          20.65,
+          28.66
+        ],
+        "samples": [
+          {
+            "sample_id": "11d3fe7a8c5f9be5c05ff2b46002fae136e91f31575249f5c3db054f4d0715ad",
+            "prediction": "The report highlights the complexities and risks associated with the global IT supply chain and its impact on federal information systems. The federal government's reliance on international suppliers increases the potential for security vulnerabilities that could compromise the confidentiality, integrity, and availability of federal information systems. The report emphasizes that these risks are significant and urgent, as they could jeopardize an agency's operations.\n\nThe report outlines several measures that federal agencies can take to assess, manage, and monitor IT supply chain risks as part of their agencywide information security programs. These measures include developing and implementing departmental policies and procedures, verifying compliance with supply chain protection measures, and collaborating with other agencies to address supply chain security.\n\nThe report also provides examples of how some federal agencies, such as the Department of Defense, have taken steps to address supply chain risks. However, it notes that other agencies, such as the Department of Justice, Energy, and DHS, have made less progress in this area. The report makes recommendations for these agencies to develop and implement policies and procedures to protect against supply chain threats and to monitor compliance with these measures.\n\nThe report concludes by emphasizing the importance of federal agencies taking a proactive approach to IT supply chain risk management to mitigate potential security vulnerabilities and protect against the risks of compromised federal information systems.",
+            "score": 34.46475153188038,
+            "elapsed_s": 34.58391381800175,
+            "prompt_tokens": 3308,
+            "generated_tokens": 279
+          },
+          {
+            "sample_id": "56f5a37dac322a67081fbbce0ee9261106133f38ac8b4f38fc3555f5b593969d",
+            "prediction": "The report examines grant programs from the Departments of Labor (DOL), Justice (DOJ), and Health and Human Services (HHS) between 2007 and 2015, focusing on those subject to statutory restrictions on religious-based hiring. The report identified 60 grantees as potential faith-based organizations, with 27 of these receiving grants from DOJ, 13 from DOL, and 20 from HHS.\n\nDOJ reported that 9 grantees claimed exemptions from religious-based hiring restrictions, while DOL and HHS did not report any such requests. The report also noted that DOL and HHS had different processes for handling exemption requests, with DOL requiring a formal application and review by the Assistant Secretary, while HHS allowed for self-certification.\n\nThe report found that the majority of grants went to organizations providing services related to victim services, education, and social services. However, some grants were awarded for programs unrelated to religious organizations, such as workforce development and research.\n\nThe report concludes by stating that while the three departments have different processes for handling exemption requests, none of the grantees identified in the study requested or received exemptions during the study period. The report will be sent to the relevant secretaries and congressional committees upon release.",
+            "score": 33.51648307082479,
+            "elapsed_s": 36.15389761328697,
+            "prompt_tokens": 3548,
+            "generated_tokens": 289
+          },
+          {
+            "sample_id": "32b69d9e2f01e5ad531164ef2b312ea36c6cf8a24dfd0b442779369d8cbd8e09",
+            "prediction": "This report provides an overview of cybersecurity-related bills and hearings in the United States Congress during the 115th and 116th sessions. In the 116th Congress, the House has passed four cybersecurity bills, while the Senate has passed one. A total of 31 bills received action in both chambers during the 115th Congress, and five of these were signed into law. These laws include the National Defense Authorization Act for Fiscal Year 2018, which established new cybersecurity initiatives, and the FITARA Enhancement Act of 2017, which required agencies to address IT investments that have received poor performance evaluations for four consecutive quarters. The report also lists cybersecurity-related hearings in the House and Senate during the 116th Congress, but notes that the list is not definitive as no single objective selection criterion was used. The report includes links to the committee websites for each hearing. Previous reports from the Congressional Research Service on cybersecurity legislation in the 113th, 114th, and 115th Congresses are also cited.",
+            "score": 30.60109241661441,
+            "elapsed_s": 27.53292491286993,
+            "prompt_tokens": 1303,
+            "generated_tokens": 249
+          },
+          {
+            "sample_id": "d1bba223842d90eab2f7962487cba597cea36944010060e21c010e1dbfbaeefe",
+            "prediction": "The report reveals that in the years 2016 and 2017, the US Customs and Border Protection (CBP) agency intercepted approximately 308,000 packages containing drugs and other contraband, with over 60% of these seizures made at express consignment facilities and international mail facilities. The majority of the intercepted items were opioids, primarily fentanyl and heroin. CBP used Automated Targeting System (ATS) and Express Consignment System (ECS) to identify and target high-risk packages for inspection. However, the report notes that US Postal Service (USPS) does not provide CBP with advance electronic data (EAD) for all international mail, limiting the effectiveness of CBP's targeting efforts. The report recommends that CBP and USPS work together to improve data sharing and collaboration to enhance the security of the international mail system and reduce the number of contraband seizures. The Department of Homeland Security has agreed to implement these recommendations.",
+            "score": 20.654911466959376,
+            "elapsed_s": 27.716332832351327,
+            "prompt_tokens": 2602,
+            "generated_tokens": 225
+          },
+          {
+            "sample_id": "2124f6aefc1910cb6201bb8bef9916c102aeba694bace9e4d17237ba7d393b5b",
+            "prediction": "The report provides an overview of the TAO-205 class fleet oiler program, which aims to build 20 new fleet oilers to support the U.S. Navy's expanding fleet. The program has made significant progress, with the first ship's construction underway and the design and technology proven through commercial vessel practices. The Navy has requested procurement funding for the fifth and sixth ships in its FY2020 budget, and Congress has provided appropriations for an additional ship in FY2019.\n\nThe TAO-205 class oilers will replace the aging TAO fleet, which is essential for providing underway replenishment of fuel, lubricants, and other supplies to naval vessels at sea. The new oilers will feature advanced technology and a commercial vessel design to minimize risks and reduce costs. The program has followed GAO shipbuilding best practices and is currently revising its acquisition baseline to reflect the updated total quantity of 20 ships.\n\nHowever, the program has faced challenges, including a disruption to the construction schedule due to a docking incident that affected the delivery of future ships. The Navy plans to add two more ships to the low-rate initial production phase and compete a new contract for the remaining 12 ships using the knowledge gained from the existing contract.\n\nCongress has also expressed concerns about the program's reliance on foreign-sourced equipment and the potential impact on national security. The Navy is addressing these concerns by working to reduce its reliance on foreign-sourced components and increasing domestic production capabilities.\n\nOverall, the TAO-205 class oiler program is making progress towards building a modern and capable fleet oiler fleet to support the U.S. Navy's expanding fleet. However, challenges remain, including schedule disruptions and reliance on foreign-sourced equipment, which the Navy is working to address.",
+            "score": 28.66449461464844,
+            "elapsed_s": 51.548806032165885,
+            "prompt_tokens": 5421,
+            "generated_tokens": 410
+          }
+        ],
+        "cache_stats": {
+          "demoted": 764672,
+          "promoted": 718368,
+          "promotions_deferred": 763360,
+          "paid_writes": 58460,
+          "writes_saved": 706212,
+          "dropped": 0,
+          "write_savings_pct": 92.4,
+          "decode_steps": 1447,
+          "stt_starved_steps": 0,
+          "stt_unused_steps": 0,
+          "mean_stt_exposed": 32.0,
+          "stt_expose_quota": 32,
+          "stt_exposed_total": 46624,
+          "stt_exposure_samples": 1457,
+          "modeled_latency_us": 427854.4,
+          "modeled_energy_nj": 19109424660.5
+        }
+      }
+    }
+  }
+}

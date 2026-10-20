@@ -1,0 +1,33 @@
+[transformers] `torch_dtype` is deprecated! Use `dtype` instead!
+Loading weights:   0%|          | 0/291 [00:00<?, ?it/s]Loading weights:   4%|▍         | 13/291 [00:00<00:02, 124.35it/s]Loading weights:  10%|▉         | 28/291 [00:00<00:01, 138.07it/s]Loading weights:  14%|█▍        | 42/291 [00:00<00:01, 129.63it/s]Loading weights:  20%|██        | 59/291 [00:00<00:01, 144.56it/s]Loading weights:  26%|██▌       | 76/291 [00:00<00:01, 152.23it/s]Loading weights:  32%|███▏      | 92/291 [00:00<00:01, 152.57it/s]Loading weights:  37%|███▋      | 108/291 [00:00<00:01, 150.08it/s]Loading weights:  43%|████▎     | 124/291 [00:00<00:01, 143.47it/s]Loading weights:  48%|████▊     | 141/291 [00:00<00:01, 144.67it/s]Loading weights:  54%|█████▍    | 157/291 [00:01<00:00, 148.90it/s]Loading weights:  60%|██████    | 175/291 [00:01<00:00, 156.08it/s]Loading weights:  66%|██████▌   | 191/291 [00:01<00:00, 151.30it/s]Loading weights:  71%|███████   | 207/291 [00:01<00:00, 146.10it/s]Loading weights:  76%|███████▋  | 222/291 [00:01<00:00, 139.06it/s]Loading weights:  82%|████████▏ | 239/291 [00:01<00:00, 146.83it/s]Loading weights:  88%|████████▊ | 257/291 [00:01<00:00, 154.24it/s]Loading weights:  94%|█████████▍| 273/291 [00:01<00:00, 155.61it/s]Loading weights:  99%|█████████▉| 289/291 [00:01<00:00, 151.83it/s]Loading weights: 100%|██████████| 291/291 [00:01<00:00, 148.94it/s]
+4096 0 fused_bounded exact
+Traceback (most recent call last):
+  File "/data/nishant/Nishant/Prashant/Project/kv_cache/results/hardware/pooled_controller_v1/check_gpu.py", line 46, in <module>
+    if __name__=='__main__':main()
+  File "/data/nishant/Nishant/Prashant/Project/kv_cache/results/hardware/pooled_controller_v1/check_gpu.py", line 42, in main
+    try:driver.main()
+  File "/data/nishant/Nishant/Prashant/Project/kv_cache/experiments/compare_reuse_visible.py", line 60, in main
+    row=trial.measure(model,tokenizer,prompt,stream,context,args.decode,'fused_bounded_scores',
+  File "/data/nishant/Nishant/Prashant/Project/kv_cache/results/hardware/pooled_controller_v1/check_gpu.py", line 28, in measure
+    result=saved[2](model,*args,**kwargs)
+  File "/data/nishant/Nishant/Prashant/Project/kv_cache/experiments/compare_cpu_batched.py", line 137, in measure
+    result = profile_one(model, tokenizer, policy, ctx, n_decode=decode,
+  File "/data/nishant/Nishant/Prashant/Project/venv_kvcache/lib/python3.10/site-packages/torch/utils/_contextlib.py", line 116, in decorate_context
+    return func(*args, **kwargs)
+  File "/data/nishant/Nishant/Prashant/Project/kv_cache/experiments/latency_profile.py", line 117, in profile_one
+    elapsed, (past, token, forward_ms, predicted) = cuda_sync_time(decode, device)
+  File "/data/nishant/Nishant/Prashant/Project/kv_cache/experiments/latency_profile.py", line 26, in cuda_sync_time
+    result = fn()
+  File "/data/nishant/Nishant/Prashant/Project/kv_cache/experiments/latency_profile.py", line 111, in decode
+    apply_tuple_kv_inplace(raw, policy(tup))
+  File "/data/nishant/Nishant/Prashant/Project/kv_cache/experiments/longbench_eval.py", line 633, in __call__
+    return self._decode_step(past_kv)
+  File "/data/nishant/Nishant/Prashant/Project/kv_cache/experiments/batched_eviction_policy.py", line 42, in _decode_step
+    result = super()._decode_step(past)
+  File "/data/nishant/Nishant/Prashant/Project/kv_cache/experiments/bounded_pinned_pool.py", line 41, in _decode_step
+    return super()._decode_step(past)
+  File "<pooled-state-controller>", line 27, in _decode_step
+  File "/data/nishant/Nishant/Prashant/Project/kv_cache/experiments/pooled_state_policy.py", line 199, in _prepare_decode_reads
+    return POOLED_PREPARE(self)
+  File "<pooled-state-controller>", line 1, in _prepare_decode_reads
+UnboundLocalError: local variable 'projection' referenced before assignment

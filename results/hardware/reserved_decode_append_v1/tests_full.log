@@ -1,0 +1,59 @@
+........................................................................ [ 19%]
+........................................................................ [ 38%]
+........................................................................ [ 58%]
+.................................................FF..................... [ 77%]
+........................................................................ [ 97%]
+...........                                                              [100%]
+=================================== FAILURES ===================================
+___ test_forward_restores_class_methods_and_hooks_on_partial_failure[False] ____
+
+fail = False
+
+    @pytest.mark.parametrize('fail',[False,True])
+    def test_forward_restores_class_methods_and_hooks_on_partial_failure(fail):
+        policy=SimpleNamespace(initialized=True);model=Model(fail);past=DynamicCache()
+        layer,roots,new=fixture();past.layers=[layer]
+>       lease=AppendLease(model,policy)
+
+tests/test_reserved_decode_append.py:67: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <reserved_decode_append.AppendLease object at 0x7263f0868190>
+model = Model(), policy = namespace(initialized=True)
+
+    def __init__(self,model,policy):
+>       self.policy=weakref.ref(policy);self.pending=[];self.fast_updates=self.fallback_updates=0
+E       TypeError: cannot create weak reference to 'types.SimpleNamespace' object
+
+experiments/reserved_decode_append.py:64: TypeError
+____ test_forward_restores_class_methods_and_hooks_on_partial_failure[True] ____
+
+fail = True
+
+    @pytest.mark.parametrize('fail',[False,True])
+    def test_forward_restores_class_methods_and_hooks_on_partial_failure(fail):
+        policy=SimpleNamespace(initialized=True);model=Model(fail);past=DynamicCache()
+        layer,roots,new=fixture();past.layers=[layer]
+>       lease=AppendLease(model,policy)
+
+tests/test_reserved_decode_append.py:67: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <reserved_decode_append.AppendLease object at 0x7263f0844940>
+model = Model(), policy = namespace(initialized=True)
+
+    def __init__(self,model,policy):
+>       self.policy=weakref.ref(policy);self.pending=[];self.fast_updates=self.fallback_updates=0
+E       TypeError: cannot create weak reference to 'types.SimpleNamespace' object
+
+experiments/reserved_decode_append.py:64: TypeError
+=============================== warnings summary ===============================
+tests/test_review_regressions.py::test_flexicache_checks_preserve_existing_evidence[check_flexicache_transfers]
+  /usr/lib/python3.10/distutils/command/build_ext.py:13: DeprecationWarning: The distutils.sysconfig module is deprecated, use sysconfig instead
+    from distutils.sysconfig import customize_compiler, get_python_version
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ============================
+FAILED tests/test_reserved_decode_append.py::test_forward_restores_class_methods_and_hooks_on_partial_failure[False]
+FAILED tests/test_reserved_decode_append.py::test_forward_restores_class_methods_and_hooks_on_partial_failure[True]
+2 failed, 369 passed, 1 warning in 9.52s

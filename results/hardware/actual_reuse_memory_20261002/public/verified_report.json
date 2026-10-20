@@ -1,0 +1,57 @@
+{
+  "verified": true,
+  "fresh_processes": 4,
+  "public_private_preflight_matches": 6,
+  "no_host_probe_extension_or_ninja_needed": true,
+  "geometries": {
+    "shared": {
+      "root_request_bytes": 151257088,
+      "public_cuda_host_range_bytes": 268435456,
+      "arms": {
+        "fused_bounded": {
+          "whole_gpu_peak_bytes": 18627830784,
+          "decode_gpu_peak_bytes": 15826314240,
+          "final_gpu_allocated_bytes": 14758694400,
+          "sampled_peak_rss_bytes": 1859719168
+        },
+        "native_reuse": {
+          "whole_gpu_peak_bytes": 18627830784,
+          "decode_gpu_peak_bytes": 15826314240,
+          "final_gpu_allocated_bytes": 14628879872,
+          "sampled_peak_rss_bytes": 1859567616
+        }
+      }
+    },
+    "default": {
+      "root_request_bytes": 276824064,
+      "public_cuda_host_range_bytes": 536870912,
+      "arms": {
+        "fused_bounded": {
+          "whole_gpu_peak_bytes": 18627830784,
+          "decode_gpu_peak_bytes": 15834124800,
+          "final_gpu_allocated_bytes": 14767504896,
+          "sampled_peak_rss_bytes": 2133319680
+        },
+        "native_reuse": {
+          "whole_gpu_peak_bytes": 18627830784,
+          "decode_gpu_peak_bytes": 15834124800,
+          "final_gpu_allocated_bytes": 14633377280,
+          "sampled_peak_rss_bytes": 2133311488
+        }
+      }
+    }
+  },
+  "pinned_range_corrected_policy_kv_lower_bound_mib": 518.00390625,
+  "shared_512mib_gate_passed": false,
+  "whole_model_10pct_memory_gate_passed": false,
+  "private_audit_sha256": "94b8c1e269f7f99c0a5deeee6cdb5f9071272e9849ac68d81f5d98e1e27cebed",
+  "source_bundle_sha256": "d809e306f515bea020e742930f8487c03a65fcb39b3f7cca70dd3c7db5df6c15",
+  "evidence_sha256": {
+    "shared_fused_bounded.json": "444b76ded57abf1253b64d698b39eebc6faf531893aaf50dc5fd0e17459cb7ed",
+    "shared_native_reuse.json": "2a39fbea6662db374acedb7cd208c294a83b879d78048d7c54f6cf8d011884b9",
+    "default_fused_bounded.json": "1321698e6e9918d72f8dd11780e3dd7ac60810c531d9c50f4b1dcb71f7030685",
+    "default_native_reuse.json": "079dcc3e46f769430ba16fbb4496a8d6babbd9ec395d41cbcfcd606ef4505b1a"
+  },
+  "verifier_sha256": "fbcfe8a9c8c7e3428b48098b088d0f823eaf60f0a4dcbd94f6dac82abd58c387",
+  "limitations": "Public CUDA host allocation address ranges match the archived private HostBlock capacities; active code no longer reads private layouts or compiles a host extension. Ranges do not measure OS page rounding, other cached allocations, complete GPU/driver/process memory or physical STT. Stronger lower bound already fails512MiB. Fresh harness lifetime differs from legacy profile. No speed/quality/superiority claim."
+}

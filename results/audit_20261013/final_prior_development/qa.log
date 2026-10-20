@@ -1,0 +1,73 @@
+[transformers] `torch_dtype` is deprecated! Use `dtype` instead!
+Loading model: ../models/mistral-7b-instruct
+Loading weights:   0%|          | 0/291 [00:00<?, ?it/s]Loading weights:   4%|▍         | 13/291 [00:00<00:02, 115.69it/s]Loading weights:   9%|▉         | 27/291 [00:00<00:02, 125.37it/s]Loading weights:  14%|█▍        | 41/291 [00:00<00:01, 131.51it/s]Loading weights:  20%|██        | 59/291 [00:00<00:01, 143.14it/s]Loading weights:  26%|██▋       | 77/291 [00:00<00:01, 150.91it/s]Loading weights:  32%|███▏      | 93/291 [00:00<00:01, 153.35it/s]Loading weights:  37%|███▋      | 109/291 [00:00<00:01, 148.29it/s]Loading weights:  43%|████▎     | 124/291 [00:00<00:01, 140.22it/s]Loading weights:  48%|████▊     | 140/291 [00:00<00:01, 143.80it/s]Loading weights:  54%|█████▍    | 157/291 [00:01<00:00, 149.03it/s]Loading weights:  60%|██████    | 175/291 [00:01<00:00, 150.26it/s]Loading weights:  66%|██████▋   | 193/291 [00:01<00:00, 154.93it/s]Loading weights:  73%|███████▎  | 211/291 [00:01<00:00, 156.63it/s]Loading weights:  79%|███████▊  | 229/291 [00:01<00:00, 157.35it/s]Loading weights:  84%|████████▍ | 245/291 [00:01<00:00, 150.64it/s]Loading weights:  90%|████████▉ | 261/291 [00:01<00:00, 147.22it/s]Loading weights:  95%|█████████▍| 276/291 [00:01<00:00, 137.27it/s]Loading weights: 100%|██████████| 291/291 [00:01<00:00, 147.98it/s]
+
+============================================================
+Task: qasper
+============================================================
+
+--- H2O ---
+  [H2O] qasper 5/5  Score=5.53
+  H2O → qasper: 5.53
+  [checkpoint saved → results/audit_20261013/final_prior_development/qa.json.ckpt]
+
+--- SnapKV ---
+  [SnapKV] qasper 5/5  Score=4.24
+  SnapKV → qasper: 4.24
+  [checkpoint saved → results/audit_20261013/final_prior_development/qa.json.ckpt]
+
+--- TieredKV ---
+  [TieredKV] qasper 5/5  Score=7.57
+  TieredKV → qasper: 7.57
+  [checkpoint saved → results/audit_20261013/final_prior_development/qa.json.ckpt]
+
+============================================================
+Task: narrativeqa
+============================================================
+
+--- H2O ---
+  [H2O] narrativeqa 5/5  Score=12.38
+  H2O → narrativeqa: 12.38
+  [checkpoint saved → results/audit_20261013/final_prior_development/qa.json.ckpt]
+
+--- SnapKV ---
+  [SnapKV] narrativeqa 5/5  Score=18.60
+  SnapKV → narrativeqa: 18.60
+  [checkpoint saved → results/audit_20261013/final_prior_development/qa.json.ckpt]
+
+--- TieredKV ---
+  [TieredKV] narrativeqa 5/5  Score=18.89
+  TieredKV → narrativeqa: 18.89
+  [checkpoint saved → results/audit_20261013/final_prior_development/qa.json.ckpt]
+
+============================================================
+Task: multifieldqa_en
+============================================================
+
+--- H2O ---
+  [H2O] multifieldqa_en 5/5  Score=55.29
+  H2O → multifieldqa_en: 55.29
+  [checkpoint saved → results/audit_20261013/final_prior_development/qa.json.ckpt]
+
+--- SnapKV ---
+  [SnapKV] multifieldqa_en 5/5  Score=45.98
+  SnapKV → multifieldqa_en: 45.98
+  [checkpoint saved → results/audit_20261013/final_prior_development/qa.json.ckpt]
+
+--- TieredKV ---
+  [TieredKV] multifieldqa_en 5/5  Score=40.92
+  TieredKV → multifieldqa_en: 40.92
+  [checkpoint saved → results/audit_20261013/final_prior_development/qa.json.ckpt]
+
+============================================================
+LONGBENCH RESULTS (F1 × 100)
+============================================================
+Task                             h2o        snapkv      tieredkv
+----------------------------------------------------------------
+qasper                          5.53          4.24          7.57
+narrativeqa                    12.38         18.60         18.89
+multifieldqa_en                55.29         45.98         40.92
+----------------------------------------------------------------
+Average                        24.40         22.94         22.46
+
+Saved → results/audit_20261013/final_prior_development/qa.json

@@ -1,0 +1,560 @@
+{
+  "config": {
+    "model": "../models/mistral-7b-instruct",
+    "data_dir": "../hf_cache/datasets/downloads/extracted/5def9c7eaf83951e1cee75902d8611ef764ad88dd289e8f0bf97ff658a3eb83a/data",
+    "tasks": [
+      "hotpotqa",
+      "triviaqa"
+    ],
+    "max_samples": 25,
+    "capacity": 993,
+    "window": 32,
+    "attn_implementation": "sdpa",
+    "runtime": {
+      "git_revision": "be7e700d84d46b47e32ba5b9870c8b71783b9e53",
+      "source_sha256": "58a54787c7895b59b476783403e18b8031cb6e3b6be934042c8dbc14b1939061",
+      "packages": {
+        "torch": "2.5.1+cu124",
+        "transformers": "5.14.1",
+        "datasets": "5.0.0",
+        "numpy": "2.2.6",
+        "accelerate": "1.14.0",
+        "huggingface_hub": "1.24.0",
+        "rouge": "1.0.1"
+      }
+    },
+    "seed": 0,
+    "max_ctx": 31500,
+    "source_files": {
+      "/data/nishant/Nishant/Prashant/Project/kv_cache/experiments/evaluate_snapkv_adapter.py": "5533e29960c876ac179d14fe4cdda4852e71e167d4d7358f02ad15c74dfdc574",
+      "/data/nishant/Nishant/Prashant/Project/kv_cache/experiments/snapkv_adapter.py": "8d44929bcd4440431332608eb14f4660008ca284ded84dcb824dca3dbad19eab",
+      "sota/snapkv/snapkv/monkeypatch/snapkv_utils.py": "d7eddeaf361d9d38be991be734752c831b09f9c95a6e777ac17e7262ca2b4cf5"
+    },
+    "dataset_sha256": {
+      "hotpotqa": "26a90a291cca5b2515bf466c6c3d1f57d8a4e67b0cf5aa39e1834913a15e6309",
+      "triviaqa": "3c4cc5ca18f2578d1f6458d1219387c741c6fafad7e8518addea898c08ff0d73"
+    }
+  },
+  "results": {
+    "hotpotqa": {
+      "snapkv_upstream_selector": {
+        "score": 45.45,
+        "n": 25,
+        "sample_scores": [
+          0.0,
+          100.0,
+          0.0,
+          100.0,
+          22.22,
+          50.0,
+          100.0,
+          36.36,
+          80.0,
+          0.0,
+          35.29,
+          100.0,
+          25.0,
+          14.81,
+          57.14,
+          66.67,
+          0.0,
+          100.0,
+          0.0,
+          0.0,
+          25.0,
+          66.67,
+          0.0,
+          57.14,
+          100.0
+        ],
+        "samples": [
+          {
+            "sample_id": "0c0f0d5cee81743cafef6ed82c3b65e9b05da0b919bdc6fe6e2a7933aa2ef4d8",
+            "prediction": "Kaiyuan",
+            "score": 0.0,
+            "elapsed_s": 1.46411844342947,
+            "prompt_tokens": 7238,
+            "generated_tokens": 5,
+            "final_kv_payload_bytes": 522715136
+          },
+          {
+            "sample_id": "6492e6398e134ab31f4ffb3f52682ca976c2dab0a1448c511467b97369fc1e41",
+            "prediction": "McLaren Vale",
+            "score": 100.0,
+            "elapsed_s": 0.8153808377683163,
+            "prompt_tokens": 6081,
+            "generated_tokens": 6,
+            "final_kv_payload_bytes": 523239424
+          },
+          {
+            "sample_id": "7c389b4c5dd607d9058bc65eaad25d4ec918d063f37b10b574cc5126a2a68f96",
+            "prediction": "Munich",
+            "score": 0.0,
+            "elapsed_s": 0.5923274587839842,
+            "prompt_tokens": 4866,
+            "generated_tokens": 3,
+            "final_kv_payload_bytes": 521666560
+          },
+          {
+            "sample_id": "73e19e35aa87ae2f179e871c0d27acd402d88b82837c32994778eacc8d60c552",
+            "prediction": "Yes.",
+            "score": 100.0,
+            "elapsed_s": 0.20137465745210648,
+            "prompt_tokens": 1320,
+            "generated_tokens": 3,
+            "final_kv_payload_bytes": 521666560
+          },
+          {
+            "sample_id": "41191eabc26fdec603c468ba92998b8f71deb6380f21d30c1cc4adf259fb9d65",
+            "prediction": "Robert Z. Leonard is younger than Sinclair Hill. (Born in 1889 for Sinclair Hill and 1889",
+            "score": 22.22222222222222,
+            "elapsed_s": 1.2098345682024956,
+            "prompt_tokens": 3975,
+            "generated_tokens": 32,
+            "final_kv_payload_bytes": 536870912
+          },
+          {
+            "sample_id": "7d19878ce62930fa86e6800233a3ac7a4d0c16e809b1f97280b21f2eadc9b9c1",
+            "prediction": "Kew",
+            "score": 50.0,
+            "elapsed_s": 0.7073378749191761,
+            "prompt_tokens": 5657,
+            "generated_tokens": 3,
+            "final_kv_payload_bytes": 521666560
+          },
+          {
+            "sample_id": "ae2b32e2fed502eb9d5d545eee401f4fbf1e0d7fa20749a128400bb42c6b38d4",
+            "prediction": "Herbert Ross",
+            "score": 100.0,
+            "elapsed_s": 0.8055839706212282,
+            "prompt_tokens": 6603,
+            "generated_tokens": 3,
+            "final_kv_payload_bytes": 521666560
+          },
+          {
+            "sample_id": "6b3d078752841b5ad7157183ec8eac1649062a6edff78ee08ee69120cd31c134",
+            "prediction": "Emilio S\u00e1nchez is older than Andrei Olhovskiy.",
+            "score": 36.36363636363637,
+            "elapsed_s": 0.9911605603992939,
+            "prompt_tokens": 5280,
+            "generated_tokens": 17,
+            "final_kv_payload_bytes": 529006592
+          },
+          {
+            "sample_id": "9982dbcc037d9fd59bde20ab2a0d9efbe00245bb11b0870942c9b5886320c56d",
+            "prediction": "Oldham County.",
+            "score": 80.0,
+            "elapsed_s": 0.836243599653244,
+            "prompt_tokens": 6416,
+            "generated_tokens": 5,
+            "final_kv_payload_bytes": 522715136
+          },
+          {
+            "sample_id": "e354220a6afcbc62ff11b0daff4de0a9b8ed1a67b755c07f3e5e2d5ff4308598",
+            "prediction": "The passages do not provide information about the change in elevation at the site of the 1999 FIA GT Hockenheim 5",
+            "score": 0.0,
+            "elapsed_s": 1.5147642027586699,
+            "prompt_tokens": 6404,
+            "generated_tokens": 32,
+            "final_kv_payload_bytes": 536870912
+          },
+          {
+            "sample_id": "876a12e701d5f73835a6e838fc7d7f7bc9689303f76bd59837206e011cb1e01d",
+            "prediction": "They are best known as globetrotters, having played for multiple clubs in different countries.",
+            "score": 35.294117647058826,
+            "elapsed_s": 1.2493691388517618,
+            "prompt_tokens": 6715,
+            "generated_tokens": 20,
+            "final_kv_payload_bytes": 530579456
+          },
+          {
+            "sample_id": "db8054d1540a8e80e80c783bed1f9f5770d800885598efcc2b5bfd7b32fe936b",
+            "prediction": "North Sea",
+            "score": 100.0,
+            "elapsed_s": 0.5018931478261948,
+            "prompt_tokens": 4261,
+            "generated_tokens": 3,
+            "final_kv_payload_bytes": 521666560
+          },
+          {
+            "sample_id": "90a00b18703b8357d906a543705f4251b275602d7a1d0477157cd5dd1f55078f",
+            "prediction": "Lardizabalaceae",
+            "score": 25.0,
+            "elapsed_s": 0.18876988254487514,
+            "prompt_tokens": 284,
+            "generated_tokens": 7,
+            "final_kv_payload_bytes": 152043520
+          },
+          {
+            "sample_id": "52d605688d24448c29f7be147c4db81b6db6306777ee2b542cbccabd558b40eb",
+            "prediction": "Gareth Evans. He started his career by directing small films and documentaries, then moved on to producing and casting films featuring Indonesian martial arts",
+            "score": 14.814814814814813,
+            "elapsed_s": 1.4598441906273365,
+            "prompt_tokens": 5985,
+            "generated_tokens": 32,
+            "final_kv_payload_bytes": 536870912
+          },
+          {
+            "sample_id": "d4ed3815d54ab5ecdba27478c03aa9c7fefc3cfafdeced8921d1ba4298c5fd1d",
+            "prediction": "European route E22",
+            "score": 57.14285714285715,
+            "elapsed_s": 1.0040901880711317,
+            "prompt_tokens": 7623,
+            "generated_tokens": 6,
+            "final_kv_payload_bytes": 523239424
+          },
+          {
+            "sample_id": "ef55ca19a21e5c602df179c861e449cd4b8268a96b5d0dece026d1c60672a520",
+            "prediction": "Mulberry (Eunuch)",
+            "score": 66.66666666666666,
+            "elapsed_s": 0.8656223993748426,
+            "prompt_tokens": 6095,
+            "generated_tokens": 8,
+            "final_kv_payload_bytes": 524288000
+          },
+          {
+            "sample_id": "4df5a60439f49f384c1051ab86eb35289f4c63f64e8eacaf8c54ee06f12a91b9",
+            "prediction": "Yes. Wolfgang Becker is a German film director and so is Jacques Audiard.",
+            "score": 0.0,
+            "elapsed_s": 1.2114023435860872,
+            "prompt_tokens": 6226,
+            "generated_tokens": 21,
+            "final_kv_payload_bytes": 531103744
+          },
+          {
+            "sample_id": "a6a22bea20e02ad30328461ebc8b217c001c65817aeacfcaa9a8c01f9a752dbb",
+            "prediction": "The University of Missouri",
+            "score": 100.0,
+            "elapsed_s": 0.7763418555259705,
+            "prompt_tokens": 5952,
+            "generated_tokens": 5,
+            "final_kv_payload_bytes": 522715136
+          },
+          {
+            "sample_id": "ce0fee09a9d3fdf299d4f022cc3f284e9d68bd20d67cdd5f4b0b6ab1940e2abe",
+            "prediction": "KKBN",
+            "score": 0.0,
+            "elapsed_s": 0.4315220322459936,
+            "prompt_tokens": 3390,
+            "generated_tokens": 4,
+            "final_kv_payload_bytes": 522190848
+          },
+          {
+            "sample_id": "155171a668d44669e52b090dc15d42d167a21efb3b92aa605a1b593e4208afb8",
+            "prediction": "Bay Lake, Florida",
+            "score": 0.0,
+            "elapsed_s": 0.778517721220851,
+            "prompt_tokens": 5944,
+            "generated_tokens": 5,
+            "final_kv_payload_bytes": 522715136
+          },
+          {
+            "sample_id": "8032e3ad96435c3f1f870ed88f1608ebfc370a5176a8256db7258eca72d492ff",
+            "prediction": "Crocosmia is found in environments further south.",
+            "score": 25.0,
+            "elapsed_s": 1.1130025796592236,
+            "prompt_tokens": 7091,
+            "generated_tokens": 12,
+            "final_kv_payload_bytes": 526385152
+          },
+          {
+            "sample_id": "009f9e1440cec0b91caa421be7169f37681cfcb4644a768f89c5a10b29f3c0d7",
+            "prediction": "The Duke of Devonshire",
+            "score": 66.66666666666666,
+            "elapsed_s": 0.9588258247822523,
+            "prompt_tokens": 6895,
+            "generated_tokens": 7,
+            "final_kv_payload_bytes": 523763712
+          },
+          {
+            "sample_id": "5dfec4ca4c50c01a4e0a54f11fd30cbcf1adfcd4ddc389205fca6cd548ea8266",
+            "prediction": "East Mamprusi District",
+            "score": 0.0,
+            "elapsed_s": 0.5664006732404232,
+            "prompt_tokens": 3901,
+            "generated_tokens": 7,
+            "final_kv_payload_bytes": 523763712
+          },
+          {
+            "sample_id": "d27ef5481a9a807600d098edec39574f8051df1961b651acff94f2239221520e",
+            "prediction": "My Boss, My Hero (My Boss, My Teacher in English)",
+            "score": 57.14285714285715,
+            "elapsed_s": 1.1798170655965805,
+            "prompt_tokens": 6590,
+            "generated_tokens": 18,
+            "final_kv_payload_bytes": 529530880
+          },
+          {
+            "sample_id": "b4aeb690fbd84fcc44a6c79d4ffac3fd54caafadc7662cb71dfb14485ad408d2",
+            "prediction": "The Netherlands.",
+            "score": 100.0,
+            "elapsed_s": 0.7612844873219728,
+            "prompt_tokens": 6015,
+            "generated_tokens": 4,
+            "final_kv_payload_bytes": 522190848
+          }
+        ]
+      }
+    },
+    "triviaqa": {
+      "snapkv_upstream_selector": {
+        "score": 78.3,
+        "n": 25,
+        "sample_scores": [
+          50.0,
+          100.0,
+          100.0,
+          100.0,
+          0.0,
+          100.0,
+          80.0,
+          100.0,
+          40.0,
+          15.38,
+          100.0,
+          100.0,
+          88.89,
+          50.0,
+          100.0,
+          100.0,
+          100.0,
+          100.0,
+          100.0,
+          66.67,
+          100.0,
+          66.67,
+          0.0,
+          100.0,
+          100.0
+        ],
+        "samples": [
+          {
+            "sample_id": "df36de52b2880247380eadc9e0d64947621dfcb5bf270238d8d1958a8d47216d",
+            "prediction": "Fruit and vegetables\nPassage:\nThe Great Fire of London\nThe Great Fire of London occurred in 1666. It started in a",
+            "score": 50.0,
+            "elapsed_s": 1.5194993242621422,
+            "prompt_tokens": 6444,
+            "generated_tokens": 32,
+            "final_kv_payload_bytes": 536870912
+          },
+          {
+            "sample_id": "7e37de6fd411b09614fed0509e069d28f9eb704fa9c3c225dd04a50742bffe92",
+            "prediction": "GORDON JACKSON",
+            "score": 100.0,
+            "elapsed_s": 0.6747874356806278,
+            "prompt_tokens": 4719,
+            "generated_tokens": 7,
+            "final_kv_payload_bytes": 523763712
+          },
+          {
+            "sample_id": "15cce3999dfc3aa3827bf162ebbd870ec93abb5baa4ef21d2d15e4bc3f28616c",
+            "prediction": "Banjo",
+            "score": 100.0,
+            "elapsed_s": 0.6488220412284136,
+            "prompt_tokens": 5122,
+            "generated_tokens": 4,
+            "final_kv_payload_bytes": 522190848
+          },
+          {
+            "sample_id": "513517b60a1d25d618602c9feead352e013b6ca940bbfb62053892a6a363e663",
+            "prediction": "Augustus\n\n\nPassage:\nThe Great Wall of China\nThe Great Wall of China is a series of fortifications made of stone, brick",
+            "score": 100.0,
+            "elapsed_s": 0.9844817109405994,
+            "prompt_tokens": 2011,
+            "generated_tokens": 32,
+            "final_kv_payload_bytes": 536870912
+          },
+          {
+            "sample_id": "7a1e31b5e7ed8770a9bad9b33c75f30fcc4c84bfa943f1bd7c1318eff50f1f4f",
+            "prediction": "1859",
+            "score": 0.0,
+            "elapsed_s": 0.6619667541235685,
+            "prompt_tokens": 5037,
+            "generated_tokens": 5,
+            "final_kv_payload_bytes": 522715136
+          },
+          {
+            "sample_id": "46340c72fb2393881f8e833efade02fbaba796ccad08d5b3f67ed0effb996ee1",
+            "prediction": "Charlton Heston\nPassage:\nThe Great Wall of China\nThe Great Wall of China\nThe Great Wall of China is a series of fort",
+            "score": 100.0,
+            "elapsed_s": 1.1381292548030615,
+            "prompt_tokens": 3397,
+            "generated_tokens": 32,
+            "final_kv_payload_bytes": 536870912
+          },
+          {
+            "sample_id": "edebae2e213483fc4bdf27a10791526b58236437aad1ad24fddd9744c7bb2d1b",
+            "prediction": "Salto Angel, Venezuela\nPassage:\nThe Great Wall of China\nThe Great Wall of China is a series of fortifications made of stone, brick",
+            "score": 80.0,
+            "elapsed_s": 1.5454913899302483,
+            "prompt_tokens": 6695,
+            "generated_tokens": 32,
+            "final_kv_payload_bytes": 536870912
+          },
+          {
+            "sample_id": "97b754160951ce2f4061b67101dbcf29f8de0776b17ff2002fa14534afe21379",
+            "prediction": "Peach",
+            "score": 100.0,
+            "elapsed_s": 0.8139532785862684,
+            "prompt_tokens": 6684,
+            "generated_tokens": 3,
+            "final_kv_payload_bytes": 521666560
+          },
+          {
+            "sample_id": "5b3748523479986d81d01dd8b9dbee3409976cd50fb5605b2b62c75e3a8aaf68",
+            "prediction": "A nightclub featuring drag performers.",
+            "score": 40.0,
+            "elapsed_s": 0.6419661995023489,
+            "prompt_tokens": 4132,
+            "generated_tokens": 9,
+            "final_kv_payload_bytes": 524812288
+          },
+          {
+            "sample_id": "70a3df434bed00c2fadb705a82ef746183b0bc639b1ec048739686605ebb99e6",
+            "prediction": "Richard III was king of England for 2 years and 3 months.",
+            "score": 15.384615384615385,
+            "elapsed_s": 0.9959230124950409,
+            "prompt_tokens": 5328,
+            "generated_tokens": 17,
+            "final_kv_payload_bytes": 529006592
+          },
+          {
+            "sample_id": "625ce39e249c72d85f04cc43fef4fffef2496bb8dd7ac6ac46f03dafd5cbd61e",
+            "prediction": "Parkinson's disease",
+            "score": 100.0,
+            "elapsed_s": 0.9103593714535236,
+            "prompt_tokens": 6531,
+            "generated_tokens": 7,
+            "final_kv_payload_bytes": 523763712
+          },
+          {
+            "sample_id": "dfc4f400ad30ad06cc4220e6c2143a86454514f30a715db460d8b00eea524e00",
+            "prediction": "Buddy Holly",
+            "score": 100.0,
+            "elapsed_s": 0.41286587715148926,
+            "prompt_tokens": 3016,
+            "generated_tokens": 5,
+            "final_kv_payload_bytes": 522715136
+          },
+          {
+            "sample_id": "1e7961cdcdf9fb6bf05bf7ada5e1c243960533f602ec16f992396e5dab0ee192",
+            "prediction": "HM Chief Inspector of Prisons",
+            "score": 88.8888888888889,
+            "elapsed_s": 0.6690610181540251,
+            "prompt_tokens": 4401,
+            "generated_tokens": 9,
+            "final_kv_payload_bytes": 524812288
+          },
+          {
+            "sample_id": "ee068d955cb063397331eae39d10ae8d5bbf64b2194fdc81f473e36a60a69c43",
+            "prediction": "Almond and apricot\nPassage:\nThe Great Gatsby by F. Scott Fitzgerald\nThe Great Gatsby by F.",
+            "score": 50.0,
+            "elapsed_s": 1.3149650394916534,
+            "prompt_tokens": 4813,
+            "generated_tokens": 32,
+            "final_kv_payload_bytes": 536870912
+          },
+          {
+            "sample_id": "6655a00ea9b80696f2e83458cecb7f4d52c1580c28f0bd5fdf895d1db2527f78",
+            "prediction": "Robert Maxwell\nPassage:\nThe Great Gatsby by F. Scott Fitzgerald\nThe Great Gatsby by F. Scott",
+            "score": 100.0,
+            "elapsed_s": 1.5072810407727957,
+            "prompt_tokens": 6362,
+            "generated_tokens": 32,
+            "final_kv_payload_bytes": 536870912
+          },
+          {
+            "sample_id": "d63db94f8d0aa338bb1945b7700887db1bd17e0a850e778476dbf9dd0ff36f31",
+            "prediction": "Velocity",
+            "score": 100.0,
+            "elapsed_s": 0.2997414916753769,
+            "prompt_tokens": 2348,
+            "generated_tokens": 3,
+            "final_kv_payload_bytes": 521666560
+          },
+          {
+            "sample_id": "49f175e70f889abef1a14720a5265dd7b2adc0dae13f5addeda583a32512b27a",
+            "prediction": "Imola\nPassage:\nThe Red Ribbon\nThe Red Ribbon\nDonate\nThe Red Ribbon\nThe Red Rib",
+            "score": 100.0,
+            "elapsed_s": 1.489283725619316,
+            "prompt_tokens": 6150,
+            "generated_tokens": 32,
+            "final_kv_payload_bytes": 536870912
+          },
+          {
+            "sample_id": "024d0c2f4cf9663b0bf0d20972c03d54c0732cb6c51075d27a494556f2ab7020",
+            "prediction": "Sir Thomas Beecham\nPassage:\nThe London Philharmonic Orchestra\nThe London Philharmonic Orchestra (LPO) is a British orchestra",
+            "score": 100.0,
+            "elapsed_s": 1.4652998950332403,
+            "prompt_tokens": 5993,
+            "generated_tokens": 32,
+            "final_kv_payload_bytes": 536870912
+          },
+          {
+            "sample_id": "2316eeb4b13a2c659d97d9529a075cfbbc8e57b22611402fbb8f7f5c46158a48",
+            "prediction": "Johannesburg\nPassage:\nThe Krays (film)\nThe Krays (film)\nThe Krays (1990",
+            "score": 100.0,
+            "elapsed_s": 1.2351723425090313,
+            "prompt_tokens": 4255,
+            "generated_tokens": 32,
+            "final_kv_payload_bytes": 536870912
+          },
+          {
+            "sample_id": "f967fcae5f3c65c12aa4de776c6c7c345463b4267c0659ee445902fed040f96c",
+            "prediction": "River Trent",
+            "score": 66.66666666666666,
+            "elapsed_s": 0.6689997371286154,
+            "prompt_tokens": 5114,
+            "generated_tokens": 5,
+            "final_kv_payload_bytes": 522715136
+          },
+          {
+            "sample_id": "ce5d054267fe60ffbb3533e06e0a7ee018bc891dd5b93e9bf170b7c968366afe",
+            "prediction": "Wales\nPassage:\nThe Great Fire of London\nThe Great Fire of London occurred from 2 to 5 September 1666.",
+            "score": 100.0,
+            "elapsed_s": 1.332792304456234,
+            "prompt_tokens": 4884,
+            "generated_tokens": 32,
+            "final_kv_payload_bytes": 536870912
+          },
+          {
+            "sample_id": "a0a65bdd7938e3af4f6fa1be64d8064659e6ba57fbc6a1e8608ec02d4c227a87",
+            "prediction": "Fotheringhay Castle",
+            "score": 66.66666666666666,
+            "elapsed_s": 0.30831300280988216,
+            "prompt_tokens": 1455,
+            "generated_tokens": 7,
+            "final_kv_payload_bytes": 523763712
+          },
+          {
+            "sample_id": "e106a39318e483e34a0ff0af66ebf2a7efd14ac67b1c1c259ba419004742c669",
+            "prediction": "Patricia Hayes\n\n\nPassage:\nThe Great Gatsby by F. Scott Fitzgerald\nThe Great Gatsby by F",
+            "score": 0.0,
+            "elapsed_s": 1.1362626757472754,
+            "prompt_tokens": 3384,
+            "generated_tokens": 32,
+            "final_kv_payload_bytes": 536870912
+          },
+          {
+            "sample_id": "def3e83c4744dcd2a0f122c968d1762bacfcc14d598916e91d68cf887031fa3d",
+            "prediction": "Isosceles triangle",
+            "score": 100.0,
+            "elapsed_s": 0.8009423669427633,
+            "prompt_tokens": 5844,
+            "generated_tokens": 6,
+            "final_kv_payload_bytes": 523239424
+          },
+          {
+            "sample_id": "8080f5f500f01a9647f427bb34e43eb02be39140d6043631c24cdc77e926fb6c",
+            "prediction": "The Kinks\nPassage:\nThe Kinks Are the Village Green Preservation Society\nThe Kinks Are the Village Green Preservation Society is the sixth",
+            "score": 100.0,
+            "elapsed_s": 1.344883469864726,
+            "prompt_tokens": 5058,
+            "generated_tokens": 32,
+            "final_kv_payload_bytes": 536870912
+          }
+        ]
+      }
+    }
+  }
+}

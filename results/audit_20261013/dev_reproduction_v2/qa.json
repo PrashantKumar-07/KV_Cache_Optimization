@@ -1,0 +1,1235 @@
+{
+  "config": {
+    "model": "../models/mistral-7b-instruct",
+    "model_identity": {
+      "snapshot_path": "/data/nishant/Nishant/Prashant/Thesis/models/mistral-7b-instruct",
+      "artifact_sha256": {
+        ".cache/huggingface/trees/63a8b081895390a26e140280378bc85ec8bce07a.json": "834bf792bcdfa6ef0e5da85715a4f7d33b58276a23aa09525da5389c00ac6609",
+        "config.json": "2e97da1b1d2b7e7669f0991c186904538c27d4ea56c4fc74e89215e2b2013922",
+        "generation_config.json": "104f69e9625993a0839aff79b17f7a0aa73b0954ef8f7e7665aa50b5ef1d4454",
+        "model.safetensors.index.json": "6d32424091caba25230b09cbae985a5f9252ecce3a722b03b88df17ad05be459",
+        "pytorch_model.bin.index.json": "5fc5f5d86e6a6cea0356e34224ce999c5c3c955a1717ef450579fd161ac8d103",
+        "special_tokens_map.json": "6fa06efa2785e450051989a6f8fb4416b10149ded485ddd3f127a40734f5cfd0",
+        "tokenizer.json": "11c08db21487c885d8c792180f0be237f6a261b89a46f128a6a80a3aa4bd1720",
+        "tokenizer.model": "dadfd56d766715c61d2ef780a525ab43b8e6da4de6865bda3d95fdef5e134055",
+        "tokenizer_config.json": "475361439e5c012de9dffdedc416a66a50f1a29f7aa80b375ba014fb13d6bb8a",
+        "model-00001-of-00003.safetensors": "63654d601820b88b1fa8b4a98df5714f700fbc5b3df2cc4ecbabdced35096d31",
+        "model-00002-of-00003.safetensors": "a42716540ecb2385d371f2109835921ff535406cac8fe8ff28f2f0b5fc7895bd",
+        "model-00003-of-00003.safetensors": "5f86e15cb3ed9078e30ae6e72445e109d0e337d9cde59b9aeea4ce8e44e54a5d"
+      }
+    },
+    "aggregation": "sampled_task_mean; not official LongBench-E length-bin aggregation",
+    "prefill_last_logits": true,
+    "budget": 1024,
+    "tiered_vram_budget": 1024,
+    "tiered_stt_budget": 2048,
+    "tiered_stt_expose": null,
+    "tiered_promotion_budget": null,
+    "sttram_bifurcation_frac": 0.75,
+    "sink": 4,
+    "recent": 128,
+    "max_samples": 5,
+    "tasks": [
+      "qasper",
+      "narrativeqa",
+      "multifieldqa_en"
+    ],
+    "max_ctx": 31500,
+    "seed": 0,
+    "tiered_kv_dtype": "bfloat16",
+    "tiered_stt_kv_dtype": "same",
+    "tiered_prefill_chunk_size": 0,
+    "page_size": 16,
+    "promote_top_pages": 2,
+    "stt_live_floor": 1,
+    "write_aware_lambda": 0.0,
+    "tiered_inclusive": true,
+    "runtime": {
+      "git_revision": "be7e700d84d46b47e32ba5b9870c8b71783b9e53",
+      "source_sha256": "1a9f9d8b972078dcabdf9658818b6c00831d274edbeb6ef2dd4fd11e7f56f224",
+      "packages": {
+        "torch": "2.5.1+cu124",
+        "transformers": "5.15.0",
+        "datasets": "2.19.2",
+        "numpy": "2.2.6",
+        "accelerate": "1.14.0",
+        "huggingface_hub": "1.27.0",
+        "rouge": "1.0.1",
+        "ninja": "1.13.0"
+      }
+    },
+    "protocol": "reference_prompts_task_chat_v3",
+    "data_dir": "../hf_cache/datasets/downloads/extracted/5def9c7eaf83951e1cee75902d8611ef764ad88dd289e8f0bf97ff658a3eb83a/data",
+    "dataset_identity": {
+      "qasper": {
+        "row_count": 224,
+        "resolved_source": "../hf_cache/datasets/downloads/extracted/5def9c7eaf83951e1cee75902d8611ef764ad88dd289e8f0bf97ff658a3eb83a/data/qasper_e.jsonl",
+        "content_sha256": "4f06ae71939893c5d7214aa9c1d80a58ab490aafbe96513091367c107eb76e1e"
+      },
+      "narrativeqa": {
+        "row_count": 200,
+        "resolved_source": "../hf_cache/datasets/downloads/extracted/5def9c7eaf83951e1cee75902d8611ef764ad88dd289e8f0bf97ff658a3eb83a/data/narrativeqa.jsonl",
+        "content_sha256": "746c1d5fb2d2b50634239a128e77fffb00d91a8b4248998ab39052c0cdf7274b"
+      },
+      "multifieldqa_en": {
+        "row_count": 150,
+        "resolved_source": "../hf_cache/datasets/downloads/extracted/5def9c7eaf83951e1cee75902d8611ef764ad88dd289e8f0bf97ff658a3eb83a/data/multifieldqa_en_e.jsonl",
+        "content_sha256": "c1e8845297347dfd43152425cbc64e1ad4d38fd31058b922b9f6c622a27cb6fc"
+      }
+    },
+    "dataset_sha256": {
+      "qasper": "97d95c01221a17a2ce51f9180d65a671bf2998504a2ff0cccffe97e9b08444d8",
+      "narrativeqa": "0fb8d08ba5cdad4b74244224b0dc2e8b41ee6b850d954a13eb2d282621ce2f71",
+      "multifieldqa_en": "678a51335e3c90e0dd43bf1131045e4f2859cc693e7eded89cc6a1ee8d18faff"
+    },
+    "methods": [
+      "full",
+      "streamingllm",
+      "h2o",
+      "snapkv",
+      "tieredkv"
+    ]
+  },
+  "results": {
+    "qasper": {
+      "full": {
+        "score": 35.47,
+        "n": 5,
+        "sample_scores": [
+          87.72,
+          57.14,
+          12.5,
+          20.0,
+          0.0
+        ],
+        "samples": [
+          {
+            "sample_id": "3b91dce7ca41a9d16a1d0c61806c139db583a053ddb582bf79df3ff56f8e0344",
+            "prediction": "They selected different Facebook pages, including FoxNews, CNN, ESPN, New York Times, Time magazine, Huffington Post Weird News, The Guardian, Cartoon Network, Cooking Light, Home Cooking Adventure, Justin Bieber, Nickelodeon, Spongebob, and Disney.",
+            "score": 87.71929824561403,
+            "elapsed_s": 2.8900819420814514,
+            "prompt_tokens": 4895,
+            "generated_tokens": 67,
+            "prompt_sha256": "7dd2e552df3aa270de08e972bd66bfb5fc32a38ea3052c3ced45a793c8549bc7",
+            "input_ids_sha256": "b7f0b2e6ed6a1c20786d7d12bf3f37a9360b3225f7918fc53645c1f511d27424",
+            "max_ctx": 31500
+          },
+          {
+            "sample_id": "5f59f94cd91401a55bcd3b6b24b78cd2c4c78e8ee6e7663e0ac8b97306444f08",
+            "prediction": "The paper proposes attention models to infer the latent context, i.e., the series of posts that trigger an intervention.",
+            "score": 57.14285714285715,
+            "elapsed_s": 1.3271000478416681,
+            "prompt_tokens": 5415,
+            "generated_tokens": 27,
+            "prompt_sha256": "fad754a15cc4b5009d70dda1cdb6b7c83c74a64f63247e63ae3bf1b08ab79721",
+            "input_ids_sha256": "5e3424237e60263b3f3df925ba78167a87fa38cd3de56ef6a449015922411d24",
+            "max_ctx": 31500
+          },
+          {
+            "sample_id": "9d37c5305ff63838fd6b7c96f13d10cfc388955672b1a629e5c0a8c2a89c520d",
+            "prediction": "The article mentions the use of F-scores and Kappa statistics for evaluating the performance of the sarcasm classifier.",
+            "score": 12.5,
+            "elapsed_s": 1.42363135330379,
+            "prompt_tokens": 5549,
+            "generated_tokens": 29,
+            "prompt_sha256": "98c789f3ac694d29feebb7570556ee4de51b79e1a538c568febbce3f9ddc4065",
+            "input_ids_sha256": "a871b2021e63592583881b72359fe86bdae3bfbab22ba1777776d3099f5333e7",
+            "max_ctx": 31500
+          },
+          {
+            "sample_id": "5b60c062453de695f70d5f313a868a3c630068a85084fc9c456760f41e84d0f3",
+            "prediction": "The baselines were plain stacked LSTMs.",
+            "score": 20.0,
+            "elapsed_s": 0.8201340120285749,
+            "prompt_tokens": 5175,
+            "generated_tokens": 12,
+            "prompt_sha256": "872ff60af8e772a659a3b91261795adc9ddfb318c1d3a746776e822d9cec516e",
+            "input_ids_sha256": "3e77b2e558bc8519391551921b802f8aa25e7c0c90863f45bcf0bc4a93ff8a86",
+            "max_ctx": 31500
+          },
+          {
+            "sample_id": "a25d41e770a5f1816e04f39227fecd7dfcd9b83b25842e413d0f8fcb447b2092",
+            "prediction": "jiant specifically supports models implemented using PyTorch, AllenNLP, and Huggingface's Transformers, which are primarily Python-based.",
+            "score": 0.0,
+            "elapsed_s": 1.2550043929368258,
+            "prompt_tokens": 3956,
+            "generated_tokens": 33,
+            "prompt_sha256": "2f6ed6e8fc88df3c1ee12514e42125f2e966927f8fbfa4554b8488662e48bc72",
+            "input_ids_sha256": "efd5cf4b2e7b5ff3ce8edfe14ec311a600a9cb18942d8beb4d556a5bf0648b17",
+            "max_ctx": 31500
+          }
+        ],
+        "cache_stats": {
+          "modeled_latency_us": 122320.4,
+          "modeled_energy_nj": 10145740357.6,
+          "decode_steps": 163
+        }
+      },
+      "streamingllm": {
+        "score": 12.61,
+        "n": 5,
+        "sample_scores": [
+          0.0,
+          24.0,
+          19.05,
+          20.0,
+          0.0
+        ],
+        "samples": [
+          {
+            "sample_id": "3b91dce7ca41a9d16a1d0c61806c139db583a053ddb582bf79df3ff56f8e0344",
+            "prediction": "They looked at Facebook pages for selection according to their performance on the development set and emotions distribution. Specific pages were not mentioned in the article.",
+            "score": 0.0,
+            "elapsed_s": 1.174981314688921,
+            "prompt_tokens": 4895,
+            "generated_tokens": 29,
+            "prompt_sha256": "7dd2e552df3aa270de08e972bd66bfb5fc32a38ea3052c3ced45a793c8549bc7",
+            "input_ids_sha256": "b7f0b2e6ed6a1c20786d7d12bf3f37a9360b3225f7918fc53645c1f511d27424",
+            "max_ctx": 31500
+          },
+          {
+            "sample_id": "5f59f94cd91401a55bcd3b6b24b78cd2c4c78e8ee6e7663e0ac8b97306444f08",
+            "prediction": "The article describes the use of a contiguous subsequence of student posts, defined as a context, to predict instructor intervention using attention-based models.",
+            "score": 23.999999999999996,
+            "elapsed_s": 1.2926474083214998,
+            "prompt_tokens": 5415,
+            "generated_tokens": 32,
+            "prompt_sha256": "fad754a15cc4b5009d70dda1cdb6b7c83c74a64f63247e63ae3bf1b08ab79721",
+            "input_ids_sha256": "5e3424237e60263b3f3df925ba78167a87fa38cd3de56ef6a449015922411d24",
+            "max_ctx": 31500
+          },
+          {
+            "sample_id": "9d37c5305ff63838fd6b7c96f13d10cfc388955672b1a629e5c0a8c2a89c520d",
+            "prediction": "The article mentions improvements in F-score and Kappa statistics. Therefore, these are the evaluation metrics looked at in addition to accuracy.",
+            "score": 19.04761904761905,
+            "elapsed_s": 1.2351114358752966,
+            "prompt_tokens": 5549,
+            "generated_tokens": 29,
+            "prompt_sha256": "98c789f3ac694d29feebb7570556ee4de51b79e1a538c568febbce3f9ddc4065",
+            "input_ids_sha256": "a871b2021e63592583881b72359fe86bdae3bfbab22ba1777776d3099f5333e7",
+            "max_ctx": 31500
+          },
+          {
+            "sample_id": "5b60c062453de695f70d5f313a868a3c630068a85084fc9c456760f41e84d0f3",
+            "prediction": "The baselines were plain stacked LSTMs.",
+            "score": 20.0,
+            "elapsed_s": 0.7664432488381863,
+            "prompt_tokens": 5175,
+            "generated_tokens": 12,
+            "prompt_sha256": "872ff60af8e772a659a3b91261795adc9ddfb318c1d3a746776e822d9cec516e",
+            "input_ids_sha256": "3e77b2e558bc8519391551921b802f8aa25e7c0c90863f45bcf0bc4a93ff8a86",
+            "max_ctx": 31500
+          },
+          {
+            "sample_id": "a25d41e770a5f1816e04f39227fecd7dfcd9b83b25842e413d0f8fcb447b2092",
+            "prediction": "jiant is specifically designed for Python models.",
+            "score": 0.0,
+            "elapsed_s": 0.5821343790739775,
+            "prompt_tokens": 3956,
+            "generated_tokens": 10,
+            "prompt_sha256": "2f6ed6e8fc88df3c1ee12514e42125f2e966927f8fbfa4554b8488662e48bc72",
+            "input_ids_sha256": "efd5cf4b2e7b5ff3ce8edfe14ec311a600a9cb18942d8beb4d556a5bf0648b17",
+            "max_ctx": 31500
+          }
+        ],
+        "cache_stats": {
+          "modeled_latency_us": 16638.1,
+          "modeled_energy_nj": 1380030873.6,
+          "decode_steps": 107
+        }
+      },
+      "h2o": {
+        "score": 5.53,
+        "n": 5,
+        "sample_scores": [
+          10.17,
+          14.81,
+          2.67,
+          0.0,
+          0.0
+        ],
+        "samples": [
+          {
+            "sample_id": "3b91dce7ca41a9d16a1d0c61806c139db583a053ddb582bf79df3ff56f8e0344",
+            "prediction": "They selected Facebook pages based on intuition and performance on development data, with a focus on Time, CNN, and ESPN. (Note: This information is not explicitly stated in the article, but can be inferred from the context.)",
+            "score": 10.169491525423728,
+            "elapsed_s": 2.1676803939044476,
+            "prompt_tokens": 4895,
+            "generated_tokens": 49,
+            "prompt_sha256": "7dd2e552df3aa270de08e972bd66bfb5fc32a38ea3052c3ced45a793c8549bc7",
+            "input_ids_sha256": "b7f0b2e6ed6a1c20786d7d12bf3f37a9360b3225f7918fc53645c1f511d27424",
+            "max_ctx": 31500
+          },
+          {
+            "sample_id": "5f59f94cd91401a55bcd3b6b24b78cd2c4c78e8ee6e7663e0ac8b97306444f08",
+            "prediction": "The context that is used to predict instructor intervention is not explicitly stated in the article, but it can be inferred that the models proposed in the article infer and select a context to improve over a model that takes the complete thread as a context. The context is defined as a contiguous sequence of posts in a thread.",
+            "score": 14.814814814814813,
+            "elapsed_s": 2.7027057129889727,
+            "prompt_tokens": 5415,
+            "generated_tokens": 66,
+            "prompt_sha256": "fad754a15cc4b5009d70dda1cdb6b7c83c74a64f63247e63ae3bf1b08ab79721",
+            "input_ids_sha256": "5e3424237e60263b3f3df925ba78167a87fa38cd3de56ef6a449015922411d24",
+            "max_ctx": 31500
+          },
+          {
+            "sample_id": "9d37c5305ff63838fd6b7c96f13d10cfc388955672b1a629e5c0a8c2a89c520d",
+            "prediction": "The article mentions the use of F-scores and KPI (Key Performance Indicator) in evaluating the effectiveness of cognitive features on classification accuracy. However, it does not explicitly state that these are the only evaluation metrics used. Therefore, it is possible that other metrics may also be considered, but they are not mentioned in the article.\n\nSo, the answer is: It is unanswerable based on the given article whether there are other evaluation metrics looked at or not, besides F-scores and KPI.",
+            "score": 2.6666666666666665,
+            "elapsed_s": 4.1639875546097755,
+            "prompt_tokens": 5549,
+            "generated_tokens": 109,
+            "prompt_sha256": "98c789f3ac694d29feebb7570556ee4de51b79e1a538c568febbce3f9ddc4065",
+            "input_ids_sha256": "a871b2021e63592583881b72359fe86bdae3bfbab22ba1777776d3099f5333e7",
+            "max_ctx": 31500
+          },
+          {
+            "sample_id": "5b60c062453de695f70d5f313a868a3c630068a85084fc9c456760f41e84d0f3",
+            "prediction": "The baselines were not explicitly stated in the provided article.",
+            "score": 0.0,
+            "elapsed_s": 0.9060636926442385,
+            "prompt_tokens": 5175,
+            "generated_tokens": 13,
+            "prompt_sha256": "872ff60af8e772a659a3b91261795adc9ddfb318c1d3a746776e822d9cec516e",
+            "input_ids_sha256": "3e77b2e558bc8519391551921b802f8aa25e7c0c90863f45bcf0bc4a93ff8a86",
+            "max_ctx": 31500
+          },
+          {
+            "sample_id": "a25d41e770a5f1816e04f39227fecd7dfcd9b83b25842e413d0f8fcb447b2092",
+            "prediction": "jiant is specifically designed for use with models implemented in Python and the TensorFlow and PyTorch deep learning frameworks.",
+            "score": 0.0,
+            "elapsed_s": 1.20429015904665,
+            "prompt_tokens": 3956,
+            "generated_tokens": 26,
+            "prompt_sha256": "2f6ed6e8fc88df3c1ee12514e42125f2e966927f8fbfa4554b8488662e48bc72",
+            "input_ids_sha256": "efd5cf4b2e7b5ff3ce8edfe14ec311a600a9cb18942d8beb4d556a5bf0648b17",
+            "max_ctx": 31500
+          }
+        ],
+        "cache_stats": {
+          "modeled_latency_us": 40118.0,
+          "modeled_energy_nj": 3327551078.4,
+          "decode_steps": 258
+        }
+      },
+      "snapkv": {
+        "score": 4.24,
+        "n": 5,
+        "sample_scores": [
+          8.33,
+          7.14,
+          5.71,
+          0.0,
+          0.0
+        ],
+        "samples": [
+          {
+            "sample_id": "3b91dce7ca41a9d16a1d0c61806c139db583a053ddb582bf79df3ff56f8e0344",
+            "prediction": "They selected Facebook pages based on intuition and performance on development data, including Time, The Guardian, and Disney. (Note: The exact list of pages is mentioned in the article but for the purpose of this task, I am providing a concise answer focusing on the fact that they looked at some specific pages.)",
+            "score": 8.333333333333332,
+            "elapsed_s": 2.6381802298128605,
+            "prompt_tokens": 4895,
+            "generated_tokens": 65,
+            "prompt_sha256": "7dd2e552df3aa270de08e972bd66bfb5fc32a38ea3052c3ced45a793c8549bc7",
+            "input_ids_sha256": "b7f0b2e6ed6a1c20786d7d12bf3f37a9360b3225f7918fc53645c1f511d27424",
+            "max_ctx": 31500
+          },
+          {
+            "sample_id": "5f59f94cd91401a55bcd3b6b24b78cd2c4c78e8ee6e7663e0ac8b97306444f08",
+            "prediction": "The latent context used to predict instructor intervention is not explicitly stated in the article. However, it can be inferred that the context is represented by hidden variables or features learned by the model. The article mentions that the context is computed as the attended context representations, which are computed based on the hidden states of the encoder and decoder in the model. Therefore, the latent context can be considered as the hidden states or features learned by the model that represent the context of the instructor's post and the surrounding context in the thread.",
+            "score": 7.142857142857144,
+            "elapsed_s": 4.218490157276392,
+            "prompt_tokens": 5415,
+            "generated_tokens": 111,
+            "prompt_sha256": "fad754a15cc4b5009d70dda1cdb6b7c83c74a64f63247e63ae3bf1b08ab79721",
+            "input_ids_sha256": "5e3424237e60263b3f3df925ba78167a87fa38cd3de56ef6a449015922411d24",
+            "max_ctx": 31500
+          },
+          {
+            "sample_id": "9d37c5305ff63838fd6b7c96f13d10cfc388955672b1a629e5c0a8c2a89c520d",
+            "prediction": "The article mentions the use of F-scores, but it does not explicitly state that other evaluation metrics are not considered. Therefore, it is unanswerable based on the given information whether other metrics are looked at or not.",
+            "score": 5.714285714285714,
+            "elapsed_s": 2.117751769721508,
+            "prompt_tokens": 5549,
+            "generated_tokens": 48,
+            "prompt_sha256": "98c789f3ac694d29feebb7570556ee4de51b79e1a538c568febbce3f9ddc4065",
+            "input_ids_sha256": "a871b2021e63592583881b72359fe86bdae3bfbab22ba1777776d3099f5333e7",
+            "max_ctx": 31500
+          },
+          {
+            "sample_id": "5b60c062453de695f70d5f313a868a3c630068a85084fc9c456760f41e84d0f3",
+            "prediction": "The baselines were not explicitly stated in the provided information.",
+            "score": 0.0,
+            "elapsed_s": 0.9039069283753633,
+            "prompt_tokens": 5175,
+            "generated_tokens": 13,
+            "prompt_sha256": "872ff60af8e772a659a3b91261795adc9ddfb318c1d3a746776e822d9cec516e",
+            "input_ids_sha256": "3e77b2e558bc8519391551921b802f8aa25e7c0c90863f45bcf0bc4a93ff8a86",
+            "max_ctx": 31500
+          },
+          {
+            "sample_id": "a25d41e770a5f1816e04f39227fecd7dfcd9b83b25842e413d0f8fcb447b2092",
+            "prediction": "jiant is specifically designed for use with models implemented in Python and PyTorch.",
+            "score": 0.0,
+            "elapsed_s": 0.9353369046002626,
+            "prompt_tokens": 3956,
+            "generated_tokens": 18,
+            "prompt_sha256": "2f6ed6e8fc88df3c1ee12514e42125f2e966927f8fbfa4554b8488662e48bc72",
+            "input_ids_sha256": "efd5cf4b2e7b5ff3ce8edfe14ec311a600a9cb18942d8beb4d556a5bf0648b17",
+            "max_ctx": 31500
+          }
+        ],
+        "cache_stats": {
+          "modeled_latency_us": 38874.1,
+          "modeled_energy_nj": 3224371200.0,
+          "decode_steps": 250
+        }
+      },
+      "tieredkv": {
+        "score": 7.57,
+        "n": 5,
+        "sample_scores": [
+          12.0,
+          18.18,
+          7.69,
+          0.0,
+          0.0
+        ],
+        "samples": [
+          {
+            "sample_id": "3b91dce7ca41a9d16a1d0c61806c139db583a053ddb582bf79df3ff56f8e0344",
+            "prediction": "They selected Facebook pages based on intuition and performance on development data, including Time, The Guardian, and Disney. (Note: The exact list is not mentioned in the article.)",
+            "score": 12.0,
+            "elapsed_s": 3.442491779103875,
+            "prompt_tokens": 4895,
+            "generated_tokens": 38,
+            "prompt_sha256": "7dd2e552df3aa270de08e972bd66bfb5fc32a38ea3052c3ced45a793c8549bc7",
+            "input_ids_sha256": "b7f0b2e6ed6a1c20786d7d12bf3f37a9360b3225f7918fc53645c1f511d27424",
+            "max_ctx": 31500
+          },
+          {
+            "sample_id": "5f59f94cd91401a55bcd3b6b24b78cd2c4c78e8ee6e7663e0ac8b97306444f08",
+            "prediction": "The context used to predict instructor intervention is identified by inferring the context scope, and the models select a context, defined as a contiguous set of student posts, to improve intervention prediction.",
+            "score": 18.18181818181818,
+            "elapsed_s": 3.6496174931526184,
+            "prompt_tokens": 5415,
+            "generated_tokens": 40,
+            "prompt_sha256": "fad754a15cc4b5009d70dda1cdb6b7c83c74a64f63247e63ae3bf1b08ab79721",
+            "input_ids_sha256": "5e3424237e60263b3f3df925ba78167a87fa38cd3de56ef6a449015922411d24",
+            "max_ctx": 31500
+          },
+          {
+            "sample_id": "9d37c5305ff63838fd6b7c96f13d10cfc388955672b1a629e5c0a8c2a89c520d",
+            "prediction": "The article mentions the use of F-scores, but it does not specify if other evaluation metrics are looked at. Therefore, it is unanswerable based on the given information.",
+            "score": 7.6923076923076925,
+            "elapsed_s": 3.5823541563004255,
+            "prompt_tokens": 5549,
+            "generated_tokens": 39,
+            "prompt_sha256": "98c789f3ac694d29feebb7570556ee4de51b79e1a538c568febbce3f9ddc4065",
+            "input_ids_sha256": "a871b2021e63592583881b72359fe86bdae3bfbab22ba1777776d3099f5333e7",
+            "max_ctx": 31500
+          },
+          {
+            "sample_id": "5b60c062453de695f70d5f313a868a3c630068a85084fc9c456760f41e84d0f3",
+            "prediction": "The baselines were not explicitly stated in the provided information.",
+            "score": 0.0,
+            "elapsed_s": 1.5369094293564558,
+            "prompt_tokens": 5175,
+            "generated_tokens": 13,
+            "prompt_sha256": "872ff60af8e772a659a3b91261795adc9ddfb318c1d3a746776e822d9cec516e",
+            "input_ids_sha256": "3e77b2e558bc8519391551921b802f8aa25e7c0c90863f45bcf0bc4a93ff8a86",
+            "max_ctx": 31500
+          },
+          {
+            "sample_id": "a25d41e770a5f1816e04f39227fecd7dfcd9b83b25842e413d0f8fcb447b2092",
+            "prediction": "jiant is specifically designed for use with models implemented in Python and PyTorch.",
+            "score": 0.0,
+            "elapsed_s": 1.7744863331317902,
+            "prompt_tokens": 3956,
+            "generated_tokens": 18,
+            "prompt_sha256": "2f6ed6e8fc88df3c1ee12514e42125f2e966927f8fbfa4554b8488662e48bc72",
+            "input_ids_sha256": "efd5cf4b2e7b5ff3ce8edfe14ec311a600a9cb18942d8beb4d556a5bf0648b17",
+            "max_ctx": 31500
+          }
+        ],
+        "cache_stats": {
+          "demoted": 77152,
+          "promoted": 72576,
+          "promotions_deferred": 73856,
+          "paid_writes": 10521,
+          "writes_saved": 66631,
+          "dropped": 0,
+          "write_savings_pct": 86.4,
+          "decode_steps": 143,
+          "stt_starved_steps": 0,
+          "stt_unused_steps": 0,
+          "mean_stt_exposed": 32.0,
+          "stt_expose_quota": 32,
+          "stt_exposed_total": 4736,
+          "stt_exposure_samples": 148,
+          "modeled_latency_us": 44018.6,
+          "modeled_energy_nj": 1894126321.7
+        }
+      }
+    },
+    "narrativeqa": {
+      "full": {
+        "score": 21.94,
+        "n": 5,
+        "sample_scores": [
+          22.22,
+          20.0,
+          28.57,
+          23.53,
+          15.38
+        ],
+        "samples": [
+          {
+            "sample_id": "27a07bedff812ae2c3fece3ac4a1f1db11f00793a3598fa94f1fa286ea347cb9",
+            "prediction": "Saltram is an inmate at the Mulvilles' house and doesn't dress for dinner.",
+            "score": 22.22222222222222,
+            "elapsed_s": 6.468100173398852,
+            "prompt_tokens": 31500,
+            "generated_tokens": 23,
+            "prompt_sha256": "cd3a726cc41e939e228fba3c897233fbcb56dd25fc51e2df5bd7bf97365e3010",
+            "input_ids_sha256": "1ba62d60d79ff4eab347586182144576b5ed80b9d085dedaaac32cc7a9abce39",
+            "max_ctx": 31500
+          },
+          {
+            "sample_id": "dfeb4058f4507fa2d2a6f80f6c230cc08e3c7eaa8221bead1ccee5ba90a57488",
+            "prediction": "Ann has a heart that is already broken and filled with grief.",
+            "score": 20.0,
+            "elapsed_s": 5.738075368106365,
+            "prompt_tokens": 31500,
+            "generated_tokens": 14,
+            "prompt_sha256": "4f51bc9626de800fe1f9875ed92c95b2341343eb8ef1d7fd0293ba2d8acbdaa2",
+            "input_ids_sha256": "245c69d9f9a94480a33616577c0a91bc5e26dca47304a2973f2d7feb9fbdcca0",
+            "max_ctx": 31500
+          },
+          {
+            "sample_id": "b75b8f1d9f0027543e6f4d84ca94997765d41f9a6eda749df309b0070caee3d8",
+            "prediction": "The witch lives on Atlas' mountain.",
+            "score": 28.571428571428577,
+            "elapsed_s": 1.4311080537736416,
+            "prompt_tokens": 9672,
+            "generated_tokens": 10,
+            "prompt_sha256": "674f44cff445f8d726ac43fcadd457f4ba75069711b11543282ca61c96d58ec2",
+            "input_ids_sha256": "126e3b84aef4284de41aa4f71d15325723d105536c56557c5fa016dcb5901996",
+            "max_ctx": 31500
+          },
+          {
+            "sample_id": "5f2d99ab2d103d5f04d78f3e7a3b76f633fabeab2eb86a785cf76ed7ac77249e",
+            "prediction": "Crito proposed Socrates' escape from prison.",
+            "score": 23.529411764705884,
+            "elapsed_s": 1.5639421381056309,
+            "prompt_tokens": 9885,
+            "generated_tokens": 12,
+            "prompt_sha256": "0ef7eacd859dc291156645ea50a13dfb2dc30aaeade434a1814e6af65606f2c1",
+            "input_ids_sha256": "76b01da99eabb76196d73a6ab898807da02bc9eaa6a3600bf480952a25d5ef48",
+            "max_ctx": 31500
+          },
+          {
+            "sample_id": "254d602c75f8a37865dd7b4a2b7efbb25194b5064a29a07d7038b92d6add6c3d",
+            "prediction": "Baron Henry was afraid of Otto's father, Baron Conrad.",
+            "score": 15.384615384615383,
+            "elapsed_s": 5.857214139774442,
+            "prompt_tokens": 31500,
+            "generated_tokens": 15,
+            "prompt_sha256": "37917fbf048e787e972bc266d3edc4c81ebdc721e03beb0069ec848426b30696",
+            "input_ids_sha256": "ac596cee0cde55fb1d81e86c1dcc36d4b4ec11806095cd6a3a8ddd26fc127e74",
+            "max_ctx": 31500
+          }
+        ],
+        "cache_stats": {
+          "modeled_latency_us": 263940.6,
+          "modeled_energy_nj": 21892291362.8,
+          "decode_steps": 69
+        }
+      },
+      "streamingllm": {
+        "score": 17.27,
+        "n": 5,
+        "sample_scores": [
+          13.33,
+          11.11,
+          33.33,
+          28.57,
+          0.0
+        ],
+        "samples": [
+          {
+            "sample_id": "27a07bedff812ae2c3fece3ac4a1f1db11f00793a3598fa94f1fa286ea347cb9",
+            "prediction": "Saltram lives with the Mulvilles, who support him financially.",
+            "score": 13.333333333333334,
+            "elapsed_s": 4.891307979822159,
+            "prompt_tokens": 31500,
+            "generated_tokens": 17,
+            "prompt_sha256": "cd3a726cc41e939e228fba3c897233fbcb56dd25fc51e2df5bd7bf97365e3010",
+            "input_ids_sha256": "1ba62d60d79ff4eab347586182144576b5ed80b9d085dedaaac32cc7a9abce39",
+            "max_ctx": 31500
+          },
+          {
+            "sample_id": "dfeb4058f4507fa2d2a6f80f6c230cc08e3c7eaa8221bead1ccee5ba90a57488",
+            "prediction": "Ann is unable to return Mary's feelings of affection.",
+            "score": 11.11111111111111,
+            "elapsed_s": 4.791810998693109,
+            "prompt_tokens": 31500,
+            "generated_tokens": 13,
+            "prompt_sha256": "4f51bc9626de800fe1f9875ed92c95b2341343eb8ef1d7fd0293ba2d8acbdaa2",
+            "input_ids_sha256": "245c69d9f9a94480a33616577c0a91bc5e26dca47304a2973f2d7feb9fbdcca0",
+            "max_ctx": 31500
+          },
+          {
+            "sample_id": "b75b8f1d9f0027543e6f4d84ca94997765d41f9a6eda749df309b0070caee3d8",
+            "prediction": "The witch lives on Atlas.",
+            "score": 33.33333333333333,
+            "elapsed_s": 1.21356232278049,
+            "prompt_tokens": 9672,
+            "generated_tokens": 8,
+            "prompt_sha256": "674f44cff445f8d726ac43fcadd457f4ba75069711b11543282ca61c96d58ec2",
+            "input_ids_sha256": "126e3b84aef4284de41aa4f71d15325723d105536c56557c5fa016dcb5901996",
+            "max_ctx": 31500
+          },
+          {
+            "sample_id": "5f2d99ab2d103d5f04d78f3e7a3b76f633fabeab2eb86a785cf76ed7ac77249e",
+            "prediction": "Crito visited Socrates to persuade him to escape from prison.",
+            "score": 28.571428571428566,
+            "elapsed_s": 1.4495466034859419,
+            "prompt_tokens": 9885,
+            "generated_tokens": 16,
+            "prompt_sha256": "0ef7eacd859dc291156645ea50a13dfb2dc30aaeade434a1814e6af65606f2c1",
+            "input_ids_sha256": "76b01da99eabb76196d73a6ab898807da02bc9eaa6a3600bf480952a25d5ef48",
+            "max_ctx": 31500
+          },
+          {
+            "sample_id": "254d602c75f8a37865dd7b4a2b7efbb25194b5064a29a07d7038b92d6add6c3d",
+            "prediction": "Baron Henry spared Otto's life.",
+            "score": 0.0,
+            "elapsed_s": 4.723313795402646,
+            "prompt_tokens": 31500,
+            "generated_tokens": 10,
+            "prompt_sha256": "37917fbf048e787e972bc266d3edc4c81ebdc721e03beb0069ec848426b30696",
+            "input_ids_sha256": "ac596cee0cde55fb1d81e86c1dcc36d4b4ec11806095cd6a3a8ddd26fc127e74",
+            "max_ctx": 31500
+          }
+        ],
+        "cache_stats": {
+          "modeled_latency_us": 9174.3,
+          "modeled_energy_nj": 760951603.2,
+          "decode_steps": 59
+        }
+      },
+      "h2o": {
+        "score": 12.38,
+        "n": 5,
+        "sample_scores": [
+          0.0,
+          0.0,
+          33.33,
+          28.57,
+          0.0
+        ],
+        "samples": [
+          {
+            "sample_id": "27a07bedff812ae2c3fece3ac4a1f1db11f00793a3598fa94f1fa286ea347cb9",
+            "prediction": "Saltram lives off The Coxon Fund.",
+            "score": 0.0,
+            "elapsed_s": 4.876609107479453,
+            "prompt_tokens": 31500,
+            "generated_tokens": 12,
+            "prompt_sha256": "cd3a726cc41e939e228fba3c897233fbcb56dd25fc51e2df5bd7bf97365e3010",
+            "input_ids_sha256": "1ba62d60d79ff4eab347586182144576b5ed80b9d085dedaaac32cc7a9abce39",
+            "max_ctx": 31500
+          },
+          {
+            "sample_id": "dfeb4058f4507fa2d2a6f80f6c230cc08e3c7eaa8221bead1ccee5ba90a57488",
+            "prediction": "Ann does not reciprocate Mary's feelings of affection.",
+            "score": 0.0,
+            "elapsed_s": 4.944981599226594,
+            "prompt_tokens": 31500,
+            "generated_tokens": 14,
+            "prompt_sha256": "4f51bc9626de800fe1f9875ed92c95b2341343eb8ef1d7fd0293ba2d8acbdaa2",
+            "input_ids_sha256": "245c69d9f9a94480a33616577c0a91bc5e26dca47304a2973f2d7feb9fbdcca0",
+            "max_ctx": 31500
+          },
+          {
+            "sample_id": "b75b8f1d9f0027543e6f4d84ca94997765d41f9a6eda749df309b0070caee3d8",
+            "prediction": "The witch lives on Atlas.",
+            "score": 33.33333333333333,
+            "elapsed_s": 1.2893070857971907,
+            "prompt_tokens": 9672,
+            "generated_tokens": 8,
+            "prompt_sha256": "674f44cff445f8d726ac43fcadd457f4ba75069711b11543282ca61c96d58ec2",
+            "input_ids_sha256": "126e3b84aef4284de41aa4f71d15325723d105536c56557c5fa016dcb5901996",
+            "max_ctx": 31500
+          },
+          {
+            "sample_id": "5f2d99ab2d103d5f04d78f3e7a3b76f633fabeab2eb86a785cf76ed7ac77249e",
+            "prediction": "Crito visited Socrates to persuade him to escape from prison.",
+            "score": 28.571428571428566,
+            "elapsed_s": 1.5875177402049303,
+            "prompt_tokens": 9885,
+            "generated_tokens": 16,
+            "prompt_sha256": "0ef7eacd859dc291156645ea50a13dfb2dc30aaeade434a1814e6af65606f2c1",
+            "input_ids_sha256": "76b01da99eabb76196d73a6ab898807da02bc9eaa6a3600bf480952a25d5ef48",
+            "max_ctx": 31500
+          },
+          {
+            "sample_id": "254d602c75f8a37865dd7b4a2b7efbb25194b5064a29a07d7038b92d6add6c3d",
+            "prediction": "Baron Henry spared Otto's life.",
+            "score": 0.0,
+            "elapsed_s": 4.867568301036954,
+            "prompt_tokens": 31500,
+            "generated_tokens": 10,
+            "prompt_sha256": "37917fbf048e787e972bc266d3edc4c81ebdc721e03beb0069ec848426b30696",
+            "input_ids_sha256": "ac596cee0cde55fb1d81e86c1dcc36d4b4ec11806095cd6a3a8ddd26fc127e74",
+            "max_ctx": 31500
+          }
+        ],
+        "cache_stats": {
+          "modeled_latency_us": 8552.3,
+          "modeled_energy_nj": 709361664.0,
+          "decode_steps": 55
+        }
+      },
+      "snapkv": {
+        "score": 18.6,
+        "n": 5,
+        "sample_scores": [
+          20.0,
+          11.11,
+          33.33,
+          28.57,
+          0.0
+        ],
+        "samples": [
+          {
+            "sample_id": "27a07bedff812ae2c3fece3ac4a1f1db11f00793a3598fa94f1fa286ea347cb9",
+            "prediction": "Saltram is a resident of the Kent household, who receives a substantial income from The Coxon Fund.",
+            "score": 20.0,
+            "elapsed_s": 5.279403895139694,
+            "prompt_tokens": 31500,
+            "generated_tokens": 24,
+            "prompt_sha256": "cd3a726cc41e939e228fba3c897233fbcb56dd25fc51e2df5bd7bf97365e3010",
+            "input_ids_sha256": "1ba62d60d79ff4eab347586182144576b5ed80b9d085dedaaac32cc7a9abce39",
+            "max_ctx": 31500
+          },
+          {
+            "sample_id": "dfeb4058f4507fa2d2a6f80f6c230cc08e3c7eaa8221bead1ccee5ba90a57488",
+            "prediction": "Ann is unable to return Mary's feelings of affection.",
+            "score": 11.11111111111111,
+            "elapsed_s": 4.888826001435518,
+            "prompt_tokens": 31500,
+            "generated_tokens": 13,
+            "prompt_sha256": "4f51bc9626de800fe1f9875ed92c95b2341343eb8ef1d7fd0293ba2d8acbdaa2",
+            "input_ids_sha256": "245c69d9f9a94480a33616577c0a91bc5e26dca47304a2973f2d7feb9fbdcca0",
+            "max_ctx": 31500
+          },
+          {
+            "sample_id": "b75b8f1d9f0027543e6f4d84ca94997765d41f9a6eda749df309b0070caee3d8",
+            "prediction": "The witch lives on Atlas.",
+            "score": 33.33333333333333,
+            "elapsed_s": 1.2857683710753918,
+            "prompt_tokens": 9672,
+            "generated_tokens": 8,
+            "prompt_sha256": "674f44cff445f8d726ac43fcadd457f4ba75069711b11543282ca61c96d58ec2",
+            "input_ids_sha256": "126e3b84aef4284de41aa4f71d15325723d105536c56557c5fa016dcb5901996",
+            "max_ctx": 31500
+          },
+          {
+            "sample_id": "5f2d99ab2d103d5f04d78f3e7a3b76f633fabeab2eb86a785cf76ed7ac77249e",
+            "prediction": "Crito visited Socrates to persuade him to escape from prison.",
+            "score": 28.571428571428566,
+            "elapsed_s": 1.5851083844900131,
+            "prompt_tokens": 9885,
+            "generated_tokens": 16,
+            "prompt_sha256": "0ef7eacd859dc291156645ea50a13dfb2dc30aaeade434a1814e6af65606f2c1",
+            "input_ids_sha256": "76b01da99eabb76196d73a6ab898807da02bc9eaa6a3600bf480952a25d5ef48",
+            "max_ctx": 31500
+          },
+          {
+            "sample_id": "254d602c75f8a37865dd7b4a2b7efbb25194b5064a29a07d7038b92d6add6c3d",
+            "prediction": "Baron Henry spared Otto's life.",
+            "score": 0.0,
+            "elapsed_s": 4.811145171523094,
+            "prompt_tokens": 31500,
+            "generated_tokens": 10,
+            "prompt_sha256": "37917fbf048e787e972bc266d3edc4c81ebdc721e03beb0069ec848426b30696",
+            "input_ids_sha256": "ac596cee0cde55fb1d81e86c1dcc36d4b4ec11806095cd6a3a8ddd26fc127e74",
+            "max_ctx": 31500
+          }
+        ],
+        "cache_stats": {
+          "modeled_latency_us": 10262.8,
+          "modeled_energy_nj": 851233996.8,
+          "decode_steps": 66
+        }
+      },
+      "tieredkv": {
+        "score": 18.89,
+        "n": 5,
+        "sample_scores": [
+          20.0,
+          11.11,
+          33.33,
+          30.0,
+          0.0
+        ],
+        "samples": [
+          {
+            "sample_id": "27a07bedff812ae2c3fece3ac4a1f1db11f00793a3598fa94f1fa286ea347cb9",
+            "prediction": "Saltram is a resident of the Kent household, who receives a substantial income from The Coxon Fund.",
+            "score": 20.0,
+            "elapsed_s": 6.786926444619894,
+            "prompt_tokens": 31500,
+            "generated_tokens": 24,
+            "prompt_sha256": "cd3a726cc41e939e228fba3c897233fbcb56dd25fc51e2df5bd7bf97365e3010",
+            "input_ids_sha256": "1ba62d60d79ff4eab347586182144576b5ed80b9d085dedaaac32cc7a9abce39",
+            "max_ctx": 31500
+          },
+          {
+            "sample_id": "dfeb4058f4507fa2d2a6f80f6c230cc08e3c7eaa8221bead1ccee5ba90a57488",
+            "prediction": "Ann is unable to return Mary's feelings of affection.",
+            "score": 11.11111111111111,
+            "elapsed_s": 5.974051235243678,
+            "prompt_tokens": 31500,
+            "generated_tokens": 13,
+            "prompt_sha256": "4f51bc9626de800fe1f9875ed92c95b2341343eb8ef1d7fd0293ba2d8acbdaa2",
+            "input_ids_sha256": "245c69d9f9a94480a33616577c0a91bc5e26dca47304a2973f2d7feb9fbdcca0",
+            "max_ctx": 31500
+          },
+          {
+            "sample_id": "b75b8f1d9f0027543e6f4d84ca94997765d41f9a6eda749df309b0070caee3d8",
+            "prediction": "The witch lives on Atlas.",
+            "score": 33.33333333333333,
+            "elapsed_s": 1.7777752634137869,
+            "prompt_tokens": 9672,
+            "generated_tokens": 8,
+            "prompt_sha256": "674f44cff445f8d726ac43fcadd457f4ba75069711b11543282ca61c96d58ec2",
+            "input_ids_sha256": "126e3b84aef4284de41aa4f71d15325723d105536c56557c5fa016dcb5901996",
+            "max_ctx": 31500
+          },
+          {
+            "sample_id": "5f2d99ab2d103d5f04d78f3e7a3b76f633fabeab2eb86a785cf76ed7ac77249e",
+            "prediction": "Crito visited to persuade Socrates to escape from prison.",
+            "score": 30.0,
+            "elapsed_s": 2.3515169117599726,
+            "prompt_tokens": 9885,
+            "generated_tokens": 15,
+            "prompt_sha256": "0ef7eacd859dc291156645ea50a13dfb2dc30aaeade434a1814e6af65606f2c1",
+            "input_ids_sha256": "76b01da99eabb76196d73a6ab898807da02bc9eaa6a3600bf480952a25d5ef48",
+            "max_ctx": 31500
+          },
+          {
+            "sample_id": "254d602c75f8a37865dd7b4a2b7efbb25194b5064a29a07d7038b92d6add6c3d",
+            "prediction": "Baron Henry spared Otto's life.",
+            "score": 0.0,
+            "elapsed_s": 5.738017091527581,
+            "prompt_tokens": 31500,
+            "generated_tokens": 10,
+            "prompt_sha256": "37917fbf048e787e972bc266d3edc4c81ebdc721e03beb0069ec848426b30696",
+            "input_ids_sha256": "ac596cee0cde55fb1d81e86c1dcc36d4b4ec11806095cd6a3a8ddd26fc127e74",
+            "max_ctx": 31500
+          }
+        ],
+        "cache_stats": {
+          "demoted": 35968,
+          "promoted": 33888,
+          "promotions_deferred": 32672,
+          "paid_writes": 7176,
+          "writes_saved": 28792,
+          "dropped": 0,
+          "write_savings_pct": 80.0,
+          "decode_steps": 65,
+          "stt_starved_steps": 0,
+          "stt_unused_steps": 0,
+          "mean_stt_exposed": 32.0,
+          "stt_expose_quota": 32,
+          "stt_exposed_total": 2240,
+          "stt_exposure_samples": 70,
+          "modeled_latency_us": 20882.1,
+          "modeled_energy_nj": 862947639.3
+        }
+      }
+    },
+    "multifieldqa_en": {
+      "full": {
+        "score": 58.32,
+        "n": 5,
+        "sample_scores": [
+          63.64,
+          100.0,
+          0.0,
+          75.0,
+          52.94
+        ],
+        "samples": [
+          {
+            "sample_id": "b3a9da1dd79b69143f46fb4ea37f3159f11a4585b68604cbda50c0adf4da65a1",
+            "prediction": "Permanent yellow spot damage on the screen may occur.",
+            "score": 63.63636363636363,
+            "elapsed_s": 1.0963337253779173,
+            "prompt_tokens": 6689,
+            "generated_tokens": 13,
+            "prompt_sha256": "c87ebacb4e58562be671dcb6504c4fa5c3e71567d8c9008bb748d1b8c2035134",
+            "input_ids_sha256": "05c37d55553d953ee3c8f5882c05485a016bc68db531b533bf59ae7b33e60147",
+            "max_ctx": 31500
+          },
+          {
+            "sample_id": "66fbe72f15b70e8c8cc090467f3ac90f03c8fb6063e3346cd82d7778cd7b1cf9",
+            "prediction": "Vice Admiral",
+            "score": 100.0,
+            "elapsed_s": 0.37596504762768745,
+            "prompt_tokens": 3463,
+            "generated_tokens": 3,
+            "prompt_sha256": "4ead4dba3e6ff0f1ef2935ac0970abe40c6c286facd8c9aa19907c33317112f3",
+            "input_ids_sha256": "5d2039982b4e42ff115fa4220e9d921998fbcab8659ead8cd834fe5a240da681",
+            "max_ctx": 31500
+          },
+          {
+            "sample_id": "49117774123dc2f3ec95d7bbc61950987252760875cec6cac53ff18be0913744",
+            "prediction": "William Rokebye",
+            "score": 0.0,
+            "elapsed_s": 1.0016834642738104,
+            "prompt_tokens": 8098,
+            "generated_tokens": 5,
+            "prompt_sha256": "3184ab9b60e19a1cf5f2f95950feb284100906a2c41359436c4223f634b21493",
+            "input_ids_sha256": "a931e411d46d3acda30ada6cbdcb4059cb750d26086036358b2e539444ab4b5f",
+            "max_ctx": 31500
+          },
+          {
+            "sample_id": "816c7d4d2ca3f7843b2d0f795c0617530c81f992857280a719dc8801a10592cf",
+            "prediction": "South West Ultras",
+            "score": 74.99999999999999,
+            "elapsed_s": 0.26591870933771133,
+            "prompt_tokens": 1892,
+            "generated_tokens": 5,
+            "prompt_sha256": "b106d2352a84d120126c13303c173763f2366fe5c4e63e679c683203d86b9aed",
+            "input_ids_sha256": "82112e4982696379a0f617992b8d46ef2b1425ccd5555e9465b85d518c4e1653",
+            "max_ctx": 31500
+          },
+          {
+            "sample_id": "670c6b828aaca397f191fff5fc6422ec944d1f3e88cfa9c9a853369093e10caa",
+            "prediction": "The recommended space for using the VR headset is at least 2 meters by 2 meters in an open and safe indoor area.",
+            "score": 52.94117647058824,
+            "elapsed_s": 1.664405606687069,
+            "prompt_tokens": 6683,
+            "generated_tokens": 29,
+            "prompt_sha256": "085ec3468963e3ca26a7e864fb6251552993ed1d696fdf7f977fd07f7a240022",
+            "input_ids_sha256": "7dac74c5401bd2beb3cc5096fb92683cc3eb520c0ec85da38d3b44493fb99f9f",
+            "max_ctx": 31500
+          }
+        ],
+        "cache_stats": {
+          "modeled_latency_us": 47754.1,
+          "modeled_energy_nj": 3960911953.9,
+          "decode_steps": 50
+        }
+      },
+      "streamingllm": {
+        "score": 50.7,
+        "n": 5,
+        "sample_scores": [
+          48.48,
+          100.0,
+          0.0,
+          75.0,
+          30.0
+        ],
+        "samples": [
+          {
+            "sample_id": "b3a9da1dd79b69143f46fb4ea37f3159f11a4585b68604cbda50c0adf4da65a1",
+            "prediction": "Permanent damage or discoloration may occur to the VR headset lenses if they are exposed to sunlight or strong light.",
+            "score": 48.484848484848484,
+            "elapsed_s": 1.3781322035938501,
+            "prompt_tokens": 6689,
+            "generated_tokens": 29,
+            "prompt_sha256": "c87ebacb4e58562be671dcb6504c4fa5c3e71567d8c9008bb748d1b8c2035134",
+            "input_ids_sha256": "05c37d55553d953ee3c8f5882c05485a016bc68db531b533bf59ae7b33e60147",
+            "max_ctx": 31500
+          },
+          {
+            "sample_id": "66fbe72f15b70e8c8cc090467f3ac90f03c8fb6063e3346cd82d7778cd7b1cf9",
+            "prediction": "Vice admiral",
+            "score": 100.0,
+            "elapsed_s": 0.39884826354682446,
+            "prompt_tokens": 3463,
+            "generated_tokens": 4,
+            "prompt_sha256": "4ead4dba3e6ff0f1ef2935ac0970abe40c6c286facd8c9aa19907c33317112f3",
+            "input_ids_sha256": "5d2039982b4e42ff115fa4220e9d921998fbcab8659ead8cd834fe5a240da681",
+            "max_ctx": 31500
+          },
+          {
+            "sample_id": "49117774123dc2f3ec95d7bbc61950987252760875cec6cac53ff18be0913744",
+            "prediction": "William Rokebye",
+            "score": 0.0,
+            "elapsed_s": 0.9475739169865847,
+            "prompt_tokens": 8098,
+            "generated_tokens": 5,
+            "prompt_sha256": "3184ab9b60e19a1cf5f2f95950feb284100906a2c41359436c4223f634b21493",
+            "input_ids_sha256": "a931e411d46d3acda30ada6cbdcb4059cb750d26086036358b2e539444ab4b5f",
+            "max_ctx": 31500
+          },
+          {
+            "sample_id": "816c7d4d2ca3f7843b2d0f795c0617530c81f992857280a719dc8801a10592cf",
+            "prediction": "South West Ultras",
+            "score": 74.99999999999999,
+            "elapsed_s": 0.26659881323575974,
+            "prompt_tokens": 1892,
+            "generated_tokens": 5,
+            "prompt_sha256": "b106d2352a84d120126c13303c173763f2366fe5c4e63e679c683203d86b9aed",
+            "input_ids_sha256": "82112e4982696379a0f617992b8d46ef2b1425ccd5555e9465b85d518c4e1653",
+            "max_ctx": 31500
+          },
+          {
+            "sample_id": "670c6b828aaca397f191fff5fc6422ec944d1f3e88cfa9c9a853369093e10caa",
+            "prediction": "The recommended space for using the VR headset is not explicitly stated in the text, but it can be inferred that a sufficient space is required to wear the headset comfortably and move around freely. The text mentions that the VR headset allows wearing most standard glasses with a frame width of less than",
+            "score": 30.000000000000004,
+            "elapsed_s": 2.275097083300352,
+            "prompt_tokens": 6683,
+            "generated_tokens": 64,
+            "prompt_sha256": "085ec3468963e3ca26a7e864fb6251552993ed1d696fdf7f977fd07f7a240022",
+            "input_ids_sha256": "7dac74c5401bd2beb3cc5096fb92683cc3eb520c0ec85da38d3b44493fb99f9f",
+            "max_ctx": 31500
+          }
+        ],
+        "cache_stats": {
+          "modeled_latency_us": 15860.6,
+          "modeled_energy_nj": 1315543449.6,
+          "decode_steps": 102
+        }
+      },
+      "h2o": {
+        "score": 55.29,
+        "n": 5,
+        "sample_scores": [
+          48.48,
+          100.0,
+          0.0,
+          75.0,
+          52.94
+        ],
+        "samples": [
+          {
+            "sample_id": "b3a9da1dd79b69143f46fb4ea37f3159f11a4585b68604cbda50c0adf4da65a1",
+            "prediction": "Permanent damage or discoloration may occur to the VR headset lenses if they are exposed to sunlight or strong light.",
+            "score": 48.484848484848484,
+            "elapsed_s": 1.624990738928318,
+            "prompt_tokens": 6689,
+            "generated_tokens": 29,
+            "prompt_sha256": "c87ebacb4e58562be671dcb6504c4fa5c3e71567d8c9008bb748d1b8c2035134",
+            "input_ids_sha256": "05c37d55553d953ee3c8f5882c05485a016bc68db531b533bf59ae7b33e60147",
+            "max_ctx": 31500
+          },
+          {
+            "sample_id": "66fbe72f15b70e8c8cc090467f3ac90f03c8fb6063e3346cd82d7778cd7b1cf9",
+            "prediction": "Vice admiral",
+            "score": 100.0,
+            "elapsed_s": 0.434714388102293,
+            "prompt_tokens": 3463,
+            "generated_tokens": 4,
+            "prompt_sha256": "4ead4dba3e6ff0f1ef2935ac0970abe40c6c286facd8c9aa19907c33317112f3",
+            "input_ids_sha256": "5d2039982b4e42ff115fa4220e9d921998fbcab8659ead8cd834fe5a240da681",
+            "max_ctx": 31500
+          },
+          {
+            "sample_id": "49117774123dc2f3ec95d7bbc61950987252760875cec6cac53ff18be0913744",
+            "prediction": "William Rokebye",
+            "score": 0.0,
+            "elapsed_s": 0.9980274271219969,
+            "prompt_tokens": 8098,
+            "generated_tokens": 5,
+            "prompt_sha256": "3184ab9b60e19a1cf5f2f95950feb284100906a2c41359436c4223f634b21493",
+            "input_ids_sha256": "a931e411d46d3acda30ada6cbdcb4059cb750d26086036358b2e539444ab4b5f",
+            "max_ctx": 31500
+          },
+          {
+            "sample_id": "816c7d4d2ca3f7843b2d0f795c0617530c81f992857280a719dc8801a10592cf",
+            "prediction": "South West Ultras",
+            "score": 74.99999999999999,
+            "elapsed_s": 0.308063643053174,
+            "prompt_tokens": 1892,
+            "generated_tokens": 5,
+            "prompt_sha256": "b106d2352a84d120126c13303c173763f2366fe5c4e63e679c683203d86b9aed",
+            "input_ids_sha256": "82112e4982696379a0f617992b8d46ef2b1425ccd5555e9465b85d518c4e1653",
+            "max_ctx": 31500
+          },
+          {
+            "sample_id": "670c6b828aaca397f191fff5fc6422ec944d1f3e88cfa9c9a853369093e10caa",
+            "prediction": "The recommended space for using the VR headset is at least 2 meters by 2 meters (approximately 6.5 feet by 6.5 feet).",
+            "score": 52.94117647058824,
+            "elapsed_s": 1.8845239095389843,
+            "prompt_tokens": 6683,
+            "generated_tokens": 37,
+            "prompt_sha256": "085ec3468963e3ca26a7e864fb6251552993ed1d696fdf7f977fd07f7a240022",
+            "input_ids_sha256": "7dac74c5401bd2beb3cc5096fb92683cc3eb520c0ec85da38d3b44493fb99f9f",
+            "max_ctx": 31500
+          }
+        ],
+        "cache_stats": {
+          "modeled_latency_us": 11662.2,
+          "modeled_energy_nj": 967311360.0,
+          "decode_steps": 75
+        }
+      },
+      "snapkv": {
+        "score": 45.98,
+        "n": 5,
+        "sample_scores": [
+          48.48,
+          100.0,
+          0.0,
+          30.0,
+          51.43
+        ],
+        "samples": [
+          {
+            "sample_id": "b3a9da1dd79b69143f46fb4ea37f3159f11a4585b68604cbda50c0adf4da65a1",
+            "prediction": "Permanent damage or discoloration to the VR headset lenses may occur if they are exposed to sunlight or strong light.",
+            "score": 48.484848484848484,
+            "elapsed_s": 1.6229705791920424,
+            "prompt_tokens": 6689,
+            "generated_tokens": 29,
+            "prompt_sha256": "c87ebacb4e58562be671dcb6504c4fa5c3e71567d8c9008bb748d1b8c2035134",
+            "input_ids_sha256": "05c37d55553d953ee3c8f5882c05485a016bc68db531b533bf59ae7b33e60147",
+            "max_ctx": 31500
+          },
+          {
+            "sample_id": "66fbe72f15b70e8c8cc090467f3ac90f03c8fb6063e3346cd82d7778cd7b1cf9",
+            "prediction": "Vice admiral",
+            "score": 100.0,
+            "elapsed_s": 0.4301054384559393,
+            "prompt_tokens": 3463,
+            "generated_tokens": 4,
+            "prompt_sha256": "4ead4dba3e6ff0f1ef2935ac0970abe40c6c286facd8c9aa19907c33317112f3",
+            "input_ids_sha256": "5d2039982b4e42ff115fa4220e9d921998fbcab8659ead8cd834fe5a240da681",
+            "max_ctx": 31500
+          },
+          {
+            "sample_id": "49117774123dc2f3ec95d7bbc61950987252760875cec6cac53ff18be0913744",
+            "prediction": "William Rokebye",
+            "score": 0.0,
+            "elapsed_s": 0.9931491818279028,
+            "prompt_tokens": 8098,
+            "generated_tokens": 5,
+            "prompt_sha256": "3184ab9b60e19a1cf5f2f95950feb284100906a2c41359436c4223f634b21493",
+            "input_ids_sha256": "a931e411d46d3acda30ada6cbdcb4059cb750d26086036358b2e539444ab4b5f",
+            "max_ctx": 31500
+          },
+          {
+            "sample_id": "816c7d4d2ca3f7843b2d0f795c0617530c81f992857280a719dc8801a10592cf",
+            "prediction": "South Bastia District, Yerevan - The most active group of fans is the South Bastia District fan club.",
+            "score": 30.0,
+            "elapsed_s": 0.9801373817026615,
+            "prompt_tokens": 1892,
+            "generated_tokens": 25,
+            "prompt_sha256": "b106d2352a84d120126c13303c173763f2366fe5c4e63e679c683203d86b9aed",
+            "input_ids_sha256": "82112e4982696379a0f617992b8d46ef2b1425ccd5555e9465b85d518c4e1653",
+            "max_ctx": 31500
+          },
+          {
+            "sample_id": "670c6b828aaca397f191fff5fc6422ec944d1f3e88cfa9c9a853369093e10caa",
+            "prediction": "The recommended space for using the VR headset is an area of at least 2 meters by 2 meters that is clear of obstacles.",
+            "score": 51.42857142857144,
+            "elapsed_s": 1.688668129965663,
+            "prompt_tokens": 6683,
+            "generated_tokens": 31,
+            "prompt_sha256": "085ec3468963e3ca26a7e864fb6251552993ed1d696fdf7f977fd07f7a240022",
+            "input_ids_sha256": "7dac74c5401bd2beb3cc5096fb92683cc3eb520c0ec85da38d3b44493fb99f9f",
+            "max_ctx": 31500
+          }
+        ],
+        "cache_stats": {
+          "modeled_latency_us": 13839.2,
+          "modeled_energy_nj": 1147876147.2,
+          "decode_steps": 89
+        }
+      },
+      "tieredkv": {
+        "score": 40.92,
+        "n": 5,
+        "sample_scores": [
+          26.67,
+          100.0,
+          0.0,
+          25.0,
+          52.94
+        ],
+        "samples": [
+          {
+            "sample_id": "b3a9da1dd79b69143f46fb4ea37f3159f11a4585b68604cbda50c0adf4da65a1",
+            "prediction": "Permanent damage to the VR headset, specifically the lenses, may occur if they are exposed to sunlight or strong light. This can result in visual distortions or a loss of clarity in the virtual environment. It is recommended to avoid direct sunlight or strong artificial light when using the VR headset",
+            "score": 26.666666666666668,
+            "elapsed_s": 5.71465065702796,
+            "prompt_tokens": 6689,
+            "generated_tokens": 64,
+            "prompt_sha256": "c87ebacb4e58562be671dcb6504c4fa5c3e71567d8c9008bb748d1b8c2035134",
+            "input_ids_sha256": "05c37d55553d953ee3c8f5882c05485a016bc68db531b533bf59ae7b33e60147",
+            "max_ctx": 31500
+          },
+          {
+            "sample_id": "66fbe72f15b70e8c8cc090467f3ac90f03c8fb6063e3346cd82d7778cd7b1cf9",
+            "prediction": "Vice admiral",
+            "score": 100.0,
+            "elapsed_s": 0.6520254537463188,
+            "prompt_tokens": 3463,
+            "generated_tokens": 4,
+            "prompt_sha256": "4ead4dba3e6ff0f1ef2935ac0970abe40c6c286facd8c9aa19907c33317112f3",
+            "input_ids_sha256": "5d2039982b4e42ff115fa4220e9d921998fbcab8659ead8cd834fe5a240da681",
+            "max_ctx": 31500
+          },
+          {
+            "sample_id": "49117774123dc2f3ec95d7bbc61950987252760875cec6cac53ff18be0913744",
+            "prediction": "William Rokebye",
+            "score": 0.0,
+            "elapsed_s": 1.3213890232145786,
+            "prompt_tokens": 8098,
+            "generated_tokens": 5,
+            "prompt_sha256": "3184ab9b60e19a1cf5f2f95950feb284100906a2c41359436c4223f634b21493",
+            "input_ids_sha256": "a931e411d46d3acda30ada6cbdcb4059cb750d26086036358b2e539444ab4b5f",
+            "max_ctx": 31500
+          },
+          {
+            "sample_id": "816c7d4d2ca3f7843b2d0f795c0617530c81f992857280a719dc8801a10592cf",
+            "prediction": "South Bastia District, Yerevan, Armenia - The most active group of fans for Urartu Football Club is the South Bastia District Ultras.",
+            "score": 25.0,
+            "elapsed_s": 2.7370081041008234,
+            "prompt_tokens": 1892,
+            "generated_tokens": 34,
+            "prompt_sha256": "b106d2352a84d120126c13303c173763f2366fe5c4e63e679c683203d86b9aed",
+            "input_ids_sha256": "82112e4982696379a0f617992b8d46ef2b1425ccd5555e9465b85d518c4e1653",
+            "max_ctx": 31500
+          },
+          {
+            "sample_id": "670c6b828aaca397f191fff5fc6422ec944d1f3e88cfa9c9a853369093e10caa",
+            "prediction": "The recommended space for using the VR headset is at least 2 meters by 2 meters (or 6.6 feet by 6.6 feet).",
+            "score": 52.94117647058824,
+            "elapsed_s": 3.606872785836458,
+            "prompt_tokens": 6683,
+            "generated_tokens": 35,
+            "prompt_sha256": "085ec3468963e3ca26a7e864fb6251552993ed1d696fdf7f977fd07f7a240022",
+            "input_ids_sha256": "7dac74c5401bd2beb3cc5096fb92683cc3eb520c0ec85da38d3b44493fb99f9f",
+            "max_ctx": 31500
+          }
+        ],
+        "cache_stats": {
+          "demoted": 73984,
+          "promoted": 69600,
+          "promotions_deferred": 70688,
+          "paid_writes": 10698,
+          "writes_saved": 63286,
+          "dropped": 0,
+          "write_savings_pct": 85.5,
+          "decode_steps": 137,
+          "stt_starved_steps": 0,
+          "stt_unused_steps": 0,
+          "mean_stt_exposed": 32.0,
+          "stt_expose_quota": 32,
+          "stt_exposed_total": 4544,
+          "stt_exposure_samples": 142,
+          "modeled_latency_us": 42383.2,
+          "modeled_energy_nj": 1815089512.4
+        }
+      }
+    }
+  }
+}

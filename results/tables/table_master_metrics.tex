@@ -2,17 +2,17 @@
 \centering
 \small
 \setlength{\tabcolsep}{4pt}
-\caption{Master results: accuracy (mean $\pm$ SE, n=25/10), measured ITL@16k, resident KV, attended tokens, write savings, analytical energy. TieredKV at 1024 VRAM + 2048 STT, bf16.}
+\caption{Master results: task score (F1 or ROUGE-L; unweighted mean $\pm$ within-task SE), measured full-loop ITL@16k, configured logical KV capacity, maximum attended tokens, decode-demotion write savings, analytical decode KV-traffic energy. TieredKV uses bf16 KV.}
 \label{tab:master}
 \begin{tabular}{lcccccc}
 \toprule
-\textbf{Method} & \textbf{Avg F1 $\pm$ SE} & \textbf{ITL@16k (ms)} & \textbf{Resident KV} & \textbf{Attended} & \textbf{Write sav.} & \textbf{Energy (J)} \\
+\textbf{Method} & \textbf{Avg score $\pm$ SE} & \textbf{ITL@16k (ms)} & \textbf{KV capacity} & \textbf{Attended} & \textbf{Write sav.} & \textbf{Decode energy (J)} \\
 \midrule
-Full Cache & 43.89 $\pm$ 2.30 & 61.7 & 4.03 GB@31.5k & full ctx & -- & 434.3 \\
-StreamingLLM & 34.08 $\pm$ 2.26 & 24.7 & 134 MB & 1024 & -- & 73.1 \\
-H2O & 35.63 $\pm$ 2.27 & 24.8 & 134 MB & 1024 & -- & 72.0 \\
-SnapKV & 35.86 $\pm$ 2.22 & 24.8 & 134 MB & 1024 & -- & 75.5 \\
-\textbf{TieredKV (Ours)} & 36.58 $\pm$ 2.23 & 25.1 & 403 MB & 1024+32 & 13.0 & 71.4 \\
+Full Cache & 44.50 $\pm$ 2.36 & 61.7 & 4129 MB & full ctx & -- & 446.0 \\
+StreamingLLM & 36.50 $\pm$ 2.17 & 25.7 & 134 MB & 1024 & -- & 73.2 \\
+H2O & 37.13 $\pm$ 2.22 & 34.4 & 134 MB & 1024 & -- & 71.2 \\
+SnapKV & 37.80 $\pm$ 2.21 & 34.4 & 134 MB & 1024 & -- & 75.1 \\
+\textbf{TieredKV (Ours)} & 38.38 $\pm$ 2.18 & 115.7 & 403 MB & 1024+32 & 88.1 & 70.4 \\
 \bottomrule
 \end{tabular}
 \end{table*}

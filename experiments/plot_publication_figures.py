@@ -334,22 +334,22 @@ def _decollide_text_groups(fig, ax, groups, step, max_iter=20):
 
 
 def fig1_accuracy_equivram(data_ev, outdir):
-    print("\n[Fig 1] Accuracy bar chart (equal-VRAM setting)…")
+    print("\n[Fig 1] Accuracy bar chart (equal logical VRAM budget)…")
     _accuracy_bar(
         data_ev, outdir,
         stem="fig1_accuracy_equivram",
-        title_tag="Equal-VRAM",
-        caption_note="Equal-VRAM: TieredKV uses VRAM=1024 + STT-RAM=2048; baselines at budget=1024 tokens."
+        title_tag="Equal Logical VRAM",
+        caption_note="Equal logical VRAM token budget: TieredKV has 1024 fast + 2048 simulated slow tokens; baselines have 1024 fast tokens."
     )
 
 
 def fig7_accuracy_fair(data_fair, outdir):
-    print("\n[Fig 7] Accuracy bar chart (fair / iso-VRAM setting)…")
+    print("\n[Fig 7] Accuracy bar chart (matched attended-token setting)…")
     _accuracy_bar(
         data_fair, outdir,
         stem="fig7_accuracy_fair",
-        title_tag="Iso-VRAM (Fair)",
-        caption_note="Fair comparison: all methods use identical VRAM budget (992 tokens)."
+        title_tag="Matched Attention",
+        caption_note="Matched attended-token budget: TieredKV has 992 fast + up to 32 exposed slow tokens; baselines have 1024 fast tokens."
     )
 
 
@@ -438,7 +438,7 @@ def fig2_latency(data_fair, outdir):
     ax.set_xticklabels([TASK_LABELS.get(t, t) for t in tasks], fontsize=9)
     ax.set_ylabel("Modeled Decode Latency (ms)", fontsize=10)
     ax.set_title(
-        "Modeled Decode Latency — TieredKV vs. SOTA (Fair / Iso-VRAM)",
+        "Modeled Decode Latency — TieredKV vs. SOTA (Matched Attention)",
         fontsize=10.5, fontweight="bold", pad=6,
     )
     ax.spines["top"].set_visible(False)
@@ -902,24 +902,31 @@ def _accuracy_table(data, tag, note):
 
 
 def table1_accuracy_equivram(data_ev, outdir):
-    print("\n[Table 1] Accuracy (equal-VRAM)…")
+    print("\n[Table 1] Accuracy (equal logical VRAM)…")
+    cfg = data_ev["config"]
     lines = _accuracy_table(
         data_ev,
         tag="equivram",
-        note=r"Equal-VRAM setting: TieredKV uses VRAM=1024 + STT-RAM=2048; "
-             r"baselines at budget=1024. Bold = best per task."
+        note=(rf"Equal logical fast-tier capacity: TieredKV uses {cfg['tiered_vram_budget']} fast "
+              rf"+ {cfg['tiered_stt_budget']} simulated slow slots; baselines use "
+              rf"{cfg['budget']} fast slots. Slow-tier tensors reside on GPU. "
+              r"Bold = best per task.")
     )
     write_tex(lines, outdir, "table1_accuracy_equivram")
     print("\n".join(lines))
 
 
 def table2_accuracy_fair(data_fair, outdir):
-    print("\n[Table 2] Accuracy (fair / iso-VRAM)…")
+    print("\n[Table 2] Accuracy (matched attention)…")
+    cfg = data_fair["config"]
+    expose = cfg.get("tiered_stt_expose")
+    expose = 32 if expose is None else expose
     lines = _accuracy_table(
         data_fair,
         tag="fair",
-        note=r"Fair (iso-VRAM) setting: all methods use identical VRAM budget (992 tokens). "
-             r"Bold = best per task."
+        note=(rf"Matched-attention setting: TieredKV uses {cfg['tiered_vram_budget']} "
+              rf"fast slots + up to {expose} simulated slow-tier reads; "
+              rf"baselines use {cfg['budget']} fast slots. Bold = best per task.")
     )
     write_tex(lines, outdir, "table2_accuracy_fair")
     print("\n".join(lines))
@@ -945,13 +952,13 @@ def table3_efficiency(data_fair, outdir):
         r"\centering",
         r"\small",
         r"\setlength{\tabcolsep}{4pt}",
-        r"\caption{Modeled efficiency metrics (fair/iso-VRAM setting, summed over all tasks). "
+        r"\caption{Modeled efficiency metrics (matched-attention setting, summed over all tasks). "
         r"Latency and energy are analytical estimates from the tier bandwidth model. "
         r"Bold = best (lowest) per metric. TieredKV uniquely tracks write savings.}",
         r"\label{tab:efficiency}",
         r"\begin{tabular}{lrrr}",
         r"\toprule",
-        r"\textbf{Method} & \textbf{Total Latency (s)} & \textbf{Total Energy (J)} & \textbf{Write Savings (\%)} \\",
+        r"\textbf{Method} & \textbf{Total Latency (s)} & \textbf{KV Traffic Energy (J)} & \textbf{Write Savings (\%)} \\",
         r"\midrule",
     ]
 
@@ -1073,7 +1080,7 @@ def print_ascii_summary(data_ev, data_fair):
     print("  HEADLINE RESULTS SUMMARY")
     print("═" * 80)
 
-    for data, label in [(data_ev, "Equal-VRAM"), (data_fair, "Fair / Iso-VRAM")]:
+    for data, label in [(data_ev, "Equal-VRAM"), (data_fair, "Matched Attention")]:
         tasks   = data["config"]["tasks"]
         methods = [m for m in METHOD_ORDER if m in data["config"]["methods"]]
         col_w   = 15

@@ -1,0 +1,20 @@
+{
+  "timestamp_utc": "2026-10-03T14:19:36.894161+00:00",
+  "mechanism": "Bounded group<=8 fused payload executor: gather kept hot KV and paid KV from old/promoted/new sources, preserve new BF16->F32->BF16 conversion exactly, gather F32 metadata bits, update restored/paid cold timestamps, then scatter hot payload/metadata to existing roots. Current per-layer reference launches casts/copies/index-gathers/packing/timestamp writes plus group compaction separately. CPU ownership/selection/slots/transfers stay outside primitive and unchanged.",
+  "why": "Currentscorestageoptimisticceiling<4ms; structural change targets whole GPU payload phase across32layers rather than scoring alone.",
+  "scope": "Research-only standalone charged primitive screen; no model policy integration/default changes until exact output and>=4ms screen. Supplied keep/paid/restored decisions are fixed inputs, not selector validation.",
+  "reference_sources": {
+    "experiments/cpu_phase_policy.py": "82199fe8f31733178969cca892e16cefbb8aa918396f47e6aff02210052fd1fc",
+    "experiments/raw_input_reuse.py": "42199dcddc1a1ad154360d9b6a95a7e9d4e696fda89d3b8b918f663d3cee193d",
+    "experiments/cpu_batched_cache.py": "514aed658034ebdc0f3e1bc62c293cd7472c1eef3e0712e6f95995a33769d45b",
+    "experiments/pooled_state.py": "1ea9bf1cb6cfb38c80f78e8e527d30edeb43a9c749a336b49b21eeca8b21a02a",
+    "experiments/native_pooled_state.cu": "90722a57f0df165d5212ac35f3fe9e98cc17b333a64a9f82b9a452eb216cccb0"
+  },
+  "gates": [
+    "Malformed descriptors/layout/ownership reject before any GPU mutation",
+    "GPU BF16 payload/F32metadata bit parity, including exhaustive65536 new BF16patterns and untouchedtimestampbits",
+    "Full charged payloadstage32layers/hot649and991 withvariablepromotions/paid/restored;3ABBA,warmups,>=4ms saved,p95<=2%worse; descriptor validation/copies/allocations/rebinding included"
+  ],
+  "memory": "Bounded group8 hot scratch plus exact-size paid buffer; no32layer hot scratch. Charge roots/scratch/descriptors; no complete512MiB/modelpeak claim.",
+  "stop": "Failed correctness fixed with originalattemptpreserved; failedchargedprimary/guard stops primitive beforemodelintegration. No favorable retry, defaultchange, independentqualityexpansion or finalholdout tuning."
+}

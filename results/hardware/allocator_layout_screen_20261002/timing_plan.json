@@ -1,0 +1,27 @@
+{
+  "pilot_proof_sha256": "6af2c831f29f4f40072a3d29645ade29e2b504b2ebf1200139bd2c3ed9fa7923",
+  "advance_geometry": "default",
+  "hot": 1024,
+  "cold": 2048,
+  "shared_decision": "Stop at failed1.87%pilot, preserve negative result; no shared or joint claim.",
+  "context": 16384,
+  "decode": 50,
+  "warmup": 1,
+  "blocks": 3,
+  "process_order": [
+    "default",
+    "expandable",
+    "expandable",
+    "default"
+  ],
+  "rows_per_process": 2,
+  "timing_observation": "Disable per-step complete-state hashing in both layouts, keep legacy history/synchronization observer; end state, full IDs/counters/payload still exact. Public snapshots after timed profile.",
+  "primary": "At least10%lower worst decode GPU reserved peak across fresh measured processes",
+  "guards": {
+    "median_decode_pct": 2,
+    "p95_decode_pct": 2,
+    "ttft_pct": 10,
+    "prefill_allocated_peak_pct": 2
+  },
+  "post_gate": "Only if primary/guards pass: exact source lifetime/native generation/recycling proof under actual expandable setting. Full-resource ceiling and headline quality remain independent."
+}

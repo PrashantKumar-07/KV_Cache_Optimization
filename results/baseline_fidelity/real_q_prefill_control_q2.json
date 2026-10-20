@@ -1,0 +1,91 @@
+{
+  "config": {
+    "model": "../models/mistral-7b-instruct",
+    "data_dir": "../hf_cache/datasets/downloads/extracted/5def9c7eaf83951e1cee75902d8611ef764ad88dd289e8f0bf97ff658a3eb83a/data",
+    "tasks": [
+      "qasper"
+    ],
+    "max_samples": 2,
+    "strategy": "query",
+    "seed": 0,
+    "max_ctx": 31500,
+    "tiered_vram_budget": 992,
+    "tiered_stt_budget": 3104,
+    "recent": 128,
+    "stt_expose_quota": 32,
+    "real_query_prefill": false,
+    "sttram_bifurcation_frac": 0.75,
+    "kv_dtype": "bfloat16",
+    "runtime": {
+      "git_revision": "be7e700d84d46b47e32ba5b9870c8b71783b9e53",
+      "source_sha256": "e8bf6bd3a3729bbbbd723062c06f9f73f3b29b3714c74e273b2cf4f2efbc3529",
+      "packages": {
+        "torch": "2.5.1+cu124",
+        "transformers": "5.14.1",
+        "datasets": "5.0.0",
+        "numpy": "2.2.6",
+        "accelerate": "1.14.0",
+        "huggingface_hub": "1.24.0",
+        "rouge": "1.0.1"
+      }
+    },
+    "selector_sha256": "c9e5a36768f9055169b244c11b2be45be8d4cafb56c7b248a07e1bb78eb7f695",
+    "dataset_sha256": {
+      "qasper": "97d95c01221a17a2ce51f9180d65a671bf2998504a2ff0cccffe97e9b08444d8"
+    }
+  },
+  "results": {
+    "qasper": {
+      "tieredkv": {
+        "score": 13.12,
+        "n": 2,
+        "sample_scores": [
+          20.0,
+          6.25
+        ],
+        "samples": [
+          {
+            "sample_id": "3b91dce7ca41a9d16a1d0c61806c139db583a053ddb582bf79df3ff56f8e0344",
+            "prediction": "They selected different Facebook pages for the experiments, including Fox News, CNN, The Guardian, Disney, and others.",
+            "score": 20.0,
+            "elapsed_s": 4.474546520039439,
+            "prompt_tokens": 4895,
+            "generated_tokens": 25,
+            "final_resident_kv_payload_bytes": 451014656,
+            "prefill_s": 1.02257146127522,
+            "prefill_peak_alloc_bytes": 16072915968
+          },
+          {
+            "sample_id": "5f59f94cd91401a55bcd3b6b24b78cd2c4c78e8ee6e7663e0ac8b97306444f08",
+            "prediction": "The context used to predict instructor intervention is identified via different queries in the Any Post Attention (APA) model, and attention weights are obtained by normalizing the different queries.",
+            "score": 6.25,
+            "elapsed_s": 5.679076835513115,
+            "prompt_tokens": 5415,
+            "generated_tokens": 37,
+            "final_resident_kv_payload_bytes": 454348800,
+            "prefill_s": 0.5954572483897209,
+            "prefill_peak_alloc_bytes": 16171674624
+          }
+        ],
+        "cache_stats": {
+          "demoted": 38467,
+          "promoted": 36547,
+          "promotions_deferred": 24893,
+          "paid_writes": 8556,
+          "writes_saved": 29911,
+          "dropped": 0,
+          "write_savings_pct": 77.8,
+          "decode_steps": 60,
+          "stt_starved_steps": 0,
+          "stt_unused_steps": 0,
+          "mean_stt_exposed": 32.0,
+          "stt_expose_quota": 32,
+          "stt_exposed_total": 1984,
+          "stt_exposure_samples": 62,
+          "modeled_latency_us": 20074.0,
+          "modeled_energy_nj": 775334723.6
+        }
+      }
+    }
+  }
+}

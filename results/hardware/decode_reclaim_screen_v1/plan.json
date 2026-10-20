@@ -1,0 +1,26 @@
+{
+  "timestamp": "2026-10-02T20:05:21.480241+00:00",
+  "hypothesis": "Expandable-layout shared decode snapshot has100MiB fully inactive reservation. Charged per-token empty_cache may reduce peak reserved memory; boundary reduction alone does not qualify.",
+  "control": "Fixed research-only exact-pinned/native policy, charged prefill cleanup, expandable_segments:True in both arms. Neither exact roots nor expandable layout is adopted. Ordinary bulk/native source unchanged.",
+  "control_proof_sha256": "6af2c831f29f4f40072a3d29645ade29e2b504b2ebf1200139bd2c3ed9fa7923",
+  "latest_resource_proof_sha256": "0489e3f93bb649e0c90547442fadaa3d6630ce368c90edb7e6e10975b0dbd9ac",
+  "model": "../models/mistral-7b-instruct",
+  "seed": 0,
+  "hardware": "GPU0 NVIDIA L40S, advisory model lock",
+  "dtype": "BF16 KV/F32 metadata",
+  "hot": 991,
+  "cold": 1090,
+  "context": 16384,
+  "decode": 12,
+  "primary": "At least10% lower decode GPU reserved PEAK, not final boundary. Report full active/reserved+actual host range against512MiB separately.",
+  "guards": {
+    "state_ids_history_counters_payload": "exact",
+    "median_decode_pct": 2,
+    "p95_decode_pct": 2,
+    "ttft_pct": 10,
+    "prefill_allocated_peak_pct": 2
+  },
+  "mechanism": "Both caller arms release dead out/tup references at the identical end-of-decode boundary. Candidate alone calls public torch.cuda.empty_cache there, inside charged decode.",
+  "progression": "One fresh paired pilot; failed memory primary stops before full timing/generation/integration. Passing pilot requires3ABBA warm50-step timing and mandatory preservation stress before any adoption. No ordinary/default/global env change.",
+  "source_bundle_sha256": "777dbfa7b30c477a91e9fd83666658bc4c48b12cbbc04e16cc10e75120df6319"
+}

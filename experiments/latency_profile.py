@@ -1,236 +1,198 @@
 #!/usr/bin/env python3
-"""latency_profile.py — Real GPU wall-clock latency measurement.
+"""End-to-end fixed-length decode timing, including cache policy processing.
 
-Measures TTFT (prefill) and ITL (decode) across context lengths and KV budgets.
-TieredKV runs the headline equal-VRAM config (1024 VRAM + 2048 STT, bf16)
-with promotion driven by real attention weights.
-
-NOTE: the synthetic repeated-sentence prompt measures TIMING only, not
-quality — uniform repeated KV makes every token interchangeable, so read
-nothing about policy behavior into these numbers.
-Outputs results/latency_headline.json (fresh file; the old
-results/latency_profile.json was measured at the equal-total config with
-promotion disabled and is retired to results/archive/).
-
-Usage:
-    python experiments/latency_profile.py \
-        --model /path/to/mistral-7b-instruct \
-        --output results/latency_headline.json
+Use --prompt-file for real text. Synthetic timing is explicitly labeled.
+Historical latency_headline.json measured model.forward only and is not
+compatible with this benchmark's schema or end-to-end claims.
 """
-
-import os, sys, json, argparse, time
-import torch
+import argparse
+import hashlib
+from pathlib import Path
+import time
 import numpy as np
-
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "src"))
-
-if "HF_HOME" not in os.environ:
-    os.environ["HF_HOME"] = os.path.expanduser("~/.cache/huggingface")
-
+import torch
 from transformers import AutoTokenizer, AutoModelForCausalLM
-from transformers.cache_utils import DynamicCache
-
-_script_dir = os.path.dirname(os.path.abspath(__file__))
-import importlib.util
-_spec = importlib.util.spec_from_file_location(
-    "longbench_eval", os.path.join(_script_dir, "longbench_eval.py"))
-_lb = importlib.util.module_from_spec(_spec)
-_spec.loader.exec_module(_lb)
-
-FullCachePolicy    = _lb.FullCachePolicy
-StreamingLLMPolicy = _lb.StreamingLLMPolicy
-H2OPolicy          = _lb.H2OPolicy
-SnapKVPolicy       = _lb.SnapKVPolicy
-TieredKVPolicy     = _lb.TieredKVPolicy
-to_tuple_kv        = _lb.to_tuple_kv
-apply_tuple_kv_inplace = _lb.apply_tuple_kv_inplace
-_attn_impl         = _lb._attn_impl
+from longbench_eval import (FullCachePolicy, StreamingLLMPolicy, H2OPolicy,
+    SnapKVPolicy, TieredKVPolicy, to_tuple_kv, apply_tuple_kv_inplace, _attn_impl,
+    prefill_logit_kwargs)
+from provenance import atomic_json, resume_results, runtime_identity
 
 
-def cuda_sync_time(fn):
-    """Time a GPU operation with proper synchronization."""
-    if torch.cuda.is_available():
-        torch.cuda.synchronize()
-    t0 = time.perf_counter()
+def cuda_sync_time(fn, device=None):
+    use_cuda = torch.cuda.is_available() and (device is None or str(device).startswith('cuda'))
+    if use_cuda:
+        torch.cuda.synchronize(device)
+    start = time.perf_counter()
     result = fn()
-    if torch.cuda.is_available():
-        torch.cuda.synchronize()
-    elapsed_ms = (time.perf_counter() - t0) * 1000
-    return elapsed_ms, result
+    if use_cuda:
+        torch.cuda.synchronize(device)
+    return (time.perf_counter() - start) * 1000, result
 
 
-def make_policy(name, budget, sink=4):
+def make_policy(name, budget, sink=4, *, sttram_bifurcation_frac=.75,
+                tiered_vram_budget=None, tiered_stt_budget=None):
     recent = max(16, budget // 8)
-    vram   = budget // 3
-    stt    = budget - vram
-    if name == "full":
+    if name == 'full':
         return FullCachePolicy()
-    if name == "streamingllm":
-        return StreamingLLMPolicy(start_size=sink, recent_size=budget - sink)
-    if name == "h2o":
-        return H2OPolicy(budget=budget, start_size=sink, recent_size=recent)
-    if name == "snapkv":
-        return SnapKVPolicy(budget=budget, start_size=sink, recent_size=recent)
-    if name == "tieredkv":
-        # Headline equal-VRAM config (matches results/final_equal_vram.json):
-        # 1024 VRAM + 2048 STT, bf16 residency. Promotion needs real
-        # attention weights (see decode loop) — without them the STT side
-        # stays empty, nothing ever promotes, and you'd benchmark a
-        # neutered policy while still paying its bookkeeping.
-        return TieredKVPolicy(sram_budget=1024, stt_budget=2048,
-                              start_size=sink, recent_size=recent,
-                              page_size=16, promote_top_pages=2,
-                              kv_dtype=torch.bfloat16)
-    raise ValueError(f"Unknown method: {name}")
+    if name == 'streamingllm':
+        return StreamingLLMPolicy(sink, budget - sink)
+    if name == 'h2o':
+        return H2OPolicy(budget, sink, recent)
+    if name == 'snapkv':
+        return SnapKVPolicy(budget, sink, recent)
+    if name == 'tieredkv':
+        return TieredKVPolicy(
+            sram_budget=budget if tiered_vram_budget is None else tiered_vram_budget,
+            stt_budget=2 * budget if tiered_stt_budget is None else tiered_stt_budget,
+            start_size=sink, recent_size=recent, kv_dtype=torch.bfloat16,
+            sttram_bifurcation_frac=sttram_bifurcation_frac)
+    raise ValueError(name)
 
 
 @torch.inference_mode()
 def profile_one(model, tokenizer, policy, ctx_len, n_decode=50, n_warmup=2,
-                n_repeat=3, device="cuda"):
-    """Measure TTFT and ITL for a given context length and policy.
-    
-    Returns:
-        ttft_ms (float): median prefill time in ms
-        itl_ms  (float): median per-token decode time in ms
-        memory_gb (float): peak VRAM used during decode
-    """
-    # Build a synthetic prompt of exactly ctx_len tokens
-    # Use repetition of a real sentence so tokenization is natural
-    filler = "The quick brown fox jumps over the lazy dog . " * 3000
-    enc = tokenizer(filler, return_tensors="pt", truncation=False)
-    input_ids = enc.input_ids[0, :ctx_len].unsqueeze(0).to(device)
-
-    ttft_list, itl_list = [], []
-
+                n_repeat=3, device='cuda', prompt_text=None, forced_token_ids=None,
+                *, prefill_last_logits=False):
+    if min(ctx_len, n_decode, n_repeat) < 1 or n_warmup < 0:
+        raise ValueError('Positive context/decode/repeat counts and nonnegative warmup required')
+    if prompt_text is None:
+        prompt_text = 'The quick brown fox jumps over the lazy dog . ' * (ctx_len + 1)
+    ids = tokenizer(prompt_text, truncation=False, return_tensors='pt').input_ids
+    if ids.size(1) < ctx_len:
+        raise ValueError(f'Prompt has {ids.size(1)} tokens, fewer than requested {ctx_len}')
+    ids = ids[:, :ctx_len].to(device)
+    if forced_token_ids is not None and len(forced_token_ids) < n_decode + 1:
+        raise ValueError('forced_token_ids needs prefill token plus one per decode forward')
+    forced = (torch.tensor(forced_token_ids[:n_decode + 1], device=device).view(1, -1)
+              if forced_token_ids is not None else None)
+    use_cuda = str(device).startswith('cuda') and torch.cuda.is_available()
+    trials = []
+    prefill_options = prefill_logit_kwargs(model, prefill_last_logits)
     for trial in range(n_warmup + n_repeat):
-        if hasattr(policy, "reset"):
-            policy.reset()
-        if torch.cuda.is_available():
+        policy.reset()
+        before_stats = policy.stats() if forced is not None else None
+        if use_cuda:
             torch.cuda.empty_cache()
-            torch.cuda.reset_peak_memory_stats()
+            torch.cuda.reset_peak_memory_stats(device)
+        components = {}
 
-        pos = torch.arange(ctx_len, device=device).unsqueeze(0)
+        def prefill():
+            pos = torch.arange(ctx_len, device=device).unsqueeze(0)
+            with _attn_impl(model, 'sdpa'):
+                model_ms, out = cuda_sync_time(
+                    lambda: model(ids, use_cache=True, position_ids=pos, **prefill_options), device)
+            components['prefill_forward_ms'] = model_ms
+            raw = out.past_key_values
+            apply_tuple_kv_inplace(raw, policy(to_tuple_kv(raw)))
+            token = out.logits[:, -1:].argmax(dim=-1)
+            token.item()  # include host-visible token delivery
+            if forced is not None:
+                token = forced[:, :1]
+            return raw, token
 
-        # TTFT: prefill
-        with _attn_impl(model, "sdpa"):
-            ttft_ms, out = cuda_sync_time(
-                lambda: model(input_ids, use_cache=True, position_ids=pos)
-            )
-
-        raw_past = out.past_key_values
-        tup = to_tuple_kv(raw_past)
-        tup = policy(tup)
-        apply_tuple_kv_inplace(raw_past, tup)
-        past_kv = raw_past
-        next_tok = out.logits[:, -1:].argmax(dim=-1)
-
-        # ITL: decode. output_attentions=True is load-bearing: H2O and
-        # TieredKV score eviction/promotion off the real attention weights
-        # each step. With False the STT side stays empty, promotion never
-        # fires, and the profile measures a neutered policy at full
-        # bookkeeping cost — worst of both worlds.
-        step_times = []
+        ttft, (past, token) = cuda_sync_time(prefill, device)
+        if use_cuda:
+            prefill_peak = torch.cuda.max_memory_allocated(device) / 1e9
+            torch.cuda.reset_peak_memory_stats(device)
+        else:
+            prefill_peak = 0.0
+        steps, forwards = [], []
+        predicted_tokens = []
         for step in range(n_decode):
-            true_pos = torch.tensor([[ctx_len + step]], device=device)
-            itl_step_ms, out = cuda_sync_time(
-                lambda: model(next_tok, past_key_values=past_kv,
-                              use_cache=True, position_ids=true_pos,
-                              output_attentions=True)
-            )
-            step_times.append(itl_step_ms)
-
-            raw_past = out.past_key_values
-            if hasattr(policy, "update_scores") and out.attentions is not None:
-                try:
-                    policy.update_scores(raw_past, list(out.attentions))
-                except Exception:
-                    pass
-            tup = to_tuple_kv(raw_past)
-            tup = policy(tup)
-            apply_tuple_kv_inplace(raw_past, tup)
-            past_kv = raw_past
-            next_tok = out.logits[:, -1:].argmax(dim=-1)
-
-        peak_mem_gb = (torch.cuda.max_memory_allocated() / 1e9
-                       if torch.cuda.is_available() else 0.0)
-
+            def decode():
+                pos = torch.tensor([[ctx_len + step]], device=device)
+                forward_ms, out = cuda_sync_time(lambda: model(
+                    token, past_key_values=past, use_cache=True,
+                    position_ids=pos, output_attentions=True), device)
+                raw = out.past_key_values
+                tup = to_tuple_kv(raw)
+                if hasattr(policy, 'update_scores'):
+                    policy.update_scores(tup, out.attentions)
+                apply_tuple_kv_inplace(raw, policy(tup))
+                nxt = out.logits[:, -1:].argmax(dim=-1)
+                predicted = nxt.item()
+                if forced is not None:
+                    nxt = forced[:, step + 1:step + 2]
+                return raw, nxt, forward_ms, predicted
+            elapsed, (past, token, forward_ms, predicted) = cuda_sync_time(decode, device)
+            steps.append(elapsed)
+            forwards.append(forward_ms)
+            predicted_tokens.append(predicted)
+        peak = torch.cuda.max_memory_allocated(device) / 1e9 if use_cuda else 0.0
+        after_stats = policy.stats() if forced is not None else None
+        counters = ({k: after_stats[k] - before_stats[k]
+                     for k in ('paid_writes', 'writes_saved', 'demoted',
+                               'promoted')
+                     if k in before_stats and k in after_stats}
+                    if forced is not None else {})
+        if forced is not None:
+            # Count observed forwards; baseline stats track modeled-cost steps.
+            counters['decode_steps'] = len(steps)
         if trial >= n_warmup:
-            ttft_list.append(ttft_ms)
-            itl_list.append(np.median(step_times))
-
+            trials.append({'ttft_ms': ttft, 'step_ms': steps,
+                           'forward_ms': forwards, 'prefill_peak_memory_gb': prefill_peak,
+                           'decode_peak_memory_gb': peak,
+                           'predicted_token_ids': predicted_tokens,
+                           **components, **counters})
+        del past, token
     return {
-        "ttft_ms": round(float(np.median(ttft_list)), 2),
-        "itl_ms":  round(float(np.median(itl_list)), 3),
-        "peak_memory_gb": round(peak_mem_gb, 3),
+        'timing_scope': 'end_to_end_model_policy_token',
+        'ttft_ms': round(float(np.median([x['ttft_ms'] for x in trials])), 3),
+        'itl_ms': round(float(np.median([v for x in trials for v in x['step_ms']])), 3),
+        'mean_itl_ms': float(np.mean([v for x in trials for v in x['step_ms']])),
+        'forward_ms': float(np.median([v for x in trials for v in x['forward_ms']])),
+        'peak_memory_gb': max(x['decode_peak_memory_gb'] for x in trials),
+        'prefill_peak_memory_gb': max(x['prefill_peak_memory_gb'] for x in trials),
+        'trials': trials,
     }
 
 
 def main():
-    parser = argparse.ArgumentParser()
-    parser.add_argument("--model",    required=True)
-    parser.add_argument("--output",   default="results/latency_headline.json")
-    parser.add_argument("--ctx-lens", nargs="+", type=int, dest="ctx_lens",
-                        default=[512, 1024, 2048, 4096, 8192, 16384])
-    parser.add_argument("--budget",   type=int, default=1024)
-    parser.add_argument("--n-decode", type=int, default=50, dest="n_decode")
-    parser.add_argument("--n-repeat", type=int, default=3,  dest="n_repeat")
-    parser.add_argument("--n-warmup", type=int, default=1,  dest="n_warmup")
-    parser.add_argument("--methods",  nargs="+",
-                        default=["full","streamingllm","h2o","snapkv","tieredkv"])
-    parser.add_argument("--device",   default="cuda")
-    args = parser.parse_args()
-
-    print(f"Loading model: {args.model}")
-    tokenizer = AutoTokenizer.from_pretrained(args.model, trust_remote_code=True)
-    model = AutoModelForCausalLM.from_pretrained(
-        args.model, torch_dtype=torch.bfloat16, device_map=args.device,
-        trust_remote_code=True, attn_implementation="eager")
-    model.eval()
-
-    os.makedirs(os.path.dirname(args.output) or ".", exist_ok=True)
-    results = {}
-    if os.path.exists(args.output):
-        with open(args.output) as f:
-            saved = json.load(f)
-            results = saved.get("results", {})
-
-    for mname in args.methods:
-        if mname not in results:
-            results[mname] = {}
-
+    p = argparse.ArgumentParser(description=__doc__)
+    p.add_argument('--model', required=True)
+    p.add_argument('--output', default='results/remediation/latency.json')
+    p.add_argument('--ctx-lens', nargs='+', type=int, default=[512, 1024, 2048, 4096, 8192, 16384])
+    p.add_argument('--budget', type=int, default=1024)
+    p.add_argument('--tiered-vram-budget', type=int)
+    p.add_argument('--tiered-stt-budget', type=int)
+    p.add_argument('--sttram-bifurcation-frac', type=float, default=.75)
+    p.add_argument('--n-decode', type=int, default=50)
+    p.add_argument('--n-repeat', type=int, default=3)
+    p.add_argument('--n-warmup', type=int, default=1)
+    p.add_argument('--methods', nargs='+', default=['full','streamingllm','h2o','snapkv','tieredkv'])
+    p.add_argument('--device', default='cuda')
+    p.add_argument('--prefill-last-logits', action='store_true',
+        help='Compute only last prefill logits; requires native logits_to_keep support')
+    p.add_argument('--prompt-file', help='UTF-8 real text; must contain enough tokens for every context')
+    p.add_argument('--seed', type=int, default=0)
+    args = p.parse_args()
+    text = Path(args.prompt_file).read_text() if args.prompt_file else None
+    config = {k:v for k,v in vars(args).items() if k != 'output'}
+    config.update(runtime=runtime_identity(), timing_scope='end_to_end_model_policy_token',
+                  prompt_kind='real_text' if text is not None else 'synthetic',
+                  prompt_sha256=hashlib.sha256(text.encode()).hexdigest() if text else None,
+                  generation='fixed_length_ignores_eos', schema_version=2)
+    results = resume_results(args.output, config)
+    torch.manual_seed(args.seed)
+    model = AutoModelForCausalLM.from_pretrained(args.model, torch_dtype=torch.bfloat16,
+        device_map=args.device, attn_implementation='eager').eval()
+    tokenizer = AutoTokenizer.from_pretrained(args.model)
+    for method in args.methods:
+        results.setdefault(method, {})
         for ctx in args.ctx_lens:
-            key = str(ctx)
-            if key in results[mname]:
-                print(f"  [SKIP] {mname} ctx={ctx}")
+            if str(ctx) in results[method]:
                 continue
-
-            print(f"\n[{mname}] ctx_len={ctx}...")
-            policy = make_policy(mname, args.budget)
-            try:
-                stats = profile_one(
-                    model, tokenizer, policy, ctx,
-                    n_decode=args.n_decode,
-                    n_warmup=args.n_warmup,
-                    n_repeat=args.n_repeat,
-                    device=args.device,
-                )
-                results[mname][key] = stats
-                print(f"  TTFT={stats['ttft_ms']:.1f}ms  "
-                      f"ITL={stats['itl_ms']:.2f}ms/tok  "
-                      f"Mem={stats['peak_memory_gb']:.2f}GB")
-            except torch.cuda.OutOfMemoryError:
-                results[mname][key] = {"ttft_ms": None, "itl_ms": None,
-                                       "peak_memory_gb": None, "oom": True}
-                print(f"  OOM at ctx={ctx}")
-
-            with open(args.output, "w") as f:
-                json.dump({"config": vars(args), "results": results}, f, indent=2)
-            print(f"  [saved → {args.output}]")
-            if torch.cuda.is_available():
-                torch.cuda.empty_cache()
-
-    print(f"\nDone → {args.output}")
+            policy = make_policy(method, args.budget,
+                tiered_vram_budget=args.tiered_vram_budget,
+                tiered_stt_budget=args.tiered_stt_budget,
+                sttram_bifurcation_frac=args.sttram_bifurcation_frac)
+            stats = profile_one(model, tokenizer, policy, ctx, args.n_decode,
+                args.n_warmup, args.n_repeat, args.device, text,
+                prefill_last_logits=args.prefill_last_logits)
+            results[method][str(ctx)] = stats
+            atomic_json(args.output, {'config':config,'results':results})
+            print(f'{method} ctx={ctx} TTFT={stats["ttft_ms"]:.2f} ITL={stats["itl_ms"]:.2f} ms', flush=True)
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     main()

@@ -1,0 +1,175 @@
+{
+  "config": {
+    "model": "../models/mistral-7b-instruct",
+    "data_dir": "../hf_cache/datasets/downloads/extracted/5def9c7eaf83951e1cee75902d8611ef764ad88dd289e8f0bf97ff658a3eb83a/data",
+    "tasks": [
+      "qasper",
+      "multifieldqa_en"
+    ],
+    "max_samples": 3,
+    "strategy": "lru",
+    "seed": 0,
+    "max_ctx": 31500,
+    "candidate_pages": 0,
+    "tiered_vram_budget": 992,
+    "tiered_stt_budget": 3104,
+    "recent": 128,
+    "stt_expose_quota": 32,
+    "real_query_prefill": true,
+    "prompt_score_mix": 0.5,
+    "query_score_mode": "chunked",
+    "query_chunk_size": 128,
+    "sttram_bifurcation_frac": 0.75,
+    "kv_dtype": "bfloat16",
+    "runtime": {
+      "git_revision": "be7e700d84d46b47e32ba5b9870c8b71783b9e53",
+      "source_sha256": "ce91b5973693d0dfcf34b44828fba30103492ebbf320931eb2863487e1fc2bee",
+      "packages": {
+        "torch": "2.5.1+cu124",
+        "transformers": "5.14.1",
+        "datasets": "5.0.0",
+        "numpy": "2.2.6",
+        "accelerate": "1.14.0",
+        "huggingface_hub": "1.24.0",
+        "rouge": "1.0.1"
+      }
+    },
+    "selector_sha256": "406a91dcc49d64bca276a12eceaf7ad81d49b51faf2f088b5c3b31d3e260decf",
+    "page_index_sha256": null,
+    "page_candidates_sha256": null,
+    "dataset_sha256": {
+      "qasper": "97d95c01221a17a2ce51f9180d65a671bf2998504a2ff0cccffe97e9b08444d8",
+      "multifieldqa_en": "678a51335e3c90e0dd43bf1131045e4f2859cc693e7eded89cc6a1ee8d18faff"
+    }
+  },
+  "results": {
+    "qasper": {
+      "tieredkv": {
+        "score": 22.97,
+        "n": 3,
+        "sample_scores": [
+          25.64,
+          21.05,
+          22.22
+        ],
+        "samples": [
+          {
+            "sample_id": "3b91dce7ca41a9d16a1d0c61806c139db583a053ddb582bf79df3ff56f8e0344",
+            "prediction": "They selected different Facebook pages, including FoxNews, CNN, ESPN, and The Huffington Post, among others.",
+            "score": 25.641025641025646,
+            "elapsed_s": 3.0887740924954414,
+            "prompt_tokens": 4895,
+            "generated_tokens": 26,
+            "final_resident_kv_payload_bytes": 448495616,
+            "prefill_s": 1.0855599362403154,
+            "prefill_peak_alloc_bytes": 16074015744
+          },
+          {
+            "sample_id": "5f59f94cd91401a55bcd3b6b24b78cd2c4c78e8ee6e7663e0ac8b97306444f08",
+            "prediction": "The article proposes using attention models to infer the latent context that triggers an instructor intervention.",
+            "score": 21.052631578947366,
+            "elapsed_s": 2.213245637714863,
+            "prompt_tokens": 5415,
+            "generated_tokens": 21,
+            "final_resident_kv_payload_bytes": 448004096,
+            "prefill_s": 0.6316282283514738,
+            "prefill_peak_alloc_bytes": 16196899840
+          },
+          {
+            "sample_id": "9d37c5305ff63838fd6b7c96f13d10cfc388955672b1a629e5c0a8c2a89c520d",
+            "prediction": "In addition to F-score and Kappa difference, other evaluation metrics are not explicitly mentioned in the article.",
+            "score": 22.22222222222222,
+            "elapsed_s": 2.3665547855198383,
+            "prompt_tokens": 5549,
+            "generated_tokens": 23,
+            "final_resident_kv_payload_bytes": 447041536,
+            "prefill_s": 0.6506100632250309,
+            "prefill_peak_alloc_bytes": 16228566528
+          }
+        ],
+        "cache_stats": {
+          "demoted": 35968,
+          "promoted": 33824,
+          "promotions_deferred": 34784,
+          "paid_writes": 9293,
+          "writes_saved": 26675,
+          "dropped": 0,
+          "write_savings_pct": 74.2,
+          "decode_steps": 67,
+          "stt_starved_steps": 0,
+          "stt_unused_steps": 0,
+          "mean_stt_exposed": 32.0,
+          "stt_expose_quota": 32,
+          "stt_exposed_total": 2240,
+          "stt_exposure_samples": 70,
+          "modeled_latency_us": 21723.6,
+          "modeled_energy_nj": 862414045.2
+        }
+      }
+    },
+    "multifieldqa_en": {
+      "tieredkv": {
+        "score": 53.33,
+        "n": 3,
+        "sample_scores": [
+          60.0,
+          100.0,
+          0.0
+        ],
+        "samples": [
+          {
+            "sample_id": "b3a9da1dd79b69143f46fb4ea37f3159f11a4585b68604cbda50c0adf4da65a1",
+            "prediction": "Permanent yellow spot damage on the screen.",
+            "score": 60.0,
+            "elapsed_s": 1.572967393323779,
+            "prompt_tokens": 6689,
+            "generated_tokens": 11,
+            "final_resident_kv_payload_bytes": 443527168,
+            "prefill_s": 0.7914650849997997,
+            "prefill_peak_alloc_bytes": 16497967104
+          },
+          {
+            "sample_id": "66fbe72f15b70e8c8cc090467f3ac90f03c8fb6063e3346cd82d7778cd7b1cf9",
+            "prediction": "Vice Admiral",
+            "score": 100.0,
+            "elapsed_s": 0.558526212349534,
+            "prompt_tokens": 3463,
+            "generated_tokens": 3,
+            "final_resident_kv_payload_bytes": 439484416,
+            "prefill_s": 0.40111043862998486,
+            "prefill_peak_alloc_bytes": 15767047168
+          },
+          {
+            "sample_id": "49117774123dc2f3ec95d7bbc61950987252760875cec6cac53ff18be0913744",
+            "prediction": "William Rokebye",
+            "score": 0.0,
+            "elapsed_s": 1.3042561281472445,
+            "prompt_tokens": 8098,
+            "generated_tokens": 5,
+            "final_resident_kv_payload_bytes": 442765312,
+            "prefill_s": 0.9900543950498104,
+            "prefill_peak_alloc_bytes": 16830936064
+          }
+        ],
+        "cache_stats": {
+          "demoted": 8544,
+          "promoted": 8032,
+          "promotions_deferred": 8352,
+          "paid_writes": 4956,
+          "writes_saved": 3588,
+          "dropped": 0,
+          "write_savings_pct": 42.0,
+          "decode_steps": 16,
+          "stt_starved_steps": 0,
+          "stt_unused_steps": 0,
+          "mean_stt_exposed": 32.0,
+          "stt_expose_quota": 32,
+          "stt_exposed_total": 608,
+          "stt_exposure_samples": 19,
+          "modeled_latency_us": 6093.6,
+          "modeled_energy_nj": 207722381.3
+        }
+      }
+    }
+  }
+}

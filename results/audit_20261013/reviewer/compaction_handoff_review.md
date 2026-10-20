@@ -1,0 +1,11 @@
+# Deferred hot-compaction handoff validated
+
+Read-only critical review plus artifact-only preregistered paired8K/cold256 diagnostic. AST proof `compaction_handoff_AST_review.json` shows the old compactionifblock is identical to the new helperifblock; arena initialization and supervisibility return are unchanged. FocusedCPU12tests pass; rootfullsuite578pass. No source edits by reviewer.
+
+Final runner/plan were finalized before soleGPU0 launch, adding five metadata hashes. Provisional pre-final files remain preparation history; no model outcomes existed then. Run exits0. Independent project-venv verifier `compaction_handoff_parity/verify_parity.py` emits `verified_parity.json`; all5915archive/plan/live/runtime identities and12modelartifact hashes match. Fifty-one finite full-vocabulary FP32 arrays match byte-for-byte;51×32 fullhot/cold/visibleKV,positions/shadows and cumulative scores,ages,coldtimestamps,hysteresisstreak/priorresident hashes match.
+
+Nativecoldvisibility50/50 passes, replacing the prior rejected41/50 coverage. Only one initializationcoldfallback remains; CPUappend50/CPUfallback0. Bulkpayload execution33/fallback17 remains unchanged: the handoff fixes visibility scheduling, not the underlying bulkeligibility branches. Hooksclose and exactallocation/release leaves zero live roots. Existing ineligiblepending fallback is retained; no metadata flags clear without actual compaction execution.
+
+Independent verifier initially inherited stale scope wording claiming scores/ages were untraced. Original checker/proof/log are retained under `_before_scope_correction`; only wording was corrected, CPU proof regenerated, no modeltrial repeated and quantitative result unchanged. Canonical proof now states traced metadata accurately.
+
+This is one teacher-forced8Kinput and50steps, not independentquality/generalization/timing or SOTA/defaultadoption. Diagnostic synchronization/payload copies invalidate servingtime/traffic inference. Native command/version/slot owners are not directlytraced; successfulnormal cleanup does not establish all constructor/failure/concurrency paths. Prior41/50 rejection and exact-rootTTFTfailure stay unchanged. Sourcefreeze released after complete independent proof.

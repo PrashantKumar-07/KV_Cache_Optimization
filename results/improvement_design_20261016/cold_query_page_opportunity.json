@@ -1,0 +1,127 @@
+{
+  "created_utc": "2026-10-16T08:30:53.087195+00:00",
+  "decision": "REJECT a new quality expansion of current-query page-bound retrieval in this epoch; no implementation or GPU run authorized by this diagnosis",
+  "hypothesis": "Recency-selected quota32 can hide relevant retained cold rows; current-query page ranking could expose better rows while reducing full cold-key reads.",
+  "source_diagnosis": {
+    "recency_blindness_proven": true,
+    "feedback": "Rows outside quota receive no actual attention observation. All exposed rows with positive FP32 average probability refresh their access stamp; this supports persistence of an already-visible subset. Exact model prevalence is not established by a synthetic example.",
+    "existing_actual_model_path": true,
+    "simulator_sketch_is_actual_model_path": false,
+    "integration_locations": {
+      "experiments/longbench_eval.py": [
+        "730-861: model visible cache composition, common layer count and selection bookkeeping",
+        "885-891: recency-only cold selection",
+        "1000-1071: attention feedback refreshes visible cold rows only"
+      ],
+      "experiments/evaluate_query_selection.py": [
+        "66-141: existing actual-model query selector",
+        "144-180: actual rotary prompt observation capture"
+      ],
+      "experiments/pool_query_selector.py": [
+        "28-68: paired native storage reads and query-ranked replacement"
+      ],
+      "experiments/reused_query_projection.py": [
+        "32-77: actual q_proj output reuse and cleanup"
+      ],
+      "experiments/native_controller_policy.py": [
+        "139-166: native recency rank reproduces unchanged selector"
+      ],
+      "experiments/reusable_exact_root.py": [
+        "99-107: ordinary current native policy inherits cold-boundary policy"
+      ],
+      "experiments/cold_boundary_policy.py": [
+        "6-19: ordinary native visible boundary"
+      ],
+      "experiments/query_channel_reads.py": [
+        "53-82: explicit native key versus selected-value reads",
+        "95-132: query suffix replacement integration"
+      ],
+      "experiments/stable_page_index.py": [
+        "40-59: live membership reconciliation",
+        "60-84: historical centroid candidate selection; not min/max"
+      ],
+      "experiments/page_candidates.py": [
+        "32-87: offline rebuilt box/L2/centroid summaries"
+      ],
+      "src/tiered_kv_cache.py": [
+        "279-334: standalone simulator page summaries, explicitly not called by actual Mistral policy",
+        "335-366: simulator bound sums heads; not mean normalized GQA probability ranking"
+      ]
+    }
+  },
+  "why_rejected": [
+    "Actual rotary prompt placement plus exact full-current-query cold ranking already failed its registered 30-row development advancement CI gate. A bounded page approximation with the same quota is not a new established quality mechanism; do not rerun that failed combination as a larger 135-row trial under a new name.",
+    "An exact selector optimizes one-step attention-mass objective, not downstream task quality. A page approximation could change trajectories and theoretically regularize them; this possibility alone supplies no justified quality hypothesis or superiority proof.",
+    "Previous native fixed8-page centroid recall screen failed; exact current-query pathway and source already exist, so this is not a missing implementation opportunity.",
+    "Historical box-bound offline screen also gives poor small-budget recall; valid coordinatewise bounds can be extremely loose. CPU counterexample preserves valid bounds while entirely excluding the truly best page.",
+    "An upper bound on per-head raw q dot k is not an upper bound on mean-head normalized probability objective used by current selector. Top-page selection is heuristic unless its stopping rule bounds that actual objective."
+  ],
+  "available_evidence": {
+    "existing_query_combination_gate": "verified_quality.json advancement_passed=false, adopted=false; 90 real free-generation predictions on 30 previously consumed development rows; no final outcome consulted by this diagnosis",
+    "native_centroid": "1600 fixed-trajectory rows, mean top32 overlap0.2839453125 and mass ceiling0.5539753121; registered diagnostic_screen_passed=false, no expansion",
+    "historical_box8": "One16K teacher prompt20steps, page oracle intersection6.9/32, candidate127.242/1545.5 live rows; offline reranking uses full-key oracle softmax denominators, not deployable evidence",
+    "historical_box32": "19.175/32 oracle intersection, candidate510.5125/1545.5; extra bandwidth and summaries still not charged in quality",
+    "cpu_falsification": "cold_query_page_opportunity_cpu.json calls unchanged recency function via AST and actual page_candidates box function, no GPU, no model-quality claim"
+  },
+  "resource_arithmetic_not_measurement": {
+    "geometry": {
+      "layers": 32,
+      "kv_heads": 8,
+      "query_heads": 32,
+      "head_dim": 128,
+      "cold_rows": 2048,
+      "page_size": 16,
+      "quota": 32
+    },
+    "box_metadata_fp32_bytes": 33554432,
+    "box_metadata_bf16_bytes": 16777216,
+    "bound_feature_evaluations_per_decode": 16777216,
+    "full_scan_key_H2D_bytes": 134217728,
+    "selected_values_H2D_bytes": 2097152,
+    "eight_candidate_pages_key_H2D_bytes": 8388608,
+    "ordinary_quota_paired_KV_H2D_bytes": 4194304,
+    "exclusions": [
+      "allocator rounding, summaries scratch, index-to-address maps, owner retention, shared backing, full prefill peak, model and hot payload, kernel launches, policy runtime",
+      "Source ordinary native path may first prepare recency quota reads. A hook replacement can pay duplicate transfers unless composition is deliberately delayed; count both if left unchanged.",
+      "Insertion can update min/max incrementally. Deletion of an extremal row needs page rebuild or bounded conservative stale bounds; never silently recompute all cold keys per step.",
+      "Dynamic compacted logical rows are not stable pages. Maintain generation-safe physical slot/page identity across promotion, shadow, reclaim and slot reuse.",
+      "GQA reduction/head normalization changes shortlist objective; need reference exact objective and charge hot scoring too."
+    ]
+  },
+  "prospective_135_gate": {
+    "enabled": false,
+    "reason": "Reject direct expansion of failed exact-query combination. A new independent mechanism and CPU falsification success must precede any registration; this record is not experiment approval.",
+    "if_independently_justified_later": "Freeze a single selector/config before outputs; reuse original135 development record IDs only, same prompts/model/runtime/generation/metrics and resource envelopes, all candidate and control trajectories recorded. Do not inspect1474 final outcomes or reserved800 rows for selection.",
+    "minimum_registered_acceptance": [
+      "Independent per-layer selection/KV/metadata correctness and cleanup parity; no stale slot/shadow inclusion; same visible quota and causal length.",
+      "At least+1.0 task-balanced point versus original recency control with within-task target-document cluster95 lower>0, positive mean against validated official currentGQA SnapKV, no task loss>5points. Re-score all raw outputs independently.",
+      "Declare exact GPU and host ceilings and unmatched resources before execution, charge maintained metadata/all transfers/index build/TTFT/ITL, fastest correct baseline backend; no equal-memory assertion from equal hot-token count.",
+      "Failed criterion means stop, preserve evidence, no page budget sweep to find favorable development score."
+    ]
+  },
+  "quality_claim": null,
+  "sota_claim": false,
+  "runtime_sources_changed": false,
+  "new_gpu_experiment": false,
+  "paper_baseline_priority_changed": false,
+  "evidence_sha256": {
+    "experiments/longbench_eval.py": "189158c4dd0426a78452eea0c8d7c0bbdd1927b7dbce0dd07b0a193ddf89c33e",
+    "experiments/evaluate_query_selection.py": "e3be9c28466f211a91ad71e5a273416a6507fcb0ef0794a7de6d4416386fb85a",
+    "experiments/pool_query_selector.py": "36b3cc2431eae3f58efd92c1d50834c2f3e93d09e35cd70f402722417f5b7ff7",
+    "experiments/reused_query_projection.py": "0cbcc85ef0fcc8d4bf575e89e768970cced3703886b3422c9176283ca9c0f7c5",
+    "experiments/native_controller_policy.py": "a88e3f9708c2cb8a9bd359cb7a2d5fbba744c77624cd35cd861d98670e4e5359",
+    "experiments/reusable_exact_root.py": "48ea64e57a257e182ce3894e2dcf9b8a32f655516915b1fc9092e1f67af31a7b",
+    "experiments/cold_boundary_policy.py": "5e847f1d1e727752f0f349ed96c745a7e2ec1d589c38c1314af46991c45f43ce",
+    "experiments/query_channel_reads.py": "37180e09e56d8fd56fe2157a928d5126b9c929765277a51a5411b15e9a208533",
+    "experiments/stable_page_index.py": "dfb965ba656b514b7602801305ffe5d179616a6b3e7133202c4ebc7dfd335e60",
+    "experiments/page_candidates.py": "ff633441569a43855a6113ef25897db73e72147626fcc9a5bdd826fa847fa943",
+    "src/tiered_kv_cache.py": "525ae02d75f2966216343e1f5034483e7c26095250e1397c86dc9fcd73995e89",
+    "results/audit_20261015_query_combination/plan.json": "9b6f953dcc426212c780a86f233aa954a4c44cb4ecb8f41170ddf61fe4ec8e75",
+    "results/audit_20261015_query_combination/verified_quality.json": "11eb912e650ad2abdca06ca9973e0ea5129b4b44fee2cf7e278833be5d4e6ca7",
+    "results/hardware/native_page_recall_v1/verified_report.json": "663f28196f20d1bf22d25ad8ef6ca631e446123fa6c773871bca75bacba9c77f",
+    "results/page_recall/p16_k8_box_recheck.json": "9d59969ea289117ccb19935618cc9c43262ee72cb3d861e16ded559f5468b1ad",
+    "results/page_recall/p16_k32_box_recheck.json": "0e60a222ebda4ca9340e7d0baa3768866d50487d3c754ae80c944256ce46b89a",
+    "results/page_recall/indexed_report.json": "2b8d814c3b54f42942d8bd1ad406cbf0bb27f64cbe2f6408214e3a244f173da1",
+    "results/improvement_design_20261016/cold_query_page_opportunity_cpu.json": "38381a35376c9c362f149e7b0b60bc71fe3bf2b7ab2cdacac63eeb953dd3c702"
+  }
+}

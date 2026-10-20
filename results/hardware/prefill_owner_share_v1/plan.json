@@ -1,0 +1,40 @@
+{
+  "timestamp": "2026-10-02T21:02:56.499230+00:00",
+  "hypothesis": "Share initial hot KV with the already-identical visible prefill buffer before decode peak reset. Forward-owner release then avoids retaining old payloads during model append. One changed mechanism: initial payload backing; existing forward leases/RawInputPolicy unchanged in both arms.",
+  "control": "Frozen ForwardOwnerPolicy+scoped OwnerRelease in both arms, same standard host allocator/caller/teacher/model/caps. Candidate validates and rebinds hot-prefix views only at decode_step_count0.",
+  "control_proof_sha256": "4a80b1ac1d8fd5701db34ac933c463deb821b6c866840fb0d53c7f7253b65f11",
+  "owner_helper_sha256": "4a07e33de813d3e25548953301b237cac557704a442b892dab93abe44274075d",
+  "raw_policy_sha256": "42199dcddc1a1ad154360d9b6a95a7e9d4e696fda89d3b8b918f663d3cee193d",
+  "model": "../models/mistral-7b-instruct",
+  "seed": 0,
+  "precision": "BF16KV/F32metadata",
+  "hardware": "GPU0L40S/model lock; unrelated workloads untouched",
+  "contexts": [
+    4096,
+    8192,
+    16384,
+    31500
+  ],
+  "decode": 12,
+  "geometries": {
+    "shared": [
+      991,
+      1090
+    ],
+    "default": [
+      1024,
+      2048
+    ]
+  },
+  "primary": ">=10% lower whole-decode Torch allocated peak minus constant model storage plus actual owned host range. Report complete512MiB and reserved/whole-request/prefill scopes separately.",
+  "guards": {
+    "state_ids_history_counters_payload": "exact",
+    "median_decode_pct": 2,
+    "p95_decode_pct": 2,
+    "ttft_pct": 10,
+    "prefill_allocated_peak_pct": 2
+  },
+  "progression": "CPU prefix/weak-owner/fallback fixtures then shared4-context public memory/parity pilot. Failed primary/correctness stops. Passing advances usual geometry,3ABBA warm50step model timing and mandatory saturation/stream/lifetime/generation/recycled-request proof before ordinary adoption.",
+  "limits": "Serial research Mistral/DynamicLayer only; default host ranges256/512MiB. Full-resource equality may remain failed. No new native kernel,ordinary flag/default,physicalSTT/SnapKV/quality/throughput claim; inspected holdouts untouched.",
+  "source_bundle_sha256": "6f52edf91f7dda4234f6b7ca19d1d6c15e2204cd3d49c7a2f39e9b7777097a1a"
+}

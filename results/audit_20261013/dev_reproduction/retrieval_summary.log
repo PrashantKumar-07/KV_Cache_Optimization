@@ -1,0 +1,103 @@
+Loading model: ../models/mistral-7b-instruct
+[transformers] `torch_dtype` is deprecated! Use `dtype` instead!
+Loading weights:   0%|          | 0/291 [00:00<?, ?it/s]Loading weights:   4%|▍         | 13/291 [00:00<00:02, 125.70it/s]Loading weights:  11%|█         | 31/291 [00:00<00:01, 152.27it/s]Loading weights:  16%|█▌        | 47/291 [00:00<00:01, 151.99it/s]Loading weights:  22%|██▏       | 63/291 [00:00<00:01, 149.04it/s]Loading weights:  27%|██▋       | 78/291 [00:00<00:01, 147.28it/s]Loading weights:  33%|███▎      | 95/291 [00:00<00:01, 151.31it/s]Loading weights:  39%|███▉      | 113/291 [00:00<00:01, 157.88it/s]Loading weights:  45%|████▍     | 130/291 [00:00<00:01, 153.81it/s]Loading weights:  51%|█████     | 148/291 [00:00<00:00, 155.90it/s]Loading weights:  56%|█████▋    | 164/291 [00:01<00:00, 156.68it/s]Loading weights:  62%|██████▏   | 180/291 [00:01<00:00, 150.04it/s]Loading weights:  67%|██████▋   | 196/291 [00:01<00:00, 150.53it/s]Loading weights:  73%|███████▎  | 212/291 [00:01<00:00, 152.87it/s]Loading weights:  79%|███████▉  | 230/291 [00:01<00:00, 151.92it/s]Loading weights:  85%|████████▌ | 248/291 [00:01<00:00, 156.09it/s]Loading weights:  91%|█████████▏| 266/291 [00:01<00:00, 160.14it/s]Loading weights:  97%|█████████▋| 283/291 [00:01<00:00, 162.36it/s]Loading weights: 100%|██████████| 291/291 [00:01<00:00, 155.71it/s]
+
+============================================================
+Task: hotpotqa
+============================================================
+
+--- Full ---
+  [Full] hotpotqa 5/5  Score=48.00
+  Full → hotpotqa: 48.00
+  [checkpoint saved → results/audit_20261013/dev_reproduction/retrieval_summary.json.ckpt]
+
+--- StreamingLLM ---
+  [StreamingLLM] hotpotqa 5/5  Score=31.08
+  StreamingLLM → hotpotqa: 31.08
+  [checkpoint saved → results/audit_20261013/dev_reproduction/retrieval_summary.json.ckpt]
+
+--- H2O ---
+  [H2O] hotpotqa 5/5  Score=45.00
+  H2O → hotpotqa: 45.00
+  [checkpoint saved → results/audit_20261013/dev_reproduction/retrieval_summary.json.ckpt]
+
+--- SnapKV ---
+  [SnapKV] hotpotqa 5/5  Score=45.00
+  SnapKV → hotpotqa: 45.00
+  [checkpoint saved → results/audit_20261013/dev_reproduction/retrieval_summary.json.ckpt]
+
+--- TieredKV ---
+  [TieredKV] hotpotqa 5/5  Score=48.00
+  TieredKV → hotpotqa: 48.00
+  [checkpoint saved → results/audit_20261013/dev_reproduction/retrieval_summary.json.ckpt]
+
+============================================================
+Task: triviaqa
+============================================================
+
+--- Full ---
+  [Full] triviaqa 5/5  Score=70.00
+  Full → triviaqa: 70.00
+  [checkpoint saved → results/audit_20261013/dev_reproduction/retrieval_summary.json.ckpt]
+
+--- StreamingLLM ---
+  [StreamingLLM] triviaqa 5/5  Score=70.00
+  StreamingLLM → triviaqa: 70.00
+  [checkpoint saved → results/audit_20261013/dev_reproduction/retrieval_summary.json.ckpt]
+
+--- H2O ---
+  [H2O] triviaqa 5/5  Score=70.00
+  H2O → triviaqa: 70.00
+  [checkpoint saved → results/audit_20261013/dev_reproduction/retrieval_summary.json.ckpt]
+
+--- SnapKV ---
+  [SnapKV] triviaqa 5/5  Score=70.00
+  SnapKV → triviaqa: 70.00
+  [checkpoint saved → results/audit_20261013/dev_reproduction/retrieval_summary.json.ckpt]
+
+--- TieredKV ---
+  [TieredKV] triviaqa 5/5  Score=70.00
+  TieredKV → triviaqa: 70.00
+  [checkpoint saved → results/audit_20261013/dev_reproduction/retrieval_summary.json.ckpt]
+
+============================================================
+Task: gov_report
+============================================================
+
+--- Full ---
+  [Full] gov_report 5/5  Score=33.37
+  Full → gov_report: 33.37
+  [checkpoint saved → results/audit_20261013/dev_reproduction/retrieval_summary.json.ckpt]
+
+--- StreamingLLM ---
+  [StreamingLLM] gov_report 5/5  Score=26.37
+  StreamingLLM → gov_report: 26.37
+  [checkpoint saved → results/audit_20261013/dev_reproduction/retrieval_summary.json.ckpt]
+
+--- H2O ---
+  [H2O] gov_report 5/5  Score=25.95
+  H2O → gov_report: 25.95
+  [checkpoint saved → results/audit_20261013/dev_reproduction/retrieval_summary.json.ckpt]
+
+--- SnapKV ---
+  [SnapKV] gov_report 5/5  Score=29.28
+  SnapKV → gov_report: 29.28
+  [checkpoint saved → results/audit_20261013/dev_reproduction/retrieval_summary.json.ckpt]
+
+--- TieredKV ---
+  [TieredKV] gov_report 5/5  Score=28.25
+  TieredKV → gov_report: 28.25
+  [checkpoint saved → results/audit_20261013/dev_reproduction/retrieval_summary.json.ckpt]
+
+============================================================
+LONGBENCH RESULTS (F1 × 100)
+============================================================
+Task                            full  streamingllm           h2o        snapkv      tieredkv
+--------------------------------------------------------------------------------------------
+hotpotqa                       48.00         31.08         45.00         45.00         48.00
+triviaqa                       70.00         70.00         70.00         70.00         70.00
+gov_report                     33.37         26.37         25.95         29.28         28.25
+--------------------------------------------------------------------------------------------
+Average                        50.46         42.48         46.98         48.09         48.75
+
+Saved → results/audit_20261013/dev_reproduction/retrieval_summary.json

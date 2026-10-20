@@ -1,0 +1,65 @@
+{
+  "scope": "Three separate measured fixed-prompt timing studies, not one joint quality/resource comparison. Old-source evidence is historical; no SOTA claim.",
+  "units": "ms/token",
+  "statistics": "Pooled per-token median and p95; faint connected points are individual ABBA block medians, not confidence intervals.",
+  "source_sha256": {
+    "results/hardware/early_shared_cpu_phase_v1/cost.json": "bace2e481ea395ccca341c657c31f7d98c34937c1f193bd8a9aadbaab083f3c6",
+    "results/hardware/early_shared_cpu_phase_v1/verified_cost.json": "17015453949295273f3de33268b92be6a83d9f91884ece1f42b184609e12b409",
+    "results/hardware/bulk_payload_controller_v1/cost.json": "296058f84e0e2635db6571d6c47f67510c5c8f7c30019811a926f2322d6e5e13",
+    "results/hardware/bulk_payload_controller_v1/verified_cost.json": "2dda50ff5eadefc1c5054def3d892d5045b74db02d95602b806d0ae3e9e5c7c8",
+    "results/hardware/cold_boundary_controller_v1/cost.json": "ddddbe0cae6cfde3172053f456a50b1e39353838dfc991d836bb9a04532638ec",
+    "results/hardware/cold_boundary_controller_v1/verified_cost.json": "3428793d95e70ac7377d08b918ba37010d8a9a0b7c4b2a0c87ea31febf6a9c73"
+  },
+  "studies": [
+    {
+      "folder": "early_shared_cpu_phase_v1",
+      "summary": {
+        "snap": {
+          "measured_forwards": 300,
+          "median": 25.253579951822758,
+          "p95": 25.467683281749487
+        },
+        "cpu": {
+          "measured_forwards": 300,
+          "median": 54.588666185736656,
+          "p95": 59.935972187668085
+        }
+      }
+    },
+    {
+      "folder": "bulk_payload_controller_v1",
+      "summary": {
+        "control": {
+          "measured_forwards": 300,
+          "median": 59.919701889157295,
+          "p95": 68.5729299671948
+        },
+        "query": {
+          "measured_forwards": 300,
+          "median": 53.61765902489424,
+          "p95": 59.587641432881355
+        }
+      }
+    },
+    {
+      "folder": "cold_boundary_controller_v1",
+      "summary": {
+        "control": {
+          "measured_forwards": 300,
+          "median": 49.17317163199186,
+          "p95": 52.5685952976346
+        },
+        "query": {
+          "measured_forwards": 300,
+          "median": 44.23499945551157,
+          "p95": 48.192715272307396
+        }
+      }
+    }
+  ],
+  "generator_sha256": "b24e787182fc51d61bc14b086a31c42f1f8c698757c6046316f4a03bea27f693",
+  "output_sha256": {
+    "frozen_timing_scopes.pdf": "7e1da82b08c0578a05657c6bfa40344a60f4a4b385dd8e35b1922c6b3efd7f13",
+    "frozen_timing_scopes.png": "5715c2744411094c51a910f4842cbb1590d83271a07f450602513e2cc7e1946f"
+  }
+}

@@ -1,0 +1,270 @@
+{
+  "config": {
+    "model": "../models/mistral-7b-instruct",
+    "budget": 1024,
+    "tiered_vram_budget": 1024,
+    "tiered_stt_budget": 2048,
+    "tiered_stt_expose": null,
+    "sttram_bifurcation_frac": 0.75,
+    "sink": 4,
+    "recent": 128,
+    "max_samples": 5,
+    "tasks": [
+      "qasper",
+      "narrativeqa",
+      "gov_report"
+    ],
+    "max_ctx": 31500,
+    "seed": 0,
+    "tiered_kv_dtype": "bfloat16",
+    "page_size": 16,
+    "promote_top_pages": 2,
+    "stt_live_floor": 1,
+    "write_aware_lambda": 0.0,
+    "tiered_inclusive": false,
+    "runtime": {
+      "git_revision": "be7e700d84d46b47e32ba5b9870c8b71783b9e53",
+      "source_sha256": "bcc2b8520906db2db0a85494d441a4e688e571a356f1f6bc00c6c493d71dc548",
+      "packages": {
+        "torch": "2.5.1+cu124",
+        "transformers": "5.15.0",
+        "datasets": "2.19.2",
+        "numpy": "2.2.6",
+        "accelerate": "1.14.0",
+        "huggingface_hub": "1.27.0",
+        "rouge": "1.0.1"
+      }
+    },
+    "protocol": "task_chat_exclusions_v2",
+    "data_dir": "../hf_cache/datasets/downloads/extracted/5def9c7eaf83951e1cee75902d8611ef764ad88dd289e8f0bf97ff658a3eb83a/data",
+    "dataset_sha256": {
+      "qasper": "97d95c01221a17a2ce51f9180d65a671bf2998504a2ff0cccffe97e9b08444d8",
+      "narrativeqa": "0fb8d08ba5cdad4b74244224b0dc2e8b41ee6b850d954a13eb2d282621ce2f71",
+      "gov_report": "0a3902fcf3d49f228549f02a2ef1ae84dbe8578b8be3d4611d54459487bdef84"
+    },
+    "methods": [
+      "tieredkv"
+    ]
+  },
+  "results": {
+    "qasper": {
+      "tieredkv": {
+        "score": 6.38,
+        "n": 5,
+        "sample_scores": [
+          7.89,
+          24.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "samples": [
+          {
+            "sample_id": "3b91dce7ca41a9d16a1d0c61806c139db583a053ddb582bf79df3ff56f8e0344",
+            "prediction": "They selected Facebook pages based on intuition and performance on development data, including Time, The Guardian, and Disney. (Note: This is based on the information provided in the article, but it's not a direct answer to the question as it was originally asked, which asked for an exhaustive list of pages. The article mentions these pages as examples.)",
+            "score": 7.894736842105263,
+            "elapsed_s": 10.680803088471293,
+            "prompt_tokens": 4895,
+            "generated_tokens": 75
+          },
+          {
+            "sample_id": "5f59f94cd91401a55bcd3b6b24b78cd2c4c78e8ee6e7663e0ac8b97306444f08",
+            "prediction": "The context used to predict instructor intervention is identified by inferring the context scope, which is a contiguous set of student posts.",
+            "score": 23.999999999999996,
+            "elapsed_s": 4.112055227160454,
+            "prompt_tokens": 5415,
+            "generated_tokens": 28
+          },
+          {
+            "sample_id": "9d37c5305ff63838fd6b7c96f13d10cfc388955672b1a629e5c0a8c2a89c520d",
+            "prediction": "In addition to F-scores, improvements in classification accuracy are demonstrated through the use of other evaluation metrics, such as Chi-square test and log loss, as shown in Figure FIGREF22. (Figure not shown in provided text)",
+            "score": 0.0,
+            "elapsed_s": 7.098701756447554,
+            "prompt_tokens": 5549,
+            "generated_tokens": 51
+          },
+          {
+            "sample_id": "5b60c062453de695f70d5f313a868a3c630068a85084fc9c456760f41e84d0f3",
+            "prediction": "The baselines were not explicitly stated in the provided information.",
+            "score": 0.0,
+            "elapsed_s": 2.124678732827306,
+            "prompt_tokens": 5175,
+            "generated_tokens": 13
+          },
+          {
+            "sample_id": "a25d41e770a5f1816e04f39227fecd7dfcd9b83b25842e413d0f8fcb447b2092",
+            "prediction": "jiant specifically mentions compatibility with Transformers, a library for natural language processing in Python, and does not mention support for models in other programming languages. Therefore, the answer is \"no\" for models in languages other than Python.",
+            "score": 0.0,
+            "elapsed_s": 6.665973916649818,
+            "prompt_tokens": 3956,
+            "generated_tokens": 49
+          }
+        ],
+        "cache_stats": {
+          "demoted": 112064,
+          "promoted": 105312,
+          "promotions_deferred": 110752,
+          "paid_writes": 112064,
+          "writes_saved": 0,
+          "dropped": 0,
+          "write_savings_pct": 0.0,
+          "decode_steps": 211,
+          "stt_starved_steps": 0,
+          "stt_unused_steps": 0,
+          "mean_stt_exposed": 32.0,
+          "stt_expose_quota": 32,
+          "stt_exposed_total": 6912,
+          "stt_exposure_samples": 216,
+          "modeled_latency_us": 96856.5,
+          "modeled_energy_nj": 2854628622.3
+        }
+      }
+    },
+    "narrativeqa": {
+      "tieredkv": {
+        "score": 18.53,
+        "n": 5,
+        "sample_scores": [
+          18.18,
+          11.11,
+          33.33,
+          30.0,
+          0.0
+        ],
+        "samples": [
+          {
+            "sample_id": "27a07bedff812ae2c3fece3ac4a1f1db11f00793a3598fa94f1fa286ea347cb9",
+            "prediction": "Saltram is an inmate of the Maddocks, living with them and receiving a substantial income from The Coxon Fund.",
+            "score": 18.181818181818183,
+            "elapsed_s": 8.15294686332345,
+            "prompt_tokens": 31500,
+            "generated_tokens": 29
+          },
+          {
+            "sample_id": "dfeb4058f4507fa2d2a6f80f6c230cc08e3c7eaa8221bead1ccee5ba90a57488",
+            "prediction": "Ann is unable to return Mary's feelings of affection.",
+            "score": 11.11111111111111,
+            "elapsed_s": 6.146170465275645,
+            "prompt_tokens": 31500,
+            "generated_tokens": 13
+          },
+          {
+            "sample_id": "b75b8f1d9f0027543e6f4d84ca94997765d41f9a6eda749df309b0070caee3d8",
+            "prediction": "The witch lives on Atlas.",
+            "score": 33.33333333333333,
+            "elapsed_s": 2.0562586691230536,
+            "prompt_tokens": 9674,
+            "generated_tokens": 8
+          },
+          {
+            "sample_id": "5f2d99ab2d103d5f04d78f3e7a3b76f633fabeab2eb86a785cf76ed7ac77249e",
+            "prediction": "Crito visited to persuade Socrates to escape from prison.",
+            "score": 30.0,
+            "elapsed_s": 2.982485558837652,
+            "prompt_tokens": 9887,
+            "generated_tokens": 15
+          },
+          {
+            "sample_id": "254d602c75f8a37865dd7b4a2b7efbb25194b5064a29a07d7038b92d6add6c3d",
+            "prediction": "Baron Henry spared Otto's life.",
+            "score": 0.0,
+            "elapsed_s": 5.832855010405183,
+            "prompt_tokens": 31500,
+            "generated_tokens": 10
+          }
+        ],
+        "cache_stats": {
+          "demoted": 38112,
+          "promoted": 35872,
+          "promotions_deferred": 35808,
+          "paid_writes": 38112,
+          "writes_saved": 0,
+          "dropped": 0,
+          "write_savings_pct": 0.0,
+          "decode_steps": 70,
+          "stt_starved_steps": 0,
+          "stt_unused_steps": 0,
+          "mean_stt_exposed": 32.0,
+          "stt_expose_quota": 32,
+          "stt_exposed_total": 2400,
+          "stt_exposure_samples": 75,
+          "modeled_latency_us": 32524.1,
+          "modeled_energy_nj": 948074184.7
+        }
+      }
+    },
+    "gov_report": {
+      "tieredkv": {
+        "score": 28.29,
+        "n": 5,
+        "sample_scores": [
+          28.34,
+          31.12,
+          30.27,
+          25.9,
+          25.81
+        ],
+        "samples": [
+          {
+            "sample_id": "11d3fe7a8c5f9be5c05ff2b46002fae136e91f31575249f5c3db054f4d0715ad",
+            "prediction": "The report highlights the complexities of designing and implementing information systems, which involve multiple suppliers and components from the global IT supply chain. The report emphasizes that the federal government's IT systems are at risk from various security threats that could compromise the confidentiality, integrity, and availability of federal information. The report identifies several risks, including counterfeit parts, malware, and insider threats.\n\nThe report also discusses the efforts of the federal government to address IT supply chain risks, including the development of policies and procedures, technical assessments, and collaboration with industry and intelligence agencies. The report notes that while some progress has been made, more needs to be done to effectively manage and monitor IT supply chain risks.\n\nThe report recommends that federal agencies develop and implement policies and procedures to address IT supply chain risks, as well as establish a monitoring capability to verify compliance and assess the effectiveness of these measures. The report also encourages collaboration between federal agencies, industry, and the intelligence community to address these risks collectively.\n\nOverall, the report underscores the importance of managing IT supply chain risks to ensure the security and reliability of federal information systems. The report emphasizes the need for continued efforts to address these risks and the importance of collaboration between federal agencies, industry, and other stakeholders.",
+            "score": 28.342245576296154,
+            "elapsed_s": 36.17819031327963,
+            "prompt_tokens": 3308,
+            "generated_tokens": 270
+          },
+          {
+            "sample_id": "56f5a37dac322a67081fbbce0ee9261106133f38ac8b4f38fc3555f5b593969d",
+            "prediction": "The report by the Government Accountability Office (GAO) examines the compliance of the Departments of Labor (DOL), Health and Human Services (HHS), and Justice (DOJ) with statutory restrictions on religious-based hiring in grants awarded from 2007 to 2015. The report identified 2,773 grantees, of which 63 were potential faith-based organizations. Of these, 9 grantees were found to have self-certified for an exemption from the statutory restrictions on religious-based hiring. These exemptions were granted by DOL and DOJ, with HHS not having any faith-based recipients during this period that were eligible for such exemptions. The report also noted that the agencies provided information on the statutory restrictions to grantees through grant announcements and regulations. However, some grantees were unaware of the exemption process, and the agencies varied in their review and approval process for exemption requests. The report recommends that the agencies improve their communication and outreach efforts to grantees regarding the statutory restrictions and the exemption process. The report will be sent to the Secretaries of Health and Human Services, Labor, and relevant congressional committees upon release.",
+            "score": 31.123918886295876,
+            "elapsed_s": 36.67960407957435,
+            "prompt_tokens": 3548,
+            "generated_tokens": 272
+          },
+          {
+            "sample_id": "32b69d9e2f01e5ad531164ef2b312ea36c6cf8a24dfd0b442779369d8cbd8e09",
+            "prediction": "This report provides an overview of cybersecurity-related bills and hearings in the United States Congress during the 115th and 116th sessions. In the 116th Congress, the House has passed four cybersecurity bills, while the Senate has passed one. A total of 31 bills received action in both chambers during the 115th Congress, and five of these were signed into law. These laws include the National Defense Authorization Acts for Fiscal Years 2018 and 2019, which established new cybersecurity initiatives, and the FITARA Enhancement Act of 2017, which required agencies to address IT investments that have received poor performance evaluations for four consecutive quarters. The report also lists cybersecurity-related hearings in the House and Senate during the 116th Congress, but notes that the list is not definitive as no single objective selection criterion was used. The report includes links to the committee websites for each hearing. Previous reports from the Congressional Research Service on cybersecurity legislation in the 113th, 114th, and 115th Congresses are also cited.",
+            "score": 30.270269792490872,
+            "elapsed_s": 27.489620121195912,
+            "prompt_tokens": 1303,
+            "generated_tokens": 256
+          },
+          {
+            "sample_id": "d1bba223842d90eab2f7962487cba597cea36944010060e21c010e1dbfbaeefe",
+            "prediction": "The report by the government agency found that in the year under review, CBP seized over 300,000 items at the border, with approximately 60% being seized at ports of entry and the remaining 40% at airports. The majority of seizures were made based on information from advanced screening technologies and tips from law enforcement agencies. The report also noted that the use of Electronic Advanced Data (EAD) from international shipping companies to target high-risk shipments for inspection was increasing.\n\nHowever, the report highlighted the challenges faced by USPS and CBP in collecting and using EAD to target mail for inspection. The report recommended that CBP and USPS work together to articulate performance goals for the pilots, collect data and assess the pilots on their success in enabling USPS to provide targeted mail to CBP for inspection, and assess the costs and benefits of various methods of choosing mail for inspection. The report also emphasized the importance of considering the costs and benefits of collecting EAD for targeting mail for inspection in comparison to other methods.\n\nThe report concluded that effective implementation of these recommendations would help CBP and USPS ensure that efforts to collect and use EAD to target mail for inspection achieve the desired security and resource benefits. The Department of Homeland Security agreed with the findings and recommendations of the report.",
+            "score": 25.899280169740468,
+            "elapsed_s": 37.333427879959345,
+            "prompt_tokens": 2602,
+            "generated_tokens": 280
+          },
+          {
+            "sample_id": "2124f6aefc1910cb6201bb8bef9916c102aeba694bace9e4d17237ba7d393b5b",
+            "prediction": "The report provides background information on the TAO-205 program, a Navy initiative to build six new oilers for replenishing fuel and supplies at sea. The program aims to replace aging T-AOE vessels with more efficient and technologically advanced ones. The Navy has requested procurement funding for the fifth and sixth ships in its FY2020 budget.\n\nKey issues for Congress include evaluating the Navy's procurement funding request and considering the potential need for additional ships due to fleet expansion plans. The report highlights the program's progress, including completed design work, construction schedule disruptions, and the Navy's intention to compete for contracts for the remaining ships.\n\nThe report also mentions the technology readiness and design stability of the TAO-205 program, with the Navy having identified and addressed key risks through best practices and commercial vessel design. The program office has provided comments on the assessment and continues to follow GAO shipbuilding best practices.",
+            "score": 25.806451131633718,
+            "elapsed_s": 28.457570707425475,
+            "prompt_tokens": 5421,
+            "generated_tokens": 210
+          }
+        ],
+        "cache_stats": {
+          "demoted": 680064,
+          "promoted": 639008,
+          "promotions_deferred": 674784,
+          "paid_writes": 680064,
+          "writes_saved": 0,
+          "dropped": 0,
+          "write_savings_pct": 0.0,
+          "decode_steps": 1283,
+          "stt_starved_steps": 0,
+          "stt_unused_steps": 0,
+          "mean_stt_exposed": 32.0,
+          "stt_expose_quota": 32,
+          "stt_exposed_total": 41216,
+          "stt_exposure_samples": 1288,
+          "modeled_latency_us": 588377.2,
+          "modeled_energy_nj": 17356262735.9
+        }
+      }
+    }
+  }
+}

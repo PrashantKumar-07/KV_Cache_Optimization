@@ -1,0 +1,135 @@
+{
+  "config": {
+    "model": "../models/mistral-7b-instruct",
+    "prompt_file": "results/remediation_v3/latency_prompt.txt",
+    "stream_file": "results/shadow_ablation_full/fixed_stream_20260929.json",
+    "output": "results/hardware/cpu_cold_pilot_4k_20260929.json",
+    "ctx_len": 4096,
+    "decode": 5,
+    "warmup": 0,
+    "repeat": 1,
+    "order": [
+      "gpu",
+      "cpu"
+    ],
+    "runtime": {
+      "git_revision": "be7e700d84d46b47e32ba5b9870c8b71783b9e53",
+      "source_sha256": "e887226ca112a706c84c8513657b449e921fd53a28241dcd00a126ad0b984558",
+      "packages": {
+        "torch": "2.5.1+cu124",
+        "transformers": "5.14.1",
+        "datasets": "5.0.0",
+        "numpy": "2.2.6",
+        "accelerate": "1.14.0",
+        "huggingface_hub": "1.24.0",
+        "rouge": "1.0.1"
+      }
+    },
+    "prompt_sha256": "18695714f26e35cb8d2b039ae9efb3b7e64291cbd7bcd91956efc07e16a732cd",
+    "stream_sha256": "bb85d5e5270735a2a1ff089c74f2d7eeb1a7ddd41b4361c97e190913d4f32f67",
+    "driver_sha256": "f88972fb7bc2e983d9af7d7a6baa78f7f83b48cfcff930c5b28a03c3d71278ef",
+    "tier": "CPU DRAM pageable synchronous; not STT-RAM",
+    "byte_scope": "explicit cold K/V GPU-CPU payload; excludes CPU compaction and allocator traffic",
+    "profile_decorator_sha256": "cf7aa5b08f44974ba8c1d08cd71ef70ffd13d1c48a4931576eb235306bfa46b5",
+    "profile_sha256": "0752b0aa00502ee1557ad019ecd6b2377091578295661abf17a4385f7ee3e9c7",
+    "executed_driver_snapshot": "results/hardware/probe_cpu_cold_executed_20260929.py",
+    "provenance_correction": "Metadata-only correction: former profile_sha256 identified the torch inference_mode decorator wrapper, not latency_profile.py; executed driver preserved verbatim. Results unchanged."
+  },
+  "results": {
+    "0_gpu": {
+      "timing_scope": "end_to_end_model_policy_token",
+      "ttft_ms": 830.282,
+      "itl_ms": 86.794,
+      "mean_itl_ms": 94.06654350459576,
+      "forward_ms": 25.21625906229019,
+      "peak_memory_gb": 15.141817344,
+      "prefill_peak_memory_gb": 15.81470464,
+      "trials": [
+        {
+          "ttft_ms": 830.2822895348072,
+          "step_ms": [
+            148.7118899822235,
+            73.3462106436491,
+            88.23392167687416,
+            73.24624806642532,
+            86.79444715380669
+          ],
+          "forward_ms": [
+            65.14200754463673,
+            25.178583338856697,
+            25.24261362850666,
+            25.21625906229019,
+            25.185601785779
+          ],
+          "prefill_peak_memory_gb": 15.81470464,
+          "decode_peak_memory_gb": 15.141817344,
+          "predicted_token_ids": [
+            1263,
+            18577,
+            28809,
+            592,
+            7616
+          ],
+          "prefill_forward_ms": 691.9719241559505,
+          "paid_writes": 1211,
+          "writes_saved": 1957,
+          "demoted": 3168,
+          "promoted": 3008,
+          "decode_steps": 5
+        }
+      ],
+      "final_gpu_allocated_gb": 14.850827264,
+      "cold_payload_bytes": 206286848,
+      "cold_payload_device": "cuda:0"
+    },
+    "1_cpu": {
+      "timing_scope": "end_to_end_model_policy_token",
+      "ttft_ms": 947.238,
+      "itl_ms": 133.981,
+      "mean_itl_ms": 436.5176748484373,
+      "forward_ms": 25.467757135629654,
+      "peak_memory_gb": 14.907730944,
+      "prefill_peak_memory_gb": 15.598501376,
+      "trials": [
+        {
+          "ttft_ms": 947.238365188241,
+          "step_ms": [
+            1695.6655979156494,
+            150.31379461288452,
+            133.98141227662563,
+            80.5562175810337,
+            122.07135185599327
+          ],
+          "forward_ms": [
+            28.31442467868328,
+            26.002760976552963,
+            25.467757135629654,
+            25.36119520664215,
+            25.41666477918625
+          ],
+          "prefill_peak_memory_gb": 15.598501376,
+          "decode_peak_memory_gb": 14.907730944,
+          "predicted_token_ids": [
+            1263,
+            18577,
+            28809,
+            592,
+            7616
+          ],
+          "prefill_forward_ms": 352.9835604131222,
+          "paid_writes": 1211,
+          "writes_saved": 1957,
+          "demoted": 3168,
+          "promoted": 3008,
+          "decode_steps": 5
+        }
+      ],
+      "final_gpu_allocated_gb": 14.627542016,
+      "cold_payload_bytes": 206286848,
+      "cold_payload_device": "cpu",
+      "explicit_h2d_payload_bytes": 37486592,
+      "explicit_d2h_payload_bytes": 206286848
+    }
+  },
+  "policy_parity_passed": true
+}

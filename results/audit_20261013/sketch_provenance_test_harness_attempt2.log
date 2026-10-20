@@ -1,0 +1,112 @@
+...............................FF...........                             [100%]
+=================================== FAILURES ===================================
+___ test_sketch_metadata_cost_uses_bound_dtype_not_cold_payload[cold_dtype0] ___
+
+cold_dtype = torch.bfloat16
+
+    @pytest.mark.parametrize('cold_dtype', [torch.bfloat16, torch.float8_e4m3fn])
+    def test_sketch_metadata_cost_uses_bound_dtype_not_cold_payload(cold_dtype):
+        from cost_model import DEFAULT_TIERS
+        cfg = TieredConfig(num_heads=2, head_dim=4, sram_capacity=4,
+            sttram_capacity=32, sink_size=1, window_size=2, page_size=16,
+            kv_dtype=torch.bfloat16, stt_kv_dtype=cold_dtype,
+            sttram_bifurcation_frac=1.0)
+        cache = TieredKVCache(cfg)
+        keys = torch.linspace(-1, 1, 2*36*4).reshape(2, 36, 4)
+        cache.initial_bifurcation(keys, keys, keys)
+        pages = cache._page_bounds()
+        bound_bytes = sum(lo.numel()*lo.element_size() + hi.numel()*hi.element_size()
+                          for _, _, lo, hi in pages)
+        assert bound_bytes == 64
+>       record = cache.step(torch.zeros(2, 4), torch.zeros(2, 4), torch.zeros(2, 4), 36)
+
+tests/test_october_audit.py:303: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/tiered_kv_cache.py:952: in step
+    candidates, sketch_macs = self.sketch_check(q)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <tiered_kv_cache.TieredKVCache object at 0x7a903099f460>
+q = tensor([[0., 0., 0., 0.],
+        [0., 0., 0., 0.]])
+
+    def sketch_check(self, q):
+        """
+        q : (H, 1, D). Returns list of (start, end) slices that clear the
+        cheap sketch bound -- i.e. PEEK/PROMOTION CANDIDATES, not
+        automatically promotions. resolve_promotions() below decides which
+        of these actually get physically moved to VRAM this step versus
+        merely attended to in place (see its docstring). Also returns the
+        sketch MAC count.
+        """
+        H, m, D = self.cfg.num_heads, len(self.stt_pos), self.cfg.head_dim
+        if m == 0:
+            return [], 0
+    
+        pages = self._page_bounds()
+        if not pages:
+            return [], 0
+        ub = self.page_upper_bounds(q, pages)   # (P,) -- see that method
+    
+        if self.sram_k.shape[1] > 0:
+>           s_vram = torch.matmul(q, self.sram_k.transpose(-2, -1)).squeeze(1)
+E           RuntimeError: expected scalar type Float but found BFloat16
+
+src/tiered_kv_cache.py:382: RuntimeError
+___ test_sketch_metadata_cost_uses_bound_dtype_not_cold_payload[cold_dtype1] ___
+
+cold_dtype = torch.float8_e4m3fn
+
+    @pytest.mark.parametrize('cold_dtype', [torch.bfloat16, torch.float8_e4m3fn])
+    def test_sketch_metadata_cost_uses_bound_dtype_not_cold_payload(cold_dtype):
+        from cost_model import DEFAULT_TIERS
+        cfg = TieredConfig(num_heads=2, head_dim=4, sram_capacity=4,
+            sttram_capacity=32, sink_size=1, window_size=2, page_size=16,
+            kv_dtype=torch.bfloat16, stt_kv_dtype=cold_dtype,
+            sttram_bifurcation_frac=1.0)
+        cache = TieredKVCache(cfg)
+        keys = torch.linspace(-1, 1, 2*36*4).reshape(2, 36, 4)
+        cache.initial_bifurcation(keys, keys, keys)
+        pages = cache._page_bounds()
+        bound_bytes = sum(lo.numel()*lo.element_size() + hi.numel()*hi.element_size()
+                          for _, _, lo, hi in pages)
+        assert bound_bytes == 64
+>       record = cache.step(torch.zeros(2, 4), torch.zeros(2, 4), torch.zeros(2, 4), 36)
+
+tests/test_october_audit.py:303: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/tiered_kv_cache.py:952: in step
+    candidates, sketch_macs = self.sketch_check(q)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <tiered_kv_cache.TieredKVCache object at 0x7a9030adc430>
+q = tensor([[0., 0., 0., 0.],
+        [0., 0., 0., 0.]])
+
+    def sketch_check(self, q):
+        """
+        q : (H, 1, D). Returns list of (start, end) slices that clear the
+        cheap sketch bound -- i.e. PEEK/PROMOTION CANDIDATES, not
+        automatically promotions. resolve_promotions() below decides which
+        of these actually get physically moved to VRAM this step versus
+        merely attended to in place (see its docstring). Also returns the
+        sketch MAC count.
+        """
+        H, m, D = self.cfg.num_heads, len(self.stt_pos), self.cfg.head_dim
+        if m == 0:
+            return [], 0
+    
+        pages = self._page_bounds()
+        if not pages:
+            return [], 0
+        ub = self.page_upper_bounds(q, pages)   # (P,) -- see that method
+    
+        if self.sram_k.shape[1] > 0:
+>           s_vram = torch.matmul(q, self.sram_k.transpose(-2, -1)).squeeze(1)
+E           RuntimeError: expected scalar type Float but found BFloat16
+
+src/tiered_kv_cache.py:382: RuntimeError
+=========================== short test summary info ============================
+FAILED tests/test_october_audit.py::test_sketch_metadata_cost_uses_bound_dtype_not_cold_payload[cold_dtype0]
+FAILED tests/test_october_audit.py::test_sketch_metadata_cost_uses_bound_dtype_not_cold_payload[cold_dtype1]
+2 failed, 42 passed in 3.95s

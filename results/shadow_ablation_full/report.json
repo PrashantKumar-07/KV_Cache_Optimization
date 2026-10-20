@@ -1,0 +1,150 @@
+{
+  "scope": "pilot; paired selected samples/tasks/model/seed, conditional bootstrap only",
+  "runtime": {
+    "git_revision": "be7e700d84d46b47e32ba5b9870c8b71783b9e53",
+    "source_sha256": "bcc2b8520906db2db0a85494d441a4e688e571a356f1f6bc00c6c493d71dc548",
+    "packages": {
+      "torch": "2.5.1+cu124",
+      "transformers": "5.15.0",
+      "datasets": "2.19.2",
+      "numpy": "2.2.6",
+      "accelerate": "1.14.0",
+      "huggingface_hub": "1.27.0",
+      "rouge": "1.0.1"
+    }
+  },
+  "tasks": [
+    "multifieldqa_en",
+    "qasper",
+    "narrativeqa",
+    "hotpotqa",
+    "triviaqa",
+    "gov_report"
+  ],
+  "samples_per_task": {
+    "multifieldqa_en": 25,
+    "qasper": 25,
+    "narrativeqa": 25,
+    "hotpotqa": 25,
+    "triviaqa": 25,
+    "gov_report": 10
+  },
+  "quality": {
+    "baseline": "no_shadow",
+    "per_task": {
+      "multifieldqa_en": {
+        "n": 25,
+        "mean_difference": 0.0,
+        "se": 0.0
+      },
+      "qasper": {
+        "n": 25,
+        "mean_difference": 0.17110959216222354,
+        "se": 0.2512072541314435
+      },
+      "narrativeqa": {
+        "n": 25,
+        "mean_difference": 0.0,
+        "se": 0.0
+      },
+      "hotpotqa": {
+        "n": 25,
+        "mean_difference": 0.08020050125313262,
+        "se": 0.08020050125313262
+      },
+      "triviaqa": {
+        "n": 25,
+        "mean_difference": 0.0,
+        "se": 0.0
+      },
+      "gov_report": {
+        "n": 10,
+        "mean_difference": -1.4377550343496417,
+        "se": 0.8228854125501137
+      }
+    },
+    "scores": {
+      "multifieldqa_en": {
+        "tieredkv": 55.25,
+        "no_shadow": 55.25
+      },
+      "qasper": {
+        "tieredkv": 13.28,
+        "no_shadow": 13.1
+      },
+      "narrativeqa": {
+        "tieredkv": 18.63,
+        "no_shadow": 18.63
+      },
+      "hotpotqa": {
+        "tieredkv": 37.93,
+        "no_shadow": 37.85
+      },
+      "triviaqa": {
+        "tieredkv": 78.27,
+        "no_shadow": 78.27
+      },
+      "gov_report": {
+        "tieredkv": 26.93,
+        "no_shadow": 28.36
+      }
+    },
+    "task_balanced_mean_difference": -0.19774082348904756,
+    "paired_bootstrap_95pct_interval": [
+      -0.4681955527986614,
+      0.0668381556167213
+    ],
+    "bootstrap_draws": 10000,
+    "seed": 0
+  },
+  "counters": {
+    "inclusive": {
+      "paid_writes": 339097,
+      "writes_saved": 2510023,
+      "demoted": 2849120,
+      "promoted": 2678720,
+      "decode_steps": 5331
+    },
+    "no_shadow": {
+      "paid_writes": 2922944,
+      "writes_saved": 0,
+      "demoted": 2922944,
+      "promoted": 2748160,
+      "decode_steps": 5468
+    }
+  },
+  "paid_write_reduction": 2583847,
+  "paid_write_reduction_pct": 88.39878560793501,
+  "paid_writes_per_decode_step": {
+    "inclusive": 63.60851622584881,
+    "no_shadow": 534.5544989027067
+  },
+  "paid_write_rate_reduction_pct": 88.10064897846345,
+  "estimated_payload_reduction_bytes": 10583437312,
+  "caveat": "Simulated layer-token counters; output lengths can differ between arms, so compare paid writes per decode step as well as aggregate counts. No physical STT writes or power measured. Independent GPU timings are not a controlled latency comparison.",
+  "latency": {
+    "scope": "16k real-text fixed-length decode; same L40S GPU, ABBA blocks; prototype full loop",
+    "block_itl_ms": {
+      "0_inclusive": 117.071,
+      "1_no_shadow": 135.279,
+      "2_no_shadow": 136.359,
+      "3_inclusive": 117.276
+    },
+    "median_block_itl_ms": {
+      "inclusive": 117.17349999999999,
+      "no_shadow": 135.81900000000002
+    },
+    "prefill_peak_gb": {
+      "0_inclusive": 18.594276352,
+      "1_no_shadow": 18.594276352,
+      "2_no_shadow": 18.594276352,
+      "3_inclusive": 18.594276352
+    },
+    "decode_peak_gb": {
+      "0_inclusive": 15.13864704,
+      "1_no_shadow": 15.155119104,
+      "2_no_shadow": 15.155119104,
+      "3_inclusive": 15.13864704
+    }
+  }
+}

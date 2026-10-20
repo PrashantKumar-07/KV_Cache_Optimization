@@ -1,0 +1,75 @@
+{
+  "runtime": {
+    "git_revision": "be7e700d84d46b47e32ba5b9870c8b71783b9e53",
+    "source_sha256": "0d8a394622f541a2d50b0412d9b207d5ea76280468be93e7a501466095df67f0",
+    "packages": {
+      "torch": "2.5.1+cu124",
+      "transformers": "5.15.0",
+      "datasets": "2.19.2",
+      "numpy": "2.2.6",
+      "accelerate": "1.14.0",
+      "huggingface_hub": "1.27.0",
+      "rouge": "1.0.1"
+    }
+  },
+  "jobs": {
+    "latency": {
+      "state": "running",
+      "gpu": "0",
+      "command": [
+        "/data/nishant/Nishant/Prashant/Project/kv_cache/../venv_kvcache/bin/python",
+        "-u",
+        "experiments/latency_profile.py",
+        "--model",
+        "../models/mistral-7b-instruct",
+        "--prompt-file",
+        "results/remediation_v2/latency_prompt.txt",
+        "--output",
+        "results/remediation_v2/latency.json"
+      ]
+    },
+    "equal_vram_short": {
+      "state": "running",
+      "gpu": "1",
+      "command": [
+        "/data/nishant/Nishant/Prashant/Project/kv_cache/../venv_kvcache/bin/python",
+        "-u",
+        "experiments/longbench_eval.py",
+        "--model",
+        "../models/mistral-7b-instruct",
+        "--data-dir",
+        "../hf_cache/datasets/downloads/extracted/5def9c7eaf83951e1cee75902d8611ef764ad88dd289e8f0bf97ff658a3eb83a/data",
+        "--budget",
+        "1024",
+        "--seed",
+        "0",
+        "--max-ctx",
+        "31500",
+        "--tiered-kv-dtype",
+        "bfloat16",
+        "--sttram-bifurcation-frac",
+        ".75",
+        "--tasks",
+        "multifieldqa_en",
+        "qasper",
+        "narrativeqa",
+        "hotpotqa",
+        "triviaqa",
+        "--methods",
+        "full",
+        "streamingllm",
+        "h2o",
+        "snapkv",
+        "tieredkv",
+        "--max-samples",
+        "25",
+        "--tiered-vram-budget",
+        "1024",
+        "--tiered-stt-budget",
+        "2048",
+        "--json",
+        "results/remediation_v2/equal_vram_short.json"
+      ]
+    }
+  }
+}

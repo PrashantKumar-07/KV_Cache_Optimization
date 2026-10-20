@@ -1,0 +1,617 @@
+{
+  "scope": "Executed two-retained-tier model decode, ordinary and semantics-preserving native option",
+  "generated_utc": "2026-10-15T12:13:07.604565+00:00",
+  "style_reference": "figures/tieredkv_flow_diagram.jpg",
+  "style": "Orange/teal/red initialization cards; blue/green/orange/red decode panels; rounded boxes, condensed sans typography, top-down four-panel loop and backup decision",
+  "generator": "results/audit_20261015_figures/flow/generate_color_flow.py",
+  "matplotlib": "3.10.9",
+  "canvas_reference_pixels": [
+    768,
+    1376
+  ],
+  "png_pixels": [
+    1536,
+    2752
+  ],
+  "editable_vector_text": true,
+  "text_container_checks": 37,
+  "text_container_violations": [],
+  "labels": [
+    {
+      "text": "TieredKV: Two-Tier KV Cache",
+      "source_citations": [
+        "src/tiered_kv_cache.py:187"
+      ],
+      "anchor": [
+        384,
+        27
+      ],
+      "font_points": 27,
+      "bold": true
+    },
+    {
+      "text": "Phase 0: Initialization (Once at Prefill)",
+      "source_citations": [],
+      "anchor": [
+        384,
+        87
+      ],
+      "font_points": 22,
+      "bold": true
+    },
+    {
+      "text": "Prompt Tokens (prefill)",
+      "source_citations": [],
+      "anchor": [
+        384,
+        135
+      ],
+      "font_points": 19,
+      "bold": false
+    },
+    {
+      "text": "Initial Bifurcation \u2014 Observation-Window Scores",
+      "source_citations": [
+        "src/tiered_kv_cache.py:213"
+      ],
+      "anchor": [
+        384,
+        202
+      ],
+      "font_points": 18,
+      "bold": false
+    },
+    {
+      "text": "Actual-query option; key proxy by default",
+      "source_citations": [
+        "experiments/longbench_eval.py:705",
+        "experiments/longbench_eval.py:709"
+      ],
+      "anchor": [
+        384,
+        230
+      ],
+      "font_points": 17,
+      "bold": false
+    },
+    {
+      "text": "Tier 1: GPU VRAM",
+      "source_citations": [
+        "src/tiered_kv_cache.py:238",
+        "src/tiered_kv_cache.py:253"
+      ],
+      "anchor": [
+        128,
+        300
+      ],
+      "font_points": 18,
+      "bold": true
+    },
+    {
+      "text": "Hot working set",
+      "source_citations": [
+        "src/tiered_kv_cache.py:238",
+        "src/tiered_kv_cache.py:253"
+      ],
+      "anchor": [
+        128,
+        332
+      ],
+      "font_points": 14.6,
+      "bold": false
+    },
+    {
+      "text": "Sinks + recent + top scores",
+      "source_citations": [
+        "src/tiered_kv_cache.py:238",
+        "src/tiered_kv_cache.py:253"
+      ],
+      "anchor": [
+        128,
+        362
+      ],
+      "font_points": 14.6,
+      "bold": false
+    },
+    {
+      "text": "Configurable hot budget",
+      "source_citations": [
+        "src/tiered_kv_cache.py:238",
+        "src/tiered_kv_cache.py:253"
+      ],
+      "anchor": [
+        128,
+        393
+      ],
+      "font_points": 14.6,
+      "bold": false
+    },
+    {
+      "text": "Tier 2: Cold KV",
+      "source_citations": [
+        "src/tiered_kv_cache.py:265",
+        "src/tiered_kv_cache.py:606"
+      ],
+      "anchor": [
+        384,
+        300
+      ],
+      "font_points": 18,
+      "bold": true
+    },
+    {
+      "text": "Simulated STT-RAM tier",
+      "source_citations": [
+        "src/tiered_kv_cache.py:265",
+        "src/tiered_kv_cache.py:606"
+      ],
+      "anchor": [
+        384,
+        332
+      ],
+      "font_points": 14.6,
+      "bold": false
+    },
+    {
+      "text": "Live rows + later shadows",
+      "source_citations": [
+        "src/tiered_kv_cache.py:265",
+        "src/tiered_kv_cache.py:606"
+      ],
+      "anchor": [
+        384,
+        362
+      ],
+      "font_points": 14.6,
+      "bold": false
+    },
+    {
+      "text": "Configurable cold budget",
+      "source_citations": [
+        "src/tiered_kv_cache.py:265",
+        "src/tiered_kv_cache.py:606"
+      ],
+      "anchor": [
+        384,
+        393
+      ],
+      "font_points": 14.6,
+      "bold": false
+    },
+    {
+      "text": "Dropped Tokens",
+      "source_citations": [
+        "src/tiered_kv_cache.py:246",
+        "src/tiered_kv_cache.py:889"
+      ],
+      "anchor": [
+        640,
+        300
+      ],
+      "font_points": 18,
+      "bold": true
+    },
+    {
+      "text": "Not a storage tier",
+      "source_citations": [
+        "src/tiered_kv_cache.py:246",
+        "src/tiered_kv_cache.py:889"
+      ],
+      "anchor": [
+        640,
+        332
+      ],
+      "font_points": 14.6,
+      "bold": false
+    },
+    {
+      "text": "Beyond both budgets",
+      "source_citations": [
+        "src/tiered_kv_cache.py:246",
+        "src/tiered_kv_cache.py:889"
+      ],
+      "anchor": [
+        640,
+        362
+      ],
+      "font_points": 14.6,
+      "bold": false
+    },
+    {
+      "text": "Permanently discarded",
+      "source_citations": [
+        "src/tiered_kv_cache.py:246",
+        "src/tiered_kv_cache.py:889"
+      ],
+      "anchor": [
+        640,
+        393
+      ],
+      "font_points": 14.6,
+      "bold": false
+    },
+    {
+      "text": "Per Decode Step (after the first prompt prediction)",
+      "source_citations": [
+        "experiments/longbench_eval.py:1225"
+      ],
+      "anchor": [
+        405,
+        468
+      ],
+      "font_points": 20,
+      "bold": true
+    },
+    {
+      "text": "1. Prepare Visible KV",
+      "source_citations": [
+        "experiments/longbench_eval.py:736"
+      ],
+      "anchor": [
+        78,
+        522
+      ],
+      "font_points": 21,
+      "bold": true
+    },
+    {
+      "text": "\u2022 Hot rows + quota-limited live cold rows; shadows excluded",
+      "source_citations": [
+        "experiments/longbench_eval.py:885",
+        "experiments/cold_boundary.py:74",
+        "experiments/cold_boundary.py:81"
+      ],
+      "anchor": [
+        84,
+        553
+      ],
+      "font_points": 15,
+      "bold": false
+    },
+    {
+      "text": "\u2022 Recency selects cold exposure; same count across layers",
+      "source_citations": [
+        "experiments/longbench_eval.py:885",
+        "experiments/cold_boundary.py:74",
+        "experiments/cold_boundary.py:81"
+      ],
+      "anchor": [
+        84,
+        580
+      ],
+      "font_points": 15,
+      "bold": false
+    },
+    {
+      "text": "\u2022 Native option: gather selected cold KV from pinned CPU memory",
+      "source_citations": [
+        "experiments/longbench_eval.py:885",
+        "experiments/cold_boundary.py:74",
+        "experiments/cold_boundary.py:81"
+      ],
+      "anchor": [
+        84,
+        607
+      ],
+      "font_points": 15,
+      "bold": false
+    },
+    {
+      "text": "\u2022 Use this prepared set in the next model forward",
+      "source_citations": [
+        "experiments/longbench_eval.py:885",
+        "experiments/cold_boundary.py:74",
+        "experiments/cold_boundary.py:81"
+      ],
+      "anchor": [
+        84,
+        634
+      ],
+      "font_points": 15,
+      "bold": false
+    },
+    {
+      "text": "2. Model Attention & Feedback",
+      "source_citations": [],
+      "anchor": [
+        78,
+        697
+      ],
+      "font_points": 21,
+      "bold": true
+    },
+    {
+      "text": "\u2022 Attend hot + selected live cold + current token",
+      "source_citations": [
+        "experiments/longbench_eval.py:1255",
+        "experiments/longbench_eval.py:1038"
+      ],
+      "anchor": [
+        84,
+        729
+      ],
+      "font_points": 15,
+      "bold": false
+    },
+    {
+      "text": "\u2022 Produce next-token logits and real attention weights",
+      "source_citations": [
+        "experiments/longbench_eval.py:1255",
+        "experiments/longbench_eval.py:1038"
+      ],
+      "anchor": [
+        84,
+        757
+      ],
+      "font_points": 15,
+      "bold": false
+    },
+    {
+      "text": "\u2022 Update hot scores and cold access timestamps",
+      "source_citations": [
+        "experiments/longbench_eval.py:1255",
+        "experiments/longbench_eval.py:1038"
+      ],
+      "anchor": [
+        84,
+        785
+      ],
+      "font_points": 15,
+      "bold": false
+    },
+    {
+      "text": "3. Promote Attention-Ranked Cold Rows",
+      "source_citations": [],
+      "anchor": [
+        78,
+        845
+      ],
+      "font_points": 21,
+      "bold": true
+    },
+    {
+      "text": "\u2022 Apply promotion budget, re-entry gate and live-cold floor",
+      "source_citations": [
+        "experiments/longbench_eval.py:854",
+        "src/tiered_kv_cache.py:550",
+        "src/tiered_kv_cache.py:606"
+      ],
+      "anchor": [
+        84,
+        876
+      ],
+      "font_points": 15,
+      "bold": false
+    },
+    {
+      "text": "\u2022 Inclusive mode: keep a cold shadow backup",
+      "source_citations": [
+        "experiments/longbench_eval.py:854",
+        "src/tiered_kv_cache.py:550",
+        "src/tiered_kv_cache.py:606"
+      ],
+      "anchor": [
+        84,
+        903
+      ],
+      "font_points": 15,
+      "bold": false
+    },
+    {
+      "text": "\u2022 Exclusive ablation: remove the promoted cold copy",
+      "source_citations": [
+        "experiments/longbench_eval.py:854",
+        "src/tiered_kv_cache.py:550",
+        "src/tiered_kv_cache.py:606"
+      ],
+      "anchor": [
+        84,
+        930
+      ],
+      "font_points": 15,
+      "bold": false
+    },
+    {
+      "text": "4. Evict & Demote",
+      "source_citations": [],
+      "anchor": [
+        78,
+        990
+      ],
+      "font_points": 21,
+      "bold": true
+    },
+    {
+      "text": "a) Admit current-token KV; protect sinks and recent tokens",
+      "source_citations": [
+        "src/tiered_kv_cache.py:732",
+        "src/tiered_kv_cache.py:647"
+      ],
+      "anchor": [
+        88,
+        1020
+      ],
+      "font_points": 15,
+      "bold": false
+    },
+    {
+      "text": "b) Hot overflow: demote the lowest age-normalized score",
+      "source_citations": [
+        "src/tiered_kv_cache.py:687"
+      ],
+      "anchor": [
+        88,
+        1046
+      ],
+      "font_points": 15,
+      "bold": false
+    },
+    {
+      "text": "    Optional write-aware weight favors rows with backups",
+      "source_citations": [
+        "src/tiered_kv_cache.py:689"
+      ],
+      "anchor": [
+        88,
+        1072
+      ],
+      "font_points": 15,
+      "bold": false
+    },
+    {
+      "text": "Shadow backup?",
+      "source_citations": [
+        "src/tiered_kv_cache.py:779"
+      ],
+      "anchor": [
+        390,
+        1112
+      ],
+      "font_points": 14,
+      "bold": false
+    },
+    {
+      "text": "YES",
+      "source_citations": [],
+      "anchor": [
+        238,
+        1101
+      ],
+      "font_points": 12,
+      "bold": false
+    },
+    {
+      "text": "NO",
+      "source_citations": [],
+      "anchor": [
+        555,
+        1101
+      ],
+      "font_points": 12,
+      "bold": false
+    },
+    {
+      "text": "Reactivate backup;\nno KV payload write",
+      "source_citations": [
+        "src/tiered_kv_cache.py:790"
+      ],
+      "anchor": [
+        218,
+        1170
+      ],
+      "font_points": 16,
+      "bold": false
+    },
+    {
+      "text": "Pay KV write;\nappend live cold row",
+      "source_citations": [
+        "src/tiered_kv_cache.py:809"
+      ],
+      "anchor": [
+        596,
+        1170
+      ],
+      "font_points": 16,
+      "bold": false
+    },
+    {
+      "text": "c) Cold overflow: reclaim shadows, then LRU live rows",
+      "source_citations": [
+        "src/tiered_kv_cache.py:880",
+        "src/tiered_kv_cache.py:893"
+      ],
+      "anchor": [
+        88,
+        1213
+      ],
+      "font_points": 15,
+      "bold": false
+    },
+    {
+      "text": "    Drop permanently; preserve the live floor where feasible",
+      "source_citations": [
+        "src/tiered_kv_cache.py:903"
+      ],
+      "anchor": [
+        88,
+        1238
+      ],
+      "font_points": 15,
+      "bold": false
+    },
+    {
+      "text": "Emit Next Token",
+      "source_citations": [
+        "experiments/longbench_eval.py:1268"
+      ],
+      "anchor": [
+        400,
+        1311
+      ],
+      "font_points": 19,
+      "bold": false
+    },
+    {
+      "text": "Shadows: reclaim the backup whose hot twin has the highest cumulative score.",
+      "source_citations": [
+        "src/tiered_kv_cache.py:880"
+      ],
+      "anchor": [
+        384,
+        1339
+      ],
+      "font_points": 10.5,
+      "bold": false
+    },
+    {
+      "text": "Cold storage: GPU by default; pinned CPU option. STT costs are analytical.",
+      "source_citations": [
+        "experiments/longbench_eval.py:700",
+        "experiments/cold_boundary.py:81",
+        "src/cost_model.py:1"
+      ],
+      "anchor": [
+        384,
+        1354
+      ],
+      "font_points": 10.5,
+      "bold": false
+    },
+    {
+      "text": "Standalone sketch/peek simulation is a separate path; it is not used in this loop.",
+      "source_citations": [
+        "src/cost_model.py:1",
+        "src/tiered_kv_cache.py:945"
+      ],
+      "anchor": [
+        384,
+        1369
+      ],
+      "font_points": 10.5,
+      "bold": false
+    }
+  ],
+  "source_sha256": {
+    "experiments/cold_boundary.py": "0797c81d65bbb6591acf621246b3edb386fc25d25be89dedd13aa0652ab8c347",
+    "experiments/longbench_eval.py": "189158c4dd0426a78452eea0c8d7c0bbdd1927b7dbce0dd07b0a193ddf89c33e",
+    "src/cost_model.py": "e77909a57342da8fd70dc16de5d8a9999d183269de76bbfff05fc900e6078fca",
+    "src/tiered_kv_cache.py": "525ae02d75f2966216343e1f5034483e7c26095250e1397c86dc9fcd73995e89"
+  },
+  "original_sha256": {
+    "figures/tieredkv_flow_diagram.jpg": "46e8ca9cdcc0b414ecd2564c652d95971e5f0c22cfc9ebbed93490a606e6023a",
+    "figures/tieredkv_flow_diagram_academic.jpg": "39ee4286ad2f13e166ff415aa3de6cecbfe176984f18874a2080f7f0508453b3"
+  },
+  "outputs_sha256": {
+    "tieredkv_flow_diagram_validated.svg": "133375419719ba45e5d022d0728699b5f2f7d6f50c6823fa2c81f6dad12e5218",
+    "tieredkv_flow_diagram_validated.pdf": "9b5a3c2401aec96528fb45246ace1b398d20ebb5088d812c5e3f00e12006aad5",
+    "tieredkv_flow_diagram_validated.png": "addc475b76598d786b66cc2129ba2ef1e2f4e9997afb448f988cb550eb06979a"
+  },
+  "limitations": [
+    "No capacity or bandwidth constants implied",
+    "Native CPU storage is not physical STT",
+    "Actual-query prefill does not imply current-query decode search",
+    "Prepared visibility occurs at end of prior policy call",
+    "Output logits are produced by model before cache bookkeeping",
+    "Grace protection and exclusive ablation are summarized rather than all fallback branches expanded"
+  ]
+}

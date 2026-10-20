@@ -60,6 +60,8 @@ class TieredConfig:
     # per-step attention is ~1/budget (~0.001 at 1024), so 0.01 is worth
     # ~10 steps: enough to break ties, never enough to overrule recall.
     write_aware_lambda: float = 0.0
+    batch_backup_updates: bool = True
+    bool_hot_compaction: bool = True
     # Dtype for the SCORE tensors (sram_cum, sram_age, stt_last_access,
     # stt_peek_streak). Keep this at float32: sram_cum accumulates attention
     # mass over hundreds of decode steps and is the input to every eviction
@@ -71,20 +73,31 @@ class TieredConfig:
     # vs 134 MB for the same token counts), so honest-memory runs pass
     # --tiered-kv-dtype bfloat16. Left at None so old results reproduce.
     kv_dtype: torch.dtype | None = None
+    # Optional storage dtype for the cold tier. Values are converted back to
+    # resolved_kv_dtype only when exposed/promoted. float8_e4m3fn is an
+    # experimental L40S path; the analytical cost model still needs separate
+    # per-tier byte accounting before these runs support energy claims.
+    stt_kv_dtype: torch.dtype | None = None
     device: str = "cpu"
 
     @property
     def resolved_kv_dtype(self) -> torch.dtype:
         return self.kv_dtype if self.kv_dtype is not None else self.dtype
 
+    @property
+    def resolved_stt_kv_dtype(self) -> torch.dtype:
+        return self.stt_kv_dtype if self.stt_kv_dtype is not None else self.resolved_kv_dtype
+
 
 class TieredKVCache:
     def __init__(self, cfg: TieredConfig, cost_model: CostModel | None = None):
         self.cfg = cfg
-        self.cm = cost_model or CostModel(bytes_per_elem=2)
+        self.cm = cost_model or CostModel(
+            bytes_per_elem=torch.empty((), dtype=cfg.resolved_kv_dtype).element_size(),
+            tier_bytes_per_elem={"STT-RAM": torch.empty((), dtype=cfg.resolved_stt_kv_dtype).element_size()})
         H, D = cfg.num_heads, cfg.head_dim
         dev, dt = cfg.device, cfg.dtype
-        kvt = cfg.resolved_kv_dtype
+        kvt, stt_kvt = cfg.resolved_kv_dtype, cfg.resolved_stt_kv_dtype
 
         # ---- Tier 1: VRAM (hot working set) ----
         self.sram_k = torch.empty(H, 0, D, device=dev, dtype=kvt)
@@ -103,9 +116,11 @@ class TieredKVCache:
         self.sram_grace = torch.zeros(0, dtype=torch.bool)
 
         # ---- Tier 2: STT-RAM ----
-        self.stt_k = torch.empty(H, 0, D, device=dev, dtype=kvt)
-        self.stt_v = torch.empty(H, 0, D, device=dev, dtype=kvt)
+        self.stt_k = torch.empty(H, 0, D, device=dev, dtype=stt_kvt)
+        self.stt_v = torch.empty(H, 0, D, device=dev, dtype=stt_kvt)
         self.stt_pos = []
+        # Keep LRU stamps on GPU: CPU/GPU argsort choose different positions
+        # when access times tie, changing policy decisions and predictions.
         self.stt_last_access = torch.empty(0, device=dev, dtype=dt)
         # True = also in VRAM (inclusive backup). CPU bool tensor -- see the
         # sram_grace comment above for the measurements behind that choice.
@@ -114,34 +129,95 @@ class TieredKVCache:
         # True = has left VRAM before (via promote+evict); re-promotion of
         # these is gated on repeated candidacy instead of the first hit.
         self.stt_was_vram_resident = torch.zeros(0, dtype=torch.bool)
-        self.stt_peek_streak = torch.empty(0, device=dev, dtype=dt)  # consecutive
+        self.stt_peek_streak = torch.empty(0, dtype=dt)  # consecutive
                                            # steps this token has cleared the
                                            # sketch bar (resets to 0 otherwise)
 
-        self.metrics = RunMetrics(label="TieredKV", num_heads=H, head_dim=D)
+        self.metrics = RunMetrics(label="TieredKV", num_heads=H, head_dim=D,
+            hot_bytes_per_elem=torch.empty((), dtype=kvt).element_size(),
+            cold_bytes_per_elem=torch.empty((), dtype=stt_kvt).element_size())
         self.last_floor_deferred = 0  # set by promote(): tail cut by stt_live_floor
         self.last_floor_protected = 0  # set by evict_and_demote(): tail/breach drops
         self._t = 0  # logical clock for LRU
 
+    @staticmethod
+    def index_stt_storage(tensor, idx):
+        """Index storage tensors even when PyTorch lacks float8 indexing."""
+        if tensor.dtype.itemsize == 1:
+            return tensor.view(torch.uint8)[:, idx, :].view(tensor.dtype)
+        return tensor[:, idx, :]
+
+    @staticmethod
+    def append_stt_storage(tensor, values):
+        """Append storage tensors even when PyTorch lacks float8 cat."""
+        values = values.to(tensor.dtype)
+        if tensor.dtype.itemsize == 1:
+            joined = torch.cat([tensor.view(torch.uint8), values.view(torch.uint8)], dim=1)
+            return joined.view(tensor.dtype)
+        return torch.cat([tensor, values], dim=1)
+
+    def select_stt(self, tensor, idx):
+        """Gather cold rows and restore the hot-tier compute dtype.
+
+        PyTorch cannot directly index float8 tensors. Since e4m3fn occupies
+        one byte per element, gather its byte view and reinterpret only the
+        selected rows before conversion; this avoids dequantizing the tier.
+        """
+        dtype = self.cfg.resolved_kv_dtype
+        return self.index_stt_storage(tensor, idx).to(dtype)
+
+    def select_stt_pair(self, idx):
+        """Read logical cold K/V rows together, allowing a physical backend."""
+        return self.select_stt(self.stt_k, idx), self.select_stt(self.stt_v, idx)
+
+    def append_stt_pair(self, keys, values):
+        self.stt_k = self.append_stt_storage(self.stt_k, keys)
+        self.stt_v = self.append_stt_storage(self.stt_v, values)
+
+    def compact_stt_pair(self, keep):
+        self.stt_k = self.index_stt_storage(self.stt_k, keep)
+        self.stt_v = self.index_stt_storage(self.stt_v, keep)
+
+    def sketch_key_tensor(self):
+        return self.stt_k
+
     # =====================================================================
     # PHASE 0 : initial bifurcation of the prompt
     # =====================================================================
-    def initial_bifurcation(self, k_all, v_all, q_all):
+    def initial_bifurcation(self, k_all, v_all, q_all, importance_override=None,
+                            *, token_positions=None, prompt_length=None):
         """
         k_all, v_all, q_all : (H, N, D) for the prompt.
         Routes prompt tokens into VRAM and STT-RAM by SnapKV importance;
         everything past both budgets is dropped.
         """
         cfg = self.cfg
+        # Validate the eventual pinned set, including short/empty prefills.
+        if min(cfg.sink_size, cfg.window_size, cfg.sram_capacity, cfg.sttram_capacity) < 0:
+            raise ValueError("Cache capacities, sink_size and window_size must be nonnegative")
+        if cfg.sink_size + cfg.window_size > cfg.sram_capacity:
+            raise ValueError("sink_size + window_size exceeds sram_capacity")
+        if not math.isfinite(cfg.sttram_bifurcation_frac) or not 0 <= cfg.sttram_bifurcation_frac <= 1:
+            raise ValueError("sttram_bifurcation_frac must be finite and in [0, 1]")
         H, N, D = k_all.shape
-        self.metrics.prompt_len = N
+        positions = list(range(N)) if token_positions is None else list(token_positions)
+        length = N if prompt_length is None else prompt_length
+        if len(positions) != N or any(type(pos) is not int for pos in positions) or \
+                any(pos < 0 or pos >= length for pos in positions) or \
+                any(a >= b for a, b in zip(positions, positions[1:])):
+            raise ValueError("Prefill positions must be unique, chronological and within prompt_length")
+        self.metrics.prompt_len = length
 
         w = min(cfg.window_size, N)
         q_window = q_all[:, N - w:, :]
-        importance = snapkv_importance(q_window, k_all, cfg.pool_kernel)
+        importance = (snapkv_importance(q_window, k_all, cfg.pool_kernel)
+                      if importance_override is None else importance_override)
+        if importance_override is not None and (importance.shape != (N,) or
+                                               not torch.isfinite(importance).all()):
+            raise ValueError('Prompt importance must be finite with one score per token')
 
-        sink_idx = list(range(min(cfg.sink_size, N)))
-        window_idx = list(range(max(0, N - w), N))
+        sink_idx = [i for i, pos in enumerate(positions) if pos < cfg.sink_size]
+        window_idx = [i for i, pos in enumerate(positions) if pos >= max(0, length - cfg.window_size)]
         pinned = sorted(set(sink_idx) | set(window_idx))
 
         # Guard: pinned tokens union into VRAM unconditionally, so if
@@ -158,8 +234,9 @@ class TieredKVCache:
                 f"or lower window_size/sink_size."
             )
 
-        rest = [i for i in range(N) if i not in set(pinned)]
-        rest_sorted = sorted(rest, key=lambda i: importance[i].item(), reverse=True)
+        pinned_set = set(pinned)
+        rest_sorted = [i for i in torch.argsort(importance, descending=True, stable=True).tolist()
+                       if i not in pinned_set]
 
         sram_budget = max(0, cfg.sram_capacity - len(pinned))
         sram_extra = rest_sorted[:sram_budget]
@@ -173,23 +250,23 @@ class TieredKVCache:
         stt_idx = sorted(stt_sel)
         cold_idx = sorted(cold_sel)
 
-        kvt = cfg.resolved_kv_dtype
+        kvt, stt_kvt = cfg.resolved_kv_dtype, cfg.resolved_stt_kv_dtype
         self.sram_k = k_all[:, sram_idx, :].clone().to(kvt)
         self.sram_v = v_all[:, sram_idx, :].clone().to(kvt)
-        self.sram_pos = list(sram_idx)
+        self.sram_pos = [positions[i] for i in sram_idx]
         self.sram_cum = importance[sram_idx].clone().to(self.cfg.dtype)
         self.sram_age = torch.zeros(len(sram_idx), device=cfg.device, dtype=cfg.dtype)
         self.sram_grace = torch.zeros(len(sram_idx), dtype=torch.bool)
 
-        self.stt_k = k_all[:, stt_idx, :].clone().to(kvt)
-        self.stt_v = v_all[:, stt_idx, :].clone().to(kvt)
-        self.stt_pos = list(stt_idx)
+        self.stt_k = k_all[:, stt_idx, :].clone().to(stt_kvt)
+        self.stt_v = v_all[:, stt_idx, :].clone().to(stt_kvt)
+        self.stt_pos = [positions[i] for i in stt_idx]
         self.stt_last_access = torch.zeros(len(stt_idx), device=cfg.device, dtype=cfg.dtype)
         self.stt_shadow = torch.zeros(len(stt_idx), dtype=torch.bool)
         # Bifurcated STT tokens were never VRAM-resident, so they promote on
         # first candidacy; the re-entry gate only applies to evicted tokens.
         self.stt_was_vram_resident = torch.zeros(len(stt_idx), dtype=torch.bool)
-        self.stt_peek_streak = torch.zeros(len(stt_idx), device=cfg.device, dtype=cfg.dtype)
+        self.stt_peek_streak = torch.zeros(len(stt_idx), dtype=cfg.dtype)
 
         return {
             "sram": len(sram_idx), "sttram": len(stt_idx),
@@ -207,25 +284,32 @@ class TieredKVCache:
         meaningful share of sketch_check's cost with dozens of pages,
         called every decode step for every layer).
         """
-        H, m, D = self.stt_k.shape
+        keys = self.sketch_key_tensor()
+        H, m, D = keys.shape
         ps = self.cfg.page_size
         if m == 0:
             return []
 
         num_pages = (m + ps - 1) // ps
         pad = num_pages * ps - m
-        dev = self.stt_k.device
+        dev = keys.device
 
         shadow_t = self.stt_shadow.to(dev)
+        # Float8 cold storage is a byte-saving format, not a supported
+        # reduction/cat compute dtype on the tested PyTorch stack. The real
+        # Mistral policy does not call this simulator sketch; when the
+        # standalone simulator does, calculate bounds in the hot dtype.
+        k_compute = (keys.to(self.cfg.resolved_kv_dtype)
+                     if keys.dtype.itemsize == 1 else keys)
         if pad > 0:
             k_pad = torch.cat(
-                [self.stt_k, torch.zeros(H, pad, D, device=dev, dtype=self.stt_k.dtype)], dim=1
+                [k_compute, torch.zeros(H, pad, D, device=dev, dtype=k_compute.dtype)], dim=1
             )
             shadow_pad = torch.cat(
                 [shadow_t, torch.ones(pad, dtype=torch.bool, device=dev)]  # padding excluded like a shadow row
             )
         else:
-            k_pad, shadow_pad = self.stt_k, shadow_t
+            k_pad, shadow_pad = k_compute, shadow_t
 
         k_reshaped = k_pad.view(H, num_pages, ps, D)
         shadow_reshaped = shadow_pad.view(num_pages, ps)
@@ -285,7 +369,7 @@ class TieredKVCache:
         merely attended to in place (see its docstring). Also returns the
         sketch MAC count.
         """
-        H, m, D = self.stt_k.shape
+        H, m, D = self.cfg.num_heads, len(self.stt_pos), self.cfg.head_dim
         if m == 0:
             return [], 0
 
@@ -362,8 +446,11 @@ class TieredKVCache:
         adaptive number; a real adaptive scheme would need a calibration
         phase decoupled from the gating decision, which is future work.
         """
-        m = self.stt_k.shape[1]
-        if m == 0 or not candidates:
+        m = len(self.stt_pos)
+        if m == 0:
+            return [], []
+        if not candidates:
+            self.stt_peek_streak.zero_()
             return [], []
 
         candidate_idx = set()
@@ -390,6 +477,42 @@ class TieredKVCache:
                 promote_hits.append((s, e))
         return promote_hits, peek_hits
 
+    def resolve_promotion_indices(self, indices):
+        """Fast hysteresis path for single-token real-model candidates.
+
+        The LongBench integration already ranks individual STT rows, so
+        expanding them into page tuples and rescanning each tuple adds no
+        information.  Preserve candidate order and the exact hysteresis
+        semantics while updating all streaks in one tensor operation.
+        """
+        m = len(self.stt_pos)
+        if m == 0:
+            return [], []
+
+        # Stable de-duplication also prevents a repeated index from receiving
+        # more than one streak increment in a policy step.
+        indices = list(dict.fromkeys(
+            i for i in indices if 0 <= i < m and not self.stt_shadow[i]
+        ))
+        if not indices:
+            self.stt_peek_streak.zero_()
+            return [], []
+
+        in_cand = torch.zeros(m, dtype=torch.bool, device=self.stt_peek_streak.device)
+        in_cand[indices] = True
+        self.stt_peek_streak = torch.where(
+            in_cand, self.stt_peek_streak + 1, torch.zeros_like(self.stt_peek_streak)
+        )
+
+        idx_t = torch.tensor(indices, dtype=torch.long)
+        eligible = (~self.stt_was_vram_resident[idx_t]) | (
+            self.stt_peek_streak[idx_t] >= self._HYSTERESIS_MIN_STREAK
+        )
+        eligible = eligible.tolist()
+        promote = [i for i, ok in zip(indices, eligible) if ok]
+        deferred = [i for i, ok in zip(indices, eligible) if not ok]
+        return promote, deferred
+
     def get_peek_kv(self, peek_hits):
         """Gather (but do not move) K/V for peek-only candidate pages, for
         use in this step's attention alongside the VRAM working set. No
@@ -409,24 +532,20 @@ class TieredKVCache:
         if not idx:
             return None, None, []
         peek_pos = [self.stt_pos[i] for i in idx]
-        return self.stt_k[:, idx, :], self.stt_v[:, idx, :], peek_pos
+        keys, values = self.select_stt_pair(idx)
+        return keys, values, peek_pos
 
     # =====================================================================
     # STEP 2 : promote (STT-RAM -> VRAM)
     # =====================================================================
-    def promote(self, hits):
-        """Move real-victim tokens in hit pages STT-RAM -> VRAM."""
-        if not hits:
-            self.last_floor_deferred = 0
-            return 0
-
-        H, m, D = self.stt_k.shape
+    def promotion_rows(self, hits):
+        """Plan the exact cold rows without changing cache state."""
+        m = len(self.stt_pos)
         idx = []
         for (s, e) in hits:
             idx += [i for i in range(s, e) if not self.stt_shadow[i]]
         if not idx:
-            self.last_floor_deferred = 0
-            return 0
+            return [], 0
 
         # Live floor (see TieredConfig.stt_live_floor): inclusive promotion
         # converts live rows to shadows, so unchecked mass promotion drains a
@@ -435,19 +554,31 @@ class TieredKVCache:
         # and report the truncated tail as deferred demand rather than
         # dropping it silently. Non-inclusive promotion deletes rows instead
         # of shadowing, so the veto state is unreachable there regardless.
-        self.last_floor_deferred = 0
+        deferred = 0
         floor = self.cfg.stt_live_floor
         if self.cfg.inclusive and floor > 0:
             live_before = m - int(self.stt_shadow.sum())
             allowed = max(0, live_before - floor)
             if len(idx) > allowed:
-                self.last_floor_deferred = len(idx) - allowed
+                deferred = len(idx) - allowed
                 idx = idx[:allowed]
-                if not idx:
-                    return 0
 
-        self.sram_k = torch.cat([self.sram_k, self.stt_k[:, idx, :]], dim=1)
-        self.sram_v = torch.cat([self.sram_v, self.stt_v[:, idx, :]], dim=1)
+        return idx, deferred
+
+    def promote(self, hits):
+        """Move real-victim tokens in hit pages STT-RAM -> VRAM."""
+        if not hits:
+            self.last_floor_deferred = 0
+            return 0
+
+        m = len(self.stt_pos)
+        idx, self.last_floor_deferred = self.promotion_rows(hits)
+        if not idx:
+            return 0
+
+        keys, values = self.select_stt_pair(idx)
+        self.sram_k = torch.cat([self.sram_k, keys], dim=1)
+        self.sram_v = torch.cat([self.sram_v, values], dim=1)
         self.sram_pos += [self.stt_pos[i] for i in idx]
         self.sram_cum = torch.cat(
             [self.sram_cum, torch.zeros(len(idx), device=self.cfg.device, dtype=self.cfg.dtype)]
@@ -476,8 +607,7 @@ class TieredKVCache:
         else:
             drop = set(idx)
             keep_idx = [i for i in range(m) if i not in drop]
-            self.stt_k = self.stt_k[:, keep_idx, :]
-            self.stt_v = self.stt_v[:, keep_idx, :]
+            self.compact_stt_pair(keep_idx)
             self.stt_pos = [self.stt_pos[i] for i in keep_idx]
             self.stt_last_access = self.stt_last_access[keep_idx]
             self.stt_shadow = self.stt_shadow[keep_idx]
@@ -524,14 +654,8 @@ class TieredKVCache:
         max_pos = pos_t.max()
         return (pos_t < cfg.sink_size) | (pos_t > max_pos - cfg.window_size)
 
-    def evict_and_demote(self, new_k, new_v, new_pos):
+    def append_tokens(self, new_k, new_v, new_pos):
         cfg = self.cfg
-        dropped = 0
-        demoted = 0
-        writes_saved = 0
-        reclaimed = 0
-        self.last_floor_protected = 0
-
         # Add new token(s) to VRAM
         kvt = cfg.resolved_kv_dtype
         self.sram_k = torch.cat([self.sram_k, new_k.to(kvt)], dim=1)
@@ -551,35 +675,10 @@ class TieredKVCache:
         # newest token is protected via window, not grace
         self.sram_grace = torch.cat([self.sram_grace, torch.zeros(n_new, dtype=torch.bool)])
 
-        # VRAM overflow -> demote the unprotected token with the lowest
-        # AVERAGE attention per attended step (sram_cum / sram_age), not
-        # raw cumulative attention. Raw cumulative sum structurally favors
-        # whichever token has been resident longest: a token promoted 1
-        # step ago cannot out-accumulate one that has been sitting in VRAM
-        # for 500 steps even if the newcomer is now clearly more relevant,
-        # which was measured to make every promoted token the eviction
-        # candidate again the moment its one-step grace period ends --
-        # permanent thrashing that starves the write-saving mechanism.
-        # Averaging by age compares tokens on relevance-per-step instead of
-        # tenure. Ties (age=0, i.e. not yet attended even once) fall back
-        # to raw cum via the +1 floor, matching the pre-existing behavior
-        # for brand-new/just-promoted tokens.
-        #
-        # Preference order: ordinary tokens first; if none remain (e.g. a
-        # promotion just added more grace-protected tokens than there is
-        # room for), fall back to evicting a grace token -- capacity is a
-        # hard constraint, grace is only a preference. Sink/window tokens
-        # are never evicted.
-        # Victim SELECTION is batched: none of the candidates' scores change
-        # as others are (conceptually) removed within this call -- sram_cum
-        # and sram_age are read-only here, so picking the N lowest-scoring
-        # unprotected tokens in one shot gives the IDENTICAL set (and, via a
-        # stable sort, identical tie-breaking order) as the old one-at-a-time
-        # argmin loop, without rebuilding an O(n) Python mask and reallocating
-        # the (H, n, D) VRAM tensor on every single evicted token. Measured
-        # to be >90% of this function's wall-clock time before batching
-        # (32 layers x up to ~32 evictions/layer/step, each doing a full
-        # tensor-copy round trip).
+
+    def _select_hot_victims(self):
+        """Exact stable selection; opt-in coordinators may supply a prepared plan."""
+        cfg = self.cfg
         n_over = len(self.sram_pos) - cfg.sram_capacity
         victims = []
         if n_over > 0:
@@ -628,6 +727,49 @@ class TieredKVCache:
                 # if still short, everything left is sink/window -- matches
                 # the old loop's "break": cannot evict further.
 
+        return victims
+
+    def evict_and_demote(self, new_k, new_v, new_pos):
+        cfg = self.cfg
+        dropped = 0
+        demoted = 0
+        writes_saved = 0
+        reclaimed = 0
+        self.last_floor_protected = 0
+
+        self.append_tokens(new_k, new_v, new_pos)
+
+        # VRAM overflow -> demote the unprotected token with the lowest
+        # AVERAGE attention per attended step (sram_cum / sram_age), not
+        # raw cumulative attention. Raw cumulative sum structurally favors
+        # whichever token has been resident longest: a token promoted 1
+        # step ago cannot out-accumulate one that has been sitting in VRAM
+        # for 500 steps even if the newcomer is now clearly more relevant,
+        # which was measured to make every promoted token the eviction
+        # candidate again the moment its one-step grace period ends --
+        # permanent thrashing that starves the write-saving mechanism.
+        # Averaging by age compares tokens on relevance-per-step instead of
+        # tenure. Ties (age=0, i.e. not yet attended even once) fall back
+        # to raw cum via the +1 floor, matching the pre-existing behavior
+        # for brand-new/just-promoted tokens.
+        #
+        # Preference order: ordinary tokens first; if none remain (e.g. a
+        # promotion just added more grace-protected tokens than there is
+        # room for), fall back to evicting a grace token -- capacity is a
+        # hard constraint, grace is only a preference. Sink/window tokens
+        # are never evicted.
+        # Victim SELECTION is batched: none of the candidates' scores change
+        # as others are (conceptually) removed within this call -- sram_cum
+        # and sram_age are read-only here, so picking the N lowest-scoring
+        # unprotected tokens in one shot gives the IDENTICAL set (and, via a
+        # stable sort, identical tie-breaking order) as the old one-at-a-time
+        # argmin loop, without rebuilding an O(n) Python mask and reallocating
+        # the (H, n, D) VRAM tensor on every single evicted token. Measured
+        # to be >90% of this function's wall-clock time before batching
+        # (32 layers x up to ~32 evictions/layer/step, each doing a full
+        # tensor-copy round trip).
+        victims = self._select_hot_victims()
+
         # Backup lookup: build the pos->index map ONCE (O(m)) instead of
         # calling _find_backup's linear scan once per victim (O(m) each,
         # O(m * victims) total). Safe to compute up front and treat as
@@ -639,27 +781,37 @@ class TieredKVCache:
             backup_by_pos = {self.stt_pos[i]: i for i in shadow_idx0}
 
         no_backup_victims = []
+        restored_backups = []
         for victim in victims:
             demoted += 1
             vpos = self.sram_pos[victim]
             back = backup_by_pos.get(vpos, -1)
             if back >= 0:
-                self.stt_shadow[back] = False
-                self.stt_last_access[back] = self._t
-                # Fresh re-candidacy episode -- was_vram_resident is already
-                # True (that's why it has a backup), streak must not carry
-                # over a stale value frozen from before it became a shadow.
-                self.stt_peek_streak[back] = 0
+                if cfg.batch_backup_updates:
+                    restored_backups.append(back)
+                else:
+                    self.stt_shadow[back] = False
+                    self.stt_last_access[back] = self._t
+                    self.stt_peek_streak[back] = 0
                 writes_saved += 1
             else:
                 no_backup_victims.append(victim)
+
+        if restored_backups:
+            # Each VRAM position is unique, so backups cannot repeat. Batch
+            # the GPU LRU writes instead of launching one update per victim.
+            # Reset the re-entry streak at the same time: this is a fresh
+            # live-STT candidacy episode, not a continuation of the shadow.
+            self.stt_shadow[restored_backups] = False
+            self.stt_last_access[restored_backups] = self._t
+            self.stt_peek_streak[restored_backups] = 0
 
         if no_backup_victims:
             # One batched STT append for every victim with no existing
             # backup, instead of one torch.cat (full tensor reallocation)
             # per victim.
-            self.stt_k = torch.cat([self.stt_k, self.sram_k[:, no_backup_victims, :]], dim=1)
-            self.stt_v = torch.cat([self.stt_v, self.sram_v[:, no_backup_victims, :]], dim=1)
+            self.append_stt_pair(self.sram_k[:, no_backup_victims, :],
+                                 self.sram_v[:, no_backup_victims, :])
             self.stt_pos += [self.sram_pos[v] for v in no_backup_victims]
             self.stt_last_access = torch.cat([
                 self.stt_last_access,
@@ -677,15 +829,19 @@ class TieredKVCache:
             )
             self.stt_peek_streak = torch.cat([
                 self.stt_peek_streak,
-                torch.zeros(len(no_backup_victims), device=cfg.device, dtype=cfg.dtype),
+                torch.zeros(len(no_backup_victims), dtype=cfg.dtype),
             ])
 
         if victims:
             keep_mask = torch.ones(len(self.sram_pos), dtype=torch.bool)
             keep_mask[victims] = False
             keep = torch.where(keep_mask)[0].tolist()
-            self.sram_k = self.sram_k[:, keep, :]
-            self.sram_v = self.sram_v[:, keep, :]
+            if cfg.bool_hot_compaction:
+                self.sram_k = self.sram_k[:, keep_mask, :]
+                self.sram_v = self.sram_v[:, keep_mask, :]
+            else:
+                self.sram_k = self.sram_k[:, keep, :]
+                self.sram_v = self.sram_v[:, keep, :]
             self.sram_pos = [self.sram_pos[i] for i in keep]
             self.sram_cum = self.sram_cum[keep_mask]
             self.sram_age = self.sram_age[keep_mask]
@@ -770,8 +926,7 @@ class TieredKVCache:
             keep_mask = torch.ones(len(self.stt_pos), dtype=torch.bool)
             keep_mask[evict_set] = False
             keep = torch.where(keep_mask)[0].tolist()
-            self.stt_k = self.stt_k[:, keep, :]
-            self.stt_v = self.stt_v[:, keep, :]
+            self.compact_stt_pair(keep)
             self.stt_pos = [self.stt_pos[i] for i in keep]
             self.stt_last_access = self.stt_last_access[keep_mask]
             self.stt_shadow = self.stt_shadow[keep_mask]
@@ -793,6 +948,7 @@ class TieredKVCache:
         rec = StepRecord(step=self._t)
 
         # 1. Sketch check -> peek/promotion candidates
+        sketch_pages = math.ceil(len(self.stt_pos) / self.cfg.page_size)
         candidates, sketch_macs = self.sketch_check(q)
         rec.sketch_macs = sketch_macs
 
@@ -813,7 +969,11 @@ class TieredKVCache:
 
         # 2b. Promote (physical move -- VRAM slot + eventual write-back cost)
         rec.promoted_tokens = self.promote(promote_hits)
+        rec.promotions_deferred = len(peek_pos) + self.last_floor_deferred
 
+        # Include this token in its own causal attention before trimming.
+        self.append_tokens(new_k, new_v, new_pos)
+        attended_vram = len(self.sram_pos)
         # 3. Attention on VRAM working set (+ peeked STT pages, if any)
         out, attn_macs, peek_attn = self.compute_attention(q, peek_k, peek_v)
         rec.attn_macs = attn_macs
@@ -834,7 +994,8 @@ class TieredKVCache:
                     self.stt_last_access[touched_idx] = self._t
 
         # 4. Evict + demote (also inserts new token)
-        demoted, dropped, writes_saved, reclaimed = self.evict_and_demote(new_k, new_v, new_pos)
+        demoted, dropped, writes_saved, reclaimed = self.evict_and_demote(
+            self.sram_k[:, :0, :], self.sram_v[:, :0, :], [])
 
         rec.demoted_tokens = demoted
         rec.dropped_tokens = dropped
@@ -849,17 +1010,22 @@ class TieredKVCache:
         elems_per_tok = H * D
         lat_p, eng_p = self.cm.promote_cost(rec.promoted_tokens * 2 * elems_per_tok)
         lat_d, eng_d = self.cm.demote_cost(paid_writes * 2 * elems_per_tok)
-        # Dropped tokens are freed, not migrated: the only physical work is
-        # the STT-RAM read that retires the line.
+        # Dropped tokens are invalidated; no victim payload read is observed.
         lat_dd, eng_dd = self.cm.drop_cost(rec.dropped_tokens * 2 * elems_per_tok)
-        lat_vr, eng_vr = self.cm.gpu_vram_read_cost(rec.sram_tokens * 2 * elems_per_tok)
+        lat_vr, eng_vr = self.cm.gpu_vram_read_cost(attended_vram * 2 * elems_per_tok)
         # Peek: a real STT-RAM read for exact attention, no VRAM write --
         # the whole point is that this is cheaper than promote_cost.
         lat_pk, eng_pk = self.cm.read_latency_us("STT-RAM", rec.peeked_tokens * 2 * elems_per_tok), \
                          self.cm.read_energy_nj("STT-RAM", rec.peeked_tokens * 2 * elems_per_tok)
 
-        n_pages = math.ceil(max(rec.sttram_tokens, 1) / self.cfg.page_size)
-        lat_sk, eng_sk = self.cm.sketch_read_cost(2 * n_pages * H * D, tier="STT-RAM")
+        # Ideal persistent-bound read model; emulator reconstruction is not
+        # device timing. Float8 bounds compute in the hot storage dtype.
+        bound_dtype = (self.cfg.resolved_kv_dtype
+                       if self.cfg.resolved_stt_kv_dtype.itemsize == 1
+                       else self.cfg.resolved_stt_kv_dtype)
+        lat_sk, eng_sk = self.cm.sketch_read_cost(
+            2 * sketch_pages * H * D, tier="STT-RAM",
+            metadata_bytes_per_elem=bound_dtype.itemsize)
 
         rec.lat_sketch_us = lat_sk
         rec.lat_promote_us = lat_p

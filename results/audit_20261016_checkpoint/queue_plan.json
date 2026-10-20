@@ -1,0 +1,86 @@
+{
+  "created_utc": "2026-10-16T07:30:13.698908+00:00",
+  "timing_pid": 3505322,
+  "gpu": 1,
+  "stages": [
+    {
+      "name": "verify_timing",
+      "arguments": [
+        "results/audit_20261016_timing/verify.py"
+      ],
+      "completion_file": "results/audit_20261016_timing/verified_timing.json",
+      "success_key": "verified",
+      "pinned_sha256": {
+        "results/audit_20261016_timing/verify.py": "2989692b44b4632118da3c3db3dce1c515f4e31fd9da583b7b87f9fefd9eaa30",
+        "results/audit_20261016_timing/run.py": "7f347c62fb499e428dbae04ef7dfe67d5190e2e8a4ac556800568e10db25f06a",
+        "results/audit_20261016_timing/plan.json": "72b5df5b841ac4120841386a2173a61a7a4c1d4250164dd02007fc302e447009"
+      }
+    },
+    {
+      "name": "candidate",
+      "arguments": [
+        "results/improvement_design_20261016/run_candidate.py"
+      ],
+      "completion_file": "results/improvement_design_20261016/records/complete.json",
+      "success_key": "execution_complete",
+      "pinned_sha256": {
+        "results/improvement_design_20261016/run_candidate.py": "28a13f91a18e8415638478ccd32a37a597d92700e8cf8c6761991b45e4145895",
+        "results/improvement_design_20261016/plan.json": "57a460770e3b4f06cc72bdc4e190b0e43f69a5a0ce7481e8133b5732a003c52b",
+        "results/improvement_design_20261016/exposure_prior.py": "8ae5bb590484252fe44f4e33c7a3f2310bd19d1d901dfca681b5774e38d3cbb6"
+      }
+    },
+    {
+      "name": "verify_candidate",
+      "arguments": [
+        "results/improvement_design_20261016/verify_candidate.py"
+      ],
+      "completion_file": "results/improvement_design_20261016/verified_candidate.json",
+      "success_key": "verification_passed",
+      "pinned_sha256": {
+        "results/improvement_design_20261016/verify_candidate.py": "5dd5a8290085a998bc7dd886fc34eb956f36ae0330312b2e09a1caeb35f0f5f9",
+        "results/improvement_design_20261016/plan.json": "57a460770e3b4f06cc72bdc4e190b0e43f69a5a0ce7481e8133b5732a003c52b"
+      }
+    },
+    {
+      "name": "headroom_shard0",
+      "arguments": [
+        "results/audit_20261016_headroom/run_headroom.py",
+        "--shard",
+        "0"
+      ],
+      "completion_file": "results/audit_20261016_headroom/records/shard_0/complete.json",
+      "success_key": "execution_complete",
+      "pinned_sha256": {
+        "results/audit_20261016_headroom/run_headroom.py": "e7871dac25b346b50ea627cb002e8284b0d08f85fcd6084caa61daab92ee425f",
+        "results/audit_20261016_headroom/plan.json": "67c7778acc149540614b219162c7c1c7d00211f720dda2c9dbef476058fe155d"
+      }
+    },
+    {
+      "name": "headroom_shard1",
+      "arguments": [
+        "results/audit_20261016_headroom/run_headroom.py",
+        "--shard",
+        "1"
+      ],
+      "completion_file": "results/audit_20261016_headroom/records/shard_1/complete.json",
+      "success_key": "execution_complete",
+      "pinned_sha256": {
+        "results/audit_20261016_headroom/run_headroom.py": "e7871dac25b346b50ea627cb002e8284b0d08f85fcd6084caa61daab92ee425f",
+        "results/audit_20261016_headroom/plan.json": "67c7778acc149540614b219162c7c1c7d00211f720dda2c9dbef476058fe155d"
+      }
+    },
+    {
+      "name": "verify_headroom",
+      "arguments": [
+        "results/audit_20261016_headroom/verify_headroom.py"
+      ],
+      "completion_file": "results/audit_20261016_headroom/verified_results.json",
+      "success_key": "verified",
+      "pinned_sha256": {
+        "results/audit_20261016_headroom/verify_headroom.py": "c30608c6c18118b8365152499147a0ebf0803a3b00ef84ef72b81df50b0bb6d5",
+        "results/audit_20261016_headroom/plan.json": "67c7778acc149540614b219162c7c1c7d00211f720dda2c9dbef476058fe155d"
+      }
+    }
+  ],
+  "policy": "No source mutation, no silent failures or favorable retries. Failed quality advancement stops candidate expansion; headroom descriptive ablation continues independently. All source/model/data/controls checked by workers."
+}

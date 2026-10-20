@@ -1,0 +1,55 @@
+{
+  "reviewed_utc": "2026-10-15T12:12:24.018007+00:00",
+  "approved_correctness_scope": true,
+  "scope": "Ordinary GPU BF16 batch1 Mistral fullprefill actualQ initialization + existing full-live currentqueryselector; consumeddevelopment only",
+  "code_or_gpu_blockers": [],
+  "plan_sha256": "14863291edd9e0b33c8c3dbc5afb18f756a482dace11fd4ff3102ea0d845bc2a",
+  "runner_sha256": "66d60fd407b9323929393b019848a50e2cc54fdc4e4082246ff7a07c3aa600e4",
+  "cpu_check_proof": "results/audit_20261015_query_review/selector_checks.json",
+  "cpu_check_sha256": "93a3c361fb2259d226cc90a0f4bbf2ba99c5f552a6755f956ceb1e56727f3da1",
+  "review": "results/audit_20261015_query_review/protocol_review.md",
+  "cpu_checks": [
+    {
+      "dtype": "torch.float32",
+      "decode_steps": 8,
+      "layer_observations": 16,
+      "stale_index_fallbacks": 15,
+      "expanded_head_rank_matches": true,
+      "preappend_payload_matches": true,
+      "feedback_positions_and_lru_match": true,
+      "hooks_restored": true
+    },
+    {
+      "dtype": "torch.bfloat16",
+      "decode_steps": 8,
+      "layer_observations": 16,
+      "stale_index_fallbacks": 15,
+      "expanded_head_rank_matches": true,
+      "preappend_payload_matches": true,
+      "feedback_positions_and_lru_match": true,
+      "hooks_restored": true
+    }
+  ],
+  "runner_review": {
+    "source_model_data_identity_checks": true,
+    "full_prefill_sdpa_all_arms": true,
+    "decode_eager_tiered_sdpa_snap_preserves_prior_protocol": true,
+    "absolute_decode_position_ids": true,
+    "snap_groups_restored_before_tiered": true,
+    "same_token_ids_for_all_arms": true,
+    "old_control_text_required_exact": true,
+    "zero_new_holdout_use": true,
+    "failed_head_grouped_retention_not_repeated": true
+  },
+  "before_launch_protocol_clarifications": [
+    "State bootstrap10000resamples/seed0 and exact within-task target-document cluster identity rule, or freeze a reference to prior verifier implementing these rules.",
+    "Recommended: observe selector calls/scannedlive/noops without changing selection to establish that currentquery exposure executes."
+  ],
+  "limitations": [
+    "Historical comparison is initialKVpayload only, not equalwholememory or equalattendedwidth",
+    "No nativeCPUquery integration or speed/resource pass",
+    "Currentquery past-only normalizedrank excludes currenttoken, a documented heuristic",
+    "The30developmentpairs are consumed; intervals conditional and not independentquality",
+    "No GPU jobs or frozenproductsource changes in this review"
+  ]
+}

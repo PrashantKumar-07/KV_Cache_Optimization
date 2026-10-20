@@ -1,0 +1,147 @@
+{
+  "verified": true,
+  "scope": "Paired policy-only cProfile localization of already failed shared transition. No timing retry, quality or adoption gate.",
+  "summaries": {
+    "control": {
+      "total_calls": 967049,
+      "profiled_policy_seconds": 1.9224394470000012,
+      "eviction": {
+        "file": "<deferred_production_eviction>",
+        "line": 1,
+        "function": "evict_and_demote",
+        "calls": 1600,
+        "self_seconds": 0.188906339,
+        "inclusive_seconds": 0.5873426460000001,
+        "inclusive_ms_per_decode": 11.746852920000002
+      },
+      "preparation": {
+        "file": "/data/nishant/Nishant/Prashant/Project/kv_cache/experiments/batched_eviction_policy.py",
+        "line": 50,
+        "function": "_prepare_decode_reads",
+        "calls": 50,
+        "self_seconds": 0.034380252,
+        "inclusive_seconds": 0.5479797740000001,
+        "inclusive_ms_per_decode": 10.959595480000003
+      },
+      "visibility": {
+        "file": "/data/nishant/Nishant/Prashant/Project/kv_cache/experiments/reuse_visible_policy.py",
+        "line": 82,
+        "function": "_visible_tuple",
+        "calls": 50,
+        "self_seconds": 0.01006048,
+        "inclusive_seconds": 0.49280160800000006,
+        "inclusive_ms_per_decode": 9.856032160000002
+      },
+      "compaction": {
+        "file": "/data/nishant/Nishant/Prashant/Project/kv_cache/experiments/fused_eviction_policy.py",
+        "line": 45,
+        "function": "_compact_or_queue",
+        "calls": 1600,
+        "self_seconds": 0.050247831,
+        "inclusive_seconds": 0.15613553000000002,
+        "inclusive_ms_per_decode": 3.1227106000000004
+      },
+      "native_gather": {
+        "file": "/data/nishant/Nishant/Prashant/Project/kv_cache/experiments/native_reuse_visible.py",
+        "line": 41,
+        "function": "gather_into",
+        "calls": 50,
+        "self_seconds": 0.011442882000000001,
+        "inclusive_seconds": 0.037592806,
+        "inclusive_ms_per_decode": 0.75185612
+      }
+    },
+    "candidate": {
+      "total_calls": 1004203,
+      "profiled_policy_seconds": 2.155649134999999,
+      "eviction": {
+        "file": "<deferred_production_eviction>",
+        "line": 1,
+        "function": "evict_and_demote",
+        "calls": 1600,
+        "self_seconds": 0.19183714300000002,
+        "inclusive_seconds": 0.799840776,
+        "inclusive_ms_per_decode": 15.996815519999998
+      },
+      "preparation": {
+        "file": "/data/nishant/Nishant/Prashant/Project/kv_cache/experiments/batched_eviction_policy.py",
+        "line": 50,
+        "function": "_prepare_decode_reads",
+        "calls": 50,
+        "self_seconds": 0.03561114,
+        "inclusive_seconds": 0.5812510940000001,
+        "inclusive_ms_per_decode": 11.62502188
+      },
+      "visibility": {
+        "file": "/data/nishant/Nishant/Prashant/Project/kv_cache/experiments/reuse_visible_policy.py",
+        "line": 82,
+        "function": "_visible_tuple",
+        "calls": 50,
+        "self_seconds": 0.007426017,
+        "inclusive_seconds": 0.416138671,
+        "inclusive_ms_per_decode": 8.32277342
+      },
+      "compaction": {
+        "file": "/data/nishant/Nishant/Prashant/Project/kv_cache/experiments/shared_decode_transition.py",
+        "line": 29,
+        "function": "_compact_or_queue",
+        "calls": 1600,
+        "self_seconds": 0.045923356000000005,
+        "inclusive_seconds": 0.338107826,
+        "inclusive_ms_per_decode": 6.76215652
+      },
+      "in_place_gather": {
+        "file": "/data/nishant/Nishant/Prashant/Project/kv_cache/experiments/raw_input_reuse.py",
+        "line": 80,
+        "function": "gather_in_place",
+        "calls": 1600,
+        "self_seconds": 0.036429231,
+        "inclusive_seconds": 0.17326497700000001,
+        "inclusive_ms_per_decode": 3.46529954
+      },
+      "visible_reservation": {
+        "file": "/data/nishant/Nishant/Prashant/Project/kv_cache/experiments/reserved_decode_append.py",
+        "line": 45,
+        "function": "reserve_visible",
+        "calls": 50,
+        "self_seconds": 0.039112866,
+        "inclusive_seconds": 0.059435788,
+        "inclusive_ms_per_decode": 1.1887157600000002
+      },
+      "hot_extension": {
+        "file": "/data/nishant/Nishant/Prashant/Project/kv_cache/experiments/raw_input_reuse.py",
+        "line": 109,
+        "function": "_extend_hot_pair",
+        "calls": 2400,
+        "self_seconds": 0.047298685,
+        "inclusive_seconds": 0.093757379,
+        "inclusive_ms_per_decode": 1.8751475800000001
+      }
+    }
+  },
+  "owned_jobs_terminal": true,
+  "source_archives_equal_current": true,
+  "all_frozen_pred_state_counters_transfers_replayed": true,
+  "diagnosis": "The measured shared design substitutes 1600 per-layer in-place gathers for 50 native batched gathers, with added reservation/extension checks. This explains changed work and localizes regression; profiling cannot establish exclusive causation or acceptance latency.",
+  "code_trace": "After demotion, cold reclamation reads compacted positions/cumulative scores. It does not read compacted hot KV. Payload can be deferred with bounded alias-safe scratch; score compaction must precede reclaim on overflow.",
+  "next": "Do not rerun the failed implementation. A distinct batched ownership transition would need scoped memory and ordinary whole-loop gates. The remaining controller preparation/visibility/eviction costs require broader consolidation to close the faithful-baseline latency gap.",
+  "ordinary_adoption": false,
+  "full_goal_complete": false,
+  "failed_timing_decision_preserved": true,
+  "limits": "Profile times include implicit CUDA waits and instrumentation. Inclusive ranges overlap; cannot infer whole-loop savings or reverse the failed primary. Cold reclaim consumes compacted scores, not hot KV, after demotion.",
+  "evidence_sha256": {
+    "plan.json": "23f3498fe6d1bdcf5146ab5b194d2189f10ba0cb55dbaa3d39682428489fbeae",
+    "source.json": "c25b929c9ff9d8749d58ba718b28851dbd6705f4695113d4ff9607c5d5dfcecb",
+    "source.tar.gz": "f9b85762d1f03d582beb91babb33e87e7f7aaabe31ffc2cb66ff229628956c13",
+    "profile_pair.py": "17536bbb65dbec61f69a426654438cd0b6b9b23857e13c1e86bdae976269ab60",
+    "profile_job.json": "e92d6a1780f0766c5f81eecb98cf4e1ca3e40a98748cc58b4842ceba2becfff8",
+    "profile.log": "49d261452a8d181a58f17f3a82a4f549d217ecd7dd48920b62f5410c0af7f922",
+    "control.json": "2082573ab362ba98ab92c8ca60ffee508fb4820e2480e5672fff77c45bc63954",
+    "candidate.json": "491b9b36cde23d34eef39044adc3da42f7aba4d29dc793bf9ed1e5883a26f29a",
+    "control.prof": "04431089a2ed3dedf911de153738943c4fef60b81aa5a7b185fd73c052b4f172",
+    "candidate.prof": "56a7c5e04a1c681cd3618fb97913d03a920d3aa6d2c52d4ff4287c80a1bcd16f",
+    "control.prof.txt": "4f569717dad0d14690bf00c6a185e869375b0174e3beecdbbee6d52d0e141a0a",
+    "candidate.prof.txt": "02fa60ede9f80278eeb0719f7789beb886647c890951bfbe412bc8ac6dec0418",
+    "verify_diagnostic.py": "7e46e976899dc7672ea86f309ea745684996a0a6535211d49e28c57d2818d7e6"
+  }
+}

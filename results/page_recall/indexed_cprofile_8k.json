@@ -1,0 +1,55 @@
+{
+  "config": {
+    "model": "../models/mistral-7b-instruct",
+    "context": 8192,
+    "decode": 5,
+    "prompt_sha256": "18695714f26e35cb8d2b039ae9efb3b7e64291cbd7bcd91956efc07e16a732cd",
+    "script_sha256": "18f2132e6e836081f003c48e8336e91e240969b684c8b243b526d2e17c7a98a9",
+    "runtime": {
+      "git_revision": "be7e700d84d46b47e32ba5b9870c8b71783b9e53",
+      "source_sha256": "58a54787c7895b59b476783403e18b8031cb6e3b6be934042c8dbc14b1939061",
+      "packages": {
+        "torch": "2.5.1+cu124",
+        "transformers": "5.14.1",
+        "datasets": "5.0.0",
+        "numpy": "2.2.6",
+        "accelerate": "1.14.0",
+        "huggingface_hub": "1.24.0",
+        "rouge": "1.0.1"
+      }
+    },
+    "scope": "one descriptive cProfile; GPU waits included"
+  },
+  "timing": {
+    "timing_scope": "end_to_end_model_policy_token",
+    "ttft_ms": 1508.385,
+    "itl_ms": 574.422,
+    "mean_itl_ms": 586.2982865422964,
+    "forward_ms": 111.65991611778736,
+    "peak_memory_gb": 15.238148096,
+    "prefill_peak_memory_gb": 16.880811008,
+    "trials": [
+      {
+        "ttft_ms": 1508.3852987736464,
+        "step_ms": [
+          638.3296586573124,
+          576.7635032534599,
+          567.5942488014698,
+          574.3815805763006,
+          574.4224414229393
+        ],
+        "forward_ms": [
+          176.44556798040867,
+          111.76252365112305,
+          111.61109805107117,
+          111.11624911427498,
+          111.65991611778736
+        ],
+        "prefill_peak_memory_gb": 16.880811008,
+        "decode_peak_memory_gb": 15.238148096,
+        "prefill_forward_ms": 1173.8761328160763
+      }
+    ]
+  },
+  "profile_text_sha256": "47041c9835001a1afad16d01f00be7c22fa04527141d1639c52c9da6f4b1dc24"
+}

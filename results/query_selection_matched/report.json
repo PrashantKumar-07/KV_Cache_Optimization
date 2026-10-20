@@ -1,0 +1,87 @@
+{
+  "scope": "query 992 fast + 2048 slow logical slots, maximum attended 1024; SnapKV 1024 slots; same source/datasets/samples/model/seed",
+  "runtime": {
+    "git_revision": "be7e700d84d46b47e32ba5b9870c8b71783b9e53",
+    "source_sha256": "bcc2b8520906db2db0a85494d441a4e688e571a356f1f6bc00c6c493d71dc548",
+    "packages": {
+      "torch": "2.5.1+cu124",
+      "transformers": "5.15.0",
+      "datasets": "2.19.2",
+      "numpy": "2.2.6",
+      "accelerate": "1.14.0",
+      "huggingface_hub": "1.27.0",
+      "rouge": "1.0.1"
+    }
+  },
+  "selector_sha256": "d6326141d0bdf7cf23f4acccba35f9589b045991f86d1c0bf928aee293e5ebf2",
+  "driver_sha256": "eff584abdc7da4dd0e1614dfb6607cae734c743debacfb754e89829e7f1d9922",
+  "quality": {
+    "baseline": "snapkv",
+    "per_task": {
+      "multifieldqa_en": {
+        "n": 25,
+        "mean_difference": 5.423671594106375,
+        "se": 3.492120732468144
+      },
+      "qasper": {
+        "n": 25,
+        "mean_difference": 7.0423953122701555,
+        "se": 2.994925833502554
+      },
+      "narrativeqa": {
+        "n": 25,
+        "mean_difference": 1.7616024182437837,
+        "se": 1.5112395862326207
+      },
+      "hotpotqa": {
+        "n": 25,
+        "mean_difference": 3.0155862305803125,
+        "se": 1.7298847446038774
+      },
+      "triviaqa": {
+        "n": 25,
+        "mean_difference": 2.438095238095238,
+        "se": 2.438095238095238
+      },
+      "gov_report": {
+        "n": 10,
+        "mean_difference": 2.7106803954249123,
+        "se": 1.6034350758503604
+      }
+    },
+    "scores": {
+      "multifieldqa_en": {
+        "tieredkv": 60.03,
+        "snapkv": 54.61
+      },
+      "qasper": {
+        "tieredkv": 18.58,
+        "snapkv": 11.54
+      },
+      "narrativeqa": {
+        "tieredkv": 20.74,
+        "snapkv": 18.98
+      },
+      "hotpotqa": {
+        "tieredkv": 40.33,
+        "snapkv": 37.32
+      },
+      "triviaqa": {
+        "tieredkv": 78.3,
+        "snapkv": 75.87
+      },
+      "gov_report": {
+        "tieredkv": 31.2,
+        "snapkv": 28.49
+      }
+    },
+    "task_balanced_mean_difference": 3.732005198120129,
+    "paired_bootstrap_95pct_interval": [
+      1.8545001406638493,
+      5.69971428254888
+    ],
+    "bootstrap_draws": 10000,
+    "seed": 0
+  },
+  "caveat": "SnapKV is the in-harness approximation, not upstream-faithful. TieredKV's slow tier is simulated on GPU. The arms may have different maximum attended widths. Interval is conditional on sampled tasks/examples/model/seed."
+}

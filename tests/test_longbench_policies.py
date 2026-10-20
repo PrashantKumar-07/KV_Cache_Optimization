@@ -23,6 +23,7 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "experiments"))
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "src"))
 
 import torch
+import pytest
 from transformers import MistralConfig, MistralForCausalLM
 
 import longbench_eval as LE
@@ -163,6 +164,16 @@ def test_default_expose_quota_is_the_sketch_quantum():
           f"{p.stt_expose_quota}")
 
 
+def test_promotion_budget_is_independent_of_exposure():
+    p=TieredKVPolicy(sram_budget=64,stt_budget=128,page_size=8,
+                     promote_top_pages=2,stt_expose_quota=16,
+                     promotion_budget=3)
+    assert p.stt_expose_quota==16
+    assert p.promotion_budget==3
+    with pytest.raises(ValueError):
+        TieredKVPolicy(promotion_budget=-1)
+
+
 def test_stats_accumulate_across_samples_not_just_the_last():
     """reset() must fold the outgoing sample's counters into _accum.
 
@@ -274,6 +285,8 @@ def test_true_positions_are_passed_during_decode():
     """Every sparse policy trims the cache, so HF's default
     arange + get_seq_length() would assign false RoPE distances."""
     model, tok = _tiny_model(), _StubTokenizer()
+    # This checks positions, so a random EOS must not skip the decode loop.
+    tok.eos_token_id = None
     seen = []
     original = model.forward
 
@@ -292,6 +305,7 @@ def test_true_positions_are_passed_during_decode():
         model.forward = original
 
     decode_positions = seen[1:]          # drop the prefill call
+    assert decode_positions == [120, 121, 122, 123], decode_positions
     assert decode_positions == sorted(decode_positions), decode_positions
     assert decode_positions[0] > 32, (
         f"first decode position {decode_positions[0]} looks like a trimmed "
@@ -336,22 +350,20 @@ def test_reset_does_not_double_count_starvation_counters():
     print("  [ok] reset() counts starvation/exposure exactly once per sample")
 
 
-def test_dropped_tokens_bill_drop_cost():
-    """Dropped tokens are freed, not migrated: the harness must bill
-    drop_cost() (one retiring STT read) unconditionally."""
+def test_dropped_tokens_do_not_bill_a_payload_read():
+    """The harness uses the zero-payload invalidation cost for drops."""
     import inspect
     from cost_model import CostModel
     cm = CostModel()
     n = 1000
     lat_drop, eng_drop = cm.drop_cost(n)
-    assert abs(lat_drop - cm.read_latency_us("STT-RAM", n)) < 1e-9
-    assert abs(eng_drop - cm.read_energy_nj("STT-RAM", n)) < 1e-9
+    assert (lat_drop, eng_drop) == (0.0, 0.0)
     src = inspect.getsource(LE.TieredKVPolicy._decode_step)
     assert "drop_cost" in src, "harness _decode_step stopped billing drop_cost"
     assert "store_dram" not in src and "deep_demote" not in src, (
         "dead DRAM-tier references are back in _decode_step"
     )
-    print(f"  [ok] drop_cost ({lat_drop:.1f}us) billed unconditionally, "
+    print(f"  [ok] drop_cost ({lat_drop:.1f}us) invents no payload read, "
           f"no DRAM-tier references in _decode_step")
 
 

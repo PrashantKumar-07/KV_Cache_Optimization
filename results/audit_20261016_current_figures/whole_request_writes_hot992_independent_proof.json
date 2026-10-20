@@ -1,0 +1,127 @@
+{
+  "verified": true,
+  "arm": "tiered_hot992",
+  "records": 1474,
+  "independent_of_accounting_helpers": true,
+  "reviewer_script_sha256": "643ae4573fcb0ebc8b7997b1824b44ee35b2ca93720e2efac2c288d1021985a6",
+  "reviewed_report_sha256": "1ec7921ff7ebe1caed43b53bede05700a505480f965be92ba777859cdcfe53da",
+  "quality_proof_sha256": "a9e2a68f37808e2428373a40bb9c1f55e5b7580f696e8133d6a971d7719cff66",
+  "source_archive_sha256": "0c9034755ecf022e8e3f35583cee122dcfac69ed222b12647dd5ccb111a6f7d7",
+  "frozen_source_members": {
+    "src/tiered_kv_cache.py": {
+      "archive_member_sha256": "525ae02d75f2966216343e1f5034483e7c26095250e1397c86dc9fcd73995e89",
+      "current_source_matches_frozen": true
+    },
+    "src/metrics.py": {
+      "archive_member_sha256": "0c4d89af1cfb468e86fbe3e8a000eb07306771e6d4e91e79909cefd6a0d77cca",
+      "current_source_matches_frozen": true
+    },
+    "experiments/longbench_eval.py": {
+      "archive_member_sha256": "189158c4dd0426a78452eea0c8d7c0bbdd1927b7dbce0dd07b0a193ddf89c33e",
+      "current_source_matches_frozen": true
+    }
+  },
+  "independently_recomputed_summaries": {
+    "multifieldqa_en": {
+      "records": 150,
+      "generated_tokens": 5633,
+      "initial_cold_payload_row_writes": 7164672,
+      "decoder_paid_writes": 322588,
+      "decoder_avoided_writes": 2619396,
+      "whole_request_paid_payload_row_writes": 7487260,
+      "potential_row_writes_without_backup_reuse": 10106656,
+      "whole_request_paid_payload_bytes": 30667816960,
+      "whole_request_avoided_percent": 25.917533949903905,
+      "decoder_only_avoided_percent": 89.0350185453082
+    },
+    "all_tasks": {
+      "records": 1474,
+      "generated_tokens": 109631,
+      "initial_cold_payload_row_writes": 71725504,
+      "decoder_paid_writes": 4959926,
+      "decoder_avoided_writes": 52587210,
+      "whole_request_paid_payload_row_writes": 76685430,
+      "potential_row_writes_without_backup_reuse": 129272640,
+      "whole_request_paid_payload_bytes": 314103521280,
+      "whole_request_avoided_percent": 40.67930383412917,
+      "decoder_only_avoided_percent": 91.38110713276852
+    },
+    "qasper": {
+      "records": 224,
+      "generated_tokens": 6765,
+      "initial_cold_payload_row_writes": 10996032,
+      "decoder_paid_writes": 428044,
+      "decoder_avoided_writes": 3083860,
+      "whole_request_paid_payload_row_writes": 11424076,
+      "potential_row_writes_without_backup_reuse": 14507936,
+      "whole_request_paid_payload_bytes": 46793015296,
+      "whole_request_avoided_percent": 21.256366170901224,
+      "decoder_only_avoided_percent": 87.81162583031882
+    },
+    "narrativeqa": {
+      "records": 200,
+      "generated_tokens": 3270,
+      "initial_cold_payload_row_writes": 9830400,
+      "decoder_paid_writes": 293317,
+      "decoder_avoided_writes": 1379675,
+      "whole_request_paid_payload_row_writes": 10123717,
+      "potential_row_writes_without_backup_reuse": 11503392,
+      "whole_request_paid_payload_bytes": 41466744832,
+      "whole_request_avoided_percent": 11.993636311793948,
+      "decoder_only_avoided_percent": 82.46751927086322
+    },
+    "hotpotqa": {
+      "records": 300,
+      "generated_tokens": 5806,
+      "initial_cold_payload_row_writes": 14576448,
+      "decoder_paid_writes": 467975,
+      "decoder_avoided_writes": 2521945,
+      "whole_request_paid_payload_row_writes": 15044423,
+      "potential_row_writes_without_backup_reuse": 17566368,
+      "whole_request_paid_payload_bytes": 61621956608,
+      "whole_request_avoided_percent": 14.356667240490465,
+      "decoder_only_avoided_percent": 84.34824343126238
+    },
+    "triviaqa": {
+      "records": 300,
+      "generated_tokens": 5265,
+      "initial_cold_payload_row_writes": 14496480,
+      "decoder_paid_writes": 455143,
+      "decoder_avoided_writes": 2285593,
+      "whole_request_paid_payload_row_writes": 14951623,
+      "potential_row_writes_without_backup_reuse": 17237216,
+      "whole_request_paid_payload_bytes": 61241847808,
+      "whole_request_avoided_percent": 13.259641232087594,
+      "decoder_only_avoided_percent": 83.39340235615542
+    },
+    "gov_report": {
+      "records": 300,
+      "generated_tokens": 82892,
+      "initial_cold_payload_row_writes": 14661472,
+      "decoder_paid_writes": 2992859,
+      "decoder_avoided_writes": 40696741,
+      "whole_request_paid_payload_row_writes": 17654331,
+      "potential_row_writes_without_backup_reuse": 58351072,
+      "whole_request_paid_payload_bytes": 72312139776,
+      "whole_request_avoided_percent": 69.74463296921091,
+      "decoder_only_avoided_percent": 93.14972213066726
+    }
+  },
+  "equal_task_macro_whole_request_avoided_percent": 26.08807964573134,
+  "equal_task_macro_decode_only_avoided_percent": 86.70092192742922,
+  "five_qa_pooled_whole_request_avoided_percent": 16.765660059856543,
+  "gov_report_share_of_avoided_rows_percent": 77.38904764105189,
+  "gov_report_share_of_counterfactual_rows_percent": 45.13799052916379,
+  "source_review": {
+    "initial": "Frozen src/tiered_kv_cache.py initial_bifurcation selects up to int(cold_capacity*fraction) remaining prompt positions, clones selected cold K and V only. GPU hot clones, dropped prompt positions and metadata are excluded. Raw cold tensors have exact logical/backing bytes and no initial shadow rows.",
+    "decode": "Each selected demotion increments demoted. A matching shadow increments writes_saved and avoids append_stt_pair. Nonmatching victims are appended as K/V payload. Thus decoder paid=demoted-saved counts logical newly appended payload rows, not all allocator or tensor-copy traffic.",
+    "geometry": "One layer-token row means K plus V over eight KV heads,128 elements/head,two bytes/BF16:2*8*128*2=4096 bytes. Sum over32 layers; do not multiply layer totals by32 again."
+  },
+  "interpretation": {
+    "legitimate_result": "The trace-based logical cold-payload accounting confirms write avoidance, including initial retained cold placement. The smaller whole-request percentage follows directly from adding actual initial cold placement to both measured and counterfactual counts.",
+    "counterfactual": "Fixed measured inclusive-policy trace with every demotion charged. This is not an actual exclusive-policy run: different backup retention/capacity can alter victims, retrieval, generation and quality. No causal exclusive-policy superiority is established.",
+    "denominator": "Whole-request here means only declared initial retained cold K/V placement plus logical decode-demotion payload writes; not all model prefill writes, cold metadata, compaction/reallocation copies, hardware transfers or physical device programming.",
+    "simulation": "Raw cold payloads are GPU tensors in this simulation. No physical STT write, endurance, lifetime or energy benefit can be inferred from these counters.",
+    "aggregation": "Pooled write fraction is workload/trace-volume weighted and strongly influenced by long GovReport generations. Equal-task macro and per-task values must accompany it for balanced task interpretation."
+  }
+}

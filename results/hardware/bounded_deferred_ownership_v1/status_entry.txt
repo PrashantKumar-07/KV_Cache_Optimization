@@ -1,0 +1,30 @@
+**Bounded deferred ownership checkpoint (3 October):** **401 tests pass**,
+including 16 focused checks. A distinct research transition defers compaction
+when cold reclamation is unnecessary; overflow preserves immediate compaction.
+Two passes of the existing verified native kernel gather to separate scratch
+and copy back safely. Groups contain at most eight layers. GPU 4K/12 matches
+all 12 predictions, 13 cache/visibility frames, counters and native KV traffic.
+There are 384 deferred compactions in 48 groups, no immediate compactions or
+append fallbacks, and scratch is bounded at **30.97 MiB**. Fresh 16K/50 exactly replays frozen predictions, final state, counters and
+transfers. Scoped active memory is **432.12 MiB**, **20.14% lower** than ordinary
+541.08 MiB, passing both the 512 MiB ceiling and 10% reduction gate. Prefill
+peak is unchanged. Quiet 3ABBA is complete: median **58.33 to 63.09 ms (8.15% slower)**,
+p95 **64.77 to 70.88 ms (9.43% worse)**; TTFT +0.36% passes. All 300 measured
+forwards per arm exactly replay predictions, state, counters and native KV
+traffic; 25 quiet GPU0 process checks pass. **Stop bounded deferred ownership
+expansion/adoption:** speed primaries and p95 fail. No favorable timing retry.
+[Timing decision](results/hardware/bounded_deferred_ownership_v1/verified_cost.json).
+
+Reporting correction: the copied timing verifier's zero extra metadata scalar
+is false. The native wrapper uploads descriptors: fixed geometry/source derives
+**12.864 MB and 1200 upload calls per measured candidate trial**. These are
+separate from native KV manager bytes/calls; total extra versus ordinary was
+not independently instrumented. Timing and memory charge the descriptor work.
+The original artifact remains retained and the failed decision is unchanged.
+[Correction](results/hardware/bounded_deferred_ownership_v1/verified_descriptor_reporting_v2.json).
+All owned jobs are terminal; hooks, instance methods and pinned roots release. Failed predecessors remain
+stopped. [Correctness](results/hardware/bounded_deferred_ownership_v1/verified_correctness.json).
+Next target is broader controller consolidation; bounded grouping alone has
+failed to deliver a joint win. Do not expand this failed implementation. Production defaults are
+unchanged; full P0/P1/P2 remains incomplete and the day estimate is withdrawn.
+

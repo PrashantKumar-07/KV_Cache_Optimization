@@ -1,0 +1,25 @@
+**CPU transition diagnostic and corpus (3 October):** Both fresh policy
+profiles preserve all50 frozen predictions, final state, counters and native KV.
+The0.836-second first extension load is already excluded by benchmark warmup;
+it does not reverse the pooled controller's failed speed decision. Native
+backup classification costs3.009 inclusive instrumented ms/step across1600
+calls. Isolated backup batching is not justified as a4ms whole-loop fix.
+Broader CPU state-transition work is the next mechanism, not another wrapper.
+
+A recorded ordinary GPU run freezes **1600 layer transitions**. Independent
+CPU/F32/slot replay is exact:2560 paid rows,23872 restored backups and1600
+queued compactions. Positions, flags/streaks, metadata bits, logical/free slots
+and outcomes match. The native backup classifier matches every record. This
+corpus supports CPU-stage validation without repeated model launches per edit.
+Cold occupancy reaches897/1090; no overflow occurs. Saturation/reclaim and
+broader malformed/ragged/nonfinite fixtures remain mandatory.
+
+[Diagnostic](results/hardware/pooled_controller_diagnostic_v1/verified_diagnostic.json),
+[corpus](results/hardware/controller_transition_corpus_v1/verified_corpus.json),
+[next phase plan](results/hardware/cpu_state_transition_v1/plan.json).
+**Full CPU state-transition redesign is not implemented yet.** Existing459
+unit tests remain passing; this checkpoint adds executable replay evidence,
+not a speed/quality/adoption claim. All owned jobs are terminal; wrappers,
+hooks and pinned roots release. Production defaults and failed-candidate
+stops remain unchanged. Full P0/P1/P2 remains incomplete; day estimate withdrawn.
+

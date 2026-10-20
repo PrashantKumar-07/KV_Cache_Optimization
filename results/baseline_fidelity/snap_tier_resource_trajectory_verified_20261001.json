@@ -1,0 +1,81 @@
+{
+  "identity_geometry_storage_equations_verified": true,
+  "raw_sha256": "a6855e881953fa5f4f2e6d272158c8f56c905a62bf030cd36ec0c82d8949c038",
+  "source_bundle_sha256": "81ab3e247f90c9dfe4a7bea705aa67bf3a01e600b258e7d35823347b192a497e",
+  "input_token_sha256": "541572812a2d53c2e9015358c2c9ff1d050c71c4c592a741ddc620619ee02ebb",
+  "boundaries_per_arm": 51,
+  "layers": 32,
+  "arms": [
+    {
+      "arm": "snap",
+      "owned_gpu_kv_storage_range_bytes": [
+        510656512,
+        536870912
+      ],
+      "owned_cpu_kv_storage_range_bytes": [
+        0,
+        0
+      ],
+      "boundary_visible_rows_range": [
+        974,
+        1024
+      ],
+      "actual_decode_attended_rows_range": [
+        975,
+        1024
+      ],
+      "final_distinct_owned_kv_storage_bytes": {
+        "cuda:0": 536870912
+      }
+    },
+    {
+      "arm": "gpu",
+      "owned_gpu_kv_storage_range_bytes": [
+        473956352,
+        484974592
+      ],
+      "owned_cpu_kv_storage_range_bytes": [
+        0,
+        0
+      ],
+      "boundary_visible_rows_range": [
+        1056,
+        1056
+      ],
+      "actual_decode_attended_rows_range": [
+        1057,
+        1057
+      ],
+      "final_distinct_owned_kv_storage_bytes": {
+        "cuda:0": 484974592
+      }
+    },
+    {
+      "arm": "cpu_scores",
+      "owned_gpu_kv_storage_range_bytes": [
+        272629760,
+        272629760
+      ],
+      "owned_cpu_kv_storage_range_bytes": [
+        402784256,
+        402784256
+      ],
+      "boundary_visible_rows_range": [
+        1056,
+        1056
+      ],
+      "actual_decode_attended_rows_range": [
+        1057,
+        1057
+      ],
+      "final_distinct_owned_kv_storage_bytes": {
+        "cuda:0": 272629760,
+        "cpu": 402784256
+      }
+    }
+  ],
+  "resource_matched": false,
+  "gpu_cpu_geometry_and_predictions_equal": true,
+  "final_gpu_cpu_cold_occupied_payload_bytes": 212344832,
+  "limitation": "Snapshot KV storage includes visible cache copy and physical host reservation, excluding metadata/model/logits. Callback GPU synchronizations invalidate latency claims. Pinned allocator retained blocks/process RSS, equal-byte/width quality and physical STT/controller gates remain open."
+}

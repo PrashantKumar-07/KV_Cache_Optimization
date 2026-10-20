@@ -1,0 +1,116 @@
+{
+  "config": {
+    "model": "../models/mistral-7b-instruct",
+    "data_dir": "../hf_cache/datasets/downloads/extracted/5def9c7eaf83951e1cee75902d8611ef764ad88dd289e8f0bf97ff658a3eb83a/data",
+    "tasks": [
+      "qasper"
+    ],
+    "max_samples": 1,
+    "strategy": "lru",
+    "seed": 0,
+    "max_ctx": 31500,
+    "candidate_pages": 0,
+    "tiered_vram_budget": 991,
+    "tiered_stt_budget": 1090,
+    "recent": 128,
+    "stt_expose_quota": 32,
+    "real_query_prefill": true,
+    "cpu_batched_scores": true,
+    "cpu_direct_shared": true,
+    "cpu_bounded_pool": true,
+    "cpu_fused_compaction": true,
+    "cpu_reuse_visible": false,
+    "reuse_backend_sha256": null,
+    "fused_bounded_backend_sha256": "54adc8397cb79b9e09542a21e6bd76132726ca8eb1ad47a8d7d2a71c20402101",
+    "fused_backend_sha256": {
+      "fused_eviction_policy.py": "6bc2b96e0b2ba4cf7f6ba0a11c47b5591aafe6cd758b2153b6b6daf77c2b9d62",
+      "fused_hot_compaction.py": "92ebbfa42f5047bbdc48bde27c8630d011b3adad28da0c4c2ed10ad6f74e772d",
+      "native_hot_compact.cpp": "37c55bc7bffb4a691a696868e40d4f80f2d8a42343458d678666e164c2bf9724",
+      "native_hot_compact.cu": "17d87d1d2e66af935ad6b4df7ca7d0397f609751793aa6bacbd3392bf5b049c4",
+      "batched_eviction_policy.py": "d733c06effa2264a6a17dcb315d1955452c88dcfe9fa7cdcace55b7a3e158a80",
+      "probe_batched_eviction_selection.py": "b3377ce75cee0acfd0aa4ce7ac674ff1a8a0693d2549bdb91508b703531e4ef6",
+      "probe_protected_mask_numpy.py": "6dc1a3768803d2f4b0e24828672349d786e84889102a87bdb519287ee623ebdb"
+    },
+    "bounded_max_decode_append": 32,
+    "bounded_backend_sha256": "41ef12a81872a9c40a5a7ec2abd9655e359022ceb34f1685b4ca9ac9cd5cc51f",
+    "direct_backend_sha256": "accfa1d447fbb12f5854118fead36190f08df884ec5ee5e199a3d11368d88da3",
+    "cpu_backend_sha256": {
+      "batched_score_policy.py": "d2dbca0ed7f8ff95f0ae1c29ddfd2c04ddeac238aa6f046eb465cafdaa4987a5",
+      "cpu_batched_cache.py": "514aed658034ebdc0f3e1bc62c293cd7472c1eef3e0712e6f95995a33769d45b",
+      "cpu_slot_cache.py": "5eaec8fdb0e9d0d3316820f2129b55f66b8c11c3ed3579b6f16c97ee0a1fd293"
+    },
+    "query_score_mode": "chunked",
+    "query_chunk_size": 128,
+    "sttram_bifurcation_frac": 0.75,
+    "kv_dtype": "bfloat16",
+    "runtime": {
+      "git_revision": "be7e700d84d46b47e32ba5b9870c8b71783b9e53",
+      "source_sha256": "6687ce54f24b1372f958c406b037f650e492d82951611d59f1bb76364c4b692c",
+      "packages": {
+        "torch": "2.5.1+cu124",
+        "transformers": "5.15.0",
+        "datasets": "2.19.2",
+        "numpy": "2.2.6",
+        "accelerate": "1.14.0",
+        "huggingface_hub": "1.27.0",
+        "rouge": "1.0.1"
+      }
+    },
+    "selector_sha256": "a9bb6491f7b0f07dc901930c65b040dae16d7f7cacc5abec1d7d260a5ab256c1",
+    "page_index_sha256": null,
+    "page_candidates_sha256": null,
+    "dataset_sha256": {
+      "qasper": "97d95c01221a17a2ce51f9180d65a671bf2998504a2ff0cccffe97e9b08444d8"
+    },
+    "fused_binary_sha256": "0bae116c4ef89525e4fe3cced69935409b87631c2627d3536592e911cebfa610"
+  },
+  "results": {
+    "qasper": {
+      "tieredkv": {
+        "score": 35.0,
+        "n": 1,
+        "sample_scores": [
+          35.0
+        ],
+        "samples": [
+          {
+            "sample_id": "3b91dce7ca41a9d16a1d0c61806c139db583a053ddb582bf79df3ff56f8e0344",
+            "prediction": "They looked at different Facebook pages including FoxNews, CNN, ESPN, The Guardian, and The New York Times.",
+            "score": 35.0,
+            "elapsed_s": 2.7415371127426624,
+            "prompt_tokens": 4895,
+            "generated_tokens": 26,
+            "final_resident_kv_payload_bytes": 244322304,
+            "final_hot_kv_payload_bytes": 129892352,
+            "final_cpu_kv_occupied_bytes": 114429952,
+            "final_cpu_kv_reserved_bytes": 151257088,
+            "submitted_h2d_bytes": 162004992,
+            "submitted_d2h_bytes": 114429952,
+            "fused_compactions": 800,
+            "eager_compactions": 0,
+            "prefill_s": 1.1598184332251549,
+            "prefill_peak_alloc_bytes": 15779182080
+          }
+        ],
+        "cache_stats": {
+          "demoted": 13728,
+          "promoted": 12928,
+          "promotions_deferred": 12672,
+          "paid_writes": 1793,
+          "writes_saved": 11935,
+          "dropped": 0,
+          "write_savings_pct": 86.9,
+          "decode_steps": 25,
+          "stt_starved_steps": 0,
+          "stt_unused_steps": 0,
+          "mean_stt_exposed": 32.0,
+          "stt_expose_quota": 32,
+          "stt_exposed_total": 832,
+          "stt_exposure_samples": 26,
+          "modeled_latency_us": 7572.0,
+          "modeled_energy_nj": 320525172.7
+        }
+      }
+    }
+  }
+}

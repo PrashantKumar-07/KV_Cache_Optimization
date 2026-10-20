@@ -1,0 +1,92 @@
+{
+  "scope": "pilot; paired selected samples/tasks/model/seed, conditional bootstrap only",
+  "runtime": {
+    "git_revision": "be7e700d84d46b47e32ba5b9870c8b71783b9e53",
+    "source_sha256": "bcc2b8520906db2db0a85494d441a4e688e571a356f1f6bc00c6c493d71dc548",
+    "packages": {
+      "torch": "2.5.1+cu124",
+      "transformers": "5.15.0",
+      "datasets": "2.19.2",
+      "numpy": "2.2.6",
+      "accelerate": "1.14.0",
+      "huggingface_hub": "1.27.0",
+      "rouge": "1.0.1"
+    }
+  },
+  "tasks": [
+    "qasper",
+    "narrativeqa",
+    "gov_report"
+  ],
+  "samples_per_task": {
+    "qasper": 5,
+    "narrativeqa": 5,
+    "gov_report": 5
+  },
+  "quality": {
+    "baseline": "no_shadow",
+    "per_task": {
+      "qasper": {
+        "n": 5,
+        "mean_difference": 0.5263157894736841,
+        "se": 0.5263157894736841
+      },
+      "narrativeqa": {
+        "n": 5,
+        "mean_difference": 0.0,
+        "se": 0.0
+      },
+      "gov_report": {
+        "n": 5,
+        "mean_difference": -0.04339103167274701,
+        "se": 0.9526766045276039
+      }
+    },
+    "scores": {
+      "qasper": {
+        "tieredkv": 6.91,
+        "no_shadow": 6.38
+      },
+      "narrativeqa": {
+        "tieredkv": 18.53,
+        "no_shadow": 18.53
+      },
+      "gov_report": {
+        "tieredkv": 28.25,
+        "no_shadow": 28.29
+      }
+    },
+    "task_balanced_mean_difference": 0.16097491926697902,
+    "paired_bootstrap_95pct_interval": [
+      -0.49866197688982633,
+      0.7568033118070877
+    ],
+    "bootstrap_draws": 10000,
+    "seed": 0
+  },
+  "counters": {
+    "inclusive": {
+      "paid_writes": 73270,
+      "writes_saved": 727466,
+      "demoted": 800736,
+      "promoted": 752416,
+      "decode_steps": 1510
+    },
+    "no_shadow": {
+      "paid_writes": 830240,
+      "writes_saved": 0,
+      "demoted": 830240,
+      "promoted": 780192,
+      "decode_steps": 1564
+    }
+  },
+  "paid_write_reduction": 756970,
+  "paid_write_reduction_pct": 91.17484100982848,
+  "paid_writes_per_decode_step": {
+    "inclusive": 48.52317880794702,
+    "no_shadow": 530.843989769821
+  },
+  "paid_write_rate_reduction_pct": 90.85923929759718,
+  "estimated_payload_reduction_bytes": 3100549120,
+  "caveat": "Simulated layer-token counters; output lengths can differ between arms, so compare paid writes per decode step as well as aggregate counts. No physical STT writes or power measured. Independent GPU timings are not a controlled latency comparison."
+}

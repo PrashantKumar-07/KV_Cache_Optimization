@@ -1,0 +1,37 @@
+**Native controller prototype (3 October):** **437 tests pass**, including
+36 focused native core/integration checks. A native CPU module, built with
+existing Torch headers and system g++, computes cross-layer promotion plans,
+hysteresis/live-floor transitions, backup classification and read addresses.
+The research policy also groups timestamp ranking by identical live length,
+using the verified fused gather and original unstable CUDA argsort. Grouped
+sorting matches separate GPU sorting in 44 fixtures, including ties/nonfinite
+values. No process-global patch, retention change or new dependency is used.
+
+The recorded 4K/12-step GPU pair preserves all predictions, 13 cache/visibility
+frames, counters and native KV transfers. There are 12 native plans, 384 backup
+classifications, 25 address calculations and no planning fallback. Fresh
+16K/50 matches all predictions, final state, counters and native KV traffic.
+Scoped active memory is **432.12 MiB** versus ordinary 541.08 MiB (20.14% less),
+passing the 512 MiB ceiling; with conservative CPU array roots it is432.29 MiB.
+Prefill peak is unchanged; C++/Python allocator internals remain unmeasured.
+Timestamp rank descriptors upload **5.555 MB** per measured trial; bounded
+ownership descriptors derive12.864 MB. These are separate from native KV and
+are charged by timing/GPU peaks. Quiet3ABBA is complete: median **57.92 to 62.80 ms (8.43% slower, 4.88 ms
+added)**; p95 **64.38 to 66.79 ms (3.74% worse)**. TTFT +0.25% passes. All
+300 measured forwards per arm replay frozen predictions, final state, counters
+and native KV traffic; all25 quietGPU0 observations pass. **Stop native
+controller expansion/adoption:** both speed primaries and p95 fail. No favorable
+timing retry or wider quality/baseline expansion for this implementation.
+[Timing decision](results/hardware/native_controller_v1/verified_cost.json).
+All owned jobs are terminal; hooks, leases, methods and pinned roots release.
+
+The native core proves promotion, backup and address calculations, not the full
+controller gate. Promotion/address/ranking are grouped; backup classification
+still enters native code once per layer. Complete transition pooling remains
+unimplemented. Combining wrappers around the existing layer state has failed
+the joint gate; the next mechanism must redesign the complete hot/cold state
+layout and account for retention/quality, rather than expand these wrappers. Descriptor uploads and CPU arrays
+must be reported separately from native KV transfers. Failed ownership-only
+candidates remain stopped; production defaults are unchanged. Full P0/P1/P2
+remains incomplete; the unsupported day estimate stays withdrawn.
+

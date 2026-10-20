@@ -1,0 +1,241 @@
+{
+  "config": {
+    "model": "../models/mistral-7b-instruct",
+    "prefill_last_logits": true,
+    "data_dir": "../hf_cache/datasets/downloads/extracted/5def9c7eaf83951e1cee75902d8611ef764ad88dd289e8f0bf97ff658a3eb83a/data",
+    "tasks": [
+      "qasper",
+      "narrativeqa",
+      "multifieldqa_en"
+    ],
+    "max_samples": 2,
+    "strategy": "lru",
+    "seed": 0,
+    "max_ctx": 31500,
+    "candidate_pages": 0,
+    "tiered_vram_budget": 1024,
+    "tiered_stt_budget": 2048,
+    "recent": 128,
+    "stt_expose_quota": 32,
+    "real_query_prefill": true,
+    "cpu_batched_scores": false,
+    "cpu_direct_shared": false,
+    "cpu_bounded_pool": false,
+    "cpu_fused_compaction": false,
+    "cpu_reuse_visible": false,
+    "cpu_bulk_promotion": false,
+    "bulk_promotion_backend_sha256": null,
+    "reuse_backend_sha256": null,
+    "fused_bounded_backend_sha256": null,
+    "fused_backend_sha256": null,
+    "bounded_max_decode_append": null,
+    "bounded_backend_sha256": null,
+    "direct_backend_sha256": null,
+    "cpu_backend_sha256": null,
+    "query_score_mode": "chunked",
+    "query_chunk_size": 128,
+    "sttram_bifurcation_frac": 0.75,
+    "kv_dtype": "bfloat16",
+    "runtime": {
+      "git_revision": "be7e700d84d46b47e32ba5b9870c8b71783b9e53",
+      "source_sha256": "e9398f7d531a8e3f84b187009a04a8d0d7b9b5833b805f77ba500df4e7cfec5b",
+      "packages": {
+        "torch": "2.5.1+cu124",
+        "transformers": "5.15.0",
+        "datasets": "2.19.2",
+        "numpy": "2.2.6",
+        "accelerate": "1.14.0",
+        "huggingface_hub": "1.27.0",
+        "rouge": "1.0.1",
+        "ninja": "1.13.0"
+      }
+    },
+    "selector_sha256": "8976018b30864371741ec62429b1200bba16f3c96cb71d543c4995cfcfb215b1",
+    "page_index_sha256": null,
+    "page_candidates_sha256": null,
+    "dataset_sha256": {
+      "qasper": "97d95c01221a17a2ce51f9180d65a671bf2998504a2ff0cccffe97e9b08444d8",
+      "narrativeqa": "0fb8d08ba5cdad4b74244224b0dc2e8b41ee6b850d954a13eb2d282621ce2f71",
+      "multifieldqa_en": "678a51335e3c90e0dd43bf1131045e4f2859cc693e7eded89cc6a1ee8d18faff"
+    },
+    "head_grouped_retention": false,
+    "pilot_runner_sha256": "53fbd5010c16192feeaf3fad06d12dd82629ef6e5a5197f6f13629394e5a5e92",
+    "grouped_policy_sha256": "d4859416aee20932e7a0eff08d4ec8bb19869879b88bda3f17b314ba44692313"
+  },
+  "results": {
+    "qasper": {
+      "tieredkv": {
+        "score": 28.48,
+        "n": 2,
+        "sample_scores": [
+          35.9,
+          21.05
+        ],
+        "samples": [
+          {
+            "sample_id": "3b91dce7ca41a9d16a1d0c61806c139db583a053ddb582bf79df3ff56f8e0344",
+            "prediction": "They selected different Facebook pages, including FoxNews, CNN, ESPN, The Guardian, and The New York Times.",
+            "score": 35.8974358974359,
+            "elapsed_s": 3.077100146561861,
+            "prompt_tokens": 4895,
+            "generated_tokens": 26,
+            "final_resident_kv_payload_bytes": 342888448,
+            "prefill_s": 1.1263796407729387,
+            "prefill_peak_alloc_bytes": 15753132032,
+            "prompt_sha256": "7dd2e552df3aa270de08e972bd66bfb5fc32a38ea3052c3ced45a793c8549bc7",
+            "input_ids_sha256": "b7f0b2e6ed6a1c20786d7d12bf3f37a9360b3225f7918fc53645c1f511d27424",
+            "max_ctx": 31500
+          },
+          {
+            "sample_id": "5f59f94cd91401a55bcd3b6b24b78cd2c4c78e8ee6e7663e0ac8b97306444f08",
+            "prediction": "The article proposes using attention models to infer the latent context that triggers an instructor intervention.",
+            "score": 21.052631578947366,
+            "elapsed_s": 2.180745881050825,
+            "prompt_tokens": 5415,
+            "generated_tokens": 21,
+            "final_resident_kv_payload_bytes": 342097920,
+            "prefill_s": 0.6480944026261568,
+            "prefill_peak_alloc_bytes": 15881369600,
+            "prompt_sha256": "fad754a15cc4b5009d70dda1cdb6b7c83c74a64f63247e63ae3bf1b08ab79721",
+            "input_ids_sha256": "5e3424237e60263b3f3df925ba78167a87fa38cd3de56ef6a449015922411d24",
+            "max_ctx": 31500
+          }
+        ],
+        "cache_stats": {
+          "demoted": 24320,
+          "promoted": 22880,
+          "promotions_deferred": 23200,
+          "paid_writes": 3393,
+          "writes_saved": 20927,
+          "dropped": 0,
+          "write_savings_pct": 86.0,
+          "decode_steps": 45,
+          "stt_starved_steps": 0,
+          "stt_unused_steps": 0,
+          "mean_stt_exposed": 32.0,
+          "stt_expose_quota": 32,
+          "stt_exposed_total": 1504,
+          "stt_exposure_samples": 47,
+          "modeled_latency_us": 13882.9,
+          "modeled_energy_nj": 596126597.1
+        }
+      }
+    },
+    "narrativeqa": {
+      "tieredkv": {
+        "score": 13.64,
+        "n": 2,
+        "sample_scores": [
+          27.27,
+          0.0
+        ],
+        "samples": [
+          {
+            "sample_id": "27a07bedff812ae2c3fece3ac4a1f1db11f00793a3598fa94f1fa286ea347cb9",
+            "prediction": "Saltram is an inmate of the Mulvilles, living with them and not contributing to his own support.",
+            "score": 27.272727272727277,
+            "elapsed_s": 6.643116159364581,
+            "prompt_tokens": 31500,
+            "generated_tokens": 25,
+            "final_resident_kv_payload_bytes": 342622208,
+            "prefill_s": 4.795042311772704,
+            "prefill_peak_alloc_bytes": 22416863232,
+            "prompt_sha256": "cd3a726cc41e939e228fba3c897233fbcb56dd25fc51e2df5bd7bf97365e3010",
+            "input_ids_sha256": "1ba62d60d79ff4eab347586182144576b5ed80b9d085dedaaac32cc7a9abce39",
+            "max_ctx": 31500
+          },
+          {
+            "sample_id": "dfeb4058f4507fa2d2a6f80f6c230cc08e3c7eaa8221bead1ccee5ba90a57488",
+            "prediction": "Ann only feels gratitude towards Mary.",
+            "score": 0.0,
+            "elapsed_s": 5.403148859739304,
+            "prompt_tokens": 31500,
+            "generated_tokens": 8,
+            "final_resident_kv_payload_bytes": 340525056,
+            "prefill_s": 4.856986714527011,
+            "prefill_peak_alloc_bytes": 22416863232,
+            "prompt_sha256": "4f51bc9626de800fe1f9875ed92c95b2341343eb8ef1d7fd0293ba2d8acbdaa2",
+            "input_ids_sha256": "245c69d9f9a94480a33616577c0a91bc5e26dca47304a2973f2d7feb9fbdcca0",
+            "max_ctx": 31500
+          }
+        ],
+        "cache_stats": {
+          "demoted": 16928,
+          "promoted": 15936,
+          "promotions_deferred": 15808,
+          "paid_writes": 2944,
+          "writes_saved": 13984,
+          "dropped": 0,
+          "write_savings_pct": 82.6,
+          "decode_steps": 31,
+          "stt_starved_steps": 0,
+          "stt_unused_steps": 0,
+          "mean_stt_exposed": 32.0,
+          "stt_expose_quota": 32,
+          "stt_exposed_total": 1056,
+          "stt_exposure_samples": 33,
+          "modeled_latency_us": 9780.5,
+          "modeled_energy_nj": 411142455.3
+        }
+      }
+    },
+    "multifieldqa_en": {
+      "tieredkv": {
+        "score": 80.0,
+        "n": 2,
+        "sample_scores": [
+          60.0,
+          100.0
+        ],
+        "samples": [
+          {
+            "sample_id": "b3a9da1dd79b69143f46fb4ea37f3159f11a4585b68604cbda50c0adf4da65a1",
+            "prediction": "Permanent yellow spot damage on the screen.",
+            "score": 60.0,
+            "elapsed_s": 1.5837913621217012,
+            "prompt_tokens": 6689,
+            "generated_tokens": 11,
+            "final_resident_kv_payload_bytes": 340787200,
+            "prefill_s": 0.8179660569876432,
+            "prefill_peak_alloc_bytes": 16203361280,
+            "prompt_sha256": "c87ebacb4e58562be671dcb6504c4fa5c3e71567d8c9008bb748d1b8c2035134",
+            "input_ids_sha256": "05c37d55553d953ee3c8f5882c05485a016bc68db531b533bf59ae7b33e60147",
+            "max_ctx": 31500
+          },
+          {
+            "sample_id": "66fbe72f15b70e8c8cc090467f3ac90f03c8fb6063e3346cd82d7778cd7b1cf9",
+            "prediction": "Vice Admiral",
+            "score": 100.0,
+            "elapsed_s": 0.5650650653988123,
+            "prompt_tokens": 3463,
+            "generated_tokens": 3,
+            "final_resident_kv_payload_bytes": 339869696,
+            "prefill_s": 0.41279056295752525,
+            "prefill_peak_alloc_bytes": 15466760704,
+            "prompt_sha256": "4ead4dba3e6ff0f1ef2935ac0970abe40c6c286facd8c9aa19907c33317112f3",
+            "input_ids_sha256": "5d2039982b4e42ff115fa4220e9d921998fbcab8659ead8cd834fe5a240da681",
+            "max_ctx": 31500
+          }
+        ],
+        "cache_stats": {
+          "demoted": 6400,
+          "promoted": 6016,
+          "promotions_deferred": 6272,
+          "paid_writes": 2336,
+          "writes_saved": 4064,
+          "dropped": 0,
+          "write_savings_pct": 63.5,
+          "decode_steps": 12,
+          "stt_starved_steps": 0,
+          "stt_unused_steps": 0,
+          "mean_stt_exposed": 32.0,
+          "stt_expose_quota": 32,
+          "stt_exposed_total": 448,
+          "stt_exposure_samples": 14,
+          "modeled_latency_us": 4170.5,
+          "modeled_energy_nj": 159865897.0
+        }
+      }
+    }
+  }
+}

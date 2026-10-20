@@ -1,0 +1,582 @@
+{
+  "config": {
+    "model": "../models/mistral-7b-instruct",
+    "data_dir": "results/baseline_fidelity/real_query_holdout_20260929/data",
+    "tasks": [
+      "qasper",
+      "narrativeqa",
+      "multifieldqa_en",
+      "hotpotqa",
+      "triviaqa",
+      "gov_report"
+    ],
+    "max_samples": 5,
+    "strategy": "lru",
+    "seed": 0,
+    "max_ctx": 31500,
+    "candidate_pages": 0,
+    "tiered_vram_budget": 992,
+    "tiered_stt_budget": 3104,
+    "recent": 128,
+    "stt_expose_quota": 32,
+    "real_query_prefill": true,
+    "query_score_mode": "chunked",
+    "query_chunk_size": 128,
+    "sttram_bifurcation_frac": 0.75,
+    "kv_dtype": "bfloat16",
+    "runtime": {
+      "git_revision": "be7e700d84d46b47e32ba5b9870c8b71783b9e53",
+      "source_sha256": "eea0cf48baa0804928f6f4a1c2674af3547dbac77cb2ea1b890805ba0473cd9e",
+      "packages": {
+        "torch": "2.5.1+cu124",
+        "transformers": "5.14.1",
+        "datasets": "5.0.0",
+        "numpy": "2.2.6",
+        "accelerate": "1.14.0",
+        "huggingface_hub": "1.24.0",
+        "rouge": "1.0.1"
+      }
+    },
+    "selector_sha256": "ecef20ea48be38f1ac9e5c9d0cce2fb89fa90c270dc968cf541a448d77b89876",
+    "page_index_sha256": null,
+    "page_candidates_sha256": null,
+    "dataset_sha256": {
+      "qasper": "b5ba98eaad3fefcb8ba037e7f77b53fb1cb3f286e0294d305938820a74bb9cd2",
+      "narrativeqa": "1cca563cbe639bba883da2aa09fdf3cb9402a192c7b39570eb2cafda9529af2c",
+      "multifieldqa_en": "41eb30c85039700bd2faecda7d1aa2467026a41d69c0a27e18126e86cb753093",
+      "hotpotqa": "916f061fc7e73a41a4cf56332faba83d9dd00f6f2c12479c8dfa8bec0841bb02",
+      "triviaqa": "1786265b5c23f57362f9df793121e6307cbed7e8d9f53d7870fef295c148f18a",
+      "gov_report": "38372c31a79312321d6317cb77c6fe7c9e4900dbb4aa8fc3539a6b0b10cb29df"
+    }
+  },
+  "results": {
+    "qasper": {
+      "tieredkv": {
+        "score": 8.89,
+        "n": 5,
+        "sample_scores": [
+          0.0,
+          0.0,
+          44.44,
+          0.0,
+          0.0
+        ],
+        "samples": [
+          {
+            "sample_id": "cd0e2505262804edf125215cc119862d11bc54fef65bc6a7fb6baa27ba44aa34",
+            "prediction": "The article discusses the use of compound probabilistic context-free grammars (compound PCFGs) for grammar induction, which outperforms various baselines and neural network-based approaches on standard benchmarks for English and Chinese.",
+            "score": 0.0,
+            "elapsed_s": 5.055646998807788,
+            "prompt_tokens": 4240,
+            "generated_tokens": 53,
+            "final_resident_kv_payload_bytes": 445906944,
+            "prefill_s": 0.9923291616141796,
+            "prefill_peak_alloc_bytes": 15924984320
+          },
+          {
+            "sample_id": "26cf8af1d6d22295e4896cd6c96c4296dd903cac36af01ee3fda722bc679e516",
+            "prediction": "They measure style transfer success by calculating the root mean square error between the human-evaluated style transfer scores and the model-predicted style transfer scores.",
+            "score": 0.0,
+            "elapsed_s": 3.375982543453574,
+            "prompt_tokens": 7038,
+            "generated_tokens": 33,
+            "final_resident_kv_payload_bytes": 443289600,
+            "prefill_s": 0.8744485061615705,
+            "prefill_peak_alloc_bytes": 16580411904
+          },
+          {
+            "sample_id": "4a8520f7200988cf3a690dc5a9c67e08e7c45909ddba63399a5541604d11d668",
+            "prediction": "The baseline model was always answering YES in the given experiments.",
+            "score": 44.44444444444444,
+            "elapsed_s": 2.4274140130728483,
+            "prompt_tokens": 10928,
+            "generated_tokens": 14,
+            "final_resident_kv_payload_bytes": 440926208,
+            "prefill_s": 1.3987408243119717,
+            "prefill_peak_alloc_bytes": 17499665408
+          },
+          {
+            "sample_id": "15108d4d2aec12886065ed777d273964c93d7fa46a993053c7782b143d174bef",
+            "prediction": "The macro-averaged F-score (macro-F1) is used in evaluation.",
+            "score": 0.0,
+            "elapsed_s": 2.365625347942114,
+            "prompt_tokens": 6507,
+            "generated_tokens": 21,
+            "final_resident_kv_payload_bytes": 441712640,
+            "prefill_s": 0.7929284740239382,
+            "prefill_peak_alloc_bytes": 16454930432
+          },
+          {
+            "sample_id": "d16a48bded3ab4d7f3b9377bde296643d5582620f91536d9aad6e1eecd8515dc",
+            "prediction": "A node in the network approach represents a state or actor.",
+            "score": 0.0,
+            "elapsed_s": 2.5306356213986874,
+            "prompt_tokens": 12259,
+            "generated_tokens": 13,
+            "final_resident_kv_payload_bytes": 440668160,
+            "prefill_s": 1.5834962520748377,
+            "prefill_peak_alloc_bytes": 17814197248
+          }
+        ],
+        "cache_stats": {
+          "demoted": 68768,
+          "promoted": 64640,
+          "promotions_deferred": 67456,
+          "paid_writes": 8962,
+          "writes_saved": 59806,
+          "dropped": 0,
+          "write_savings_pct": 87.0,
+          "decode_steps": 129,
+          "stt_starved_steps": 0,
+          "stt_unused_steps": 0,
+          "mean_stt_exposed": 32.0,
+          "stt_expose_quota": 32,
+          "stt_exposed_total": 4288,
+          "stt_exposure_samples": 134,
+          "modeled_latency_us": 38815.4,
+          "modeled_energy_nj": 1654394191.9
+        }
+      }
+    },
+    "narrativeqa": {
+      "tieredkv": {
+        "score": 26.35,
+        "n": 5,
+        "sample_scores": [
+          10.53,
+          18.18,
+          36.36,
+          66.67,
+          0.0
+        ],
+        "samples": [
+          {
+            "sample_id": "c1588c116e2ee3c3488c5e7a1777df231f298c4ccda5d381b326ac75a6c8643f",
+            "prediction": "Michael greeted Jacob in his apartment after Jacob finally came to terms with his military ordeal.",
+            "score": 10.526315789473683,
+            "elapsed_s": 6.567666323855519,
+            "prompt_tokens": 31500,
+            "generated_tokens": 20,
+            "final_resident_kv_payload_bytes": 441712640,
+            "prefill_s": 5.06407561711967,
+            "prefill_peak_alloc_bytes": 22412636160
+          },
+          {
+            "sample_id": "c4b1715115330ab1dc538a81269b7bed1e668a0ce77ddb8ab876633e20cd9562",
+            "prediction": "Socrates would be an enemy of the laws.",
+            "score": 18.18181818181818,
+            "elapsed_s": 2.1293824333697557,
+            "prompt_tokens": 9892,
+            "generated_tokens": 12,
+            "final_resident_kv_payload_bytes": 440668160,
+            "prefill_s": 1.257073087617755,
+            "prefill_peak_alloc_bytes": 17254846464
+          },
+          {
+            "sample_id": "4937ca8e040e317420998d4140bfafffc8898f4f98fd9cabeba73772e2c17faa",
+            "prediction": "Monsieur Vervelle wants his child to wed Pierre Grassou.",
+            "score": 36.36363636363636,
+            "elapsed_s": 2.8910656962543726,
+            "prompt_tokens": 12896,
+            "generated_tokens": 16,
+            "final_resident_kv_payload_bytes": 441188352,
+            "prefill_s": 1.7000339217483997,
+            "prefill_peak_alloc_bytes": 17964727808
+          },
+          {
+            "sample_id": "9acb815346d408ea6ba1f3909026f24b3a1b5541130212a329ff39f9ad6c8f0e",
+            "prediction": "Tomoko and Takeo.",
+            "score": 66.66666666666666,
+            "elapsed_s": 5.515759045258164,
+            "prompt_tokens": 31500,
+            "generated_tokens": 7,
+            "final_resident_kv_payload_bytes": 439877632,
+            "prefill_s": 5.04180028475821,
+            "prefill_peak_alloc_bytes": 22412636160
+          },
+          {
+            "sample_id": "5079a13bda99ae9eab96d1b91f46c3e3e8a8e4ec9968587daeb374f532af23ef",
+            "prediction": "The phonetic spelling of the 'future' article that discussed Beerbohm's story is unusual.",
+            "score": 0.0,
+            "elapsed_s": 4.522423343732953,
+            "prompt_tokens": 18251,
+            "generated_tokens": 26,
+            "final_resident_kv_payload_bytes": 442499072,
+            "prefill_s": 2.5432689860463142,
+            "prefill_peak_alloc_bytes": 19230179328
+          }
+        ],
+        "cache_stats": {
+          "demoted": 42272,
+          "promoted": 39840,
+          "promotions_deferred": 37984,
+          "paid_writes": 7361,
+          "writes_saved": 34911,
+          "dropped": 0,
+          "write_savings_pct": 82.6,
+          "decode_steps": 76,
+          "stt_starved_steps": 0,
+          "stt_unused_steps": 0,
+          "mean_stt_exposed": 32.0,
+          "stt_expose_quota": 32,
+          "stt_exposed_total": 2592,
+          "stt_exposure_samples": 81,
+          "modeled_latency_us": 23712.1,
+          "modeled_energy_nj": 976851959.8
+        }
+      }
+    },
+    "multifieldqa_en": {
+      "tieredkv": {
+        "score": 57.45,
+        "n": 5,
+        "sample_scores": [
+          100.0,
+          23.81,
+          50.0,
+          77.42,
+          36.0
+        ],
+        "samples": [
+          {
+            "sample_id": "609df67247eb057787cc4f3034ca4b9301a9bbfc0e55258695afd48b50ff7796",
+            "prediction": "VC-10 Squadron",
+            "score": 100.0,
+            "elapsed_s": 0.8791119493544102,
+            "prompt_tokens": 3467,
+            "generated_tokens": 7,
+            "final_resident_kv_payload_bytes": 439877632,
+            "prefill_s": 0.40623699501156807,
+            "prefill_peak_alloc_bytes": 15767845888
+          },
+          {
+            "sample_id": "55d16f471da65b29d4631c374eb6af60b47b3a34bb81abc143ea39135e0162b1",
+            "prediction": "The main methodology used in the research is multi-agent reinforcement learning with emergent communication, specifically using contrastive learning to seek similar representations between agents. The method also involves unsupervised learning of communication symbols and their meanings.",
+            "score": 23.80952380952381,
+            "elapsed_s": 4.8857590686529875,
+            "prompt_tokens": 8815,
+            "generated_tokens": 49,
+            "final_resident_kv_payload_bytes": 445444096,
+            "prefill_s": 1.1064794678241014,
+            "prefill_peak_alloc_bytes": 17000338432
+          },
+          {
+            "sample_id": "cba237d789103a8df1143e8ae4386265752e731254363de02a397f1027d66ccc",
+            "prediction": "The learning rate increases with the transition probability in the static agent.",
+            "score": 50.0,
+            "elapsed_s": 1.8918716739863157,
+            "prompt_tokens": 6956,
+            "generated_tokens": 14,
+            "final_resident_kv_payload_bytes": 440926208,
+            "prefill_s": 0.8650562968105078,
+            "prefill_peak_alloc_bytes": 16561034240
+          },
+          {
+            "sample_id": "78a0e9072e16aa35ea2363c91e4c76101091578fee4f1e44ab24f8a01099f3ad",
+            "prediction": "Yes, individual molecules of indeno[1,2-a]fluorene can switch between open-shell and closed-shell states.",
+            "score": 77.41935483870968,
+            "elapsed_s": 3.713480183854699,
+            "prompt_tokens": 10484,
+            "generated_tokens": 31,
+            "final_resident_kv_payload_bytes": 443023360,
+            "prefill_s": 1.3513532280921936,
+            "prefill_peak_alloc_bytes": 17394742784
+          },
+          {
+            "sample_id": "3c969844c92a2bc224157effb53273c3f56f73625f2b3970ef5d45cc6bfcd2cf",
+            "prediction": "Thalassemias are classified according to the globin chain that is affected, specifically the alpha or beta globin chains. Alpha thalassemias result from reduced or absent production of alpha globin chains, while beta thalassemias result from reduced or absent production of beta globin chains.",
+            "score": 36.0,
+            "elapsed_s": 6.073314376175404,
+            "prompt_tokens": 10468,
+            "generated_tokens": 61,
+            "final_resident_kv_payload_bytes": 446955520,
+            "prefill_s": 1.3503569085150957,
+            "prefill_peak_alloc_bytes": 17390962176
+          }
+        ],
+        "cache_stats": {
+          "demoted": 83552,
+          "promoted": 78528,
+          "promotions_deferred": 82240,
+          "paid_writes": 9871,
+          "writes_saved": 73681,
+          "dropped": 0,
+          "write_savings_pct": 88.2,
+          "decode_steps": 157,
+          "stt_starved_steps": 0,
+          "stt_unused_steps": 0,
+          "mean_stt_exposed": 32.0,
+          "stt_expose_quota": 32,
+          "stt_exposed_total": 5184,
+          "stt_exposure_samples": 162,
+          "modeled_latency_us": 46883.7,
+          "modeled_energy_nj": 2012743073.8
+        }
+      }
+    },
+    "hotpotqa": {
+      "tieredkv": {
+        "score": 38.35,
+        "n": 5,
+        "sample_scores": [
+          50.0,
+          80.0,
+          11.76,
+          0.0,
+          50.0
+        ],
+        "samples": [
+          {
+            "sample_id": "9dc67edaec2e53f5b2d4a868f9891a43282a5bb6aa8ecee59558a1e82e174368",
+            "prediction": "Karakoram",
+            "score": 50.0,
+            "elapsed_s": 0.8157239351421595,
+            "prompt_tokens": 4389,
+            "generated_tokens": 5,
+            "final_resident_kv_payload_bytes": 439615488,
+            "prefill_s": 0.5022593606263399,
+            "prefill_peak_alloc_bytes": 15955273216
+          },
+          {
+            "sample_id": "6c3e87bc814c08290417ca76361163937c2cd93baa34e8c3801f960c5741edb7",
+            "prediction": "Sir George Cayley",
+            "score": 80.0,
+            "elapsed_s": 1.7944233305752277,
+            "prompt_tokens": 10757,
+            "generated_tokens": 6,
+            "final_resident_kv_payload_bytes": 439877632,
+            "prefill_s": 1.396939119324088,
+            "prefill_peak_alloc_bytes": 17459257856
+          },
+          {
+            "sample_id": "6d639cc9ee1fc68a8e354ac8ebcfcdaa253e14a8514d48058b3c4e76716817ac",
+            "prediction": "Yes. Alice Munro is a Canadian short story writer, while Lillian Hellman is an American playwright and writer.",
+            "score": 11.76470588235294,
+            "elapsed_s": 4.343199223279953,
+            "prompt_tokens": 17049,
+            "generated_tokens": 27,
+            "final_resident_kv_payload_bytes": 442531840,
+            "prefill_s": 2.2974016088992357,
+            "prefill_peak_alloc_bytes": 18946132480
+          },
+          {
+            "sample_id": "777f75a7d210eca2f41a6ed64c916db19a8a024a73ed163893171e9734825dec",
+            "prediction": "Lucius Domitius Ahenobarbus, played by James Purefoy, is the grandfather of the children of Mark Antony in the show",
+            "score": 0.0,
+            "elapsed_s": 4.9113014824688435,
+            "prompt_tokens": 17762,
+            "generated_tokens": 32,
+            "final_resident_kv_payload_bytes": 443285504,
+            "prefill_s": 2.4656946752220392,
+            "prefill_peak_alloc_bytes": 19114622464
+          },
+          {
+            "sample_id": "6cac1f1d948bcb36447e06fdc4e224c370dddf79089b43d4d2dfd7c41754857a",
+            "prediction": "Barnoldswick (Barnoldswick, Lancashire)",
+            "score": 50.0,
+            "elapsed_s": 3.0003490652889013,
+            "prompt_tokens": 13614,
+            "generated_tokens": 16,
+            "final_resident_kv_payload_bytes": 441188352,
+            "prefill_s": 1.8152756858617067,
+            "prefill_peak_alloc_bytes": 18134400000
+          }
+        ],
+        "cache_stats": {
+          "demoted": 44416,
+          "promoted": 41824,
+          "promotions_deferred": 41120,
+          "paid_writes": 7496,
+          "writes_saved": 36920,
+          "dropped": 0,
+          "write_savings_pct": 83.1,
+          "decode_steps": 81,
+          "stt_starved_steps": 0,
+          "stt_unused_steps": 0,
+          "mean_stt_exposed": 32.0,
+          "stt_expose_quota": 32,
+          "stt_exposed_total": 2752,
+          "stt_exposure_samples": 86,
+          "modeled_latency_us": 25100.8,
+          "modeled_energy_nj": 1040597385.2
+        }
+      }
+    },
+    "triviaqa": {
+      "tieredkv": {
+        "score": 100.0,
+        "n": 5,
+        "sample_scores": [
+          100.0,
+          100.0,
+          100.0,
+          100.0,
+          100.0
+        ],
+        "samples": [
+          {
+            "sample_id": "28f339099ea0e87193dd4845654fd711fbba1077910939ec67e61267a3d78c99",
+            "prediction": "Emerald",
+            "score": 100.0,
+            "elapsed_s": 0.48123607598245144,
+            "prompt_tokens": 2103,
+            "generated_tokens": 4,
+            "final_resident_kv_payload_bytes": 280100864,
+            "prefill_s": 0.24464302323758602,
+            "prefill_peak_alloc_bytes": 15330882048
+          },
+          {
+            "sample_id": "e6a51a9702c5dbcac801ce41c456eb947a2ace3cc1999810f68cd576df4edd07",
+            "prediction": "Sir Thomas Beecham",
+            "score": 100.0,
+            "elapsed_s": 1.252741001546383,
+            "prompt_tokens": 6862,
+            "generated_tokens": 6,
+            "final_resident_kv_payload_bytes": 439877632,
+            "prefill_s": 0.8547092881053686,
+            "prefill_peak_alloc_bytes": 16538822144
+          },
+          {
+            "sample_id": "6f1a686f9f09a3df5b3933ffcd57a3538c3cd1ef4471eea3b63168521301efd2",
+            "prediction": "Gene Vincent",
+            "score": 100.0,
+            "elapsed_s": 2.551365228369832,
+            "prompt_tokens": 17002,
+            "generated_tokens": 4,
+            "final_resident_kv_payload_bytes": 439615488,
+            "prefill_s": 2.307897360995412,
+            "prefill_peak_alloc_bytes": 18935025152
+          },
+          {
+            "sample_id": "2745142b7cd2f1c30d30002b45cb8a9ee0281fcfa8fcb9481a06632d5f191cd0",
+            "prediction": "MC Hammer",
+            "score": 100.0,
+            "elapsed_s": 3.05360971018672,
+            "prompt_tokens": 19739,
+            "generated_tokens": 4,
+            "final_resident_kv_payload_bytes": 439615488,
+            "prefill_s": 2.808951932936907,
+            "prefill_peak_alloc_bytes": 19581811200
+          },
+          {
+            "sample_id": "3b949f31fc485148baea00f1dd6f5697c512817a4da86662a7c769ebbca3c556",
+            "prediction": "Dog\nPassage:\nThe Great Barrier Reef\nThe Great Barrier Reef is the largest coral reef system in the world,",
+            "score": 100.0,
+            "elapsed_s": 4.910683019086719,
+            "prompt_tokens": 17835,
+            "generated_tokens": 32,
+            "final_resident_kv_payload_bytes": 443285504,
+            "prefill_s": 2.4614125043153763,
+            "prefill_peak_alloc_bytes": 19131872768
+          }
+        ],
+        "cache_stats": {
+          "demoted": 26400,
+          "promoted": 24960,
+          "promotions_deferred": 21120,
+          "paid_writes": 6400,
+          "writes_saved": 20000,
+          "dropped": 0,
+          "write_savings_pct": 75.8,
+          "decode_steps": 45,
+          "stt_starved_steps": 0,
+          "stt_unused_steps": 0,
+          "mean_stt_exposed": 32.0,
+          "stt_expose_quota": 32,
+          "stt_exposed_total": 1600,
+          "stt_exposure_samples": 50,
+          "modeled_latency_us": 14837.5,
+          "modeled_energy_nj": 580365844.5
+        }
+      }
+    },
+    "gov_report": {
+      "tieredkv": {
+        "score": 20.9,
+        "n": 5,
+        "sample_scores": [
+          26.72,
+          22.36,
+          22.46,
+          19.39,
+          13.56
+        ],
+        "samples": [
+          {
+            "sample_id": "e41cdf0e5c056ec2a5e72ba98e6d0faa0850facfcdaf7bcd891fbf4cf7e951a8",
+            "prediction": "Cluster munitions are weapons that disperse smaller submunitions in mid-air, allowing for the destruction of multiple targets in an area. They have been used militarily since World War II and have caused significant civilian casualties, particularly in Laos where over 10,000 have been reported. Cluster munitions are valued for their ability to engage multiple targets with one weapon, but their use comes with the risk of unexploded ordnance, which can result in civilian casualties long after the conflict has ended. The report details the history and use of cluster munitions, their impact on civilians, and the ongoing efforts to address the humanitarian concerns associated with their use. The Convention on Cluster Munitions, which entered into force in 2010, bans the use, production, transfer, and stockpiling of cluster munitions. The United States, which is not a party to the convention, has not used cluster munitions since 2008 but has not ratified the treaty. The report also mentions the Consolidated Appropriations Acts of 2010 and 2019, which prohibit the provision of military assistance, defense export licenses, and sales or transfers of cluster munitions or cluster munitions technology unless the submunitions meet certain criteria.",
+            "score": 26.717556755433847,
+            "elapsed_s": 23.564723705872893,
+            "prompt_tokens": 4882,
+            "generated_tokens": 287,
+            "final_resident_kv_payload_bytes": 476991488,
+            "prefill_s": 0.5926812253892422,
+            "prefill_peak_alloc_bytes": 16070924288
+          },
+          {
+            "sample_id": "f6943cbaffcbdeed21ad3966ca1591fe8b3c3769ad2e775fc72969afbba581ee",
+            "prediction": "The report outlines the role of the Defense Security Service (DSS) in ensuring contractors' security programs detect and counter threats to classified information. The National Industrial Security Program, established in 1993, is responsible for overseeing contractors' security measures. DSS, headquartered in Quantico, Virginia, oversees the program with offices in four regions and over 12,000 cleared facilities. The report highlights the importance of contractor ownership and foreign influence in security clearances and provides examples of past recommendations and their implementation. The report concludes with a recommendation for DSS to determine the resources and actions needed to address foreign influence in the program.",
+            "score": 22.356495141811415,
+            "elapsed_s": 12.27102854475379,
+            "prompt_tokens": 8635,
+            "generated_tokens": 142,
+            "final_resident_kv_payload_bytes": 458145792,
+            "prefill_s": 1.0876980405300856,
+            "prefill_peak_alloc_bytes": 16957801984
+          },
+          {
+            "sample_id": "cfebd2f67baa144d3dbb72e3ebe4eb803b2787e5a7ef97fa615bb146c09077d3",
+            "prediction": "The report discusses the decrease in the percentage of individuals with mental illness being treated in hospital settings since the 1960s, a process known as deinstitutionalization. This shift has led to an increase in community-based treatment. However, it has also resulted in police officers and federal agents being called upon to handle mental health crises. The report highlights that mental health crises can be challenging for law enforcement personnel, and they often lack the necessary resources and training to effectively respond.\n\nAccording to the report, a 2015 study by the Federal Bureau of Investigation (FBI) found that approximately one in every 12 calls for service involved some form of mental health issue. The report also notes that the Department of Justice's Bureau of Justice Statistics found that in 2014, nearly 2 million adults with mental illness were booked into jails in the United States.\n\nThe report states that since the 1990s, various law enforcement agencies and organizations have recognized the need for better training and resources to address mental health crises. For example, the Federal Law Enforcement Training Center (FLETC) provides basic training to all Department of Homeland Security (DHS) law enforcement officers, including instruction on mental health and crisis intervention.\n\nThe report also mentions that the U.S. Department of Justice's Office of Community Oriented Policing Services (COPS Office) has provided grants to help law enforcement agencies implement crisis intervention teams (CITs) and other mental health programs. The report notes that CITs have been shown to reduce the number of arrests and use of force in mental health encounters.\n\nThe report concludes by stating that while progress has been made in addressing the mental health needs of individuals in crisis, there is still a need for more resources and training for law enforcement personnel. The report recommends that federal, state, and local governments continue to invest in mental health training and resources for law enforcement agencies.",
+            "score": 22.462202553540866,
+            "elapsed_s": 34.57893128506839,
+            "prompt_tokens": 8710,
+            "generated_tokens": 418,
+            "final_resident_kv_payload_bytes": 494301184,
+            "prefill_s": 1.0963349658995867,
+            "prefill_peak_alloc_bytes": 16975526912
+          },
+          {
+            "sample_id": "2fa74eab1946eb546d8013901bbe175db0a493404fe691ddc1fa302c2390a188",
+            "prediction": "The United Arab Emirates (UAE) is a federation of seven emirates, including Abu Dhabi and Dubai, with a total population of approximately 9.8 million people. The UAE's political structure is a constitutional monarchy, with each emirate having its own ruler but united under a federal president. The UAE's economy is diverse, with major sectors including oil production, tourism, and finance.\n\nThe UAE was formed in 1971, following Britain's withdrawal from the Gulf region. The federation is governed by a federal constitution and a Supreme Council of Rulers. The last leadership transition occurred in 2004, when Sheikh Khalifa bin Zayed Al Nahyan succeeded his father as president of Abu Dhabi and the UAE.\n\nThe UAE's leadership is currently facing challenges due to the health condition of President Khalifa, who suffered a stroke in 2014. Crown Prince Mohammed bin Zayed Al Nahyan of Abu Dhabi is currently acting as head of state.\n\nThe UAE is ruled by a hereditary monarchy, with the rulers of each emirate belonging to different tribes. The seven emirates are Abu Dhabi, Dubai, Sharjah, Ajman, Umm Al Quwain, Ras Al Khaimah, and Fujairah. Sharjah and Ras Al Khaimah share a common ruling family.\n\nThe UAE's economy is heavily reliant on oil, but the government has been diversifying the economy through investments in infrastructure, tourism, and finance. Dubai, in particular, has emerged as a global hub for business and tourism.\n\nThe UAE is a member of the Gulf Cooperation Council (GCC) and the Arab League. It has maintained a neutral stance in regional conflicts and has been a key player in efforts to promote peace and stability in the Middle East.\n\nThe UAE's leadership has been criticized for its human rights record, particularly with regards to freedom of speech and assembly. The government has also been accused of using detention and torture to suppress dissent.\n\nThe UAE's education system is modern and well-funded, with a focus on science, technology, engineering, and mathematics (STEM) subjects. The country has a highly skilled workforce",
+            "score": 19.38958662409872,
+            "elapsed_s": 44.232127824798226,
+            "prompt_tokens": 21202,
+            "generated_tokens": 512,
+            "final_resident_kv_payload_bytes": 506998784,
+            "prefill_s": 2.9860533699393272,
+            "prefill_peak_alloc_bytes": 19927536128
+          },
+          {
+            "sample_id": "a54c8e13b74731c1e0b84a5cbdc4a77c6b4032b7d27c2dc6326da28035e4d2e2",
+            "prediction": "The report examines the annual allocation of Low-Income Housing Tax Credits (LIHTC) to each state and the process by which agencies evaluate proposals against their Qualified Allocation Plans (QAPs). The report outlines four main approaches that agencies use to manage project-development costs: cost limits, credit allocation limits, fee limits, and cost-based scoring criteria. Agencies implement these approaches in various ways, and the effectiveness of each agency's cost management cannot be measured solely based on the quantity of approaches used. The report also provides information on the types and number of cost-management approaches employed by each of the 57 agencies reviewed.",
+            "score": 13.559321716620392,
+            "elapsed_s": 15.881596378982067,
+            "prompt_tokens": 30957,
+            "generated_tokens": 140,
+            "final_resident_kv_payload_bytes": 457691136,
+            "prefill_s": 4.849189328029752,
+            "prefill_peak_alloc_bytes": 22276677632
+          }
+        ],
+        "cache_stats": {
+          "demoted": 790976,
+          "promoted": 743168,
+          "promotions_deferred": 786688,
+          "paid_writes": 53304,
+          "writes_saved": 737672,
+          "dropped": 0,
+          "write_savings_pct": 93.3,
+          "decode_steps": 1494,
+          "stt_starved_steps": 0,
+          "stt_unused_steps": 0,
+          "mean_stt_exposed": 32.0,
+          "stt_expose_quota": 32,
+          "stt_exposed_total": 47968,
+          "stt_exposure_samples": 1499,
+          "modeled_latency_us": 432280.8,
+          "modeled_energy_nj": 19124603322.4
+        }
+      }
+    }
+  }
+}

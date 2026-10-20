@@ -1,0 +1,21 @@
+{
+  "verified": true,
+  "correction": "Original verified_cost.json scalar candidate_extra_metadata_transfers=0 is incorrect. Native KV manager payload/call replay remains exact; native gather descriptors are separate Torch CPU-to-GPU uploads.",
+  "candidate_descriptor_h2d_bytes_per_measured_trial_derived": 12864000,
+  "candidate_descriptor_upload_calls_per_measured_trial_derived": 1200,
+  "derivation": "Six int64 pointers + two int32 sizes + 991 int32 keep indices per layer; 8 layers/group, 2 passes/group, 200 groups/trial. Three .to(device) calls per native helper. Derived from fixed geometry/source, not independent PCIe transaction measurement.",
+  "total_extra_metadata_vs_ordinary": "Not independently instrumented in this run; do not assert zero or equate descriptor bytes to physical bus transactions.",
+  "wholeloop_timing_charges_descriptor_work": true,
+  "resource_peaks_charge_descriptor_allocations": true,
+  "raw_timings_and_failed_decision_unchanged": true,
+  "benchmark_rerun": false,
+  "ordinary_adoption": false,
+  "full_goal_complete": false,
+  "evidence_sha256": {
+    "verified_cost.json": "467a63751f98cabd50e1b4369c0094b8a8ddca49a3bc151641c5978c53fa207e",
+    "cost.json": "43dc90616d78725e5a520aacc3face7b8417ef7e8f71e75221d49c199e1c7ba1",
+    "cost_implementation.json": "ed9dcd33affff37a9320755b8cb7d96deb3fab36fdcc39fd7e81b5f687b7958f",
+    "verify_descriptor_reporting_v2.py": "5764f0e91743d553edae26b45254c7fb4606b3aff5a50bf06387c56b3e46cdb5"
+  },
+  "native_wrapper_sha256": "46c550f339cae20ecb79db9d7083c5a74c55109c3254086c0c02fa3f3daaf882"
+}

@@ -1,0 +1,84 @@
+{
+  "config": {
+    "model": "../models/mistral-7b-instruct",
+    "order": [
+      "snap",
+      "tiered",
+      "tiered",
+      "snap",
+      "snap",
+      "tiered",
+      "tiered",
+      "snap",
+      "snap",
+      "tiered",
+      "tiered",
+      "snap"
+    ],
+    "blocks": 3,
+    "ctx_len": 16384,
+    "decode": 50,
+    "tiered_fast_rows": 992,
+    "tiered_cold_rows": 3104,
+    "tiered_exposed_cold_rows": 32,
+    "snap_prompt_rows": 974,
+    "tiered_bool_live_gather": true,
+    "tiered_bool_hot_compaction": true,
+    "snap_window": 32,
+    "configured_max_final_kv_mib": 512,
+    "prefill_attention": "sdpa_both",
+    "decode_attention": "eager_both; Tiered requests weights; Snap does not",
+    "prompt_sha256": "18695714f26e35cb8d2b039ae9efb3b7e64291cbd7bcd91956efc07e16a732cd",
+    "script_sha256": "59f8c95572022e93a975eb888953cf252fbd2189e30b4d6f7209bd4c5e00d8ff",
+    "runtime": {
+      "git_revision": "be7e700d84d46b47e32ba5b9870c8b71783b9e53",
+      "source_sha256": "eea0cf48baa0804928f6f4a1c2674af3547dbac77cb2ea1b890805ba0473cd9e",
+      "packages": {
+        "torch": "2.5.1+cu124",
+        "transformers": "5.14.1",
+        "datasets": "5.0.0",
+        "numpy": "2.2.6",
+        "accelerate": "1.14.0",
+        "huggingface_hub": "1.24.0",
+        "rouge": "1.0.1"
+      }
+    },
+    "scope": "one fixed real 16K prompt, 50 fixed decode forwards; complete model+policy"
+  },
+  "summary": {
+    "snap": {
+      "median_itl_ms": 25.766479782760143,
+      "p95_itl_ms": 26.033887453377243,
+      "median_ttft_ms": 2086.6850689053535,
+      "max_prefill_peak_gb": 17.95780608,
+      "max_decode_peak_gb": 16.521534464,
+      "final_kv_payload_mib": 512.0,
+      "block_median_itl_ms": [
+        25.76679363846779,
+        25.76429955661297,
+        25.76602715998888
+      ]
+    },
+    "tiered": {
+      "median_itl_ms": 82.76203367859125,
+      "p95_itl_ms": 86.33558992296457,
+      "median_ttft_ms": 2194.8167253285646,
+      "max_prefill_peak_gb": 18.795618816,
+      "max_decode_peak_gb": 15.233630208,
+      "final_kv_payload_mib": 425.0,
+      "block_median_itl_ms": [
+        82.76203367859125,
+        80.66983800381422,
+        80.35048469901085
+      ],
+      "median_forward_ms": 25.122376158833504
+    }
+  },
+  "tiered_over_snap_itl_ratio": 3.2120039049325526,
+  "limitations": [
+    "One fixed prompt and 50 forced decode forwards",
+    "Configured maximum final KV payload matched; actual bytes differ",
+    "Tiered requires eager attention weights; Snap does not",
+    "PyTorch allocation peaks are not physical STT-RAM measurements"
+  ]
+}

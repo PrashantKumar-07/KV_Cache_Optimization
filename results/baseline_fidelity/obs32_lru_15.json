@@ -1,0 +1,313 @@
+{
+  "config": {
+    "model": "../models/mistral-7b-instruct",
+    "data_dir": "../hf_cache/datasets/downloads/extracted/5def9c7eaf83951e1cee75902d8611ef764ad88dd289e8f0bf97ff658a3eb83a/data",
+    "tasks": [
+      "qasper",
+      "narrativeqa",
+      "gov_report"
+    ],
+    "max_samples": 5,
+    "strategy": "lru",
+    "seed": 0,
+    "max_ctx": 31500,
+    "candidate_pages": 0,
+    "tiered_vram_budget": 992,
+    "tiered_stt_budget": 3104,
+    "recent": 128,
+    "stt_expose_quota": 32,
+    "real_query_prefill": true,
+    "prompt_observation_queries": 32,
+    "query_score_mode": "chunked",
+    "query_chunk_size": 128,
+    "sttram_bifurcation_frac": 0.75,
+    "kv_dtype": "bfloat16",
+    "runtime": {
+      "git_revision": "be7e700d84d46b47e32ba5b9870c8b71783b9e53",
+      "source_sha256": "a2ae72291c32f8fd37196e67bf8e329f8a61a90e4287586da594c9328b7b1f1a",
+      "packages": {
+        "torch": "2.5.1+cu124",
+        "transformers": "5.14.1",
+        "datasets": "5.0.0",
+        "numpy": "2.2.6",
+        "accelerate": "1.14.0",
+        "huggingface_hub": "1.24.0",
+        "rouge": "1.0.1"
+      }
+    },
+    "selector_sha256": "48759089033b5b1fd108d41f74aff1c4afb5bf7aa7d9e8ecaff0ba94561ecf87",
+    "page_index_sha256": null,
+    "page_candidates_sha256": null,
+    "dataset_sha256": {
+      "qasper": "97d95c01221a17a2ce51f9180d65a671bf2998504a2ff0cccffe97e9b08444d8",
+      "narrativeqa": "0fb8d08ba5cdad4b74244224b0dc2e8b41ee6b850d954a13eb2d282621ce2f71",
+      "gov_report": "0a3902fcf3d49f228549f02a2ef1ae84dbe8578b8be3d4611d54459487bdef84"
+    }
+  },
+  "results": {
+    "qasper": {
+      "tieredkv": {
+        "score": 15.6,
+        "n": 5,
+        "sample_scores": [
+          30.77,
+          22.22,
+          25.0,
+          0.0,
+          0.0
+        ],
+        "samples": [
+          {
+            "sample_id": "3b91dce7ca41a9d16a1d0c61806c139db583a053ddb582bf79df3ff56f8e0344",
+            "prediction": "They looked at different Facebook pages including FoxNews, CNN, ESPN, Justin Bieber, and Disney.",
+            "score": 30.769230769230766,
+            "elapsed_s": 3.25815693102777,
+            "prompt_tokens": 4895,
+            "generated_tokens": 24,
+            "final_resident_kv_payload_bytes": 442257408,
+            "prefill_s": 1.1164101269096136,
+            "prefill_peak_alloc_bytes": 16073198080
+          },
+          {
+            "sample_id": "5f59f94cd91401a55bcd3b6b24b78cd2c4c78e8ee6e7663e0ac8b97306444f08",
+            "prediction": "The article proposes attention models to infer the latent context that triggers an instructor intervention.",
+            "score": 22.22222222222222,
+            "elapsed_s": 2.3673785403370857,
+            "prompt_tokens": 5415,
+            "generated_tokens": 20,
+            "final_resident_kv_payload_bytes": 441712640,
+            "prefill_s": 0.6257573552429676,
+            "prefill_peak_alloc_bytes": 16171958784
+          },
+          {
+            "sample_id": "9d37c5305ff63838fd6b7c96f13d10cfc388955672b1a629e5c0a8c2a89c520d",
+            "prediction": "In addition to F-score and Kappa difference, other evaluation metrics are considered in the article.",
+            "score": 25.0,
+            "elapsed_s": 2.474311526864767,
+            "prompt_tokens": 5549,
+            "generated_tokens": 21,
+            "final_resident_kv_payload_bytes": 441712640,
+            "prefill_s": 0.6429576817899942,
+            "prefill_peak_alloc_bytes": 16202457088
+          },
+          {
+            "sample_id": "5b60c062453de695f70d5f313a868a3c630068a85084fc9c456760f41e84d0f3",
+            "prediction": "The baselines were not explicitly stated in the given article.",
+            "score": 0.0,
+            "elapsed_s": 1.7057278864085674,
+            "prompt_tokens": 5175,
+            "generated_tokens": 13,
+            "final_resident_kv_payload_bytes": 440664064,
+            "prefill_s": 0.6042148750275373,
+            "prefill_peak_alloc_bytes": 16132554752
+          },
+          {
+            "sample_id": "a25d41e770a5f1816e04f39227fecd7dfcd9b83b25842e413d0f8fcb447b2092",
+            "prediction": "jiant specifically mentions support for PyTorch, AllenNLP, and HuggingFace's Transformers (which is built on top of PyTorch), so it is primarily compatible with models implemented in Python.",
+            "score": 0.0,
+            "elapsed_s": 4.695097055286169,
+            "prompt_tokens": 3956,
+            "generated_tokens": 47,
+            "final_resident_kv_payload_bytes": 445128704,
+            "prefill_s": 0.45485716685652733,
+            "prefill_peak_alloc_bytes": 15884820480
+          }
+        ],
+        "cache_stats": {
+          "demoted": 64512,
+          "promoted": 60672,
+          "promotions_deferred": 62208,
+          "paid_writes": 8711,
+          "writes_saved": 55801,
+          "dropped": 0,
+          "write_savings_pct": 86.5,
+          "decode_steps": 120,
+          "stt_starved_steps": 0,
+          "stt_unused_steps": 0,
+          "mean_stt_exposed": 32.0,
+          "stt_expose_quota": 32,
+          "stt_exposed_total": 4000,
+          "stt_exposure_samples": 125,
+          "modeled_latency_us": 36278.7,
+          "modeled_energy_nj": 1539465150.5
+        }
+      }
+    },
+    "narrativeqa": {
+      "tieredkv": {
+        "score": 17.29,
+        "n": 5,
+        "sample_scores": [
+          15.38,
+          0.0,
+          28.57,
+          30.0,
+          12.5
+        ],
+        "samples": [
+          {
+            "sample_id": "27a07bedff812ae2c3fece3ac4a1f1db11f00793a3598fa94f1fa286ea347cb9",
+            "prediction": "Saltram is an inmate at the Mulvans' residence.",
+            "score": 15.384615384615383,
+            "elapsed_s": 6.214423041790724,
+            "prompt_tokens": 31500,
+            "generated_tokens": 16,
+            "final_resident_kv_payload_bytes": 441196544,
+            "prefill_s": 4.819097317755222,
+            "prefill_peak_alloc_bytes": 22391697408
+          },
+          {
+            "sample_id": "dfeb4058f4507fa2d2a6f80f6c230cc08e3c7eaa8221bead1ccee5ba90a57488",
+            "prediction": "Ann only feels gratitude towards Mary.",
+            "score": 0.0,
+            "elapsed_s": 5.518880045041442,
+            "prompt_tokens": 31500,
+            "generated_tokens": 8,
+            "final_resident_kv_payload_bytes": 440139776,
+            "prefill_s": 4.860539220273495,
+            "prefill_peak_alloc_bytes": 22390992896
+          },
+          {
+            "sample_id": "b75b8f1d9f0027543e6f4d84ca94997765d41f9a6eda749df309b0070caee3d8",
+            "prediction": "The witch lives on Atlas' mountain.",
+            "score": 28.571428571428577,
+            "elapsed_s": 2.0169983338564634,
+            "prompt_tokens": 9674,
+            "generated_tokens": 10,
+            "final_resident_kv_payload_bytes": 440406016,
+            "prefill_s": 1.1767909955233335,
+            "prefill_peak_alloc_bytes": 17089221120
+          },
+          {
+            "sample_id": "5f2d99ab2d103d5f04d78f3e7a3b76f633fabeab2eb86a785cf76ed7ac77249e",
+            "prediction": "Crito proposed a plan for Socrates to escape from prison.",
+            "score": 30.0,
+            "elapsed_s": 2.5025990661233664,
+            "prompt_tokens": 9887,
+            "generated_tokens": 15,
+            "final_resident_kv_payload_bytes": 440934400,
+            "prefill_s": 1.2013248354196548,
+            "prefill_peak_alloc_bytes": 17142699520
+          },
+          {
+            "sample_id": "254d602c75f8a37865dd7b4a2b7efbb25194b5064a29a07d7038b92d6add6c3d",
+            "prediction": "Baron Henry preferred to humiliate and torture Otto instead of killing him.",
+            "score": 12.5,
+            "elapsed_s": 6.229418620467186,
+            "prompt_tokens": 31500,
+            "generated_tokens": 16,
+            "final_resident_kv_payload_bytes": 441188352,
+            "prefill_s": 4.830090370029211,
+            "prefill_peak_alloc_bytes": 22390992896
+          }
+        ],
+        "cache_stats": {
+          "demoted": 33824,
+          "promoted": 31904,
+          "promotions_deferred": 29536,
+          "paid_writes": 6853,
+          "writes_saved": 26971,
+          "dropped": 0,
+          "write_savings_pct": 79.7,
+          "decode_steps": 60,
+          "stt_starved_steps": 0,
+          "stt_unused_steps": 0,
+          "mean_stt_exposed": 32.0,
+          "stt_expose_quota": 32,
+          "stt_exposed_total": 2080,
+          "stt_exposure_samples": 65,
+          "modeled_latency_us": 19105.5,
+          "modeled_energy_nj": 772088660.0
+        }
+      }
+    },
+    "gov_report": {
+      "tieredkv": {
+        "score": 30.11,
+        "n": 5,
+        "sample_scores": [
+          19.77,
+          37.33,
+          34.78,
+          23.47,
+          35.19
+        ],
+        "samples": [
+          {
+            "sample_id": "11d3fe7a8c5f9be5c05ff2b46002fae136e91f31575249f5c3db054f4d0715ad",
+            "prediction": "The report highlights the complexity of understanding the sources of information systems due to the intricate supply chains involved. These supply chains can be long and globally distributed, making it challenging for federal agencies to have visibility into the manufacturers and providers of their IT equipment. The report emphasizes that federal procurement law encourages the use of commercial IT products, many of which are manufactured overseas. The Federal Information Security Modernization Act (FISMA) requires federal agencies to manage and secure their information systems, including supply chain risks. NIST provides guidelines for managing supply chain risks, including due diligence reviews and ongoing monitoring. The report also mentions several incidents where foreign-made IT products posed security risks to federal agencies. The report concludes by emphasizing the importance of federal agencies managing their IT supply chain risks as part of their overall information security programs.",
+            "score": 19.774010923026594,
+            "elapsed_s": 16.662527596578002,
+            "prompt_tokens": 3308,
+            "generated_tokens": 174,
+            "final_resident_kv_payload_bytes": 461410304,
+            "prefill_s": 0.3834221474826336,
+            "prefill_peak_alloc_bytes": 15743659520
+          },
+          {
+            "sample_id": "56f5a37dac322a67081fbbce0ee9261106133f38ac8b4f38fc3555f5b593969d",
+            "prediction": "The report by the Government Accountability Office (GAO) examines grant programs awarded by the Departments of Health and Human Services (HHS), Labor (DOL), and Justice (DOJ) from 2007 to 2015 that were subject to statutory restrictions on religious-based hiring. The report identified 2,586 grantees who received funding through at least 53 grant programs, with 19 potential Faith-Based Organizations (FBOs) identified among them.\n\nHHS identified one grant program, the Projects for Assistance in Transition from Homelessness (PATH), which was subject to statutory restrictions on religious-based hiring for which nonprofits could be primary recipients. However, no grants were awarded to FBOs under this program during the study period.\n\nDOL identified 18 grant programs with statutory restrictions on religious-based hiring, and 19 FBOs were identified as potential recipients. DOJ identified at least 34 relevant grant programs, but could not determine how many grants were awarded to FBOs due to incomplete records.\n\nOf the 11 FBOs identified across the three agencies, nine certified that they were exempt from statutory restrictions on religious-based hiring. These organizations received approximately $3.2 million in grants, which is less than 1% of the total grants awarded during the study period.\n\nThe report also notes that the agencies informed grant applicants of the statutory restrictions on religious-based hiring through grant announcements and other means. However, the report recommends that the agencies improve their record-keeping to better track grants awarded to FBOs and ensure compliance with statutory restrictions.",
+            "score": 37.333332875576886,
+            "elapsed_s": 35.69657598249614,
+            "prompt_tokens": 3548,
+            "generated_tokens": 372,
+            "final_resident_kv_payload_bytes": 490500096,
+            "prefill_s": 0.41489357128739357,
+            "prefill_peak_alloc_bytes": 15801180672
+          },
+          {
+            "sample_id": "32b69d9e2f01e5ad531164ef2b312ea36c6cf8a24dfd0b442779369d8cbd8e09",
+            "prediction": "This report provides an overview of cybersecurity-related bills and hearings in the U.S. Congress during the 115th and 116th sessions. In the 116th Congress, the House has passed four cybersecurity bills, and the Senate has considered four others, passing one. A total of 31 bills received committee consideration or passed one or both chambers in the 115th Congress, and five of these bills were signed into law. These laws include the Department of Energy Research and Innovation Act, the John S. McCain National Defense Authorization Act, and the FITARA Enhancement Act, among others. The report also lists cybersecurity-related hearings in the 116th Congress, arranged by date and committee, but notes that the list is not definitive. Overall, the report highlights the ongoing efforts of the U.S. Congress to address cybersecurity issues through legislation and oversight.",
+            "score": 34.78260819999229,
+            "elapsed_s": 17.044752648100257,
+            "prompt_tokens": 1303,
+            "generated_tokens": 202,
+            "final_resident_kv_payload_bytes": 202096640,
+            "prefill_s": 0.17349509708583355,
+            "prefill_peak_alloc_bytes": 15072686592
+          },
+          {
+            "sample_id": "d1bba223842d90eab2f7962487cba597cea36944010060e21c010e1dbfbaeefe",
+            "prediction": "The report reveals that during fiscal years 2012-2016, Customs and Border Protection (CBP) conducted approximately 308,000 seizures of international items deemed a threat to U.S. security, health, business, and ecology. About 70% of these seizures were from mail and 30% from express cargo. Drugs accounted for 47% of total seizures, while merchandise made up 53%. There were no recorded fentanyl seizures between 2012 and 2015 due to lack of specific categorization in CBP's system. In 2016, 53 seizures of fentanyl were recorded. Mail inspections are challenging due to the US Postal Service (USPS) not providing advance information for inspection, unlike express cargo companies. USPS only provided E-Manifest data for 34% of international mail in the reviewed period. CBP and USPS are currently piloting programs to improve mail inspections, but lack clear performance goals and have not yet evaluated their effectiveness. The costs and benefits of using E-Manifest data for mail inspections are unclear, and USPS' financial challenges add to the complexity of implementing new measures. The report recommends that CBP and USPS establish clear performance goals for their pilot programs and evaluate their effectiveness to ensure resource allocation is beneficial.",
+            "score": 23.474177985265275,
+            "elapsed_s": 27.971156112849712,
+            "prompt_tokens": 2602,
+            "generated_tokens": 306,
+            "final_resident_kv_payload_bytes": 388489216,
+            "prefill_s": 0.3092587813735008,
+            "prefill_peak_alloc_bytes": 15519465472
+          },
+          {
+            "sample_id": "2124f6aefc1910cb6201bb8bef9916c102aeba694bace9e4d17237ba7d393b5b",
+            "prediction": "The report provides background information and issues for Congress regarding the John Lewis (TAO-205) class oiler shipbuilding program, a Navy initiative to build 20 new fleet oilers. The Navy's proposed FY2020 budget requests the procurement of the fifth and sixth ships in the program. Key issues for Congress include approving or modifying the Navy's FY2020 procurement funding request, the number of oilers the Navy will require in the coming years, and the inclusion of more self-defense capabilities in the TAO-205 ships. The report emphasizes the importance of fleet oilers in supporting Navy operations and the potential impact of Congressional decisions on Navy capabilities and the U.S. shipbuilding industry.",
+            "score": 35.18518475377229,
+            "elapsed_s": 15.952343149110675,
+            "prompt_tokens": 5421,
+            "generated_tokens": 165,
+            "final_resident_kv_payload_bytes": 462036992,
+            "prefill_s": 0.6307878624647856,
+            "prefill_peak_alloc_bytes": 16172551680
+          }
+        ],
+        "cache_stats": {
+          "demoted": 643136,
+          "promoted": 604288,
+          "promotions_deferred": 638848,
+          "paid_writes": 46092,
+          "writes_saved": 597044,
+          "dropped": 0,
+          "write_savings_pct": 92.8,
+          "decode_steps": 1214,
+          "stt_starved_steps": 0,
+          "stt_unused_steps": 0,
+          "mean_stt_exposed": 32.0,
+          "stt_expose_quota": 32,
+          "stt_exposed_total": 39008,
+          "stt_exposure_samples": 1219,
+          "modeled_latency_us": 352222.6,
+          "modeled_energy_nj": 15542345269.2
+        }
+      }
+    }
+  }
+}

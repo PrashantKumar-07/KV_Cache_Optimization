@@ -1,0 +1,122 @@
+{
+  "config": {
+    "model": "../models/mistral-7b-instruct",
+    "budget": 1024,
+    "tiered_vram_budget": 1024,
+    "tiered_stt_budget": 2048,
+    "tiered_stt_expose": 32,
+    "sttram_bifurcation_frac": 0.75,
+    "sink": 4,
+    "recent": 128,
+    "max_samples": 5,
+    "tasks": [
+      "qasper"
+    ],
+    "max_ctx": 31500,
+    "seed": 0,
+    "tiered_kv_dtype": "bfloat16",
+    "tiered_stt_kv_dtype": "same",
+    "tiered_prefill_chunk_size": 512,
+    "page_size": 16,
+    "promote_top_pages": 2,
+    "stt_live_floor": 1,
+    "write_aware_lambda": 0.0,
+    "tiered_inclusive": true,
+    "runtime": {
+      "git_revision": "be7e700d84d46b47e32ba5b9870c8b71783b9e53",
+      "source_sha256": "0575be28249a8f1ba90426321649c3ecd25d6c30b5e31c18023471149feb8dba",
+      "packages": {
+        "torch": "2.5.1+cu124",
+        "transformers": "5.15.0",
+        "datasets": "2.19.2",
+        "numpy": "2.2.6",
+        "accelerate": "1.14.0",
+        "huggingface_hub": "1.27.0",
+        "rouge": "1.0.1"
+      }
+    },
+    "protocol": "task_chat_exclusions_v2",
+    "data_dir": "../hf_cache/datasets/downloads/extracted/5def9c7eaf83951e1cee75902d8611ef764ad88dd289e8f0bf97ff658a3eb83a/data",
+    "dataset_sha256": {
+      "qasper": "97d95c01221a17a2ce51f9180d65a671bf2998504a2ff0cccffe97e9b08444d8"
+    },
+    "methods": [
+      "tieredkv"
+    ]
+  },
+  "results": {
+    "qasper": {
+      "tieredkv": {
+        "score": 15.77,
+        "n": 5,
+        "sample_scores": [
+          8.16,
+          28.57,
+          23.53,
+          18.6,
+          0.0
+        ],
+        "samples": [
+          {
+            "sample_id": "3b91dce7ca41a9d16a1d0c61806c139db583a053ddb582bf79df3ff56f8e0344",
+            "prediction": "They selected Facebook pages based on intuition and performance on development data. Specifically, they used a combination of pages including Time and Disney, among others.",
+            "score": 8.16326530612245,
+            "elapsed_s": 5.562413211911917,
+            "prompt_tokens": 4895,
+            "generated_tokens": 32
+          },
+          {
+            "sample_id": "5f59f94cd91401a55bcd3b6b24b78cd2c4c78e8ee6e7663e0ac8b97306444f08",
+            "prediction": "The article proposes using a context defined as a contiguous sequence of student posts to predict instructor intervention.",
+            "score": 28.571428571428577,
+            "elapsed_s": 4.022387275472283,
+            "prompt_tokens": 5415,
+            "generated_tokens": 23
+          },
+          {
+            "sample_id": "9d37c5305ff63838fd6b7c96f13d10cfc388955672b1a629e5c0a8c2a89c520d",
+            "prediction": "In addition to F-scores, improvements in both F-score and Kappa statistics are demonstrated in the article.",
+            "score": 23.52941176470588,
+            "elapsed_s": 4.278134409338236,
+            "prompt_tokens": 5549,
+            "generated_tokens": 25
+          },
+          {
+            "sample_id": "5b60c062453de695f70d5f313a868a3c630068a85084fc9c456760f41e84d0f3",
+            "prediction": "The baselines were not explicitly stated in the article, but it can be inferred that they were plain stacked LSTMs.",
+            "score": 18.6046511627907,
+            "elapsed_s": 4.618879361078143,
+            "prompt_tokens": 5175,
+            "generated_tokens": 28
+          },
+          {
+            "sample_id": "a25d41e770a5f1816e04f39227fecd7dfcd9b83b25842e413d0f8fcb447b2092",
+            "prediction": "Jiant specifically mentions compatibility with models from Hugging Face's Transformers library, which is primarily written in Python.",
+            "score": 0.0,
+            "elapsed_s": 4.072576826438308,
+            "prompt_tokens": 3956,
+            "generated_tokens": 27
+          }
+        ],
+        "cache_stats": {
+          "demoted": 69792,
+          "promoted": 65632,
+          "promotions_deferred": 67488,
+          "paid_writes": 9537,
+          "writes_saved": 60255,
+          "dropped": 0,
+          "write_savings_pct": 86.3,
+          "decode_steps": 130,
+          "stt_starved_steps": 0,
+          "stt_unused_steps": 10,
+          "mean_stt_exposed": 30.23,
+          "stt_expose_quota": 32,
+          "stt_exposed_total": 5472,
+          "stt_exposure_samples": 181,
+          "modeled_latency_us": 39958.0,
+          "modeled_energy_nj": 1720120377.3
+        }
+      }
+    }
+  }
+}

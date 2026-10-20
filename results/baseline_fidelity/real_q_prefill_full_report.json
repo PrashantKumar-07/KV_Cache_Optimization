@@ -1,0 +1,358 @@
+{
+  "input_sha256": {
+    "real_q_full_control_qn25.json": "f67418d6d14243d6638cbcc2f5841793d865454f9ae93256098b2527c4cc9ade",
+    "real_q_full_candidate_qn25.json": "6a773c6db5275b0ce0a018784ee264811f7fe48dddfd43cc875b7cffd50718b8",
+    "real_q_full_control_other25.json": "314f1977fa8aab440c03ecd57bc54f29f7280f399ae03d4147179dd9174c4e3b",
+    "real_q_full_candidate_other25.json": "0c516f929a804d538b8f290832126a1e345ca0b49069046db5a8f2276d1ad167",
+    "real_q_full_control_gov10.json": "352e5b3840151c4eb3eecb79e58aca2e8dc537f4a4f5b60de7719aba4c179101",
+    "real_q_full_candidate_gov10.json": "2362be825af56e1539727e138a2f535376d47d1f2857f105fb71372791b43e12"
+  },
+  "script_sha256": "2bdb39b7bb12757e60ce9d9f3e4d28cdbc8d24128a4d0212ec3473e644295910",
+  "runtime": {
+    "git_revision": "be7e700d84d46b47e32ba5b9870c8b71783b9e53",
+    "source_sha256": "f81473a52b3aabcd383594d67c7f0b271fcee0c547773f8a6f6663d7cdfb194a",
+    "packages": {
+      "torch": "2.5.1+cu124",
+      "transformers": "5.14.1",
+      "datasets": "5.0.0",
+      "numpy": "2.2.6",
+      "accelerate": "1.14.0",
+      "huggingface_hub": "1.24.0",
+      "rouge": "1.0.1"
+    }
+  },
+  "tasks": [
+    "qasper",
+    "narrativeqa",
+    "multifieldqa_en",
+    "hotpotqa",
+    "triviaqa",
+    "gov_report"
+  ],
+  "quality": {
+    "baseline": "proxy",
+    "per_task": {
+      "qasper": {
+        "n": 25,
+        "mean_difference": 5.451523067022097,
+        "se": 2.807343540615648
+      },
+      "narrativeqa": {
+        "n": 25,
+        "mean_difference": 2.016265247674416,
+        "se": 3.990780125701152
+      },
+      "multifieldqa_en": {
+        "n": 25,
+        "mean_difference": -2.2154591267532586,
+        "se": 2.2187503239735293
+      },
+      "hotpotqa": {
+        "n": 25,
+        "mean_difference": 4.089221775666789,
+        "se": 2.129995106320341
+      },
+      "triviaqa": {
+        "n": 25,
+        "mean_difference": 2.4,
+        "se": 2.4000000000000004
+      },
+      "gov_report": {
+        "n": 10,
+        "mean_difference": 2.293403276040352,
+        "se": 1.024691159383084
+      }
+    },
+    "scores": {
+      "qasper": {
+        "tieredkv": 26.63,
+        "proxy": 21.18
+      },
+      "narrativeqa": {
+        "tieredkv": 22.42,
+        "proxy": 20.41
+      },
+      "multifieldqa_en": {
+        "tieredkv": 61.27,
+        "proxy": 63.49
+      },
+      "hotpotqa": {
+        "tieredkv": 48.9,
+        "proxy": 44.82
+      },
+      "triviaqa": {
+        "tieredkv": 80.7,
+        "proxy": 78.3
+      },
+      "gov_report": {
+        "tieredkv": 32.97,
+        "proxy": 30.68
+      }
+    },
+    "task_balanced_mean_difference": 2.3391590399417326,
+    "paired_bootstrap_95pct_interval": [
+      0.30451472084071135,
+      4.423959504986776
+    ],
+    "bootstrap_draws": 10000,
+    "seed": 0
+  },
+  "measures": {
+    "qasper": {
+      "sample_count": 25,
+      "paired_score_differences": [
+        65.71428571428571,
+        15.972222222222221,
+        -3.418803418803418,
+        20.0,
+        0.0,
+        0.0,
+        11.11111111111111,
+        8.421052631578949,
+        1.1363636363636331,
+        0.0,
+        2.5974025974026134,
+        0.0,
+        6.006006006006011,
+        -6.666666666666664,
+        0.0,
+        3.927068723702668,
+        4.444444444444443,
+        -4.074702886247877,
+        -2.604651162790695,
+        0.0,
+        0.0,
+        1.8181818181818201,
+        0.0,
+        11.904761904761905,
+        0.0
+      ],
+      "regressed_examples": 4,
+      "median_prefill_s": {
+        "proxy": 0.5794532522559166,
+        "actual_query": 0.6292183641344309
+      },
+      "median_prefill_peak_alloc_bytes": {
+        "proxy": 16092720640,
+        "actual_query": 16113019904
+      },
+      "paid_writes": {
+        "proxy": 103322,
+        "actual_query": 47102
+      }
+    },
+    "narrativeqa": {
+      "sample_count": 25,
+      "paired_score_differences": [
+        19.004524886877824,
+        -11.11111111111111,
+        0.0,
+        1.4285714285714342,
+        1.3888888888888875,
+        2.5641025641025657,
+        20.979020979020984,
+        0.0,
+        0.0,
+        0.0,
+        -0.7373271889400916,
+        14.285714285714285,
+        8.88888888888889,
+        -66.66666666666666,
+        0.0,
+        -4.761904761904773,
+        1.2383900928792553,
+        -2.777777777777775,
+        -2.0512820512820475,
+        0.0,
+        -14.615384615384617,
+        -1.2820512820512828,
+        0.0,
+        33.33333333333333,
+        51.29870129870129
+      ],
+      "regressed_examples": 8,
+      "median_prefill_s": {
+        "proxy": 4.729014839977026,
+        "actual_query": 4.948428742587566
+      },
+      "median_prefill_peak_alloc_bytes": {
+        "proxy": 22381195264,
+        "actual_query": 22414749696
+      },
+      "paid_writes": {
+        "proxy": 44626,
+        "actual_query": 31551
+      }
+    },
+    "multifieldqa_en": {
+      "sample_count": 25,
+      "paired_score_differences": [
+        16.52173913043478,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.9230769230769234,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        -39.81900452488687,
+        -2.415094339622641,
+        -34.57446808510638,
+        0.0,
+        0.0,
+        0.0,
+        3.9772727272727266,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "regressed_examples": 3,
+      "median_prefill_s": {
+        "proxy": 0.39569042064249516,
+        "actual_query": 0.4168919436633587
+      },
+      "median_prefill_peak_alloc_bytes": {
+        "proxy": 15790530048,
+        "actual_query": 15791199744
+      },
+      "paid_writes": {
+        "proxy": 96208,
+        "actual_query": 37379
+      }
+    },
+    "hotpotqa": {
+      "sample_count": 25,
+      "paired_score_differences": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        16.47058823529412,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        21.00840336134454,
+        0.0,
+        0.0,
+        -0.7246376811594253,
+        0.0,
+        20.833333333333336,
+        0.0,
+        0.0,
+        0.0,
+        44.64285714285715,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "regressed_examples": 1,
+      "median_prefill_s": {
+        "proxy": 0.6897644735872746,
+        "actual_query": 0.7411458920687437
+      },
+      "median_prefill_peak_alloc_bytes": {
+        "proxy": 16296787968,
+        "actual_query": 16353944576
+      },
+      "paid_writes": {
+        "proxy": 46527,
+        "actual_query": 27744
+      }
+    },
+    "triviaqa": {
+      "sample_count": 25,
+      "paired_score_differences": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        60.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "regressed_examples": 0,
+      "median_prefill_s": {
+        "proxy": 0.5739900562912226,
+        "actual_query": 0.6090086940675974
+      },
+      "median_prefill_peak_alloc_bytes": {
+        "proxy": 16102344704,
+        "actual_query": 16116763648
+      },
+      "paid_writes": {
+        "proxy": 97418,
+        "actual_query": 33005
+      }
+    },
+    "gov_report": {
+      "sample_count": 10,
+      "paired_score_differences": [
+        -1.954656347538407,
+        -1.481481481481481,
+        1.1112788818687491,
+        5.733382366412201,
+        5.921052634726834,
+        5.474654074566153,
+        -2.2634000786920048,
+        3.0848481606107683,
+        3.107282548783246,
+        4.2010720011474625
+      ],
+      "regressed_examples": 3,
+      "median_prefill_s": {
+        "proxy": 0.4879437927156687,
+        "actual_query": 0.5210036439821124
+      },
+      "median_prefill_peak_alloc_bytes": {
+        "proxy": 15855455232.0,
+        "actual_query": 15859867904.0
+      },
+      "paid_writes": {
+        "proxy": 192966,
+        "actual_query": 121762
+      }
+    }
+  },
+  "total_regressed_examples": 19,
+  "paid_demotion_writes": {
+    "proxy": 581067,
+    "actual_query": 298543,
+    "reduction_pct": 48.62158752777218
+  },
+  "scope": "Selected 135 examples, six tasks, one model/seed; per-task counts {'qasper': 25, 'narrativeqa': 25, 'multifieldqa_en': 25, 'hotpotqa': 25, 'triviaqa': 25, 'gov_report': 10}. Paired bootstrap conditions on these samples and is not a held-out result.",
+  "decision": "Descriptive quality and logical-write comparison only. Default promotion requires full-loop latency, stress and held-out gates.",
+  "model_manifest_sha256": "b7e07ab4236b866a9c0f401973027fc25e38695ee76926512c7ae54be17ad430",
+  "model_manifest_note": "Model files were hashed during the full run; their on-disk modification times predate all arms.",
+  "concurrent_gpu_load_sha256": "9965258f2a58574be222f5e93cffba562f63089f84fa5e5ad7b2066c101f56dd",
+  "full_run_performance_comparison_valid": false,
+  "performance_note": "An external Ollama process used GPU0 during candidate evaluation. Full-run elapsed and peak differences are confounded; use the isolated ABBA prefill benchmark instead."
+}

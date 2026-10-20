@@ -1,0 +1,88 @@
+{
+  "verified": true,
+  "components_shader_and_math_unchanged": true,
+  "native_cases": 40,
+  "full_transient_peaks": [
+    1154,
+    2112
+  ],
+  "fused_compactions": 938,
+  "eager_compactions": 822,
+  "geometries": {
+    "default": {
+      "hot": 1024,
+      "cold": 2048,
+      "root_request_bytes": {
+        "fused": 402784256,
+        "combined": 276824064
+      },
+      "request_reduction_pct": 31.272372274650184,
+      "summary": {
+        "fused_scores": {
+          "median_ms": 70.12041844427586,
+          "p95_ms": 73.16491296514869,
+          "ttft_ms": 2295.3169811517,
+          "prefill_peak_gb": 18.627831296
+        },
+        "fused_bounded_scores": {
+          "median_ms": 66.18377193808556,
+          "p95_ms": 73.07868953794241,
+          "ttft_ms": 2289.4322965294123,
+          "prefill_peak_gb": 18.627831296
+        }
+      },
+      "regression_guards": {
+        "median": true,
+        "p95": true,
+        "ttft": true,
+        "prefill_peak": true
+      },
+      "advance_to_stress": true
+    },
+    "shared": {
+      "hot": 991,
+      "cold": 1090,
+      "root_request_bytes": {
+        "fused": 272891904,
+        "combined": 151257088
+      },
+      "request_reduction_pct": 44.57252641690682,
+      "summary": {
+        "fused_scores": {
+          "median_ms": 63.02159558981657,
+          "p95_ms": 69.4499647244811,
+          "ttft_ms": 2259.744352661073,
+          "prefill_peak_gb": 18.627831296
+        },
+        "fused_bounded_scores": {
+          "median_ms": 62.98013776540756,
+          "p95_ms": 68.92786119133234,
+          "ttft_ms": 2257.0099532604218,
+          "prefill_peak_gb": 18.627831296
+        }
+      },
+      "regression_guards": {
+        "median": true,
+        "p95": true,
+        "ttft": true,
+        "prefill_peak": true
+      },
+      "advance_to_stress": true
+    }
+  },
+  "advance_to_stress": true,
+  "evidence_sha256": {
+    "abba_shared.json": "e3a6da66532be990cfe5f18b80a8fa829c57c95234bea65d1bbdf40754fed755",
+    "source_stress_manifest.json": "dcb5a3d972d38462ce337af0ffbb4e576ccc34e10aa76a613ac448c60c1c17dc",
+    "parity_default.json": "037e934d01550f1d064919663ee08cc0665aa826228ff84beabbe9095eb5fe97",
+    "source_manifest.json": "3a46394d07634d1d37f6fc63286561db9ccb07084c92511404d3ada1753f620f",
+    "synthetic.json": "edd4b7aadb7c22d7aab555aa6f7975baeaa2c90b1e5d7ed1575c23fa08575eaf",
+    "parity_shared.json": "22818ed000b0f1b06ce189b2b5b7a6df9fde11490ee43574684d73d53f195ce8",
+    "synthetic_default.json": "a5ea4b5086e3df2675374b5478837b59aeb15964537de9b73f1da26e6a1830d8",
+    "plan.json": "78f849efb614e7204a117c053e6e75bc2a0fd282074e10dcf236925105605a96",
+    "abba_default.json": "8bdb6291b8f6da1fef251ed48cad29912303c3946d6c421e266d57e4f9190097"
+  },
+  "source_archive_sha256": "4760dfed1a64c2c7faa36d0f9691e8bcebee94841a3ded377795293fa9a70fd4",
+  "verifier_sha256": "e567951b90a905b0e9c928a62d14c18c9a4b29eab9e8d1b2c60a7164ccc241cb",
+  "limitations": "Owned pinned request reduction, samelogical policy/quality. Requestbytes do not directly measure allocatorcapacity/RSS/physicalSTT; defaultrootrequests still roundto512MiB. Speedguard preservation only, not new5%speedclaim; mandatoryfreegeneration/isolation/CLI before ordinary combination."
+}

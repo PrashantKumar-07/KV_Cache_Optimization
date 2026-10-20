@@ -1,0 +1,58 @@
+{
+  "config": {
+    "model": "../models/mistral-7b-instruct",
+    "ctx_len": 16384,
+    "chunk_size": 512,
+    "order": [
+      "exact",
+      "chunked",
+      "chunked",
+      "exact"
+    ],
+    "prompt_sha256": "05dfde742b79755007479a40aac1a2a0527360b86688b933fc51dd3351f57d39",
+    "runtime": {
+      "git_revision": "be7e700d84d46b47e32ba5b9870c8b71783b9e53",
+      "source_sha256": "a88cd1b0085e0b26aecbf284504fbba3443a613927e8b3f7afb261f6598df78b",
+      "packages": {
+        "torch": "2.5.1+cu124",
+        "transformers": "5.15.0",
+        "datasets": "2.19.2",
+        "numpy": "2.2.6",
+        "accelerate": "1.14.0",
+        "huggingface_hub": "1.27.0",
+        "rouge": "1.0.1"
+      }
+    }
+  },
+  "results": {
+    "0_exact": {
+      "ttft_ms": 2440.108899027109,
+      "peak_allocated_gb": 18.594276352,
+      "allocated_after_gb": 14.832182272,
+      "resident_kv_bytes": 335544320,
+      "prediction": "."
+    },
+    "1_chunked": {
+      "ttft_ms": 3363.396182656288,
+      "peak_allocated_gb": 15.175286272,
+      "allocated_after_gb": 14.740644864,
+      "resident_kv_bytes": 205520896,
+      "prediction": "."
+    },
+    "2_chunked": {
+      "ttft_ms": 3314.8890379816294,
+      "peak_allocated_gb": 15.175286272,
+      "allocated_after_gb": 14.740644864,
+      "resident_kv_bytes": 205520896,
+      "prediction": "."
+    },
+    "3_exact": {
+      "ttft_ms": 2012.803465127945,
+      "peak_allocated_gb": 18.594276352,
+      "allocated_after_gb": 14.832182272,
+      "resident_kv_bytes": 335544320,
+      "prediction": "."
+    }
+  },
+  "scope": "Approximate chunked prefill: later chunks attend only compressed prior KV."
+}

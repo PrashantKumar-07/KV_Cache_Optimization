@@ -1,0 +1,22 @@
+{
+  "timestamp_utc": "2026-10-03T03:08:53.895077+00:00",
+  "development_proof_sha256": "a833d9cd9aefef09fa9ae599cbd132d3f7ea2c4147bd2fbd212fa9c423d9dda4",
+  "resource_proof_sha256": "7d01dce7eeb7d8ebe274d099aaaf806b8c3df89b4b8996f3df74273ca26ff248",
+  "primary": "QuietGPU0,3ABBA blocks(control/query/query/control),16K50,one warmup+one measured trial per row. End-to-end model+policy+host-visible token. Median and p95 decode <=2% worse; medianTTFT<=10% worse than same ordinaryBulkLRU.",
+  "settings": {
+    "hot": 991,
+    "cold": 1090,
+    "quota": 32,
+    "context": 16384,
+    "decode": 50,
+    "warmup": 1,
+    "prefill_last_logits": true,
+    "seed": 0
+  },
+  "quiet": "Capture physicalGPU0 compute PID list before loading and before/after each row; only this own model PID allowed. OtherGPU1 workload untouched. Contamination stops and invalidates speed/adoption claim.",
+  "prompt": "results/remediation_v3/latency_prompt.txt",
+  "prompt_sha256": "18695714f26e35cb8d2b039ae9efb3b7e64291cbd7bcd91956efc07e16a732cd",
+  "teachers": "results/shadow_ablation_full/fixed_stream_20260929.json",
+  "teachers_sha256": "620ac3a383997c9afbc6a3f0b06acec9f261d5a2a5827bf5988e0bb5b69f12a2",
+  "stop": "Any timing/cleanup/quiet guard failure stops wider candidate expansion/adoption; no retry for favorable metrics. No independent-quality or full512MiB/physicalSTT claim."
+}

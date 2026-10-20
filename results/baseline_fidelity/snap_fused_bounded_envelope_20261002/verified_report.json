@@ -1,0 +1,64 @@
+{
+  "verified": true,
+  "source_data_teacher_repeatability_verified": true,
+  "summary": {
+    "snap": {
+      "median_ms": 25.83448588848114,
+      "p95_ms": 26.006764080375433,
+      "ttft_ms": 2084.358125925064,
+      "prefill_gpu_peak_bytes": 16958268928,
+      "decode_gpu_peak_bytes": 15037793280,
+      "final_owned_kv_bytes": {
+        "cuda:0": 536870912
+      },
+      "block_median_ms": [
+        25.80048330128193,
+        25.83929244428873,
+        25.848614051938057
+      ]
+    },
+    "cpu_direct": {
+      "median_ms": 60.562810860574245,
+      "p95_ms": 67.94529631733894,
+      "ttft_ms": 2260.4352198541164,
+      "prefill_gpu_peak_bytes": 18627831296,
+      "decode_gpu_peak_bytes": 14898882560,
+      "final_owned_kv_bytes": {
+        "cuda:0": 263979008,
+        "cpu": 151257088
+      },
+      "block_median_ms": [
+        60.77145878225565,
+        60.72385236620903,
+        60.530333779752254
+      ]
+    }
+  },
+  "performance_gates": {
+    "median_gain_5pct": false,
+    "p95_within_2pct": false,
+    "all_blocks_faster": false,
+    "ttft_within_10pct": true
+  },
+  "all_performance_gates_passed": false,
+  "cpu_over_snap_decode_ratio": 2.3442622826714534,
+  "cpu_vs_snap_ttft_change_pct": 8.44754515738062,
+  "boundary_max_mib": 396.0,
+  "known_gather_peak_mib": 528.25,
+  "transient_ceiling_passed": false,
+  "actual_resources_equal": false,
+  "boundary_frames": 51,
+  "gather_launch_observations": 50,
+  "forward_layer_width_observations": 1600,
+  "prior_quality_gate_rerun": false,
+  "shader_and_retention_sources_unchanged": true,
+  "evidence_sha256": {
+    "audit.json": "dd7d7ea2c138616ee3dd5ce2a1a7b29d6d15a6acd4a0d71730e898b861ad1286",
+    "source_manifest.json": "24a6df1f2dfbb231b5587c966f54e8798b305787908050e79cd03792f57c1954",
+    "timing.json": "a26fc29b12f5eaac67aaa09cb179f314863c8bfa6a4809c247c3e087b78d23d5",
+    "plan.json": "d2bb47c65bf565509ff70d9d3a98fd156d09e6ac7a79c51689eae064f3c3ecd8"
+  },
+  "source_bundle_sha256": "491ee39b8a07e6e527e33720f1488ba939da70f7f002c08a73209822b02f7485",
+  "verifier_sha256": "5274bdeb5dd861a1ebdcdcf00d5cf31e5771247a6cee2e73591df5b52c46599f",
+  "limitations": "Known gather storage is a lower bound, excludes metadata/other temporaries/allocator retained blocks. Same boundary ceilings do not bound transient memory or imply actual equality. Frozen one-model/seed/teacher trajectory, not quality, serving, physicalSTT or model-wide memory superiority."
+}

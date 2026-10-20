@@ -1,0 +1,85 @@
+{
+  "config": {
+    "model": "../models/mistral-7b-instruct",
+    "budget": 1024,
+    "tiered_vram_budget": 1024,
+    "tiered_stt_budget": 2048,
+    "tiered_stt_expose": 32,
+    "sttram_bifurcation_frac": 0.75,
+    "sink": 4,
+    "recent": 128,
+    "max_samples": 1,
+    "tasks": [
+      "qasper"
+    ],
+    "max_ctx": 31500,
+    "seed": 0,
+    "tiered_kv_dtype": "bfloat16",
+    "tiered_stt_kv_dtype": "float8_e4m3fn",
+    "page_size": 16,
+    "promote_top_pages": 2,
+    "stt_live_floor": 1,
+    "write_aware_lambda": 0.0,
+    "tiered_inclusive": true,
+    "runtime": {
+      "git_revision": "be7e700d84d46b47e32ba5b9870c8b71783b9e53",
+      "source_sha256": "0248dd2c851ba31fc79a6a9d4c914aa7c6e50ad10f562d714176f35d3580a3d8",
+      "packages": {
+        "torch": "2.5.1+cu124",
+        "transformers": "5.15.0",
+        "datasets": "2.19.2",
+        "numpy": "2.2.6",
+        "accelerate": "1.14.0",
+        "huggingface_hub": "1.27.0",
+        "rouge": "1.0.1"
+      }
+    },
+    "protocol": "task_chat_exclusions_v2",
+    "data_dir": "../hf_cache/datasets/downloads/extracted/5def9c7eaf83951e1cee75902d8611ef764ad88dd289e8f0bf97ff658a3eb83a/data",
+    "dataset_sha256": {
+      "qasper": "97d95c01221a17a2ce51f9180d65a671bf2998504a2ff0cccffe97e9b08444d8"
+    },
+    "methods": [
+      "tieredkv"
+    ]
+  },
+  "results": {
+    "qasper": {
+      "tieredkv": {
+        "score": 8.57,
+        "n": 1,
+        "sample_scores": [
+          8.57
+        ],
+        "samples": [
+          {
+            "sample_id": "3b91dce7ca41a9d16a1d0c61806c139db583a053ddb582bf79df3ff56f8e0344",
+            "prediction": "They selected Facebook pages based on intuition and performance on development data, including Time, The Guardian, and Disney. (Note: The exact list of pages is mentioned in the article but for the purpose of this task, I'm providing a concise answer focusing on the key pages mentioned in the context of the example.)",
+            "score": 8.571428571428573,
+            "elapsed_s": 8.96801289729774,
+            "prompt_tokens": 4895,
+            "generated_tokens": 67
+          }
+        ],
+        "cache_stats": {
+          "demoted": 34880,
+          "promoted": 32768,
+          "promotions_deferred": 34816,
+          "paid_writes": 3472,
+          "writes_saved": 31408,
+          "dropped": 0,
+          "write_savings_pct": 90.0,
+          "decode_steps": 66,
+          "stt_starved_steps": 0,
+          "stt_unused_steps": 0,
+          "mean_stt_exposed": 32.0,
+          "stt_expose_quota": 32,
+          "stt_exposed_total": 2144,
+          "stt_exposure_samples": 67,
+          "modeled_latency_us": 19783.1,
+          "modeled_energy_nj": 872140505.1
+        }
+      }
+    }
+  }
+}

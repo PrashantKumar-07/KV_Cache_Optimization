@@ -1,0 +1,359 @@
+{
+  "experiment": "REAL-Q-LRU-HOLDOUT",
+  "method": "paired bootstrap within task, then equal-weight mean across six tasks",
+  "uncertainty_scope": "30 deterministically selected fresh LongBench rows, six fixed tasks, one model and seed; not independent task/model generality; context_overlap_audit.json finds reused development and evaluation documents, so row-bootstrap intervals omit document dependence",
+  "task_balanced_mean_difference": 5.171264548419563,
+  "bootstrap_alpha": 0.05,
+  "paired_bootstrap_interval": [
+    -1.6047010734057778,
+    12.95326865976214
+  ],
+  "regressions": {
+    "n": 7,
+    "fraction": 0.23333333333333334,
+    "over_10_points": 2,
+    "rows": [
+      {
+        "task": "qasper",
+        "sample_id": "15108d4d2aec12886065ed777d273964c93d7fa46a993053c7782b143d174bef",
+        "difference": -14.545454545454545
+      },
+      {
+        "task": "narrativeqa",
+        "sample_id": "c4b1715115330ab1dc538a81269b7bed1e668a0ce77ddb8ab876633e20cd9562",
+        "difference": -5.347593582887701
+      },
+      {
+        "task": "hotpotqa",
+        "sample_id": "6cac1f1d948bcb36447e06fdc4e224c370dddf79089b43d4d2dfd7c41754857a",
+        "difference": -50.0
+      },
+      {
+        "task": "gov_report",
+        "sample_id": "e41cdf0e5c056ec2a5e72ba98e6d0faa0850facfcdaf7bcd891fbf4cf7e951a8",
+        "difference": -1.024378231954291
+      },
+      {
+        "task": "gov_report",
+        "sample_id": "cfebd2f67baa144d3dbb72e3ebe4eb803b2787e5a7ef97fa615bb146c09077d3",
+        "difference": -0.24311103268052392
+      },
+      {
+        "task": "gov_report",
+        "sample_id": "2fa74eab1946eb546d8013901bbe175db0a493404fe691ddc1fa302c2390a188",
+        "difference": -0.34475830408668173
+      },
+      {
+        "task": "gov_report",
+        "sample_id": "a54c8e13b74731c1e0b84a5cbdc4a77c6b4032b7d27c2dc6326da28035e4d2e2",
+        "difference": -0.8451100807415166
+      }
+    ]
+  },
+  "per_task": {
+    "qasper": {
+      "n": 5,
+      "control_mean": 5.409090909090909,
+      "candidate_mean": 8.88888888888889,
+      "mean_difference": 3.4797979797979792,
+      "prefill_s_median_control": 0.9217914845794439,
+      "prefill_s_median_candidate": 0.9923291616141796,
+      "peak_bytes_median_control": 16492695040,
+      "peak_bytes_median_candidate": 16580411904,
+      "paid_writes_per_decode_step_control": 64.77486910994764,
+      "paid_writes_per_decode_step_candidate": 69.47286821705427
+    },
+    "narrativeqa": {
+      "n": 5,
+      "control_mean": 27.417206116896516,
+      "candidate_mean": 26.34768740031898,
+      "mean_difference": -1.0695187165775402,
+      "prefill_s_median_control": 2.352070067077875,
+      "prefill_s_median_candidate": 2.5432689860463142,
+      "peak_bytes_median_control": 19061744640,
+      "peak_bytes_median_candidate": 19230179328,
+      "paid_writes_per_decode_step_control": 93.32926829268293,
+      "paid_writes_per_decode_step_candidate": 96.85526315789474
+    },
+    "multifieldqa_en": {
+      "n": 5,
+      "control_mean": 30.759641038079064,
+      "candidate_mean": 57.4457757296467,
+      "mean_difference": 26.686134691567634,
+      "prefill_s_median_control": 1.0186443123966455,
+      "prefill_s_median_candidate": 1.1064794678241014,
+      "peak_bytes_median_control": 16853923840,
+      "peak_bytes_median_candidate": 17000338432,
+      "paid_writes_per_decode_step_control": 58.48995983935743,
+      "paid_writes_per_decode_step_candidate": 62.87261146496815
+    },
+    "hotpotqa": {
+      "n": 5,
+      "control_mean": 36.1624649859944,
+      "candidate_mean": 38.35294117647059,
+      "mean_difference": 2.19047619047619,
+      "prefill_s_median_control": 1.6877682879567146,
+      "prefill_s_median_candidate": 1.8152756858617067,
+      "peak_bytes_median_control": 17900712960,
+      "peak_bytes_median_candidate": 18134400000,
+      "paid_writes_per_decode_step_control": 90.5934065934066,
+      "paid_writes_per_decode_step_candidate": 92.54320987654322
+    },
+    "triviaqa": {
+      "n": 5,
+      "control_mean": 100.0,
+      "candidate_mean": 100.0,
+      "mean_difference": 0.0,
+      "prefill_s_median_control": 2.1352774407714605,
+      "prefill_s_median_candidate": 2.307897360995412,
+      "peak_bytes_median_control": 18749014016,
+      "peak_bytes_median_candidate": 18935025152,
+      "paid_writes_per_decode_step_control": 116.53521126760563,
+      "paid_writes_per_decode_step_candidate": 142.22222222222223
+    },
+    "gov_report": {
+      "n": 5,
+      "control_mean": 21.156335413047934,
+      "candidate_mean": 20.89703255830105,
+      "mean_difference": -0.25930285474688475,
+      "prefill_s_median_control": 1.033882798627019,
+      "prefill_s_median_candidate": 1.0963349658995867,
+      "peak_bytes_median_control": 16832580096,
+      "peak_bytes_median_candidate": 16975526912,
+      "paid_writes_per_decode_step_control": 36.273590504451036,
+      "paid_writes_per_decode_step_candidate": 35.678714859437754
+    }
+  },
+  "samples": [
+    {
+      "task": "qasper",
+      "sample_id": "cd0e2505262804edf125215cc119862d11bc54fef65bc6a7fb6baa27ba44aa34",
+      "control": 0.0,
+      "candidate": 0.0,
+      "difference": 0.0
+    },
+    {
+      "task": "qasper",
+      "sample_id": "26cf8af1d6d22295e4896cd6c96c4296dd903cac36af01ee3fda722bc679e516",
+      "control": 0.0,
+      "candidate": 0.0,
+      "difference": 0.0
+    },
+    {
+      "task": "qasper",
+      "sample_id": "4a8520f7200988cf3a690dc5a9c67e08e7c45909ddba63399a5541604d11d668",
+      "control": 12.5,
+      "candidate": 44.44444444444444,
+      "difference": 31.944444444444443
+    },
+    {
+      "task": "qasper",
+      "sample_id": "15108d4d2aec12886065ed777d273964c93d7fa46a993053c7782b143d174bef",
+      "control": 14.545454545454545,
+      "candidate": 0.0,
+      "difference": -14.545454545454545
+    },
+    {
+      "task": "qasper",
+      "sample_id": "d16a48bded3ab4d7f3b9377bde296643d5582620f91536d9aad6e1eecd8515dc",
+      "control": 0.0,
+      "candidate": 0.0,
+      "difference": 0.0
+    },
+    {
+      "task": "narrativeqa",
+      "sample_id": "c1588c116e2ee3c3488c5e7a1777df231f298c4ccda5d381b326ac75a6c8643f",
+      "control": 10.526315789473683,
+      "candidate": 10.526315789473683,
+      "difference": 0.0
+    },
+    {
+      "task": "narrativeqa",
+      "sample_id": "c4b1715115330ab1dc538a81269b7bed1e668a0ce77ddb8ab876633e20cd9562",
+      "control": 23.52941176470588,
+      "candidate": 18.18181818181818,
+      "difference": -5.347593582887701
+    },
+    {
+      "task": "narrativeqa",
+      "sample_id": "4937ca8e040e317420998d4140bfafffc8898f4f98fd9cabeba73772e2c17faa",
+      "control": 36.36363636363636,
+      "candidate": 36.36363636363636,
+      "difference": 0.0
+    },
+    {
+      "task": "narrativeqa",
+      "sample_id": "9acb815346d408ea6ba1f3909026f24b3a1b5541130212a329ff39f9ad6c8f0e",
+      "control": 66.66666666666666,
+      "candidate": 66.66666666666666,
+      "difference": 0.0
+    },
+    {
+      "task": "narrativeqa",
+      "sample_id": "5079a13bda99ae9eab96d1b91f46c3e3e8a8e4ec9968587daeb374f532af23ef",
+      "control": 0.0,
+      "candidate": 0.0,
+      "difference": 0.0
+    },
+    {
+      "task": "multifieldqa_en",
+      "sample_id": "609df67247eb057787cc4f3034ca4b9301a9bbfc0e55258695afd48b50ff7796",
+      "control": 10.526315789473683,
+      "candidate": 100.0,
+      "difference": 89.47368421052632
+    },
+    {
+      "task": "multifieldqa_en",
+      "sample_id": "55d16f471da65b29d4631c374eb6af60b47b3a34bb81abc143ea39135e0162b1",
+      "control": 7.142857142857142,
+      "candidate": 23.80952380952381,
+      "difference": 16.666666666666668
+    },
+    {
+      "task": "multifieldqa_en",
+      "sample_id": "cba237d789103a8df1143e8ae4386265752e731254363de02a397f1027d66ccc",
+      "control": 38.70967741935483,
+      "candidate": 50.0,
+      "difference": 11.290322580645167
+    },
+    {
+      "task": "multifieldqa_en",
+      "sample_id": "78a0e9072e16aa35ea2363c91e4c76101091578fee4f1e44ab24f8a01099f3ad",
+      "control": 77.41935483870968,
+      "candidate": 77.41935483870968,
+      "difference": 0.0
+    },
+    {
+      "task": "multifieldqa_en",
+      "sample_id": "3c969844c92a2bc224157effb53273c3f56f73625f2b3970ef5d45cc6bfcd2cf",
+      "control": 20.0,
+      "candidate": 36.0,
+      "difference": 16.0
+    },
+    {
+      "task": "hotpotqa",
+      "sample_id": "9dc67edaec2e53f5b2d4a868f9891a43282a5bb6aa8ecee59558a1e82e174368",
+      "control": 50.0,
+      "candidate": 50.0,
+      "difference": 0.0
+    },
+    {
+      "task": "hotpotqa",
+      "sample_id": "6c3e87bc814c08290417ca76361163937c2cd93baa34e8c3801f960c5741edb7",
+      "control": 19.04761904761905,
+      "candidate": 80.0,
+      "difference": 60.95238095238095
+    },
+    {
+      "task": "hotpotqa",
+      "sample_id": "6d639cc9ee1fc68a8e354ac8ebcfcdaa253e14a8514d48058b3c4e76716817ac",
+      "control": 11.76470588235294,
+      "candidate": 11.76470588235294,
+      "difference": 0.0
+    },
+    {
+      "task": "hotpotqa",
+      "sample_id": "777f75a7d210eca2f41a6ed64c916db19a8a024a73ed163893171e9734825dec",
+      "control": 0.0,
+      "candidate": 0.0,
+      "difference": 0.0
+    },
+    {
+      "task": "hotpotqa",
+      "sample_id": "6cac1f1d948bcb36447e06fdc4e224c370dddf79089b43d4d2dfd7c41754857a",
+      "control": 100.0,
+      "candidate": 50.0,
+      "difference": -50.0
+    },
+    {
+      "task": "triviaqa",
+      "sample_id": "28f339099ea0e87193dd4845654fd711fbba1077910939ec67e61267a3d78c99",
+      "control": 100.0,
+      "candidate": 100.0,
+      "difference": 0.0
+    },
+    {
+      "task": "triviaqa",
+      "sample_id": "e6a51a9702c5dbcac801ce41c456eb947a2ace3cc1999810f68cd576df4edd07",
+      "control": 100.0,
+      "candidate": 100.0,
+      "difference": 0.0
+    },
+    {
+      "task": "triviaqa",
+      "sample_id": "6f1a686f9f09a3df5b3933ffcd57a3538c3cd1ef4471eea3b63168521301efd2",
+      "control": 100.0,
+      "candidate": 100.0,
+      "difference": 0.0
+    },
+    {
+      "task": "triviaqa",
+      "sample_id": "2745142b7cd2f1c30d30002b45cb8a9ee0281fcfa8fcb9481a06632d5f191cd0",
+      "control": 100.0,
+      "candidate": 100.0,
+      "difference": 0.0
+    },
+    {
+      "task": "triviaqa",
+      "sample_id": "3b949f31fc485148baea00f1dd6f5697c512817a4da86662a7c769ebbca3c556",
+      "control": 100.0,
+      "candidate": 100.0,
+      "difference": 0.0
+    },
+    {
+      "task": "gov_report",
+      "sample_id": "e41cdf0e5c056ec2a5e72ba98e6d0faa0850facfcdaf7bcd891fbf4cf7e951a8",
+      "control": 27.741934987388138,
+      "candidate": 26.717556755433847,
+      "difference": -1.024378231954291
+    },
+    {
+      "task": "gov_report",
+      "sample_id": "f6943cbaffcbdeed21ad3966ca1591fe8b3c3769ad2e775fc72969afbba581ee",
+      "control": 21.195651766082825,
+      "candidate": 22.356495141811415,
+      "difference": 1.1608433757285894
+    },
+    {
+      "task": "gov_report",
+      "sample_id": "cfebd2f67baa144d3dbb72e3ebe4eb803b2787e5a7ef97fa615bb146c09077d3",
+      "control": 22.70531358622139,
+      "candidate": 22.462202553540866,
+      "difference": -0.24311103268052392
+    },
+    {
+      "task": "gov_report",
+      "sample_id": "2fa74eab1946eb546d8013901bbe175db0a493404fe691ddc1fa302c2390a188",
+      "control": 19.7343449281854,
+      "candidate": 19.38958662409872,
+      "difference": -0.34475830408668173
+    },
+    {
+      "task": "gov_report",
+      "sample_id": "a54c8e13b74731c1e0b84a5cbdc4a77c6b4032b7d27c2dc6326da28035e4d2e2",
+      "control": 14.404431797361909,
+      "candidate": 13.559321716620392,
+      "difference": -0.8451100807415166
+    }
+  ],
+  "inputs": {
+    "manifest_sha256": "af1a8f7c1710765a1d0ad2f4986179502a53e1a1648a3fe2dd1c173e4ac87c8a",
+    "control_sha256": "d2c4c6ae484ab57193660c141b1084c120fdbe408794ec66f07953566055de71",
+    "candidate_sha256": "dd16f0d60dc90bcdf52f999ed7f6c6959da536f760a0a9a7593036f15582073e",
+    "runtime": {
+      "git_revision": "be7e700d84d46b47e32ba5b9870c8b71783b9e53",
+      "source_sha256": "eea0cf48baa0804928f6f4a1c2674af3547dbac77cb2ea1b890805ba0473cd9e",
+      "packages": {
+        "torch": "2.5.1+cu124",
+        "transformers": "5.14.1",
+        "datasets": "5.0.0",
+        "numpy": "2.2.6",
+        "accelerate": "1.14.0",
+        "huggingface_hub": "1.24.0",
+        "rouge": "1.0.1"
+      }
+    }
+  },
+  "decision": "no-go/inconclusive",
+  "limitations": "Quality holdout only; latency and peak summaries are descriptive across sequential runs, not a paired systems benchmark. No physical-tier or SOTA claim."
+}

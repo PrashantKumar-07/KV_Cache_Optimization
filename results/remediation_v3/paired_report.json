@@ -1,0 +1,322 @@
+{
+  "method": "paired sample bootstrap within tasks; unweighted mean over six tasks",
+  "uncertainty_scope": "Conditional on the six fixed tasks, selected samples, model, and seed; excludes task/seed/model variation",
+  "score_units": "F1 for five QA tasks; ROUGE-L for GovReport, each on 0-100 scale",
+  "runtime": {
+    "git_revision": "be7e700d84d46b47e32ba5b9870c8b71783b9e53",
+    "source_sha256": "c5db18225a65ab143ed3194d51c8d701606bdfca04b34665f3d87c824ecce727",
+    "packages": {
+      "torch": "2.5.1+cu124",
+      "transformers": "5.15.0",
+      "datasets": "2.19.2",
+      "numpy": "2.2.6",
+      "accelerate": "1.14.0",
+      "huggingface_hub": "1.27.0",
+      "rouge": "1.0.1"
+    }
+  },
+  "equal_vram": {
+    "baseline": "snapkv",
+    "per_task": {
+      "multifieldqa_en": {
+        "n": 25,
+        "mean_difference": 0.6401475990549312,
+        "se": 1.3938673291602668
+      },
+      "qasper": {
+        "n": 25,
+        "mean_difference": 1.7346696446188679,
+        "se": 1.752620940694646
+      },
+      "narrativeqa": {
+        "n": 25,
+        "mean_difference": -0.3487179487179487,
+        "se": 0.4053877779276241
+      },
+      "hotpotqa": {
+        "n": 25,
+        "mean_difference": 0.61748987854251,
+        "se": 0.6013240775063091
+      },
+      "triviaqa": {
+        "n": 25,
+        "mean_difference": 2.4,
+        "se": 2.4000000000000004
+      },
+      "gov_report": {
+        "n": 10,
+        "mean_difference": -1.5588305680015953,
+        "se": 1.1486042816381286
+      }
+    },
+    "scores": {
+      "multifieldqa_en": {
+        "tieredkv": 55.25,
+        "snapkv": 54.61
+      },
+      "qasper": {
+        "tieredkv": 13.28,
+        "snapkv": 11.54
+      },
+      "narrativeqa": {
+        "tieredkv": 18.63,
+        "snapkv": 18.98
+      },
+      "hotpotqa": {
+        "tieredkv": 37.93,
+        "snapkv": 37.32
+      },
+      "triviaqa": {
+        "tieredkv": 78.27,
+        "snapkv": 75.87
+      },
+      "gov_report": {
+        "tieredkv": 26.93,
+        "snapkv": 28.49
+      }
+    },
+    "task_balanced_mean_difference": 0.5807931009161273,
+    "paired_bootstrap_95pct_interval": [
+      -0.4651339365901319,
+      1.7867261514817405
+    ],
+    "bootstrap_draws": 10000,
+    "seed": 0
+  },
+  "equal_attended": {
+    "baseline": "snapkv",
+    "per_task": {
+      "multifieldqa_en": {
+        "n": 25,
+        "mean_difference": 0.6504464151437555,
+        "se": 1.327982077347893
+      },
+      "qasper": {
+        "n": 25,
+        "mean_difference": 0.8310347635205315,
+        "se": 1.5230965755072288
+      },
+      "narrativeqa": {
+        "n": 25,
+        "mean_difference": -2.188367546432062,
+        "se": 2.098402566258969
+      },
+      "hotpotqa": {
+        "n": 25,
+        "mean_difference": -4.056931216931216,
+        "se": 3.4674509323417935
+      },
+      "triviaqa": {
+        "n": 25,
+        "mean_difference": 2.4,
+        "se": 2.4000000000000004
+      },
+      "gov_report": {
+        "n": 10,
+        "mean_difference": -1.268880055552679,
+        "se": 1.3597035922006342
+      }
+    },
+    "scores": {
+      "multifieldqa_en": {
+        "tieredkv": 55.26,
+        "snapkv": 54.61
+      },
+      "qasper": {
+        "tieredkv": 12.37,
+        "snapkv": 11.54
+      },
+      "narrativeqa": {
+        "tieredkv": 16.79,
+        "snapkv": 18.98
+      },
+      "hotpotqa": {
+        "tieredkv": 33.26,
+        "snapkv": 37.32
+      },
+      "triviaqa": {
+        "tieredkv": 78.27,
+        "snapkv": 75.87
+      },
+      "gov_report": {
+        "tieredkv": 27.22,
+        "snapkv": 28.49
+      }
+    },
+    "task_balanced_mean_difference": -0.6054496067086116,
+    "paired_bootstrap_95pct_interval": [
+      -2.3932811487549572,
+      1.002846063854902
+    ],
+    "bootstrap_draws": 10000,
+    "seed": 0,
+    "tiered_configuration": {
+      "model": "../models/mistral-7b-instruct",
+      "budget": 1024,
+      "tiered_vram_budget": 992,
+      "tiered_stt_budget": 2048,
+      "tiered_stt_expose": null,
+      "sttram_bifurcation_frac": 0.75,
+      "sink": 4,
+      "recent": 128,
+      "max_samples": 25,
+      "tasks": [
+        "multifieldqa_en",
+        "qasper",
+        "narrativeqa",
+        "hotpotqa",
+        "triviaqa"
+      ],
+      "max_ctx": 31500,
+      "seed": 0,
+      "tiered_kv_dtype": "bfloat16",
+      "page_size": 16,
+      "promote_top_pages": 2,
+      "stt_live_floor": 1,
+      "write_aware_lambda": 0.0,
+      "runtime": {
+        "git_revision": "be7e700d84d46b47e32ba5b9870c8b71783b9e53",
+        "source_sha256": "c5db18225a65ab143ed3194d51c8d701606bdfca04b34665f3d87c824ecce727",
+        "packages": {
+          "torch": "2.5.1+cu124",
+          "transformers": "5.15.0",
+          "datasets": "2.19.2",
+          "numpy": "2.2.6",
+          "accelerate": "1.14.0",
+          "huggingface_hub": "1.27.0",
+          "rouge": "1.0.1"
+        }
+      },
+      "protocol": "task_chat_exclusions_v2",
+      "data_dir": "../hf_cache/datasets/downloads/extracted/5def9c7eaf83951e1cee75902d8611ef764ad88dd289e8f0bf97ff658a3eb83a/data",
+      "dataset_sha256": {
+        "multifieldqa_en": "678a51335e3c90e0dd43bf1131045e4f2859cc693e7eded89cc6a1ee8d18faff",
+        "qasper": "97d95c01221a17a2ce51f9180d65a671bf2998504a2ff0cccffe97e9b08444d8",
+        "narrativeqa": "0fb8d08ba5cdad4b74244224b0dc2e8b41ee6b850d954a13eb2d282621ce2f71",
+        "hotpotqa": "26a90a291cca5b2515bf466c6c3d1f57d8a4e67b0cf5aa39e1834913a15e6309",
+        "triviaqa": "3c4cc5ca18f2578d1f6458d1219387c741c6fafad7e8518addea898c08ff0d73"
+      },
+      "methods": [
+        "tieredkv"
+      ]
+    }
+  },
+  "equal_total": {
+    "baseline": "snapkv",
+    "per_task": {
+      "multifieldqa_en": {
+        "n": 25,
+        "mean_difference": -8.624973544973546,
+        "se": 3.5729248479671427
+      },
+      "qasper": {
+        "n": 25,
+        "mean_difference": -1.1095085012565489,
+        "se": 2.09997529596362
+      },
+      "narrativeqa": {
+        "n": 25,
+        "mean_difference": 0.528992111453911,
+        "se": 3.0572301789035015
+      },
+      "hotpotqa": {
+        "n": 25,
+        "mean_difference": -10.11897439304089,
+        "se": 4.786718996401423
+      },
+      "triviaqa": {
+        "n": 25,
+        "mean_difference": -7.0285714285714285,
+        "se": 4.587050028803071
+      },
+      "gov_report": {
+        "n": 10,
+        "mean_difference": -4.162200954236997,
+        "se": 1.8137162923474353
+      }
+    },
+    "scores": {
+      "multifieldqa_en": {
+        "tieredkv": 45.98,
+        "snapkv": 54.61
+      },
+      "qasper": {
+        "tieredkv": 10.43,
+        "snapkv": 11.54
+      },
+      "narrativeqa": {
+        "tieredkv": 19.51,
+        "snapkv": 18.98
+      },
+      "hotpotqa": {
+        "tieredkv": 27.2,
+        "snapkv": 37.32
+      },
+      "triviaqa": {
+        "tieredkv": 68.84,
+        "snapkv": 75.87
+      },
+      "gov_report": {
+        "tieredkv": 24.32,
+        "snapkv": 28.49
+      }
+    },
+    "task_balanced_mean_difference": -5.08587278510425,
+    "paired_bootstrap_95pct_interval": [
+      -8.038117831280191,
+      -2.516538564354855
+    ],
+    "bootstrap_draws": 10000,
+    "seed": 0,
+    "tiered_configuration": {
+      "model": "../models/mistral-7b-instruct",
+      "budget": 1024,
+      "tiered_vram_budget": 341,
+      "tiered_stt_budget": 683,
+      "tiered_stt_expose": null,
+      "sttram_bifurcation_frac": 0.75,
+      "sink": 4,
+      "recent": 128,
+      "max_samples": 25,
+      "tasks": [
+        "multifieldqa_en",
+        "qasper",
+        "narrativeqa",
+        "hotpotqa",
+        "triviaqa"
+      ],
+      "max_ctx": 31500,
+      "seed": 0,
+      "tiered_kv_dtype": "bfloat16",
+      "page_size": 16,
+      "promote_top_pages": 2,
+      "stt_live_floor": 1,
+      "write_aware_lambda": 0.0,
+      "runtime": {
+        "git_revision": "be7e700d84d46b47e32ba5b9870c8b71783b9e53",
+        "source_sha256": "c5db18225a65ab143ed3194d51c8d701606bdfca04b34665f3d87c824ecce727",
+        "packages": {
+          "torch": "2.5.1+cu124",
+          "transformers": "5.15.0",
+          "datasets": "2.19.2",
+          "numpy": "2.2.6",
+          "accelerate": "1.14.0",
+          "huggingface_hub": "1.27.0",
+          "rouge": "1.0.1"
+        }
+      },
+      "protocol": "task_chat_exclusions_v2",
+      "data_dir": "../hf_cache/datasets/downloads/extracted/5def9c7eaf83951e1cee75902d8611ef764ad88dd289e8f0bf97ff658a3eb83a/data",
+      "dataset_sha256": {
+        "multifieldqa_en": "678a51335e3c90e0dd43bf1131045e4f2859cc693e7eded89cc6a1ee8d18faff",
+        "qasper": "97d95c01221a17a2ce51f9180d65a671bf2998504a2ff0cccffe97e9b08444d8",
+        "narrativeqa": "0fb8d08ba5cdad4b74244224b0dc2e8b41ee6b850d954a13eb2d282621ce2f71",
+        "hotpotqa": "26a90a291cca5b2515bf466c6c3d1f57d8a4e67b0cf5aa39e1834913a15e6309",
+        "triviaqa": "3c4cc5ca18f2578d1f6458d1219387c741c6fafad7e8518addea898c08ff0d73"
+      },
+      "methods": [
+        "tieredkv"
+      ]
+    }
+  }
+}

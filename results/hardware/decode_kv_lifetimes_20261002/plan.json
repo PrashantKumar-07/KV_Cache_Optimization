@@ -1,0 +1,21 @@
+{
+  "scope": "Untimed grouped-KV storage lifetimes inside all50decodepolicycalls; weak StorageImpl handles and installedTorchDispatchMode, no newdependency or payloadretention.",
+  "hypotheses": [
+    "All-layer gather old/new overlap exceeds512MiB (alreadyverified).",
+    "Visible assembly rawpast+return tuple+hot+root independently exceeds512MiB.",
+    "QueuedD2H/read/casting add transients; trackF32KV and BF16storage."
+  ],
+  "fixed": {
+    "model": "../models/mistral-7b-instruct",
+    "seed": 0,
+    "context": 16384,
+    "decode": 50,
+    "hot": 991,
+    "cold": 1090,
+    "quota": 32,
+    "append": 1
+  },
+  "acceptance": "Observer selfcheck proves aliasdedup and view lifetime, no strongpayloadretention. All50steps/all51boundaries predictions/counters/transfers match frozenprior. Independentrecomputebirth/end interval sums, phase peaks and ceilingfailures. No speedmeasurement or physicalequalresourceclaim.",
+  "next": "Chooseminimalmaterialization/storage candidate onlyafterobservedlifetimes; require chargedstageheadroom and wholemodel+integrity gates, no tuninginspectedquality.",
+  "prior_sha256": "fec1ba2d4e0d8e6b3b020e16c94468d12dfb3f6e42cafba9ff8124d2eea74dc5"
+}

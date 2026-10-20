@@ -1,0 +1,91 @@
+{
+  "verified": true,
+  "geometries": {
+    "shared": {
+      "summary": {
+        "fused_bounded": {
+          "median_ms": 62.05677334219217,
+          "p95_ms": 69.19804411008954,
+          "ttft_ms": 2219.167737290263,
+          "prefill_gpu_peak_gb": 18.627831296,
+          "decode_gpu_peak_gb": 14.89888256,
+          "block_median_ms": [
+            62.15640716254711,
+            62.00219225138426,
+            61.55636999756098
+          ]
+        },
+        "native_reuse": {
+          "median_ms": 62.88539990782738,
+          "p95_ms": 69.3561096675694,
+          "ttft_ms": 2217.7620390430093,
+          "prefill_gpu_peak_gb": 18.627831296,
+          "decode_gpu_peak_gb": 14.780363776,
+          "block_median_ms": [
+            62.88636103272438,
+            62.222217209637165,
+            62.724837101995945
+          ]
+        }
+      },
+      "regression_guards": {
+        "median": true,
+        "p95": true,
+        "ttft": true,
+        "prefill_peak": true
+      },
+      "advance_to_integrity": true,
+      "decode_median_change_pct": 1.335271753602152,
+      "whole_request_peak_change_pct": 0.0
+    },
+    "default": {
+      "summary": {
+        "fused_bounded": {
+          "median_ms": 67.98801477998495,
+          "p95_ms": 73.66831777617335,
+          "ttft_ms": 2297.571918927133,
+          "prefill_gpu_peak_gb": 18.627831296,
+          "decode_gpu_peak_gb": 14.911330304,
+          "block_median_ms": [
+            67.88041535764933,
+            67.98801477998495,
+            67.31726042926311
+          ]
+        },
+        "native_reuse": {
+          "median_ms": 69.18213982135057,
+          "p95_ms": 73.32379063591361,
+          "ttft_ms": 2299.812967889011,
+          "prefill_gpu_peak_gb": 18.627831296,
+          "decode_gpu_peak_gb": 14.789913088,
+          "block_median_ms": [
+            67.01682414859533,
+            69.5629445835948,
+            66.999358125031
+          ]
+        }
+      },
+      "regression_guards": {
+        "median": true,
+        "p95": true,
+        "ttft": true,
+        "prefill_peak": true
+      },
+      "advance_to_integrity": true,
+      "decode_median_change_pct": 1.7563758042206556,
+      "whole_request_peak_change_pct": 0.0
+    }
+  },
+  "advance_to_mandatory_integrity": true,
+  "stage_4ms_speed_gate_passed": false,
+  "full_suite_tests": 182,
+  "primary_sha256": "afd848223cefb31f79f1d644d437a44de2a00cac78df08b147b01423ea811e13",
+  "verifier_sha256": "ece661e45d75ebe94f61e0af246069558a9213da8aec2d00cffda092a87beccd",
+  "evidence_sha256": {
+    "abba_shared.json": "bed379b543aa5624c5173c50048ba9cda65a5619ba15dcb395d653b7ffc93074",
+    "abba_default.json": "9987e33da08557d6c6c3dcd97603364d7cf2a6c3269d3522f7e506a10755854d",
+    "timing_plan.json": "f59034203a24749b4afeabe3c2498a733e84e18b5262593dcfe013c66a3c9e86",
+    "full_suite.txt": "9d225552f46cca4996957722e084524cd2dc9005d80a540c18455c07e727c2a8"
+  },
+  "limitations": "Resource candidate regression checks; no new4ms-stage/5%macro speedclaim, independent quality or SnapKV superiority. Prefill unchanged; whole-requestpeak includes originalfullprefill, not just decode/knownKV. Legacy history/synchronization instrumented singlemodel/seed/teacherstream. Native delayedstream/freegeneration/interleaved/CLI gates mandatory beforeordinaryadoption."
+}

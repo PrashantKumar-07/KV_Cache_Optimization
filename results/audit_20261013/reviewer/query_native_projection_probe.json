@@ -1,0 +1,42 @@
+{
+  "CPU_only": true,
+  "torch": "2.5.1+cu124",
+  "seed": 15,
+  "all_checks_passed": true,
+  "two_layer_decode_event_order": [
+    [
+      0,
+      "attention_before"
+    ],
+    [
+      0,
+      "actual_q_projection"
+    ],
+    [
+      0,
+      "cache_append"
+    ],
+    [
+      1,
+      "attention_before"
+    ],
+    [
+      1,
+      "actual_q_projection"
+    ],
+    [
+      1,
+      "cache_append"
+    ]
+  ],
+  "actual_projection_equals_duplicate": true,
+  "in_place_tail_keeps_root_and_reserved_append": true,
+  "dense_concat_forces_reserved_append_fallback": true,
+  "limitation": "Tiny CPU Mistral supports event ordering and buffer mechanics; no native CPU-controller/query-selector implementation or GPU performance proof",
+  "source_sha256": {
+    "experiments/evaluate_query_selection.py": "0cd65ac47ff3b46ddfd280d4504e5bfc213b839ed81c21312fd9e9cc6581beb3",
+    "experiments/cpu_phase_policy.py": "82199fe8f31733178969cca892e16cefbb8aa918396f47e6aff02210052fd1fc",
+    "experiments/cold_boundary.py": "0797c81d65bbb6591acf621246b3edb386fc25d25be89dedd13aa0652ab8c347",
+    "experiments/reserved_decode_append.py": "942d06e6f68f0bba6d85b9f79e3fd45225ee345055eef6ddfe6f5f8d05ce9835"
+  }
+}

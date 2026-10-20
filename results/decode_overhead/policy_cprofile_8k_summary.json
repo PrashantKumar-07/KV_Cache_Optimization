@@ -1,0 +1,125 @@
+{
+  "scope": "cProfile whole 8K prefill plus 16 full-loop decode tokens; reported cache methods mainly run during decode",
+  "config": {
+    "model": "../models/mistral-7b-instruct",
+    "ctx_lens": [
+      8192
+    ],
+    "budget": 1024,
+    "tiered_vram_budget": null,
+    "tiered_stt_budget": null,
+    "sttram_bifurcation_frac": 0.75,
+    "n_decode": 16,
+    "n_repeat": 1,
+    "n_warmup": 0,
+    "methods": [
+      "tieredkv"
+    ],
+    "device": "cuda:0",
+    "prompt_file": "results/remediation_v3/latency_prompt.txt",
+    "seed": 0,
+    "runtime": {
+      "git_revision": "be7e700d84d46b47e32ba5b9870c8b71783b9e53",
+      "source_sha256": "2ada6061dd4d3175fad9cb757de28ae8b68e46bc487213518f87a42e3c316b25",
+      "packages": {
+        "torch": "2.5.1+cu124",
+        "transformers": "5.14.1",
+        "datasets": "5.0.0",
+        "numpy": "2.2.6",
+        "accelerate": "1.14.0",
+        "huggingface_hub": "1.24.0",
+        "rouge": "1.0.1"
+      }
+    },
+    "timing_scope": "end_to_end_model_policy_token",
+    "prompt_kind": "real_text",
+    "prompt_sha256": "18695714f26e35cb8d2b039ae9efb3b7e64291cbd7bcd91956efc07e16a732cd",
+    "generation": "fixed_length_ignores_eos",
+    "schema_version": 2
+  },
+  "profile_artifact": "results/decode_overhead/policy_cprofile_8k.prof",
+  "observed_itl_ms": 112.813,
+  "rows": [
+    {
+      "function": "_decode_step",
+      "file": "longbench_eval.py",
+      "line": 788,
+      "calls": 16,
+      "self_cpu_s": 0.03100125,
+      "cumulative_cpu_s": 1.20006585
+    },
+    {
+      "function": "evict_and_demote",
+      "file": "tiered_kv_cache.py",
+      "line": 633,
+      "calls": 512,
+      "self_cpu_s": 0.45773904000000004,
+      "cumulative_cpu_s": 0.751116204
+    },
+    {
+      "function": "_visible_tuple",
+      "file": "longbench_eval.py",
+      "line": 663,
+      "calls": 17,
+      "self_cpu_s": 0.117603122,
+      "cumulative_cpu_s": 0.24944897100000002
+    },
+    {
+      "function": "update_scores",
+      "file": "longbench_eval.py",
+      "line": 918,
+      "calls": 16,
+      "self_cpu_s": 0.051507991,
+      "cumulative_cpu_s": 0.15332299100000002
+    },
+    {
+      "function": "_hard_protected_mask",
+      "file": "tiered_kv_cache.py",
+      "line": 601,
+      "calls": 512,
+      "self_cpu_s": 0.009737736,
+      "cumulative_cpu_s": 0.08590494800000001
+    },
+    {
+      "function": "promote",
+      "file": "tiered_kv_cache.py",
+      "line": 501,
+      "calls": 512,
+      "self_cpu_s": 0.028343788,
+      "cumulative_cpu_s": 0.083376908
+    },
+    {
+      "function": "resolve_promotion_indices",
+      "file": "tiered_kv_cache.py",
+      "line": 441,
+      "calls": 512,
+      "self_cpu_s": 0.029707788000000002,
+      "cumulative_cpu_s": 0.070859092
+    },
+    {
+      "function": "select_stt",
+      "file": "tiered_kv_cache.py",
+      "line": 154,
+      "calls": 1600,
+      "self_cpu_s": 0.0020628870000000002,
+      "cumulative_cpu_s": 0.064508883
+    },
+    {
+      "function": "index_stt_storage",
+      "file": "tiered_kv_cache.py",
+      "line": 138,
+      "calls": 1600,
+      "self_cpu_s": 0.060183209,
+      "cumulative_cpu_s": 0.060183209
+    },
+    {
+      "function": "append_tokens",
+      "file": "tiered_kv_cache.py",
+      "line": 611,
+      "calls": 512,
+      "self_cpu_s": 0.0067294500000000005,
+      "cumulative_cpu_s": 0.043152523000000005
+    }
+  ],
+  "limitations": "cProfile perturbs timing; cumulative times overlap and include called functions. GPU work is asynchronous and not represented as kernel duration. Single model/prompt/run."
+}

@@ -1,0 +1,292 @@
+{
+  "config": {
+    "model": "../models/mistral-7b-instruct",
+    "prompt_file": "results/remediation_v3/latency_prompt.txt",
+    "stream_file": "results/shadow_ablation_full/fixed_stream_20260929.json",
+    "output": "results/hardware/cpu_gather_abba_16k_20260929.json",
+    "ctx_len": 16384,
+    "decode": 10,
+    "warmup": 1,
+    "repeat": 1,
+    "order": [
+      "cpu",
+      "cpu_fast",
+      "cpu_fast",
+      "cpu"
+    ],
+    "runtime": {
+      "git_revision": "be7e700d84d46b47e32ba5b9870c8b71783b9e53",
+      "source_sha256": "e887226ca112a706c84c8513657b449e921fd53a28241dcd00a126ad0b984558",
+      "packages": {
+        "torch": "2.5.1+cu124",
+        "transformers": "5.14.1",
+        "datasets": "5.0.0",
+        "numpy": "2.2.6",
+        "accelerate": "1.14.0",
+        "huggingface_hub": "1.24.0",
+        "rouge": "1.0.1"
+      }
+    },
+    "prompt_sha256": "18695714f26e35cb8d2b039ae9efb3b7e64291cbd7bcd91956efc07e16a732cd",
+    "stream_sha256": "bb85d5e5270735a2a1ff089c74f2d7eeb1a7ddd41b4361c97e190913d4f32f67",
+    "driver_sha256": "20c49bbeda06a1df0cb917db3029670922988c7fcbaaa899ba4e44bfedcd822e",
+    "profile_sha256": "0752b0aa00502ee1557ad019ecd6b2377091578295661abf17a4385f7ee3e9c7",
+    "tier": "CPU DRAM pageable synchronous; not STT-RAM",
+    "byte_scope": "explicit cold K/V GPU-CPU payload; excludes CPU compaction and allocator traffic"
+  },
+  "results": {
+    "0_cpu": {
+      "timing_scope": "end_to_end_model_policy_token",
+      "ttft_ms": 2077.291,
+      "itl_ms": 104.516,
+      "mean_itl_ms": 105.48232048749924,
+      "forward_ms": 25.507432408630848,
+      "peak_memory_gb": 14.909125632,
+      "prefill_peak_memory_gb": 18.594276864,
+      "trials": [
+        {
+          "ttft_ms": 2077.2913731634617,
+          "step_ms": [
+            134.5720812678337,
+            83.4181010723114,
+            127.5214683264494,
+            83.31724628806114,
+            126.09267048537731,
+            83.52948352694511,
+            127.19779275357723,
+            82.72899873554707,
+            125.50264596939087,
+            80.94271644949913
+          ],
+          "forward_ms": [
+            27.51004323363304,
+            25.515835732221603,
+            25.518186390399933,
+            25.609659031033516,
+            25.451352819800377,
+            25.583146139979362,
+            25.43480135500431,
+            25.499029085040092,
+            25.467488914728165,
+            25.454141199588776
+          ],
+          "prefill_peak_memory_gb": 18.594276864,
+          "decode_peak_memory_gb": 14.909125632,
+          "predicted_token_ids": [
+            418,
+            18577,
+            3857,
+            4241,
+            7616,
+            369,
+            460,
+            312,
+            2031,
+            286
+          ],
+          "prefill_forward_ms": 1807.1056716144085,
+          "paid_writes": 1296,
+          "writes_saved": 4016,
+          "demoted": 5312,
+          "promoted": 4992,
+          "decode_steps": 10
+        }
+      ],
+      "final_gpu_allocated_gb": 14.628033536,
+      "cold_payload_bytes": 206635008,
+      "cold_payload_device": "cpu",
+      "explicit_h2d_payload_bytes": 66584576,
+      "explicit_d2h_payload_bytes": 206635008
+    },
+    "1_cpu_fast": {
+      "timing_scope": "end_to_end_model_policy_token",
+      "ttft_ms": 2061.112,
+      "itl_ms": 94.143,
+      "mean_itl_ms": 96.93786520510912,
+      "forward_ms": 25.191745720803738,
+      "peak_memory_gb": 14.909125632,
+      "prefill_peak_memory_gb": 18.594276864,
+      "trials": [
+        {
+          "ttft_ms": 2061.1120834946632,
+          "step_ms": [
+            131.80631026625633,
+            74.26775619387627,
+            122.59272485971451,
+            74.02735948562622,
+            114.65279385447502,
+            73.73877614736557,
+            116.2821464240551,
+            73.81933182477951,
+            114.0176635235548,
+            74.17378947138786
+          ],
+          "forward_ms": [
+            30.483428388834,
+            25.35644918680191,
+            25.09191818535328,
+            25.633420795202255,
+            25.08366107940674,
+            25.201356038451195,
+            25.044642388820648,
+            25.18213540315628,
+            25.11189505457878,
+            25.207778438925743
+          ],
+          "prefill_peak_memory_gb": 18.594276864,
+          "decode_peak_memory_gb": 14.909125632,
+          "predicted_token_ids": [
+            418,
+            18577,
+            3857,
+            4241,
+            7616,
+            369,
+            460,
+            312,
+            2031,
+            286
+          ],
+          "prefill_forward_ms": 1811.8457105010748,
+          "paid_writes": 1296,
+          "writes_saved": 4016,
+          "demoted": 5312,
+          "promoted": 4992,
+          "decode_steps": 10
+        }
+      ],
+      "final_gpu_allocated_gb": 14.628033536,
+      "cold_payload_bytes": 206635008,
+      "cold_payload_device": "cpu",
+      "explicit_h2d_payload_bytes": 66584576,
+      "explicit_d2h_payload_bytes": 206635008
+    },
+    "2_cpu_fast": {
+      "timing_scope": "end_to_end_model_policy_token",
+      "ttft_ms": 2085.175,
+      "itl_ms": 94.987,
+      "mean_itl_ms": 96.58935721963644,
+      "forward_ms": 25.21527372300625,
+      "peak_memory_gb": 14.909125632,
+      "prefill_peak_memory_gb": 18.594276864,
+      "trials": [
+        {
+          "ttft_ms": 2085.175286978483,
+          "step_ms": [
+            127.74205580353737,
+            74.81221109628677,
+            117.50941164791584,
+            74.75720345973969,
+            116.33486673235893,
+            74.93394427001476,
+            114.92819152772427,
+            75.04625990986824,
+            115.60052447021008,
+            74.22890327870846
+          ],
+          "forward_ms": [
+            26.10539272427559,
+            25.218451395630836,
+            25.149071589112282,
+            25.226473808288574,
+            25.18065646290779,
+            25.240065529942513,
+            25.200728327035904,
+            25.192495435476303,
+            25.238703936338425,
+            25.21209605038166
+          ],
+          "prefill_peak_memory_gb": 18.594276864,
+          "decode_peak_memory_gb": 14.909125632,
+          "predicted_token_ids": [
+            418,
+            18577,
+            3857,
+            4241,
+            7616,
+            369,
+            460,
+            312,
+            2031,
+            286
+          ],
+          "prefill_forward_ms": 1829.9532402306795,
+          "paid_writes": 1296,
+          "writes_saved": 4016,
+          "demoted": 5312,
+          "promoted": 4992,
+          "decode_steps": 10
+        }
+      ],
+      "final_gpu_allocated_gb": 14.628033536,
+      "cold_payload_bytes": 206635008,
+      "cold_payload_device": "cpu",
+      "explicit_h2d_payload_bytes": 66584576,
+      "explicit_d2h_payload_bytes": 206635008
+    },
+    "3_cpu": {
+      "timing_scope": "end_to_end_model_policy_token",
+      "ttft_ms": 2107.188,
+      "itl_ms": 104.286,
+      "mean_itl_ms": 105.45341037213802,
+      "forward_ms": 25.453207083046436,
+      "peak_memory_gb": 14.909125632,
+      "prefill_peak_memory_gb": 18.594276864,
+      "trials": [
+        {
+          "ttft_ms": 2107.1881726384163,
+          "step_ms": [
+            132.77467526495457,
+            80.93692734837532,
+            131.05164282023907,
+            83.39250087738037,
+            127.5889240205288,
+            82.58785493671894,
+            126.73081643879414,
+            82.2181198745966,
+            125.17884373664856,
+            82.07379840314388
+          ],
+          "forward_ms": [
+            25.43969266116619,
+            25.461919605731964,
+            25.308959186077118,
+            26.93360485136509,
+            25.39348602294922,
+            25.53216926753521,
+            25.417497381567955,
+            25.44449456036091,
+            25.469886139035225,
+            25.465842336416245
+          ],
+          "prefill_peak_memory_gb": 18.594276864,
+          "decode_peak_memory_gb": 14.909125632,
+          "predicted_token_ids": [
+            418,
+            18577,
+            3857,
+            4241,
+            7616,
+            369,
+            460,
+            312,
+            2031,
+            286
+          ],
+          "prefill_forward_ms": 1846.5491309762,
+          "paid_writes": 1296,
+          "writes_saved": 4016,
+          "demoted": 5312,
+          "promoted": 4992,
+          "decode_steps": 10
+        }
+      ],
+      "final_gpu_allocated_gb": 14.628033536,
+      "cold_payload_bytes": 206635008,
+      "cold_payload_device": "cpu",
+      "explicit_h2d_payload_bytes": 66584576,
+      "explicit_d2h_payload_bytes": 206635008
+    }
+  },
+  "policy_parity_passed": true
+}

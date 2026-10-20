@@ -1,0 +1,123 @@
+{
+  "independent_reviewer": "architecture_audit",
+  "status": "APPROVED: full frozen1474-row/seven-arm descriptive evaluation and preregistered five-task unconsumed contrast",
+  "reviewed_scope": "new full six-task source-matched descriptive evaluation, seven distinct arms",
+  "population": 1474,
+  "original135_subset_verified": true,
+  "raw_historical_values_reused": false,
+  "new_prediction_requirement": "All seven arms must generate fresh predictions. Share these new common controls between hot1024/hot992 panels only.",
+  "required_common_protocol": [
+    "identical frozen weights/tokenizer/runtime/source/data",
+    "BF16 batch1 seed0",
+    "identical templates/chat exclusions/31500 middle truncation/absolute RoPE positions",
+    "same task maxgen greedy EOS metric and first-line rules",
+    "full SDPA prefill with last-logit slicing; eager decode for all",
+    "all arms request output attention weights in quality screen, as specified by root; not a latency experiment",
+    "exact paired prompt/token IDs and every prediction; no silent missing/error row removal"
+  ],
+  "partition_requirement": "Use partitions.json to report all1474 descriptively, original135 separately, and unconsumed-as-of-inventory stratum separately. Freeze final source/config/analysis before unconsumed evaluation; no tuning after unblinding.",
+  "independent_six_task_claim_allowed": false,
+  "independent_six_task_blocker": "NarrativeQA contains no unconsumed normalized target-document group.",
+  "baseline_matrix": [
+    {
+      "arm": "full",
+      "scope": "full retained reference",
+      "limitation": "unconstrained memory; not guaranteed upper bound on task accuracy"
+    },
+    {
+      "arm": "streamingllm",
+      "scope": "sink/window functional control,1024 rows",
+      "limitation": "adapted absolute-position implementation, not upstream rolling-position fidelity proof"
+    },
+    {
+      "arm": "h2o",
+      "scope": "adapted bounded1024 head-averaged heavy hitter",
+      "limitation": "key-proxy prompt initialization, not faithful upstream H2O"
+    },
+    {
+      "arm": "snapkv",
+      "scope": "adapted bounded1024 key-proxy pooled prompt plus H2O decode",
+      "limitation": "not upstream SnapKV"
+    },
+    {
+      "arm": "tiered_hot1024",
+      "scope": "actual-query prompt initialization,1024hot+2048coldcap,32coldquota",
+      "limitation": "up to1056 cached attended rows; extra cold memory and staging, not equal total VRAM/whole memory"
+    },
+    {
+      "arm": "tiered_hot992",
+      "scope": "actual-query prompt initialization,992hot+2048coldcap,32coldquota",
+      "limitation": "at most1024 cached attended rows, extra cold memory; actual width may be smaller"
+    },
+    {
+      "arm": "faithful_snap1024",
+      "scope": "vendored actual-query per-head selector,32-head expanded KV and growing decode",
+      "limitation": "fidelity comparator, not equal-memory/equal-attended to bounded8-head controls"
+    }
+  ],
+  "analysis_requirements": [
+    "task-balanced six-task aggregate plus every task/sample count",
+    "unrounded per-sample rescore from raw predictions",
+    "paired target-document cluster bootstrap with seed/replicates frozen",
+    "freeze all primary contrasts and multiplicity treatment before final outcomes",
+    "retain negatives and consumed-data labels; do not infer SOTA from adapted controls",
+    "free-generation costs have variable decode length; analytical and actual measured timings remain separate"
+  ],
+  "source_citations": [
+    "experiments/longbench_eval.py:154",
+    "experiments/longbench_eval.py:166",
+    "experiments/longbench_eval.py:196",
+    "experiments/longbench_eval.py:229",
+    "experiments/longbench_eval.py:346",
+    "experiments/longbench_eval.py:1117",
+    "experiments/longbench_eval.py:1281",
+    "experiments/longbench_eval.py:1343",
+    "experiments/snapkv_adapter.py:22",
+    "experiments/snapkv_adapter.py:82",
+    "experiments/audit_unused_documents.py:42"
+  ],
+  "detailed_review": "results/audit_20261015_full_protocol_review/review.md",
+  "review_sha256": "52b975a2b486621c60e8e0cfa5515a5bb2d239dc696037397ae4399eb9622236",
+  "GPU_jobs_launched": false,
+  "product_source_modified": false,
+  "blocking_findings": [],
+  "runner_review": {
+    "runner_sha256_at_review": "8cdc034a2e6131c5ccadd7002a0affed8b6e5a2596357b2fccd62e17e4b46f10",
+    "preparation_sha256_at_review": "81141f48abd69ed3d7ff0b65b3817b42099ea7c884f5188a584af6a1fb5dd20a",
+    "partition_sha256": "9bd8b75cd089ddbd6a157b7ea36168433c8a28aea63e7ea433128d9a088fe4aa",
+    "checked": [
+      "seven correct hardcoded arm configurations",
+      "common input IDs/wrapping/truncation, task caps/metrics and EOS",
+      "full SDPA prefill plus eager output-attention decode for every arm",
+      "actual-Q Tiered PromptQueryCapture and faithful Snap upstream selection/growth",
+      "first predicted token equality across uncompressed prefill arms",
+      "finite logits every forward and completed output-only records",
+      "try/finally adapter/hook/head-group cleanup and perrequest policy reset",
+      "modulo row sharding and rotated arm order",
+      "source/model/runtime/dataset validation at worker startup",
+      "exact completed-request resume validation and preserve failed attempts",
+      "candidate/config/analysis lock before any unconsumed outcomes",
+      "physical payload geometry kept separate from whole-memory/timing claims"
+    ],
+    "nonblocking_hardening_recommendations": [],
+    "tiny_CPU_check": "Builder evidence cpu_smoke.json reviewed: actual1100-token random2-layer BF16 Mistral, all7 arms3 generated tokens; finite, firsttoken equal, hooks/groups restored, expected widths and faithful expanded heads. Not full-model quality evidence.",
+    "fidelity_limitations": "Streaming/H2O/Snap adapted labels required; faithfulSnap additional comparator has expanded/growing resources; full1474 is descriptive.",
+    "final_runner_sha256": "8cdc034a2e6131c5ccadd7002a0affed8b6e5a2596357b2fccd62e17e4b46f10",
+    "final_preparation_sha256": "81141f48abd69ed3d7ff0b65b3817b42099ea7c884f5188a584af6a1fb5dd20a",
+    "frozen_plan_sha256": "05c691eacc4982df1aeb2a35508a7d42fd871430a72601b9cbbbb92d8a2678ea",
+    "partition_startup_hash_guard_verified": true,
+    "exact_two_shards_enforced": true,
+    "tiny_CPU_evidence_sha256": "d33bd511379787d071bf2a9050d5eac7dec21f570939a0cb5eecef4254f2ddc9"
+  },
+  "conditions_before_launch_remaining": [],
+  "primary_contrast_frozen": {
+    "population": "unconsumed_as_of_inventory five-task stratum; no NarrativeQA",
+    "candidate": "tiered_hot992",
+    "control": "snapkv_faithful",
+    "endpoint": "equal-task macro mean score difference",
+    "interval": "paired target-document cluster bootstrap,10000 draws,seed0,95% percentile interval",
+    "interpretation": "one preregistered quality contrast under disclosed unequal cache geometry, not a SOTA or equal-physical-memory test"
+  },
+  "secondary_contrasts_frozen": "All other method/task/population comparisons are exploratory, with unadjusted95% intervals labeled descriptive; no choosing significant subset as primary and no formal multiple-comparison superiority claim.",
+  "no_further_tuning_after_unblinding": true
+}

@@ -1,0 +1,8 @@
+{
+  "verified_local_source": true,
+  "path": "/data/nishant/Nishant/Prashant/Project/venv_kvcache/lib/python3.10/site-packages/transformers/models/mistral/modeling_mistral.py",
+  "sha256": "1788d06fe8af9f66043ab900e8739c272ee2ce30b1f011e697c33a77b037d291",
+  "finding": "Mistral forward accepts logits_to_keep; slices hidden states before lm_head. Current callers require only last prompt logits for generation, no prompt logits for teacher stream.",
+  "next": "Preregister a caller-only logits_to_keep=1 control/candidate with exact prediction/state/trajectory/transfer/resource gates before implementation. Check support explicitly for other models.",
+  "not_measured": "No allocation, timing, precision or quality improvement measured for this option yet."
+}

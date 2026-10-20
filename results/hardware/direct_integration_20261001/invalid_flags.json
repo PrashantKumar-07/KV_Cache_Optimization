@@ -1,0 +1,24 @@
+{
+  "passed": true,
+  "checks": [
+    {
+      "arguments": [
+        "--strategy",
+        "lru",
+        "--cpu-direct-shared"
+      ],
+      "returncode": 2,
+      "error": "--cpu-direct-shared requires --cpu-batched-scores"
+    },
+    {
+      "arguments": [
+        "--strategy",
+        "query",
+        "--cpu-direct-shared",
+        "--cpu-batched-scores"
+      ],
+      "returncode": 2,
+      "error": "--cpu-batched-scores requires --strategy lru"
+    }
+  ]
+}

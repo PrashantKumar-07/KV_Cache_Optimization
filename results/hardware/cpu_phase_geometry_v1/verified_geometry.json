@@ -1,0 +1,48 @@
+{
+  "verified": true,
+  "prediction_state_counters_native_KV_and_phase_peaks_replayed": true,
+  "owned_hooks_pinned_roots_released": true,
+  "KV_boundaries": 51,
+  "forward_boundaries": 50,
+  "candidate_distinct_GPU_KV_mib": 128,
+  "candidate_distinct_CPU_KV_mib": 144.25,
+  "candidate_total_resident_KV_root_mib": 272.25,
+  "candidate_scoped_active_plus_pinned_CPU_mib": 433.3328552246094,
+  "faithful_snap_resident_KV_mib_range": [
+    487.0,
+    512.0
+  ],
+  "candidate_forward_width_range": [
+    1024,
+    1024
+  ],
+  "faithful_snap_forward_width_range": [
+    975,
+    1024
+  ],
+  "unequal_resource_boundaries": 51,
+  "unequal_width_steps": 49,
+  "equal_actual_resident_KV": false,
+  "equal_forward_width": false,
+  "matched_resource_P0_complete": false,
+  "full_goal_complete": false,
+  "ordinary_adoption": false,
+  "algebraic_finding": "For fixed-capacity candidate roots, resident KV is constant272.25MiB. Faithful SnapKV grows0.5MiB/step; no single integer prompt capacity can match this vector across51 boundaries. Its row granularity0.5MiB also cannot equal272.25MiB at one boundary. Attended model heads remain32 in both; stored KV heads8 vs32 are different storage semantics.",
+  "next": "Do not launch a claimed equal-resource quality/latency comparison with these unchanged fixed capacities. A legitimate ownership/retention comparison design must account for growing faithful baseline and grouped-head storage; report physical allocations and attention geometry separately without padding or modifying the faithful baseline.",
+  "limits": "Diagnostic only. Observer snapshots exclude external/unowned/transient owners, native container workspace and driver allocations; process peaks retain the existing caller phase resets. Instrumented times are invalid. No quality tuning or timing claim.",
+  "evidence_sha256": {
+    "plan.json": "fa1053ddf7e24487611e5187e9fd4fb03839bc25fa259e4f357eb23afe3ef2c1",
+    "gpu_implementation.json": "3b7df97a96c562fe7562c7095c662626faf44c364fa76419b529b0b1ac56cff3",
+    "gpu_source.tar.gz": "9d5e031832b08eed3114804d620c4b1a380a91986d1bd734e45178117af0c4fe",
+    "resource.json": "fb55fe6b091d24eb2a3ecff9cf211d1e94ee4027d2f82a32f86862b850623ef2",
+    "resource_cleanup.json": "7dcc251164d1c3e7d51386b8296eb061b0f22569fcf063df908ab8436e999d5b",
+    "gpu_job.json": "d8c1178233719bcbb5e413cc69efb7a9f2c36a500fbb8d08e1d205287f473150",
+    "gpu.log": "3716222e6a81705289536cf455bdf3a50f517a80bbb7bfbadd42a5087c91b90b",
+    "audit_resources.py": "6c617a1346fe25b7b95bdcac8bb399364461477fcf6e6ab31153596bfc9ebb57",
+    "verify_geometry.py": "12373f710b8f68c0346a9eb7de169a0a4491db9ad362db230f0ccb85a9d18454"
+  },
+  "external_evidence_sha256": {
+    "results/hardware/cpu_phase_controller_v1/resource.json": "f77776be90e84f67900237f906ebc135e3f16691e8482d754d1d2778f5282dad",
+    "results/hardware/snap_actual_envelope_v1/snap.json": "3dfb857f117ffa48012872d66ff7bb3e9d0a950d0fcbdc397b8a0328fe4d9a4b"
+  }
+}

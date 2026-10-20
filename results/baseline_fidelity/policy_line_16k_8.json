@@ -1,0 +1,671 @@
+{
+  "config": {
+    "runtime": {
+      "git_revision": "be7e700d84d46b47e32ba5b9870c8b71783b9e53",
+      "source_sha256": "a93b716ddb51dfc500b00043cf9eba2d98967d67eb9052b1ba0f38039bf057ec",
+      "packages": {
+        "torch": "2.5.1+cu124",
+        "transformers": "5.14.1",
+        "datasets": "5.0.0",
+        "numpy": "2.2.6",
+        "accelerate": "1.14.0",
+        "huggingface_hub": "1.24.0",
+        "rouge": "1.0.1"
+      }
+    },
+    "context": 16384,
+    "decode": 8,
+    "prompt_file": "results/remediation_v3/latency_prompt.txt",
+    "scope": "host line trace includes nested calls and GPU waits"
+  },
+  "observed_itl_ms": 109.88,
+  "observed_forward_ms": 25.529243983328342,
+  "calls": {
+    "_visible_tuple": 9,
+    "evict_and_demote": 256
+  },
+  "rows": [
+    {
+      "function": "evict_and_demote",
+      "line": 680,
+      "host_ms": 43.150025,
+      "source": "hard = self._hard_protected_mask()"
+    },
+    {
+      "function": "_visible_tuple",
+      "line": 788,
+      "host_ms": 36.025718,
+      "source": "order = torch.argsort(la, descending=True)[:n_stt_uni].tolist()"
+    },
+    {
+      "function": "evict_and_demote",
+      "line": 793,
+      "host_ms": 35.566872,
+      "source": "self.sram_k = self.sram_k[:, keep, :]"
+    },
+    {
+      "function": "evict_and_demote",
+      "line": 794,
+      "host_ms": 32.966204,
+      "source": "self.sram_v = self.sram_v[:, keep, :]"
+    },
+    {
+      "function": "evict_and_demote",
+      "line": 795,
+      "host_ms": 27.656589,
+      "source": "self.sram_pos = [self.sram_pos[i] for i in keep]"
+    },
+    {
+      "function": "evict_and_demote",
+      "line": 646,
+      "host_ms": 21.858048,
+      "source": "self.append_tokens(new_k, new_v, new_pos)"
+    },
+    {
+      "function": "evict_and_demote",
+      "line": 703,
+      "host_ms": 17.718348,
+      "source": "n_avail = int(torch.isfinite(cand_soft).sum().item())"
+    },
+    {
+      "function": "_visible_tuple",
+      "line": 805,
+      "host_ms": 16.230733,
+      "source": "vis_k = torch.cat([fast_k, cache.select_stt(cache.stt_k, sel)], dim=1)"
+    },
+    {
+      "function": "_visible_tuple",
+      "line": 786,
+      "host_ms": 14.013045,
+      "source": "la = (cache.stt_last_access[~cache.stt_shadow] if self.bool_live_gather"
+    },
+    {
+      "function": "evict_and_demote",
+      "line": 701,
+      "host_ms": 13.804803,
+      "source": "cand_soft[soft] = float(\"inf\")"
+    },
+    {
+      "function": "_visible_tuple",
+      "line": 714,
+      "host_ms": 13.45161,
+      "source": "live_by_layer = {"
+    },
+    {
+      "function": "_visible_tuple",
+      "line": 806,
+      "host_ms": 13.203841,
+      "source": "vis_v = torch.cat([fast_v, cache.select_stt(cache.stt_v, sel)], dim=1)"
+    },
+    {
+      "function": "evict_and_demote",
+      "line": 740,
+      "host_ms": 12.301468,
+      "source": "back = backup_by_pos.get(vpos, -1)"
+    },
+    {
+      "function": "evict_and_demote",
+      "line": 737,
+      "host_ms": 10.080401,
+      "source": "for victim in victims:"
+    },
+    {
+      "function": "evict_and_demote",
+      "line": 702,
+      "host_ms": 9.90913,
+      "source": "order = torch.argsort(cand_soft, stable=True)"
+    },
+    {
+      "function": "evict_and_demote",
+      "line": 758,
+      "host_ms": 9.809676,
+      "source": "self.stt_last_access[restored_backups] = self._t"
+    },
+    {
+      "function": "evict_and_demote",
+      "line": 739,
+      "host_ms": 9.623129,
+      "source": "vpos = self.sram_pos[victim]"
+    },
+    {
+      "function": "evict_and_demote",
+      "line": 741,
+      "host_ms": 9.525075,
+      "source": "if back >= 0:"
+    },
+    {
+      "function": "evict_and_demote",
+      "line": 738,
+      "host_ms": 9.504663,
+      "source": "demoted += 1"
+    },
+    {
+      "function": "evict_and_demote",
+      "line": 796,
+      "host_ms": 9.323995,
+      "source": "self.sram_cum = self.sram_cum[keep_mask]"
+    },
+    {
+      "function": "evict_and_demote",
+      "line": 797,
+      "host_ms": 7.296905,
+      "source": "self.sram_age = self.sram_age[keep_mask]"
+    },
+    {
+      "function": "evict_and_demote",
+      "line": 743,
+      "host_ms": 7.073712,
+      "source": "restored_backups.append(back)"
+    },
+    {
+      "function": "evict_and_demote",
+      "line": 792,
+      "host_ms": 6.951684,
+      "source": "keep = torch.where(keep_mask)[0].tolist()"
+    },
+    {
+      "function": "evict_and_demote",
+      "line": 748,
+      "host_ms": 6.933919,
+      "source": "writes_saved += 1"
+    },
+    {
+      "function": "evict_and_demote",
+      "line": 742,
+      "host_ms": 6.742275,
+      "source": "if cfg.batch_backup_updates:"
+    },
+    {
+      "function": "evict_and_demote",
+      "line": 705,
+      "host_ms": 5.856181,
+      "source": "victims = order[:take].tolist()"
+    },
+    {
+      "function": "evict_and_demote",
+      "line": 682,
+      "host_ms": 5.828797,
+      "source": "cand = self.sram_cum / self.sram_age.clamp(min=1)"
+    },
+    {
+      "function": "_visible_tuple",
+      "line": 789,
+      "host_ms": 4.920594,
+      "source": "sel = sorted(live[o] for o in order)"
+    },
+    {
+      "function": "evict_and_demote",
+      "line": 766,
+      "host_ms": 4.807354,
+      "source": "self.stt_k, self.sram_k[:, no_backup_victims, :])"
+    },
+    {
+      "function": "evict_and_demote",
+      "line": 732,
+      "host_ms": 4.728786,
+      "source": "shadow_idx0 = torch.where(self.stt_shadow)[0].tolist()"
+    },
+    {
+      "function": "evict_and_demote",
+      "line": 757,
+      "host_ms": 4.539676,
+      "source": "self.stt_shadow[restored_backups] = False"
+    },
+    {
+      "function": "evict_and_demote",
+      "line": 768,
+      "host_ms": 4.204951,
+      "source": "self.stt_v, self.sram_v[:, no_backup_victims, :])"
+    },
+    {
+      "function": "evict_and_demote",
+      "line": 798,
+      "host_ms": 4.145627,
+      "source": "self.sram_grace = self.sram_grace[keep_mask]"
+    },
+    {
+      "function": "evict_and_demote",
+      "line": 700,
+      "host_ms": 3.911302,
+      "source": "cand_soft = cand.clone()"
+    },
+    {
+      "function": "evict_and_demote",
+      "line": 765,
+      "host_ms": 3.445315,
+      "source": "self.stt_k = self.append_stt_storage("
+    },
+    {
+      "function": "_visible_tuple",
+      "line": 779,
+      "host_ms": 3.437584,
+      "source": "keep = list(range(n_sram))"
+    },
+    {
+      "function": "evict_and_demote",
+      "line": 733,
+      "host_ms": 3.375723,
+      "source": "backup_by_pos = {self.stt_pos[i]: i for i in shadow_idx0}"
+    },
+    {
+      "function": "evict_and_demote",
+      "line": 791,
+      "host_ms": 3.324521,
+      "source": "keep_mask[victims] = False"
+    },
+    {
+      "function": "evict_and_demote",
+      "line": 750,
+      "host_ms": 2.87757,
+      "source": "no_backup_victims.append(victim)"
+    },
+    {
+      "function": "evict_and_demote",
+      "line": 759,
+      "host_ms": 2.64851,
+      "source": "self.stt_peek_streak[restored_backups] = 0"
+    },
+    {
+      "function": "evict_and_demote",
+      "line": 767,
+      "host_ms": 2.559139,
+      "source": "self.stt_v = self.append_stt_storage("
+    },
+    {
+      "function": "evict_and_demote",
+      "line": 772,
+      "host_ms": 2.288282,
+      "source": "torch.full((len(no_backup_victims),), float(self._t),"
+    },
+    {
+      "function": "evict_and_demote",
+      "line": 790,
+      "host_ms": 2.040181,
+      "source": "keep_mask = torch.ones(len(self.sram_pos), dtype=torch.bool)"
+    },
+    {
+      "function": "evict_and_demote",
+      "line": 770,
+      "host_ms": 1.803935,
+      "source": "self.stt_last_access = torch.cat(["
+    },
+    {
+      "function": "_visible_tuple",
+      "line": 794,
+      "host_ms": 1.802246,
+      "source": "self._vis_stt_pos[layer_idx] = [cache.stt_pos[j] for j in sel]"
+    },
+    {
+      "function": "evict_and_demote",
+      "line": 889,
+      "host_ms": 1.593561,
+      "source": "self.sram_grace.fill_(False)"
+    },
+    {
+      "function": "_visible_tuple",
+      "line": 762,
+      "host_ms": 1.440752,
+      "source": "self._vis_sram_keep = {}"
+    },
+    {
+      "function": "_visible_tuple",
+      "line": 808,
+      "host_ms": 1.433983,
+      "source": "result.append((vis_k.unsqueeze(0).to(k.dtype), vis_v.unsqueeze(0).to(v.dtype)))"
+    },
+    {
+      "function": "evict_and_demote",
+      "line": 681,
+      "host_ms": 1.312428,
+      "source": "soft = hard | self.sram_grace"
+    },
+    {
+      "function": "evict_and_demote",
+      "line": 640,
+      "host_ms": 1.308618,
+      "source": "dropped = 0"
+    },
+    {
+      "function": "evict_and_demote",
+      "line": 704,
+      "host_ms": 1.169031,
+      "source": "take = min(n_over, n_avail)"
+    },
+    {
+      "function": "evict_and_demote",
+      "line": 769,
+      "host_ms": 1.168894,
+      "source": "self.stt_pos += [self.sram_pos[v] for v in no_backup_victims]"
+    },
+    {
+      "function": "evict_and_demote",
+      "line": 677,
+      "host_ms": 1.144792,
+      "source": "n_over = len(self.sram_pos) - cfg.sram_capacity"
+    },
+    {
+      "function": "evict_and_demote",
+      "line": 775,
+      "host_ms": 1.133747,
+      "source": "self.stt_shadow = torch.cat("
+    },
+    {
+      "function": "evict_and_demote",
+      "line": 639,
+      "host_ms": 1.107796,
+      "source": "cfg = self.cfg"
+    },
+    {
+      "function": "evict_and_demote",
+      "line": 731,
+      "host_ms": 0.982793,
+      "source": "if cfg.inclusive and self.stt_shadow.numel():"
+    },
+    {
+      "function": "evict_and_demote",
+      "line": 784,
+      "host_ms": 0.97728,
+      "source": "self.stt_peek_streak = torch.cat(["
+    },
+    {
+      "function": "evict_and_demote",
+      "line": 641,
+      "host_ms": 0.968695,
+      "source": "demoted = 0"
+    },
+    {
+      "function": "evict_and_demote",
+      "line": 781,
+      "host_ms": 0.955219,
+      "source": "self.stt_was_vram_resident = torch.cat("
+    },
+    {
+      "function": "evict_and_demote",
+      "line": 678,
+      "host_ms": 0.944378,
+      "source": "victims = []"
+    },
+    {
+      "function": "evict_and_demote",
+      "line": 684,
+      "host_ms": 0.93392,
+      "source": "if cfg.write_aware_lambda > 0 and cfg.inclusive:"
+    },
+    {
+      "function": "evict_and_demote",
+      "line": 679,
+      "host_ms": 0.888343,
+      "source": "if n_over > 0:"
+    },
+    {
+      "function": "evict_and_demote",
+      "line": 642,
+      "host_ms": 0.868149,
+      "source": "writes_saved = 0"
+    },
+    {
+      "function": "evict_and_demote",
+      "line": 818,
+      "host_ms": 0.863442,
+      "source": "n_over = len(self.stt_pos) - cfg.sttram_capacity"
+    },
+    {
+      "function": "evict_and_demote",
+      "line": 643,
+      "host_ms": 0.848801,
+      "source": "reclaimed = 0"
+    },
+    {
+      "function": "evict_and_demote",
+      "line": 776,
+      "host_ms": 0.846216,
+      "source": "[self.stt_shadow, torch.zeros(len(no_backup_victims), dtype=torch.bool)]"
+    },
+    {
+      "function": "evict_and_demote",
+      "line": 644,
+      "host_ms": 0.826547,
+      "source": "self.last_floor_protected = 0"
+    },
+    {
+      "function": "evict_and_demote",
+      "line": 735,
+      "host_ms": 0.817271,
+      "source": "no_backup_victims = []"
+    },
+    {
+      "function": "evict_and_demote",
+      "line": 707,
+      "host_ms": 0.815506,
+      "source": "remaining = n_over - take"
+    },
+    {
+      "function": "evict_and_demote",
+      "line": 782,
+      "host_ms": 0.807642,
+      "source": "[self.stt_was_vram_resident, torch.ones(len(no_backup_victims), dtype=torch.bool)]"
+    },
+    {
+      "function": "_visible_tuple",
+      "line": 807,
+      "host_ms": 0.79313,
+      "source": "self._vis_len[layer_idx] = vis_k.size(1)"
+    },
+    {
+      "function": "evict_and_demote",
+      "line": 736,
+      "host_ms": 0.749451,
+      "source": "restored_backups = []"
+    },
+    {
+      "function": "evict_and_demote",
+      "line": 730,
+      "host_ms": 0.74669,
+      "source": "backup_by_pos = {}"
+    },
+    {
+      "function": "evict_and_demote",
+      "line": 708,
+      "host_ms": 0.732373,
+      "source": "if remaining > 0:"
+    },
+    {
+      "function": "evict_and_demote",
+      "line": 819,
+      "host_ms": 0.688496,
+      "source": "if n_over > 0:"
+    },
+    {
+      "function": "evict_and_demote",
+      "line": 891,
+      "host_ms": 0.654259,
+      "source": "return demoted, dropped, writes_saved, reclaimed"
+    },
+    {
+      "function": "evict_and_demote",
+      "line": 761,
+      "host_ms": 0.647574,
+      "source": "if no_backup_victims:"
+    },
+    {
+      "function": "evict_and_demote",
+      "line": 789,
+      "host_ms": 0.590097,
+      "source": "if victims:"
+    },
+    {
+      "function": "evict_and_demote",
+      "line": 752,
+      "host_ms": 0.580219,
+      "source": "if restored_backups:"
+    },
+    {
+      "function": "evict_and_demote",
+      "line": 786,
+      "host_ms": 0.542371,
+      "source": "torch.zeros(len(no_backup_victims), dtype=cfg.dtype),"
+    },
+    {
+      "function": "_visible_tuple",
+      "line": 801,
+      "host_ms": 0.475469,
+      "source": "if len(keep) == n_sram and (not keep or keep[0] == 0 and keep[-1] == n_sram - 1):"
+    },
+    {
+      "function": "_visible_tuple",
+      "line": 766,
+      "host_ms": 0.432386,
+      "source": "for layer_idx, (k, v) in enumerate(past_kv):"
+    },
+    {
+      "function": "_visible_tuple",
+      "line": 767,
+      "host_ms": 0.397794,
+      "source": "cache = self.layer_caches.get(layer_idx)"
+    },
+    {
+      "function": "_visible_tuple",
+      "line": 793,
+      "host_ms": 0.383936,
+      "source": "self._vis_sram_keep[layer_idx] = keep"
+    },
+    {
+      "function": "_visible_tuple",
+      "line": 774,
+      "host_ms": 0.361183,
+      "source": "n_sram = len(cache.sram_pos)"
+    },
+    {
+      "function": "_visible_tuple",
+      "line": 802,
+      "host_ms": 0.346006,
+      "source": "fast_k, fast_v = cache.sram_k, cache.sram_v"
+    },
+    {
+      "function": "_visible_tuple",
+      "line": 783,
+      "host_ms": 0.341972,
+      "source": "if n_stt_uni < len(live):"
+    },
+    {
+      "function": "_visible_tuple",
+      "line": 782,
+      "host_ms": 0.334666,
+      "source": "live = live_by_layer[layer_idx]"
+    },
+    {
+      "function": "_visible_tuple",
+      "line": 795,
+      "host_ms": 0.333615,
+      "source": "self._vis_stt_idx[layer_idx] = sel"
+    },
+    {
+      "function": "evict_and_demote",
+      "line": 773,
+      "host_ms": 0.317879,
+      "source": "device=cfg.device, dtype=cfg.dtype),"
+    },
+    {
+      "function": "evict_and_demote",
+      "line": 771,
+      "host_ms": 0.298091,
+      "source": "self.stt_last_access,"
+    },
+    {
+      "function": "_visible_tuple",
+      "line": 775,
+      "host_ms": 0.297195,
+      "source": "if n_sram > n_sram_uni:"
+    },
+    {
+      "function": "evict_and_demote",
+      "line": 785,
+      "host_ms": 0.290611,
+      "source": "self.stt_peek_streak,"
+    },
+    {
+      "function": "_visible_tuple",
+      "line": 768,
+      "host_ms": 0.285809,
+      "source": "if cache is None:"
+    },
+    {
+      "function": "_visible_tuple",
+      "line": 718,
+      "host_ms": 0.239123,
+      "source": "n_sram_uni = min(len(self.layer_caches[i].sram_pos) for i in idxs)"
+    },
+    {
+      "function": "_visible_tuple",
+      "line": 727,
+      "host_ms": 0.158031,
+      "source": "n_stt_live_min = min(len(live_by_layer[i]) for i in idxs)"
+    },
+    {
+      "function": "_visible_tuple",
+      "line": 708,
+      "host_ms": 0.091362,
+      "source": "idxs = [i for i in range(len(past_kv)) if i in self.layer_caches]"
+    },
+    {
+      "function": "_visible_tuple",
+      "line": 763,
+      "host_ms": 0.07621,
+      "source": "self._vis_stt_pos = {}"
+    },
+    {
+      "function": "_visible_tuple",
+      "line": 764,
+      "host_ms": 0.03834,
+      "source": "self._vis_stt_idx = {}"
+    },
+    {
+      "function": "_visible_tuple",
+      "line": 728,
+      "host_ms": 0.02418,
+      "source": "n_stt_uni = min(self.stt_expose_quota, n_stt_live_min)"
+    },
+    {
+      "function": "_visible_tuple",
+      "line": 709,
+      "host_ms": 0.022389,
+      "source": "if not idxs:"
+    },
+    {
+      "function": "_visible_tuple",
+      "line": 736,
+      "host_ms": 0.020751,
+      "source": "self._stt_exposed_total += n_stt_uni"
+    },
+    {
+      "function": "_visible_tuple",
+      "line": 737,
+      "host_ms": 0.0163,
+      "source": "self._stt_exposure_samples += 1"
+    },
+    {
+      "function": "_visible_tuple",
+      "line": 716,
+      "host_ms": 0.016039,
+      "source": "for i in idxs"
+    },
+    {
+      "function": "_visible_tuple",
+      "line": 738,
+      "host_ms": 0.015709,
+      "source": "if n_stt_uni == 0:"
+    },
+    {
+      "function": "_visible_tuple",
+      "line": 761,
+      "host_ms": 0.01555,
+      "source": "result = []"
+    },
+    {
+      "function": "_visible_tuple",
+      "line": 810,
+      "host_ms": 0.01551,
+      "source": "return tuple(result)"
+    }
+  ]
+}

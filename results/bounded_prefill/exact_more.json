@@ -1,0 +1,197 @@
+{
+  "config": {
+    "model": "../models/mistral-7b-instruct",
+    "budget": 1024,
+    "tiered_vram_budget": 1024,
+    "tiered_stt_budget": 2048,
+    "tiered_stt_expose": 32,
+    "sttram_bifurcation_frac": 0.75,
+    "sink": 4,
+    "recent": 128,
+    "max_samples": 5,
+    "tasks": [
+      "narrativeqa",
+      "gov_report"
+    ],
+    "max_ctx": 31500,
+    "seed": 0,
+    "tiered_kv_dtype": "bfloat16",
+    "tiered_stt_kv_dtype": "same",
+    "tiered_prefill_chunk_size": 0,
+    "page_size": 16,
+    "promote_top_pages": 2,
+    "stt_live_floor": 1,
+    "write_aware_lambda": 0.0,
+    "tiered_inclusive": true,
+    "runtime": {
+      "git_revision": "be7e700d84d46b47e32ba5b9870c8b71783b9e53",
+      "source_sha256": "0575be28249a8f1ba90426321649c3ecd25d6c30b5e31c18023471149feb8dba",
+      "packages": {
+        "torch": "2.5.1+cu124",
+        "transformers": "5.15.0",
+        "datasets": "2.19.2",
+        "numpy": "2.2.6",
+        "accelerate": "1.14.0",
+        "huggingface_hub": "1.27.0",
+        "rouge": "1.0.1"
+      }
+    },
+    "protocol": "task_chat_exclusions_v2",
+    "data_dir": "../hf_cache/datasets/downloads/extracted/5def9c7eaf83951e1cee75902d8611ef764ad88dd289e8f0bf97ff658a3eb83a/data",
+    "dataset_sha256": {
+      "narrativeqa": "0fb8d08ba5cdad4b74244224b0dc2e8b41ee6b850d954a13eb2d282621ce2f71",
+      "gov_report": "0a3902fcf3d49f228549f02a2ef1ae84dbe8578b8be3d4611d54459487bdef84"
+    },
+    "methods": [
+      "tieredkv"
+    ]
+  },
+  "results": {
+    "narrativeqa": {
+      "tieredkv": {
+        "score": 18.53,
+        "n": 5,
+        "sample_scores": [
+          18.18,
+          11.11,
+          33.33,
+          30.0,
+          0.0
+        ],
+        "samples": [
+          {
+            "sample_id": "27a07bedff812ae2c3fece3ac4a1f1db11f00793a3598fa94f1fa286ea347cb9",
+            "prediction": "Saltram is an inmate of the Maddocks, living with them and receiving a substantial income from The Coxon Fund.",
+            "score": 18.181818181818183,
+            "elapsed_s": 8.412933146581054,
+            "prompt_tokens": 31500,
+            "generated_tokens": 29
+          },
+          {
+            "sample_id": "dfeb4058f4507fa2d2a6f80f6c230cc08e3c7eaa8221bead1ccee5ba90a57488",
+            "prediction": "Ann is unable to return Mary's feelings of affection.",
+            "score": 11.11111111111111,
+            "elapsed_s": 6.014951748773456,
+            "prompt_tokens": 31500,
+            "generated_tokens": 13
+          },
+          {
+            "sample_id": "b75b8f1d9f0027543e6f4d84ca94997765d41f9a6eda749df309b0070caee3d8",
+            "prediction": "The witch lives on Atlas.",
+            "score": 33.33333333333333,
+            "elapsed_s": 1.9728362560272217,
+            "prompt_tokens": 9674,
+            "generated_tokens": 8
+          },
+          {
+            "sample_id": "5f2d99ab2d103d5f04d78f3e7a3b76f633fabeab2eb86a785cf76ed7ac77249e",
+            "prediction": "Crito visited to persuade Socrates to escape from prison.",
+            "score": 30.0,
+            "elapsed_s": 2.8659231029450893,
+            "prompt_tokens": 9887,
+            "generated_tokens": 15
+          },
+          {
+            "sample_id": "254d602c75f8a37865dd7b4a2b7efbb25194b5064a29a07d7038b92d6add6c3d",
+            "prediction": "Baron Henry spared Otto's life.",
+            "score": 0.0,
+            "elapsed_s": 5.781044507399201,
+            "prompt_tokens": 31500,
+            "generated_tokens": 10
+          }
+        ],
+        "cache_stats": {
+          "demoted": 38112,
+          "promoted": 35872,
+          "promotions_deferred": 35808,
+          "paid_writes": 7301,
+          "writes_saved": 30811,
+          "dropped": 0,
+          "write_savings_pct": 80.8,
+          "decode_steps": 70,
+          "stt_starved_steps": 0,
+          "stt_unused_steps": 0,
+          "mean_stt_exposed": 32.0,
+          "stt_expose_quota": 32,
+          "stt_exposed_total": 2400,
+          "stt_exposure_samples": 75,
+          "modeled_latency_us": 22281.8,
+          "modeled_energy_nj": 927881887.7
+        }
+      }
+    },
+    "gov_report": {
+      "tieredkv": {
+        "score": 28.25,
+        "n": 5,
+        "sample_scores": [
+          30.13,
+          27.63,
+          30.6,
+          25.49,
+          27.38
+        ],
+        "samples": [
+          {
+            "sample_id": "11d3fe7a8c5f9be5c05ff2b46002fae136e91f31575249f5c3db054f4d0715ad",
+            "prediction": "The report highlights the complexities of designing and implementing information systems, which involve multiple suppliers and components from the global IT supply chain. The report emphasizes that the federal government's IT systems are at risk from various security threats that could compromise the confidentiality, integrity, and availability of federal information. The report identifies several risks, including counterfeit parts, malware, and insider threats.\n\nThe report also discusses the efforts of the federal government to mitigate these risks through various policies and initiatives. For instance, the National Institute of Standards and Technology (NIST) has developed guidelines for supply chain risk management, and several federal agencies have implemented these guidelines. However, the report notes that more needs to be done to ensure effective implementation and monitoring of these guidelines.\n\nThe report recommends that federal agencies develop and document procedures to implement supply chain protection measures and establish a monitoring capability to verify compliance and assess effectiveness. The report also recommends that agencies collaborate with each other and with industry partners to address IT supply chain risks.\n\nThe report concludes by emphasizing the importance of federal agencies taking a proactive approach to managing IT supply chain risks as part of their overall information security programs. The report also notes that the efforts of the four national security-related agencies to address IT supply chain risks could benefit all federal agencies.",
+            "score": 30.12986970079272,
+            "elapsed_s": 33.58259586803615,
+            "prompt_tokens": 3308,
+            "generated_tokens": 275
+          },
+          {
+            "sample_id": "56f5a37dac322a67081fbbce0ee9261106133f38ac8b4f38fc3555f5b593969d",
+            "prediction": "The report by the Government Accountability Office (GAO) examines the compliance of the Departments of Labor (DOL), Health and Human Services (HHS), and Justice (DOJ) with statutory restrictions on religious-based hiring in grants awarded from 2007 to 2015. The report identified 2,731 grantees, of which 63 were potentially faith-based organizations. Of these, 9 grantees were found to have self-certified for an exemption from the statutory restrictions on religious-based hiring. These exemptions were granted by DOL and DOJ, with HHS not having any faith-based recipients during this period that were subject to the statutory restriction. The report also notes that the agencies provided technical comments but no formal objections to the report. The report will be sent to the Secretaries of Health and Human Services, Labor, and appropriate congressional committees, and will be available on the GAO website.",
+            "score": 27.627627230437646,
+            "elapsed_s": 26.493382645770907,
+            "prompt_tokens": 3548,
+            "generated_tokens": 215
+          },
+          {
+            "sample_id": "32b69d9e2f01e5ad531164ef2b312ea36c6cf8a24dfd0b442779369d8cbd8e09",
+            "prediction": "This report provides an overview of cybersecurity-related bills and hearings in the United States Congress during the 115th and 116th sessions. In the 116th Congress, the House has passed four cybersecurity bills, while the Senate has passed one. A total of 31 bills received action in both chambers during the 115th Congress, and five of these were signed into law. These laws include the National Defense Authorization Act for Fiscal Year 2018, which established new cybersecurity initiatives, and the FITARA Enhancement Act of 2017, which required agencies to address IT investments that have received poor performance evaluations for four consecutive quarters. The report also lists cybersecurity-related hearings in the House and Senate during the 116th Congress, but notes that the list is not definitive as no single objective selection criterion was used. The report includes links to the committee websites for each hearing. Previous reports from the Congressional Research Service on cybersecurity legislation in the 113th, 114th, and 115th Congresses are also cited.",
+            "score": 30.60109241661441,
+            "elapsed_s": 27.246159370988607,
+            "prompt_tokens": 1303,
+            "generated_tokens": 249
+          },
+          {
+            "sample_id": "d1bba223842d90eab2f7962487cba597cea36944010060e21c010e1dbfbaeefe",
+            "prediction": "The report by the government agency found that in the year under review, CBP seized over 300,000 items at the border, with approximately 60% being seized at ports of entry and the remaining 40% at airports. The majority of seizures were made based on information from advanced imaging systems and canine teams. The report also noted that the use of Electronic Advanced Data (EAD) from international shipping companies to target mail for inspection is increasing, but the costs and benefits of this practice are unclear. The report recommended that CBP and the US Postal Service (USPS) evaluate the relative costs and benefits of collecting EAD for targeting mail for inspection compared to other methods. The report also suggested that the agencies should articulate performance goals for their ongoing pilots and assess the pilots on their success in enabling USPS to provide targeted mail to CBP for inspection. The report concluded that effective implementation of these recommendations would help CBP and USPS ensure that efforts to collect and use EAD to target mail for inspection achieve the desired security and resource benefits.",
+            "score": 25.49019568686323,
+            "elapsed_s": 27.48329257592559,
+            "prompt_tokens": 2602,
+            "generated_tokens": 227
+          },
+          {
+            "sample_id": "2124f6aefc1910cb6201bb8bef9916c102aeba694bace9e4d17237ba7d393b5b",
+            "prediction": "The report provides background information on the TAO-205 program, a Navy initiative to build six new fleet replenishment oilers. The program aims to replace aging oilers with more efficient and technologically advanced vessels. The Navy has requested procurement funding for the fifth and sixth ships in its FY2020 budget.\n\nKey issues for Congress include the Navy's procurement funding request, the need for additional oilers to support fleet expansion, and the potential impact of commercial vessel design practices on program risk.\n\nThe report highlights the Navy's progress in the TAO-205 program, including the completion of 100% of the ship's design and the construction of the first ship. However, a disruption at the construction site has caused delays in the delivery of future ships.\n\nThe Navy plans to add two more ships to the low-rate production phase and compete a new contract for the remaining 12 ships. The program office has followed GAO shipbuilding best practices and continues to revise its acquisition baseline to reflect the updated total quantity of 20 ships.\n\nThe report also includes a summary of Congressional action on the Navy's FY2019 budget request for an additional oiler. Overall, the report emphasizes the importance of the TAO-205 program in maintaining a strong and technologically advanced Navy fleet.",
+            "score": 27.376425363385344,
+            "elapsed_s": 36.9316311776638,
+            "prompt_tokens": 5421,
+            "generated_tokens": 298
+          }
+        ],
+        "cache_stats": {
+          "demoted": 665408,
+          "promoted": 625120,
+          "promotions_deferred": 664096,
+          "paid_writes": 53831,
+          "writes_saved": 611577,
+          "dropped": 0,
+          "write_savings_pct": 91.9,
+          "decode_steps": 1259,
+          "stt_starved_steps": 0,
+          "stt_unused_steps": 0,
+          "mean_stt_exposed": 32.0,
+          "stt_expose_quota": 32,
+          "stt_exposed_total": 40448,
+          "stt_exposure_samples": 1264,
+          "modeled_latency_us": 373259.3,
+          "modeled_energy_nj": 16628635271.2
+        }
+      }
+    }
+  }
+}

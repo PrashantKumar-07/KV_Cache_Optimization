@@ -1,0 +1,44 @@
+{
+  "config": {
+    "runtime": {
+      "git_revision": "be7e700d84d46b47e32ba5b9870c8b71783b9e53",
+      "source_sha256": "eea0cf48baa0804928f6f4a1c2674af3547dbac77cb2ea1b890805ba0473cd9e",
+      "packages": {
+        "torch": "2.5.1+cu124",
+        "transformers": "5.14.1",
+        "datasets": "5.0.0",
+        "numpy": "2.2.6",
+        "accelerate": "1.14.0",
+        "huggingface_hub": "1.24.0",
+        "rouge": "1.0.1"
+      }
+    },
+    "model": "../models/mistral-7b-instruct",
+    "ctx_len": 16384,
+    "profile_decode": 10,
+    "seed": 0,
+    "prompt_sha256": "18695714f26e35cb8d2b039ae9efb3b7e64291cbd7bcd91956efc07e16a732cd"
+  },
+  "capture": {
+    "itl_ms": 81.293,
+    "forward_ms": 25.115761905908585,
+    "sort_counts": {
+      "evict_hot": {
+        "calls": 320,
+        "complete_32_layer_groups": 10
+      },
+      "visible_cold": {
+        "calls": 352,
+        "complete_32_layer_groups": 11
+      }
+    },
+    "exact_batched_prefixes": true,
+    "eligible_groups": 21
+  },
+  "microbenchmark": {
+    "individual_stable_prefix_ms": 47.14986868202686,
+    "batched_stable_prefix_ms": 10.145189240574837,
+    "saved_ms_over_10_steps": 37.004679441452026,
+    "projected_saved_ms_per_step": 3.7004679441452026
+  }
+}

@@ -64,6 +64,8 @@ class RunMetrics:
     num_heads: int = 0
     head_dim: int = 0
     prompt_len: int = 0
+    hot_bytes_per_elem: int = 2
+    cold_bytes_per_elem: int = 2
 
     def add(self, rec: StepRecord):
         self.steps.append(rec)
@@ -153,8 +155,8 @@ class RunMetrics:
             "dropped": self.total_dropped,
             "peak_sram_tokens": self.peak_sram_tokens,
             "peak_sttram_tokens": self.peak_sttram_tokens,
-            "peak_sram_KB": round(self.kv_bytes(self.peak_sram_tokens) / 1024, 2),
-            "peak_sttram_KB": round(self.kv_bytes(self.peak_sttram_tokens) / 1024, 2),
+            "peak_sram_KB": round(self.kv_bytes(self.peak_sram_tokens, self.hot_bytes_per_elem) / 1024, 2),
+            "peak_sttram_KB": round(self.kv_bytes(self.peak_sttram_tokens, self.cold_bytes_per_elem) / 1024, 2),
         }
 
     def to_json(self, path: str):

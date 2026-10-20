@@ -1,0 +1,11 @@
+# Research continuation
+
+Read START_HERE.md and TASK_STATE.json before work, then verify referenced raw evidence and real process state. README.md and REPRODUCING.md describe the tested portable setup. Superseded prose and old paper sources are archived; do not follow historical checklist/PID instructions.
+
+The user authorizes comprehensive audit, necessary fixes, fair reproducible experiments, genuine improvements and independent subagent reviews. Correctness takes priority. No SOTA guarantee or inflated result; paper work follows audit/results/figure gates. Physical STT hardware is not required: explicitly separate simulation, GPU-functional quality, analytical traffic/energy and measured CPU-offload performance.
+
+Preserve user changes and all raw positive/negative evidence. Before experiments, freeze mechanism/control, data IDs, configs, metrics, resource constraints, stopping rules and source/model/data identities. Never alter frozen evidence, silently reuse mismatched checkpoints, retry rejected candidates for favorable results, or tune on consumed final data. A copied method name does not establish upstream fidelity. Validate pinned original algorithms and compatibility bridges independently; use fastest correct baseline backends and account for whole resource trajectories, index costs and TTFT. Same hot-token count is not equal-memory fairness.
+
+The user requires each original figure's question, methods, task order and style preserved; use only matching verified real runs. Figure 3 remains paid/avoided decode writes without an unrelated fraction1 panel. Broader write claims include initial cold placement and their scope; no physical lifetime inference from logical counters. Architecture redesign is allowed, with concrete data/control movement.
+
+Continue autonomously within authorized scope, use independent agents for critical reviews when useful, and reconcile their findings with runnable evidence. Keep a single human checkpoint START_HERE.md and machine state TASK_STATE.json. Before publishing, run clean-clone setup/tests/smoke, verify archive checksums and remove local credentials/runtime/build caches from the publication. Preserve historical research evidence and attribution.

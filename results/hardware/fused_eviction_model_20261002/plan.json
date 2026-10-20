@@ -1,0 +1,27 @@
+{
+  "screen": "results/hardware/fused_hot_compaction_screen_20261002/verified_report_v2.json",
+  "screen_sha256": "6c7da071084755697dc4e0d4ece87bfa7085051cccb24eee2539f61de86d6b33",
+  "model": "../models/mistral-7b-instruct",
+  "seed": 0,
+  "hot": 1024,
+  "cold": 2048,
+  "fill": 0.75,
+  "promotion": 32,
+  "kv": "BF16",
+  "score": "F32",
+  "actual_query": true,
+  "query_window": 128,
+  "query_chunk": 128,
+  "control": "direct_scores",
+  "candidate": "fused_scores",
+  "mechanism": "Previously exact coordinator plus boundary-batched fused hotKV/score gather. Original productionevict AST changedonlyhotcompaction hook; CPUposition/grace compact beforeStepRecord, deferred GPUKV/cum/age flushedbeforevisible. Coldoverflow/unsupported geometry eageroriginalhotcompaction, no ranking or capacity change.",
+  "synthetic": "Existing32cases inclusive true/false, fill.75/1, initial1/31/32/33/95/96/97/256,2layers,last-querysummary,12appends18tokens inclmulti3; allstates/payloads/counters/cleanup exact; requireboth fused andeager paths observed.",
+  "parity": "Exact4K8K16K at12forcedsteps usingoriginalprompt, exact31500at12usingpreviousfrozendoubledprompt; all13boundaries/IDs/state/trajectory/counters/transfers/occupiedhost/root reservation, expectroot402784256both. Failstopspeed.",
+  "timing": "Afterparitypasses3ABBA16K50forceddecode,warmup1whole50steprequest perarm,sameCPU/backend/querycapture/eagerdecode/synchronization/history observer. NativeJITimport beforemodeltiming; preserveallraw. Primarymedian>=5%faster,p95<=2%worse,all3blocksfast,TTFT<=10%worse,prefillpeak<=2%worse; secondstageperformance notsummed into a modelclaim.",
+  "sources": {
+    "results/remediation_v3/latency_prompt.txt": "18695714f26e35cb8d2b039ae9efb3b7e64291cbd7bcd91956efc07e16a732cd",
+    "results/hardware/batched_eviction_coordinator_20261001/max_context_prompt.txt": "44d127150e182f3fe0f83e4e1c005814bc7db9c61a1fd5ed21f4ab6535e816fc",
+    "results/shadow_ablation_full/fixed_stream_20260929.json": "620ac3a383997c9afbc6a3f0b06acec9f261d5a2a5827bf5988e0bb5b69f12a2"
+  },
+  "stop": "Failureofexactparityor5%speed/regressiongates rejects frozencombinedcandidate; no normalCLIflag/defaultchange. Ifpasses freegeneration/inclusion/streams/interleaved/metadata guard proof before ordinary optin; broadSnap/physicalSTT/matchedresources/researchgates stillopen."
+}

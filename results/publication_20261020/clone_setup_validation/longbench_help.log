@@ -1,0 +1,124 @@
+usage: longbench_eval.py [-h] --model MODEL [--tasks TASKS [TASKS ...]]
+                         [--methods METHODS [METHODS ...]] [--budget BUDGET]
+                         [--max-samples MAX_SAMPLES] [--device DEVICE]
+                         [--prefill-last-logits] [--data-dir DATA_DIR]
+                         [--max-ctx MAX_CTX]
+                         [--tiered-kv-dtype {float32,bfloat16,float16}]
+                         [--tiered-stt-kv-dtype {same,float8_e4m3fn}]
+                         [--tiered-prefill-chunk-size TIERED_PREFILL_CHUNK_SIZE]
+                         [--seed SEED]
+                         [--sttram-bifurcation-frac STTRAM_BIFURCATION_FRAC]
+                         [--stt-live-floor STT_LIVE_FLOOR]
+                         [--write-aware-lambda WRITE_AWARE_LAMBDA]
+                         [--no-tiered-inclusive] [--json JSON]
+                         [--checkpoint CHECKPOINT]
+                         [--allow-checkpoint-mismatch]
+                         [--tiered-vram-budget TIERED_VRAM_BUDGET]
+                         [--tiered-stt-budget TIERED_STT_BUDGET]
+                         [--recent-size RECENT_SIZE]
+                         [--tiered-stt-expose TIERED_STT_EXPOSE]
+                         [--tiered-promotion-budget TIERED_PROMOTION_BUDGET]
+
+Run LongBench evaluation with fixed TieredKV implementation
+
+options:
+  -h, --help            show this help message and exit
+  --model MODEL         HF model id or local path
+  --tasks TASKS [TASKS ...]
+  --methods METHODS [METHODS ...]
+  --budget BUDGET       Total KV budget in tokens for eviction methods
+  --max-samples MAX_SAMPLES
+                        Limit samples per task for quick runs
+  --device DEVICE
+  --prefill-last-logits
+                        Compute only the last prefill logits; requires native
+                        logits_to_keep support
+  --data-dir DATA_DIR   Local LongBench JSONL directory (preferred for
+                        reproducibility)
+  --max-ctx MAX_CTX     Prompt truncation length (middle-split), shared by
+                        every method. Default 31500 matches the reference
+                        LongBench protocol for mistral-7B-instruct-v0.2.
+                        Lowering this shrinks the compression ratio and is NOT
+                        comparable to published LongBench numbers -- report
+                        the value you used.
+  --tiered-kv-dtype {float32,bfloat16,float16}
+                        Dtype TieredKV stores its K/V tiers in. Default
+                        float32 reproduces every result measured so far, but
+                        doubles the real footprint versus the bfloat16
+                        baselines it is compared against. Use bfloat16 for a
+                        footprint-honest equal-VRAM run. Eviction scores stay
+                        float32 either way.
+  --tiered-stt-kv-dtype {same,float8_e4m3fn}
+                        Experimental cold-tier storage dtype. 'same' uses
+                        --tiered-kv-dtype; float8_e4m3fn stores one byte per
+                        element and converts selected rows before attention.
+  --tiered-prefill-chunk-size TIERED_PREFILL_CHUNK_SIZE
+                        Experimental TieredKV-only bounded prefill chunk size.
+                        0 keeps exact full-prompt prefill; positive values
+                        compress the cache after every chunk.
+  --seed SEED           Seed for torch/numpy, recorded in the results config
+                        so a run is identifiable.
+  --sttram-bifurcation-frac STTRAM_BIFURCATION_FRAC
+                        Fraction of TieredKV's STT-RAM budget that bifurcation
+                        may fill with cold prompt tokens; the rest is reserved
+                        headroom for decode-time victim-cache backups. 1.0 =
+                        original behavior (STT-RAM starts full, write savings
+                        measure ~0% on long documents). Lower values trade
+                        prompt-token recall for genuine write savings -- see
+                        TieredConfig.sttram_bifurcation_frac in
+                        src/tiered_kv_cache.py.
+  --stt-live-floor STT_LIVE_FLOOR
+                        Minimum live (non-shadow) STT rows promote() leaves
+                        per layer. Prevents one fully-shadowed layer from
+                        vetoing slow-tier exposure for all layers (measured
+                        starvation on hotpotqa). See
+                        TieredConfig.stt_live_floor.
+  --write-aware-lambda WRITE_AWARE_LAMBDA
+                        Write-aware demotion weight: victim score =
+                        avg_attention - lambda * has_backup, preferring zero-
+                        write re-demotions among near-tied cold tokens. 0.0 =
+                        pure recall eviction. See
+                        TieredConfig.write_aware_lambda.
+  --no-tiered-inclusive
+                        Paired no-shadow ablation: remove the slow-tier copy
+                        on promotion, so re-demotion pays a write. All other
+                        budgets and policy settings stay fixed.
+  --json JSON
+  --checkpoint CHECKPOINT
+                        checkpoint file to resume from
+  --allow-checkpoint-mismatch
+                        Resume from a checkpoint even if its recorded config
+                        (model/budget/tiered-vram/tiered-stt/stt-
+                        expose/bifurcation-frac) doesn't match this run's
+                        args. Without this flag, a mismatch raises instead of
+                        silently blending scores from two different configs
+                        into one results table.
+  --tiered-vram-budget TIERED_VRAM_BUDGET
+                        Override TieredKV's VRAM (fast-tier) budget directly,
+                        instead of deriving it as --budget // 3. Use this
+                        together with --tiered-stt-budget to run the equal-
+                        VRAM comparison (same fast-tier bytes as a baseline's
+                        full --budget, plus a slow tier on top) rather than
+                        the equal-total-budget comparison.
+  --tiered-stt-budget TIERED_STT_BUDGET
+                        Override TieredKV's STT-RAM (slow-tier) budget
+                        directly. See --tiered-vram-budget.
+  --recent-size RECENT_SIZE
+                        Sliding-window (recent-token) size, shared by all
+                        sink/window-based methods. Default: max(16, budget //
+                        8).
+  --tiered-stt-expose TIERED_STT_EXPOSE
+                        Cap on how many STT-RAM tokens TieredKV actually
+                        attends to per decode step (independent of --tiered-
+                        stt-budget, which is how many are physically
+                        resident). Bounds TieredKV's final attention pool to
+                        sram_budget + this value, so it can be matched exactly
+                        against a baseline's --budget for a fair equal-
+                        attention comparison. Default:
+                        promote_top_pages*page_size (32).
+  --tiered-promotion-budget TIERED_PROMOTION_BUDGET
+                        Maximum slow-tier rows promoted into VRAM per layer
+                        and policy step. Attention exposure remains controlled
+                        independently by --tiered-stt-expose. Default 32
+                        preserves the corrected control; 0 disables migration
+                        while retaining slow attention.

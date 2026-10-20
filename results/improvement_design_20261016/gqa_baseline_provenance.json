@@ -1,0 +1,44 @@
+{
+  "recorded_utc": "2026-10-16T07:28:35.807814+00:00",
+  "official_url": "https://github.com/Zefan-Cai/KVCache-Factory",
+  "official_commit": "68cd9551a63fedf362ddb0edb008badd04c24996",
+  "status": "14 CPU selector and tiny real-Mistral bridge tests PASS; full Mistral7B GPU parity/quality/resource measurements still required",
+  "selector": "pyramidkv/pyramidkv_utils.py:472 SnapKVCluster; :541 _update_kv_kv_head; :273 _grouped_window_attn_cache; :252 _reduce_group_scores; :301 _select_topk_kv",
+  "upstream_math": "For each KV head, average its grouped query-head causal observation attention scores, then average-pool kernel5, topk old positions, and retain32recent. Keep actual8KV heads; native attention expands transiently. Prefill remains full; decode compressed cache grows.",
+  "baseline_semantics": "Changes selection relative to legacy per-query-head SnapKV. This is current upstream KV-head selector fidelity, not byte-equivalence to the legacy32-head comparator. No novelty claim.",
+  "tests": {
+    "selector_against_independent_formula": 6,
+    "real_model_full_prefill_and_decode_logits_cache_hook_cleanup": 8,
+    "precision": [
+      "float32",
+      "bfloat16"
+    ],
+    "backends": [
+      "eager",
+      "sdpa"
+    ],
+    "contexts": [
+      "short8<capacity12",
+      "compressed24>capacity12"
+    ],
+    "decode_steps": 3,
+    "fullmodel7B_GPU": false
+  },
+  "adapter": "gqa_snap_adapter.py uses current upstream selector without editing it; inherits existing projection capture/rollback but restores native GQA groups before execution; stores direct8KVheads and returns full uncompressed prefillKV.",
+  "not_done": [
+    "Full-model7B correctness proof",
+    "Fresh matched-protocol quality results",
+    "Quiet latency and GPU+CPU memory trajectories",
+    "Independent source review"
+  ],
+  "paper_claim": "Legacy expanded-head SnapKV alone cannot justify a memory SOTA claim; this stronger baseline should be measured before making such claims. Official repository explicitly marks wider GPUvalidation pending.",
+  "files_sha256": {
+    "gqa_snap_adapter.py": "ee6ce071c722707cf62c9cf5ed005eca46ae26c0412eaa673e22338af6dbb09b",
+    "test_gqa_snap_adapter.py": "0e9fe581e752e7172ab85aa5d76c58f299753c79520d04a4a4f11493f617b934",
+    "gqa_cpu_tests.log": "43d7cb0c0180c05fdf0d936f57a1b98b91704af70305abbf7fade1f0cd063641",
+    "KVCache-Factory/pyramidkv/pyramidkv_utils.py": "a8a1e8139a8c24a03df87ba0b8362296a613a7b7a38dd4a026087d7ac2b37ce4",
+    "KVCache-Factory/pyramidkv/mistral_model.py": "96dbccba29bb01a63f7d86589ba07ee6bcff42722b2ac38f1b456ebe4c4c5c6a",
+    "KVCache-Factory/docs/gqa_cache_layout.md": "5ef1f3613ef36ffa5ffbd3365c2c8607c6777c7fe16bbfec1287209748a7dfbc",
+    "KVCache-Factory/README.md": "924f91229fde1736e3af5cd60fe8f8337b36fcd30d6f102d563a0e214f15ff36"
+  }
+}

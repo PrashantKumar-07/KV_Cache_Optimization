@@ -1,0 +1,160 @@
+{
+  "config": {
+    "model": "../models/mistral-7b-instruct",
+    "data_dir": "../hf_cache/datasets/downloads/extracted/5def9c7eaf83951e1cee75902d8611ef764ad88dd289e8f0bf97ff658a3eb83a/data",
+    "tasks": [
+      "qasper",
+      "narrativeqa"
+    ],
+    "max_samples": 5,
+    "capacity": 897,
+    "window": 32,
+    "attn_implementation": "sdpa",
+    "runtime": {
+      "git_revision": "be7e700d84d46b47e32ba5b9870c8b71783b9e53",
+      "source_sha256": "58a54787c7895b59b476783403e18b8031cb6e3b6be934042c8dbc14b1939061",
+      "packages": {
+        "torch": "2.5.1+cu124",
+        "transformers": "5.14.1",
+        "datasets": "5.0.0",
+        "numpy": "2.2.6",
+        "accelerate": "1.14.0",
+        "huggingface_hub": "1.24.0",
+        "rouge": "1.0.1"
+      }
+    },
+    "seed": 0,
+    "max_ctx": 31500,
+    "source_files": {
+      "/data/nishant/Nishant/Prashant/Project/kv_cache/experiments/evaluate_snapkv_adapter.py": "5533e29960c876ac179d14fe4cdda4852e71e167d4d7358f02ad15c74dfdc574",
+      "/data/nishant/Nishant/Prashant/Project/kv_cache/experiments/snapkv_adapter.py": "8d44929bcd4440431332608eb14f4660008ca284ded84dcb824dca3dbad19eab",
+      "sota/snapkv/snapkv/monkeypatch/snapkv_utils.py": "d7eddeaf361d9d38be991be734752c831b09f9c95a6e777ac17e7262ca2b4cf5"
+    },
+    "dataset_sha256": {
+      "qasper": "97d95c01221a17a2ce51f9180d65a671bf2998504a2ff0cccffe97e9b08444d8",
+      "narrativeqa": "0fb8d08ba5cdad4b74244224b0dc2e8b41ee6b850d954a13eb2d282621ce2f71"
+    }
+  },
+  "results": {
+    "qasper": {
+      "snapkv_upstream_selector": {
+        "score": 19.9,
+        "n": 5,
+        "sample_scores": [
+          39.02,
+          22.22,
+          15.38,
+          22.86,
+          0.0
+        ],
+        "samples": [
+          {
+            "sample_id": "3b91dce7ca41a9d16a1d0c61806c139db583a053ddb582bf79df3ff56f8e0344",
+            "prediction": "They looked at different Facebook pages, including FoxNews, CNN, ESPN, New York Times, and Huffington Post.",
+            "score": 39.02439024390244,
+            "elapsed_s": 1.646341122686863,
+            "prompt_tokens": 4895,
+            "generated_tokens": 27,
+            "final_kv_payload_bytes": 483917824
+          },
+          {
+            "sample_id": "5f59f94cd91401a55bcd3b6b24b78cd2c4c78e8ee6e7663e0ac8b97306444f08",
+            "prediction": "The paper proposes attention models to infer the latent context that triggers an instructor intervention.",
+            "score": 22.22222222222222,
+            "elapsed_s": 1.047605723142624,
+            "prompt_tokens": 5415,
+            "generated_tokens": 20,
+            "final_kv_payload_bytes": 480247808
+          },
+          {
+            "sample_id": "9d37c5305ff63838fd6b7c96f13d10cfc388955672b1a629e5c0a8c2a89c520d",
+            "prediction": "In addition to F-score and Kappa statistic, other evaluation metrics such as precision, recall, and accuracy are also considered. (Reference: Table TABREF1 in the article)",
+            "score": 15.384615384615385,
+            "elapsed_s": 1.5653206892311573,
+            "prompt_tokens": 5549,
+            "generated_tokens": 40,
+            "final_kv_payload_bytes": 490733568
+          },
+          {
+            "sample_id": "5b60c062453de695f70d5f313a868a3c630068a85084fc9c456760f41e84d0f3",
+            "prediction": "The baselines were plain LSTMs and stacked LSTMs without the proposed modifications.",
+            "score": 22.857142857142858,
+            "elapsed_s": 1.0288483165204525,
+            "prompt_tokens": 5175,
+            "generated_tokens": 20,
+            "final_kv_payload_bytes": 480247808
+          },
+          {
+            "sample_id": "a25d41e770a5f1816e04f39227fecd7dfcd9b83b25842e413d0f8fcb447b2092",
+            "prediction": "jiant specifically mentions support for PyTorch (via HuggingFace's Transformers) and AllenNLP as core dependencies. Therefore, it is primarily designed for Python-based models.",
+            "score": 0.0,
+            "elapsed_s": 1.424462778493762,
+            "prompt_tokens": 3956,
+            "generated_tokens": 42,
+            "final_kv_payload_bytes": 491782144
+          }
+        ]
+      }
+    },
+    "narrativeqa": {
+      "snapkv_upstream_selector": {
+        "score": 17.02,
+        "n": 5,
+        "sample_scores": [
+          12.5,
+          10.53,
+          16.67,
+          30.0,
+          15.38
+        ],
+        "samples": [
+          {
+            "sample_id": "27a07bedff812ae2c3fece3ac4a1f1db11f00793a3598fa94f1fa286ea347cb9",
+            "prediction": "Saltram is an inmate at the Mulvaneys' house and doesn't dress.",
+            "score": 12.5,
+            "elapsed_s": 5.118226060643792,
+            "prompt_tokens": 31500,
+            "generated_tokens": 22,
+            "final_kv_payload_bytes": 481296384
+          },
+          {
+            "sample_id": "dfeb4058f4507fa2d2a6f80f6c230cc08e3c7eaa8221bead1ccee5ba90a57488",
+            "prediction": "Ann only feels gratitude for Mary's support, not romantic love.",
+            "score": 10.526315789473685,
+            "elapsed_s": 4.9465378150343895,
+            "prompt_tokens": 31500,
+            "generated_tokens": 15,
+            "final_kv_payload_bytes": 477626368
+          },
+          {
+            "sample_id": "b75b8f1d9f0027543e6f4d84ca94997765d41f9a6eda749df309b0070caee3d8",
+            "prediction": "The witch lives on Atlas' mountain in a cavern by a secret fountain.",
+            "score": 16.666666666666668,
+            "elapsed_s": 1.6180113647133112,
+            "prompt_tokens": 9674,
+            "generated_tokens": 20,
+            "final_kv_payload_bytes": 480247808
+          },
+          {
+            "sample_id": "5f2d99ab2d103d5f04d78f3e7a3b76f633fabeab2eb86a785cf76ed7ac77249e",
+            "prediction": "Crito proposed a plan for Socrates to escape from prison.",
+            "score": 30.0,
+            "elapsed_s": 1.5175522062927485,
+            "prompt_tokens": 9887,
+            "generated_tokens": 15,
+            "final_kv_payload_bytes": 477626368
+          },
+          {
+            "sample_id": "254d602c75f8a37865dd7b4a2b7efbb25194b5064a29a07d7038b92d6add6c3d",
+            "prediction": "Baron Henry was afraid of Otto's father, Baron Conrad.",
+            "score": 15.384615384615383,
+            "elapsed_s": 5.022967763245106,
+            "prompt_tokens": 31500,
+            "generated_tokens": 15,
+            "final_kv_payload_bytes": 477626368
+          }
+        ]
+      }
+    }
+  }
+}

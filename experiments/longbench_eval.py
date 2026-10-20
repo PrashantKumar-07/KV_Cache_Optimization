@@ -17,13 +17,16 @@
 #   tieredkv      — our VRAM + STT-RAM victim cache (REAL implementation)
 #
 # All eviction methods use the same total KV budget for memory-fair comparison.
-import os, sys, json, argparse, math, glob
+import os, sys, json, argparse, math, glob, hashlib, time
+from pathlib import Path
 import torch
+from provenance import runtime_identity, atomic_json, read_jsonl, model_artifact_identity
 import numpy as np
 
 # Setup paths
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "src"))
 from tiered_kv_cache import TieredKVCache, TieredConfig
+from attention import gqa_causal_importance, snapkv_importance
 from metrics import StepRecord
 from cost_model import CostModel
 
@@ -70,6 +73,15 @@ def apply_tuple_kv_inplace(past_kv, tuple_kv):
 # Attention-implementation switching
 # ---------------------------------------------------------------------------
 from contextlib import contextmanager
+
+def prefill_logit_kwargs(model, enabled=False):
+    """Opt in only when the model explicitly supports native logit slicing."""
+    if not enabled:
+        return {}
+    import inspect
+    if "logits_to_keep" not in inspect.signature(model.forward).parameters:
+        raise ValueError("--prefill-last-logits requires native forward(logits_to_keep=...)")
+    return {"logits_to_keep": 1}
 
 @contextmanager
 def _attn_impl(model, impl):
@@ -247,15 +259,23 @@ class H2OPolicy(_ModeledCostMixin):
             seq_len = k.size(2)
             
             if layer_idx not in self.cum_scores:
-                self.cum_scores[layer_idx] = torch.zeros(seq_len, 
-                    device=w.device, dtype=torch.float32)
+                if seq_len > self.budget:
+                    # Initialize the existing proxy prior BEFORE adding the
+                    # first real observation (also used by adapted SnapKV).
+                    self._initialize_scores(k, v, layer_idx)
+                else:
+                    self.cum_scores[layer_idx] = torch.zeros(seq_len,
+                        device=w.device, dtype=torch.float32)
             
             cum = self.cum_scores[layer_idx]
             if cum.device != w.device:
                 cum = cum.to(w.device)
             
             # Average attention over heads, sum over batch
-            attn_sum = w.float().squeeze(2).mean(dim=(0, 1))[:seq_len]
+            attn_sum = w.float().squeeze(2).mean(dim=(0, 1))
+            if attn_sum.ndim == 2:
+                attn_sum = attn_sum.mean(dim=0)
+            attn_sum = attn_sum[:seq_len]
             
             # Extend cum if needed
             if cum.size(0) < seq_len:
@@ -265,6 +285,8 @@ class H2OPolicy(_ModeledCostMixin):
             
             cum[:seq_len] += attn_sum
             self.cum_scores[layer_idx] = cum
+            # Real incremental observations must survive first budget overflow.
+            self.initialized[layer_idx] = True
     
     def __call__(self, past_kv):
         if past_kv is None:
@@ -314,9 +336,7 @@ class H2OPolicy(_ModeledCostMixin):
             sorted_indices = torch.argsort(unprotected_scores)
             
             # Evict the n_evict lowest-scoring unprotected tokens
-            for i in range(min(n_evict, len(sorted_indices))):
-                evict_idx = unprotected_indices[sorted_indices[i]]
-                keep[evict_idx] = False
+            keep[unprotected_indices[sorted_indices[:n_evict]]] = False
             
             result.append((k[:, :, keep], v[:, :, keep]))
             self.cum_scores[layer_idx] = cum[keep]
@@ -367,7 +387,7 @@ class SnapKVPolicy(_ModeledCostMixin):
     
     def _compress_prompt(self, past_kv):
         result = []
-        for k, v in past_kv:
+        for layer_idx, (k, v) in enumerate(past_kv):
             seq_len = k.size(2)
             if seq_len <= self.budget:
                 result.append((k, v))
@@ -408,6 +428,15 @@ class SnapKVPolicy(_ModeledCostMixin):
                 idx_t, _ = torch.sort(pinned_t)
 
             result.append((k[:, :, idx_t], v[:, :, idx_t]))
+            # Incremental/PPL observations refer to the uncompressed rows.
+            # Preserve their identity when prompt/chunk compression reorders KV.
+            previous = self._h2o.cum_scores.get(layer_idx)
+            if previous is not None:
+                previous = previous.to(k.device)
+                if previous.numel() < seq_len:
+                    previous = torch.cat((previous, previous.new_zeros(seq_len - previous.numel())))
+                self._h2o.cum_scores[layer_idx] = previous[idx_t]
+                self._h2o.initialized[layer_idx] = True
         
         return tuple(result)
 
@@ -484,19 +513,31 @@ class TieredKVPolicy:
     def __init__(self, sram_budget=128, stt_budget=256,
                  start_size=4, recent_size=16,
                  page_size=16, promote_top_pages=2,
+                 promotion_budget=None,
                  sttram_bifurcation_frac=1.0, stt_expose_quota=None,
-                 kv_dtype=None, stt_live_floor=1, write_aware_lambda=0.0):
+                 kv_dtype=None, stt_kv_dtype=None, stt_live_floor=1, write_aware_lambda=0.0,
+                 inclusive=True, prefill_chunk_size=0, batch_backup_updates=True,
+                 bool_live_gather=True, bool_hot_compaction=True):
         # Dtype the tiered cache stores K/V in. None keeps the float32 that
         # every result so far used. torch.bfloat16 matches the model and the
         # baselines, making the resident footprint equal to what the
         # equal-VRAM comparison claims -- see TieredConfig.kv_dtype.
         self.kv_dtype = kv_dtype
+        self.stt_kv_dtype = stt_kv_dtype
+        self.batch_backup_updates = batch_backup_updates
+        self.bool_live_gather = bool_live_gather
+        self.bool_hot_compaction = bool_hot_compaction
+        self.prefill_chunk_size = prefill_chunk_size
         self.sram_budget = sram_budget
         self.stt_budget = stt_budget
         self.start_size = start_size
         self.recent_size = recent_size
         self.page_size = page_size
         self.promote_top_pages = promote_top_pages
+        self.promotion_budget = (promote_top_pages * page_size
+                                 if promotion_budget is None else promotion_budget)
+        if self.promotion_budget < 0:
+            raise ValueError("promotion_budget must be nonnegative")
         self.sttram_bifurcation_frac = sttram_bifurcation_frac
         # Cap on slow-tier tokens entering the REAL softmax per step,
         # regardless of how many are resident. Without it the visible pool
@@ -514,9 +555,12 @@ class TieredKVPolicy:
         # one fully-shadowed layer vetoing slow-tier exposure everywhere.
         self.stt_live_floor = stt_live_floor
         self.write_aware_lambda = write_aware_lambda
+        self.inclusive = inclusive
 
         self.layer_caches = {}  # layer_idx -> TieredKVCache
+        self.prompt_q_by_layer = {}  # opt-in experiment; empty by default
         self.initialized = False
+        self._initialization_failed = False
         self.decode_step_count = 0
         # Zero-exposure steps are counted and reported: a run whose slow
         # tier never shows up must not be mistaken for a real tiered result.
@@ -525,8 +569,10 @@ class TieredKVPolicy:
         self._stt_exposed_total = 0
         self._stt_exposure_samples = 0
         self._stt_attn = {}        # layer -> {stt position: real attention received}
+        self._stt_attn_idx = {}    # same scores keyed by still-valid STT index
         self._vis_sram_keep = {}   # layer -> VRAM indices in the visible set
         self._vis_stt_pos = {}     # layer -> STT positions in the visible set
+        self._vis_stt_idx = {}     # indices used to build _vis_stt_pos
         self._vis_len = {}         # layer -> number of visible tokens from previous step
 
         # reset() runs before every sample and clears layer_caches, so
@@ -565,7 +611,9 @@ class TieredKVPolicy:
             for k, v in live.items():
                 self._accum[k] += v
         self.layer_caches = {}
+        self.prompt_q_by_layer = {}
         self.initialized = False
+        self._initialization_failed = False
         self.decode_step_count = 0
         # NOTE: stt_starved_steps / stt_unused_steps / stt_exposed_total /
         # stt_exposure_samples are already folded via _live_totals() above — do NOT add them again
@@ -575,19 +623,47 @@ class TieredKVPolicy:
         self._stt_exposed_total = 0
         self._stt_exposure_samples = 0
         self._stt_attn = {}
+        self._stt_attn_idx = {}
         self._vis_sram_keep = {}
         self._vis_stt_pos = {}
+        self._vis_stt_idx = {}
         self._vis_len = {}
+
+    def resident_positions(self):
+        """Absolute positions in the chronological bounded-prefill handoff."""
+        return {layer: sorted(cache.sram_pos + [p for p, shadow in
+                    zip(cache.stt_pos, cache.stt_shadow) if not shadow])
+                for layer, cache in self.layer_caches.items()}
+
+    def resident_tuple(self):
+        """Chronological retained KV for approximate bounded prefill."""
+        result = []
+        for layer in sorted(self.layer_caches):
+            cache = self.layer_caches[layer]
+            live = torch.where(~cache.stt_shadow)[0].tolist()
+            cold_k, cold_v = cache.select_stt_pair(live)
+            positions = cache.sram_pos + [cache.stt_pos[i] for i in live]
+            order = sorted(range(len(positions)), key=positions.__getitem__)
+            result.append((torch.cat([cache.sram_k, cold_k], dim=1)[:, order].unsqueeze(0),
+                           torch.cat([cache.sram_v, cold_v], dim=1)[:, order].unsqueeze(0)))
+        return tuple(result)
 
     def __call__(self, past_kv):
         if past_kv is None:
             return None
+        if self._initialization_failed:
+            raise RuntimeError('Reset the policy after failed initialization before reuse')
         if not self.initialized:
             self.initialized = True
-            return self._bifurcate(past_kv)
+            try:
+                return self._bifurcate(past_kv)
+            except BaseException:
+                self.initialized = False
+                self._initialization_failed = True
+                raise
         return self._decode_step(past_kv)
 
-    def _bifurcate(self, past_kv):
+    def _bifurcate(self, past_kv, *, token_positions=None, prompt_length=None):
         """Initialize tiered caches after prefill (vectorized, on-device).
 
         Routes prompt tokens into VRAM and STT-RAM by SnapKV importance
@@ -599,6 +675,8 @@ class TieredKVPolicy:
         result = []
 
         for layer_idx, (k, v) in enumerate(past_kv):
+            if k.size(0) != 1:
+                raise ValueError("TieredKVPolicy currently supports batch size 1 only")
             heads, seq_len, head_dim = k.size(1), k.size(2), k.size(3)
 
             cfg = TieredConfig(
@@ -610,21 +688,41 @@ class TieredKVPolicy:
                 sttram_capacity=self.stt_budget,
                 page_size=self.page_size,
                 promote_top_pages=self.promote_top_pages,
-                inclusive=True,
+                inclusive=self.inclusive,
                 sttram_bifurcation_frac=self.sttram_bifurcation_frac,
                 stt_live_floor=self.stt_live_floor,
                 write_aware_lambda=self.write_aware_lambda,
+                batch_backup_updates=self.batch_backup_updates,
+                bool_hot_compaction=self.bool_hot_compaction,
                 dtype=torch.float32,
                 kv_dtype=self.kv_dtype,
+                stt_kv_dtype=self.stt_kv_dtype,
                 device=k.device,
             )
-            cache = TieredKVCache(cfg)
+            cache = getattr(self, 'cache_cls', TieredKVCache)(cfg)
 
             k_2d = k[0].to(torch.float32)   # (H, seq, D), on model device
             v_2d = v[0].to(torch.float32)
             q_proxy = k_2d                  # K-as-Q-proxy (see class docstring)
-
-            cache.initial_bifurcation(k_2d, v_2d, q_proxy)
+            q_real = self.prompt_q_by_layer.pop(layer_idx, None)
+            importance = None
+            if q_real is not None:
+                if q_real.ndim != 3 or q_real.size(0) < 1 \
+                        or q_real.size(1) != min(self.recent_size, seq_len) \
+                        or q_real.size(2) != head_dim or q_real.size(0) % heads:
+                    raise ValueError('Captured prompt query shape does not match KV cache')
+                if getattr(self, 'prompt_query_score_mode', 'chunked') == 'expanded':
+                    expanded_k = k_2d.repeat_interleave(q_real.size(0) // heads, dim=0)
+                    importance = snapkv_importance(q_real.float(), expanded_k,
+                                                   cfg.pool_kernel, causal=True)
+                else:
+                    importance = gqa_causal_importance(q_real.float(), k_2d,
+                                                       cfg.pool_kernel,
+                                                       getattr(self, 'prompt_query_chunk', 128))
+            cache.initial_bifurcation(k_2d, v_2d, q_proxy,
+                                      importance_override=importance,
+                                      token_positions=None if token_positions is None else token_positions[layer_idx],
+                                      prompt_length=prompt_length)
             self.layer_caches[layer_idx] = cache
 
         return self._visible_tuple(past_kv)
@@ -706,9 +804,15 @@ class TieredKVPolicy:
                           f"-- no STT tokens exposed to attention this step. "
                           f"TieredKV is running VRAM-only until this clears.")
 
+        selections = {i: self._visible_cold_indices(self.layer_caches[i], live_by_layer[i],
+                                                   n_stt_uni, self.bool_live_gather)
+                      for i in idxs}
+        self._prepare_visible_reads(selections)
+
         result = []
         self._vis_sram_keep = {}
         self._vis_stt_pos = {}
+        self._vis_stt_idx = {}
 
         for layer_idx, (k, v) in enumerate(past_kv):
             cache = self.layer_caches.get(layer_idx)
@@ -725,24 +829,66 @@ class TieredKVPolicy:
             else:
                 keep = list(range(n_sram))
 
-            # Slow tier part: hottest live STT tokens, by last access.
-            live = live_by_layer[layer_idx]
-            if n_stt_uni < len(live):
-                la = cache.stt_last_access[live]
-                order = torch.argsort(la, descending=True)[:n_stt_uni].tolist()
-                sel = sorted(live[o] for o in order)
-            else:
-                sel = live
+            sel = selections[layer_idx]
 
             self._vis_sram_keep[layer_idx] = keep
             self._vis_stt_pos[layer_idx] = [cache.stt_pos[j] for j in sel]
+            self._vis_stt_idx[layer_idx] = sel
 
-            vis_k = torch.cat([cache.sram_k[:, keep, :], cache.stt_k[:, sel, :]], dim=1)
-            vis_v = torch.cat([cache.sram_v[:, keep, :], cache.stt_v[:, sel, :]], dim=1)
+            # The normal path keeps the complete, already ordered fast tier.
+            # Advanced indexing would copy all S rows before torch.cat copies
+            # them again into the visible cache. Reuse the tensor directly;
+            # only the rare non-uniform fallback needs a gather.
+            if len(keep) == n_sram and (not keep or keep[0] == 0 and keep[-1] == n_sram - 1):
+                fast_k, fast_v = cache.sram_k, cache.sram_v
+            else:
+                fast_k, fast_v = cache.sram_k[:, keep, :], cache.sram_v[:, keep, :]
+            cold_k, cold_v = cache.select_stt_pair(sel)
+            vis_k = torch.cat([fast_k, cold_k], dim=1)
+            vis_v = torch.cat([fast_v, cold_v], dim=1)
             self._vis_len[layer_idx] = vis_k.size(1)
             result.append((vis_k.unsqueeze(0).to(k.dtype), vis_v.unsqueeze(0).to(v.dtype)))
 
         return tuple(result)
+
+    def _promotion_plan(self, layer_idx, cache):
+        """Resolve measured-attention candidates once, in original order."""
+        stt_attn = (self._stt_attn or {}).get(layer_idx)
+        stt_attn_idx = (self._stt_attn_idx or {}).get(layer_idx)
+        if stt_attn:
+            if stt_attn_idx:
+                scored = [(a, i) for i, a in stt_attn_idx.items()
+                          if i < len(cache.stt_pos) and not cache.stt_shadow[i]]
+            else:
+                # Compatibility for tests and external hooks that inject
+                # position-keyed attention directly.
+                pos_to_idx = {p: i for i, p in enumerate(cache.stt_pos)}
+                scored = [(a, pos_to_idx[p]) for p, a in stt_attn.items()
+                          if p in pos_to_idx and not cache.stt_shadow[pos_to_idx[p]]]
+            if scored:
+                scored.sort(reverse=True)
+                budget = self.promotion_budget
+                candidate_idx = [i for _, i in scored[:budget]]
+                promote_idx, deferred_idx = cache.resolve_promotion_indices(candidate_idx)
+                return [(i, i + 1) for i in promote_idx], len(deferred_idx)
+        # A missed candidate breaks the consecutive re-entry hysteresis.
+        cache.resolve_promotion_indices([])
+        return None, 0
+
+    def _prepare_decode_reads(self):
+        """Physical backends may batch cold reads before any layer mutation."""
+
+    def _prepare_visible_reads(self, selections):
+        """Physical backends may batch independently selected cold rows."""
+
+    @staticmethod
+    def _visible_cold_indices(cache, live, count, bool_live_gather):
+        if count < len(live):
+            access = (cache.stt_last_access[~cache.stt_shadow] if bool_live_gather
+                      else cache.stt_last_access[live])
+            order = torch.argsort(access, descending=True)[:count].tolist()
+            return sorted(live[o] for o in order)
+        return live
 
     def _decode_step(self, past_kv):
         """One decode step: promote hot slow-tier tokens into VRAM, then
@@ -770,6 +916,7 @@ class TieredKVPolicy:
             n_new = 1
 
         self.decode_step_count += n_new
+        self._prepare_decode_reads()
 
         for layer_idx, (k, v) in enumerate(past_kv):
             cache = self.layer_caches.get(layer_idx)
@@ -782,40 +929,11 @@ class TieredKVPolicy:
 
             cache._t += 1
 
-            # Promotion candidates: the hottest live STT tokens by the real
-            # attention they just received. Falls back to no promotion on
-            # the first decode step, when no attention has been observed yet
-            # (rather than substituting a fabricated query).
-            stt_attn = (self._stt_attn or {}).get(layer_idx)
+            promote_hits, deferred_count = self._promotion_plan(layer_idx, cache)
             promoted = 0
-            deferred_count = 0
-            if stt_attn:
-                pos_to_idx = {p: i for i, p in enumerate(cache.stt_pos)}
-                scored = [
-                    (a, pos_to_idx[p]) for p, a in stt_attn.items()
-                    if p in pos_to_idx and not cache.stt_shadow[pos_to_idx[p]]
-                ]
-                if scored:
-                    scored.sort(reverse=True)
-                    budget = max(1, self.promote_top_pages * self.page_size)
-                    candidates = [(i, i + 1) for _, i in scored[:budget]]
-                    promote_hits, peek_hits = cache.resolve_promotions(candidates)
-                    promoted = cache.promote(promote_hits)
-                    # Floor-deferred (see TieredConfig.stt_live_floor): the
-                    # live-pool guard's truncated tail. Still live, still
-                    # exposed via quota, retried next step -- deferred demand,
-                    # same as hysteresis-denied candidates below.
-                    floor_deferred = cache.last_floor_deferred
-                    # NOT "peeked": in this harness peek_hits are promotion
-                    # candidates the hysteresis gate DENIED. They get no extra
-                    # attention visibility (that path is rolled back -- see the
-                    # class docstring), so they are deferred promotions, not
-                    # tokens attended in place. Naming them "peeked" reported
-                    # ~139k tokens/task as a benefit that never materialised.
-                    deferred_count = sum(
-                        len([i for i in range(s, e) if not cache.stt_shadow[i]])
-                        for (s, e) in peek_hits
-                    ) + floor_deferred
+            if promote_hits is not None:
+                promoted = cache.promote(promote_hits)
+                deferred_count += cache.last_floor_deferred
 
             # sram_cum is updated by update_scores() from the model's REAL
             # attention weights; sram_age still needs its once-per-step bump
@@ -823,6 +941,7 @@ class TieredKVPolicy:
             cache.sram_age += 1
 
             n_vis_stt = len((self._vis_stt_pos or {}).get(layer_idx, []))
+            n_attended_hot = len((self._vis_sram_keep or {}).get(layer_idx, [])) + n_new
 
             base_pos = cache.metrics.prompt_len + self.decode_step_count - n_new
             new_pos = list(range(base_pos, base_pos + n_new)) if n_new > 1 else base_pos
@@ -853,7 +972,7 @@ class TieredKVPolicy:
             lat_d, eng_d = cache.cm.demote_cost(paid_writes * 2 * elems_per_tok)
             # Dropped tokens are freed, not migrated anywhere.
             lat_dd, eng_dd = cache.cm.drop_cost(dropped * 2 * elems_per_tok)
-            lat_vr, eng_vr = cache.cm.gpu_vram_read_cost(rec.sram_tokens * 2 * elems_per_tok)
+            lat_vr, eng_vr = cache.cm.gpu_vram_read_cost(n_attended_hot * 2 * elems_per_tok)
             lat_sr, eng_sr = cache.cm.read_latency_us("STT-RAM", n_vis_stt * 2 * elems_per_tok), \
                              cache.cm.read_energy_nj("STT-RAM", n_vis_stt * 2 * elems_per_tok)
 
@@ -867,6 +986,16 @@ class TieredKVPolicy:
 
         result = self._visible_tuple(past_kv)
         return tuple(result)
+
+    @staticmethod
+    def _validate_score_weights(attn_weights):
+        # Check every layer before any score/LRU mutation. Empty reductions
+        # produce NaNs; this policy only supports batch-one feedback.
+        if attn_weights is not None:
+            for weight in attn_weights:
+                if weight is not None and (weight.ndim != 4 or weight.shape[0] != 1
+                        or weight.shape[1] < 1 or weight.shape[2] < 1):
+                    raise ValueError('Require batch-one attention with positive heads and queries')
 
     def update_scores(self, past_kv, attn_weights):
         """Fold the model's real attention weights back into the tiered
@@ -886,7 +1015,9 @@ class TieredKVPolicy:
         if attn_weights is None:
             return
 
+        self._validate_score_weights(attn_weights)
         self._stt_attn = {}
+        self._stt_attn_idx = {}
         for layer_idx, (k, v) in enumerate(past_kv):
             if layer_idx >= len(attn_weights) or attn_weights[layer_idx] is None:
                 continue
@@ -896,6 +1027,7 @@ class TieredKVPolicy:
 
             keep = (self._vis_sram_keep or {}).get(layer_idx)
             stt_pos = (self._vis_stt_pos or {}).get(layer_idx)
+            stt_idx = (self._vis_stt_idx or {}).get(layer_idx)
             if keep is None or stt_pos is None:
                 continue
             n_sram, n_stt = len(keep), len(stt_pos)
@@ -903,7 +1035,11 @@ class TieredKVPolicy:
                 continue
 
             w = attn_weights[layer_idx]  # (batch, heads, 1, cache_seq)
-            attn_full = w[0].to(torch.float32).squeeze(1).mean(dim=0)  # (cache_seq,)
+            attn_full = w[0].to(torch.float32).squeeze(1).mean(dim=0)
+            if attn_full.ndim == 2:
+                # One policy observation per forward, averaged over queries.
+                # This is not equivalent to intermediate per-token eviction.
+                attn_full = attn_full.mean(dim=0)
             if attn_full.shape[0] < n_sram + n_stt:
                 continue  # defensive: shouldn't happen given the invariant above
 
@@ -913,12 +1049,24 @@ class TieredKVPolicy:
 
             if n_stt > 0:
                 attn_stt = attn_full[n_sram:n_sram + n_stt]
-                self._stt_attn[layer_idx] = dict(zip(stt_pos, attn_stt.tolist()))
+                attn_values = attn_stt.tolist()
+                self._stt_attn[layer_idx] = dict(zip(stt_pos, attn_values))
                 # A slow-tier token that actually drew attention is freshly
                 # relevant: refresh its LRU stamp so it stays visible.
-                pos_to_idx = {p: i for i, p in enumerate(cache.stt_pos)}
-                touched = [pos_to_idx[p] for p, a in zip(stt_pos, attn_stt.tolist())
-                           if a > 0 and p in pos_to_idx]
+                indices_still_match = (
+                    stt_idx is not None and len(stt_idx) == len(stt_pos)
+                    and all(i < len(cache.stt_pos) and cache.stt_pos[i] == p
+                            for i, p in zip(stt_idx, stt_pos))
+                )
+                if indices_still_match:
+                    self._stt_attn_idx[layer_idx] = dict(zip(stt_idx, attn_values))
+                    touched = [i for i, a in zip(stt_idx, attn_values) if a > 0]
+                else:
+                    # Query-selection hooks may replace positions after the
+                    # base visible set is built. Resolve only in that path.
+                    pos_to_idx = {p: i for i, p in enumerate(cache.stt_pos)}
+                    touched = [pos_to_idx[p] for p, a in zip(stt_pos, attn_values)
+                               if a > 0 and p in pos_to_idx]
                 if touched:
                     cache.stt_last_access[touched] = cache._t
 
@@ -949,6 +1097,8 @@ class TieredKVPolicy:
                 if t["stt_exposure_samples"] else 0
             ),
             "stt_expose_quota": self.stt_expose_quota,
+            "stt_exposed_total": t["stt_exposed_total"],
+            "stt_exposure_samples": t["stt_exposure_samples"],
             # Modeled (cost_model.py) latency/energy -- the paper's real
             # latency claim: real wall-clock on this GPU has no separate
             # slow-memory hardware, so attending more tokens costs
@@ -965,7 +1115,7 @@ class TieredKVPolicy:
 # ---------------------------------------------------------------------------
 @torch.inference_mode()
 def generate_with_policy(model, tokenizer, input_text, max_gen, policy, device,
-                         max_ctx=31500, task_name=""):
+                         max_ctx=31500, task_name="", *, prefill_last_logits=False):
     """Generate text token-by-token, applying cache policy after each step.
 
     Position-id note: every eviction policy here trims `past_key_values` in
@@ -991,8 +1141,8 @@ def generate_with_policy(model, tokenizer, input_text, max_gen, policy, device,
     which exists only to handle documents *longer* than the trained
     context). NOTE: middle-split truncation below stitches [:half]+[-half:]
     but assigns contiguous position ids, creating a false adjacency at the
-    seam — shared equally by every policy (relatively fair internally) but
-    breaking comparability to published LongBench numbers. This requires
+    seam. The reference LongBench protocol also middle-splits; record the
+    complete prompt, wrapping, tokenizer and truncation protocol for comparisons. This requires
     no change to any individual policy: a kept
     token's baked-in RoPE rotation is immutable and already correct from
     whenever it was originally computed; only the position assigned to
@@ -1008,16 +1158,25 @@ def generate_with_policy(model, tokenizer, input_text, max_gen, policy, device,
     # reference length gives ~31:1. Eviction hurts far more at 31:1 and a
     # victim cache has correspondingly more to recover, so truncating to 8k
     # systematically shrank the very gap TieredKV exists to close.
+    if max_gen <= 0:
+        return ""
+    if max_ctx < 2:
+        raise ValueError("max_ctx must be at least 2")
     toks = tokenizer(input_text, truncation=False, return_tensors="pt")
     input_ids = toks.input_ids
 
     # Standard middle-split truncation for long contexts
     if input_ids.size(1) > max_ctx:
         half = max_ctx // 2
-        input_ids = torch.cat([input_ids[:, :half], input_ids[:, -half:]], dim=1)
+        input_ids = torch.cat([input_ids[:, :half], input_ids[:, -(max_ctx - half):]], dim=1)
 
     input_ids = input_ids.to(device)
     prompt_len = input_ids.size(1)
+    policy.last_prompt_identity = {
+        "prompt_sha256": hashlib.sha256(input_text.encode()).hexdigest(),
+        "input_ids_sha256": hashlib.sha256(input_ids.detach().cpu().numpy().tobytes()).hexdigest(),
+        "max_ctx": max_ctx,
+    }
 
     # Prefill (position_ids matches the default here since the cache starts
     # empty -- passed explicitly anyway for clarity and to keep prefill and
@@ -1026,16 +1185,51 @@ def generate_with_policy(model, tokenizer, input_text, max_gen, policy, device,
     # SDPA for prefill: no attention weights are requested here, and eager
     # would allocate a (heads, prompt_len, prompt_len) score matrix -- 59 GiB
     # at the reference 31500-token context. See _attn_impl.
-    with _attn_impl(model, "sdpa"):
-        out = model(input_ids, use_cache=True, position_ids=prefill_pos)
-    raw_past = out.past_key_values
-    tuple_kv = to_tuple_kv(raw_past)
-    tuple_kv = policy(tuple_kv)
-    apply_tuple_kv_inplace(raw_past, tuple_kv)
+    chunk_size = getattr(policy, "prefill_chunk_size", 0)
+    prefill_options = prefill_logit_kwargs(model, prefill_last_logits)
+    if not chunk_size or chunk_size >= prompt_len:
+        with _attn_impl(model, "sdpa"):
+            out = model(input_ids, use_cache=True, position_ids=prefill_pos, **prefill_options)
+        raw_past = out.past_key_values
+        apply_tuple_kv_inplace(raw_past, policy(to_tuple_kv(raw_past)))
+    else:
+        # Experimental bounded prefill: later chunks attend to the compressed
+        # cache from earlier chunks. Absolute position_ids preserve RoPE, but
+        # this is approximate prefill and must be quality-tested separately.
+        raw_past = None
+        carried_positions = {}
+        for start in range(0, prompt_len, chunk_size):
+            end = min(prompt_len, start + chunk_size)
+            positions = torch.arange(start, end, device=device).unsqueeze(0)
+            with _attn_impl(model, "sdpa"):
+                out = model(input_ids[:, start:end], past_key_values=raw_past,
+                            use_cache=True, position_ids=positions, **prefill_options)
+            raw_past = out.past_key_values
+            absolute_positions = {layer: carried_positions.get(layer, []) + list(range(start, end))
+                                  for layer in range(len(to_tuple_kv(raw_past)))}
+            policy.reset()
+            policy.initialized = True
+            visible = policy._bifurcate(to_tuple_kv(raw_past),
+                token_positions=absolute_positions, prompt_length=end)
+            carried_positions = policy.resident_positions()
+            if end < prompt_len:
+                # Storage precision may differ from the model attention dtype.
+                carried = tuple((keys.to(raw_keys.dtype), values.to(raw_values.dtype))
+                    for (keys, values), (raw_keys, raw_values) in
+                    zip(policy.resident_tuple(), to_tuple_kv(raw_past)))
+            else:
+                carried = visible
+            apply_tuple_kv_inplace(raw_past, carried)
     past_kv = raw_past
 
     next_tok = out.logits[:, -1:].argmax(dim=-1)
     generated = [next_tok.item()]
+    policy.last_generation = {"prompt_tokens": prompt_len, "generated_tokens": 1}
+    if generated[0] == tokenizer.eos_token_id:
+        return tokenizer.decode(generated, skip_special_tokens=True)
+
+    # The cache and next token own everything needed by decode.
+    del out
 
     # Decode loop
     for step in range(max_gen - 1):
@@ -1052,7 +1246,7 @@ def generate_with_policy(model, tokenizer, input_text, max_gen, policy, device,
         if hasattr(policy, "_modeled_latency_us"):
             for k, v in to_tuple_kv(past_kv):
                 heads, seq_len, head_dim = k.size(1), k.size(2), k.size(3)
-                lat, eng = _BASELINE_COST_MODEL.baseline_attention_cost(seq_len, heads, head_dim)
+                lat, eng = _BASELINE_COST_MODEL.baseline_attention_cost(seq_len + next_tok.size(1), heads, head_dim)
                 policy._modeled_latency_us += lat
                 policy._modeled_energy_nj += eng
             policy._modeled_steps += 1
@@ -1078,27 +1272,40 @@ def generate_with_policy(model, tokenizer, input_text, max_gen, policy, device,
         if tok_id == tokenizer.eos_token_id:
             break
     
+    policy.last_generation["generated_tokens"] = len(generated)
     return tokenizer.decode(generated, skip_special_tokens=True)
 
 # ---------------------------------------------------------------------------
 # Task evaluation
 # ---------------------------------------------------------------------------
-def evaluate_task(model, tokenizer, task_name, policy, device, 
-                  max_samples=None, is_instruct=False, max_ctx=31500):
-    """Evaluate one LongBench task, return (avg_score, sample_results)."""
-    data = None
-    
-    # Try loading from HuggingFace datasets. Any failure (auth, network,
-    # missing split -- can't tell which without looking) falls through to
-    # the next source; logging it means a real error (e.g. corrupted cache,
-    # auth failure) isn't silently indistinguishable from "this task just
-    # doesn't have an _e split."
-    try:
-        data = load_dataset("THUDM/LongBench", f"{task_name}_e",
-                          split="test", trust_remote_code=True)
-    except Exception as e:
-        print(f"  [dataset] {task_name}_e unavailable ({type(e).__name__}: {e}), trying {task_name}")
+def task_data_path(data_dir, task):
+    for suffix in ("_e", ""):
+        path = Path(data_dir) / f"{task}{suffix}.jsonl"
+        if path.is_file():
+            return path
+    raise FileNotFoundError(f"No JSONL for {task} in {data_dir}")
 
+
+NO_CHAT_TASKS = {"trec", "triviaqa", "samsum", "lsht", "lcc", "repobench-p"}
+
+def load_task_data(task_name, data_dir=None):
+    """Resolve a task once; callers share exact rows across comparison arms."""
+    data = None
+    if data_dir is not None:
+        path = task_data_path(data_dir, task_name)
+        data = read_jsonl(path)
+    else:
+        # Try loading from HuggingFace datasets. Any failure (auth, network,
+        # missing split -- can't tell which without looking) falls through to
+        # the next source; logging it means a real error (e.g. corrupted cache,
+        # auth failure) isn't silently indistinguishable from "this task just
+        # doesn't have an _e split."
+        try:
+            data = load_dataset("THUDM/LongBench", f"{task_name}_e",
+                              split="test", trust_remote_code=True)
+        except Exception as e:
+            print(f"  [dataset] {task_name}_e unavailable ({type(e).__name__}: {e}), trying {task_name}")
+    
     if data is None:
         try:
             data = load_dataset("THUDM/LongBench", task_name,
@@ -1131,18 +1338,28 @@ def evaluate_task(model, tokenizer, task_name, policy, device,
         else:
             raise RuntimeError(f"Could not load dataset for task: {task_name}")
     
+    return list(data)
+
+
+def evaluate_task(model, tokenizer, task_name, policy, device, 
+                  max_samples=None, is_instruct=False, max_ctx=31500, data_dir=None,
+                  *, prefill_last_logits=False, dataset_rows=None):
+    """Evaluate one LongBench task, return (avg_score, sample_results)."""
+    data = load_task_data(task_name, data_dir) if dataset_rows is None else dataset_rows
+
     prompt_fmt = DATASET_TO_PROMPT[task_name]
     max_gen = DATASET_TO_MAXGEN[task_name]
     metric_fn = DATASET_TO_METRIC[task_name]
     
     results = []
+    policy.sample_records = []
     
     for i, item in enumerate(data):
         if max_samples and i >= max_samples:
             break
         
         input_text = prompt_fmt.format(**item)
-        if is_instruct:
+        if is_instruct and task_name not in NO_CHAT_TASKS:
             input_text = f"[INST] {input_text} [/INST]"
         
         answers = item["answers"]
@@ -1151,9 +1368,10 @@ def evaluate_task(model, tokenizer, task_name, policy, device,
         if hasattr(policy, "reset"):
             policy.reset()
 
+        started = time.perf_counter()
         pred = generate_with_policy(
             model, tokenizer, input_text, max_gen, policy, device,
-            max_ctx=max_ctx, task_name=task_name
+            max_ctx=max_ctx, task_name=task_name, prefill_last_logits=prefill_last_logits
         )
 
         # Matches the reference LongBench eval protocol (THUDM/LongBench,
@@ -1174,6 +1392,13 @@ def evaluate_task(model, tokenizer, task_name, policy, device,
             for gt in answers
         )
         results.append(score)
+        policy.sample_records.append({
+            "sample_id": hashlib.sha256(json.dumps(item, sort_keys=True).encode()).hexdigest(),
+            "prediction": pred, "score": float(score) * 100,
+            "elapsed_s": time.perf_counter() - started,
+            **policy.last_generation,
+            **getattr(policy, 'last_prompt_identity', {}),
+        })
         
         if (i + 1) % 5 == 0 or (i + 1) == (max_samples if max_samples else len(data)):
             print(f"  [{policy.name}] {task_name} {i+1}/"
@@ -1188,12 +1413,71 @@ def evaluate_task(model, tokenizer, task_name, policy, device,
     # standard error / confidence interval is computable after the fact,
     # which is what left the old headline's +5.26 margin uninterpretable
     # against a measured ±7.29 run-to-run spread on a fixed config.
+    if not results:
+        raise ValueError(f"No samples evaluated for {task_name}")
     sample_scores = [round(float(s) * 100, 2) for s in results]
     return round(np.mean(results) * 100, 2), sample_scores
 
 # ---------------------------------------------------------------------------
 # Main
 # ---------------------------------------------------------------------------
+def make_policy(name, args, sink=4):
+    recent = args.recent_size if args.recent_size is not None else max(16, args.budget // 8)
+    tiered_vram = args.tiered_vram_budget if args.tiered_vram_budget is not None else args.budget // 3
+    tiered_stt = args.tiered_stt_budget if args.tiered_stt_budget is not None else args.budget - tiered_vram
+    if name == "full":
+        return FullCachePolicy()
+    elif name == "streamingllm":
+        return StreamingLLMPolicy(
+            start_size=sink,
+            recent_size=args.budget - sink
+        )
+    elif name == "h2o":
+        return H2OPolicy(
+            budget=args.budget,
+            start_size=sink,
+            recent_size=recent
+        )
+    elif name == "snapkv":
+        return SnapKVPolicy(
+            budget=args.budget,
+            start_size=sink,
+            recent_size=recent
+        )
+    elif name == "quest":
+        return QuestPolicy(
+            page_size=16,
+            attend_top_pages=4,
+            start_size=sink,
+            recent_size=recent
+        )
+    elif name == "tieredkv":
+        # FIXED: Now uses the REAL TieredKVCache from src/
+        # The total budget (VRAM + STT) equals args.budget
+        # This is memory-fair: same total memory as baselines
+        return TieredKVPolicy(
+            sram_budget=tiered_vram,
+            stt_budget=tiered_stt,
+            start_size=sink,
+            recent_size=recent,
+            page_size=16,
+            promote_top_pages=2,
+            promotion_budget=getattr(args, "tiered_promotion_budget", None),
+            sttram_bifurcation_frac=args.sttram_bifurcation_frac,
+            stt_expose_quota=args.tiered_stt_expose,
+            stt_live_floor=args.stt_live_floor,
+            write_aware_lambda=args.write_aware_lambda,
+            inclusive=args.tiered_inclusive,
+            kv_dtype=(None if args.tiered_kv_dtype == "float32"
+                      else getattr(torch, args.tiered_kv_dtype)),
+            stt_kv_dtype=(None if getattr(args, "tiered_stt_kv_dtype", "same") == "same"
+                          else getattr(torch, args.tiered_stt_kv_dtype)),
+            prefill_chunk_size=getattr(args, "tiered_prefill_chunk_size", 0),
+        )
+    else:
+        raise ValueError(f"Unknown method: {name}")
+
+
 def main():
     parser = argparse.ArgumentParser(
         description="Run LongBench evaluation with fixed TieredKV implementation"
@@ -1211,6 +1495,9 @@ def main():
     parser.add_argument("--max-samples", type=int, default=None,
                         help="Limit samples per task for quick runs")
     parser.add_argument("--device", default="cuda")
+    parser.add_argument("--prefill-last-logits", action="store_true",
+                        help="Compute only the last prefill logits; requires native logits_to_keep support")
+    parser.add_argument("--data-dir", help="Local LongBench JSONL directory (preferred for reproducibility)")
     parser.add_argument("--max-ctx", type=int, default=31500, dest="max_ctx",
                         help="Prompt truncation length (middle-split), shared "
                              "by every method. Default 31500 matches the "
@@ -1228,6 +1515,17 @@ def main():
                              "bfloat16 baselines it is compared against. Use "
                              "bfloat16 for a footprint-honest equal-VRAM run. "
                              "Eviction scores stay float32 either way.")
+    parser.add_argument("--tiered-stt-kv-dtype", default="same",
+                        choices=["same", "float8_e4m3fn"],
+                        dest="tiered_stt_kv_dtype",
+                        help="Experimental cold-tier storage dtype. 'same' uses "
+                             "--tiered-kv-dtype; float8_e4m3fn stores one byte "
+                             "per element and converts selected rows before attention.")
+    parser.add_argument("--tiered-prefill-chunk-size", type=int, default=0,
+                        dest="tiered_prefill_chunk_size",
+                        help="Experimental TieredKV-only bounded prefill chunk size. "
+                             "0 keeps exact full-prompt prefill; positive values "
+                             "compress the cache after every chunk.")
     parser.add_argument("--seed", type=int, default=0,
                         help="Seed for torch/numpy, recorded in the results "
                              "config so a run is identifiable.")
@@ -1253,6 +1551,11 @@ def main():
                              "zero-write re-demotions among near-tied cold "
                              "tokens. 0.0 = pure recall eviction. See "
                              "TieredConfig.write_aware_lambda.")
+    parser.add_argument("--no-tiered-inclusive", action="store_false",
+                        dest="tiered_inclusive", default=True,
+                        help="Paired no-shadow ablation: remove the slow-tier "
+                             "copy on promotion, so re-demotion pays a write. "
+                             "All other budgets and policy settings stay fixed.")
     parser.add_argument("--json", default="results/longbench_comparison.json")
     parser.add_argument("--checkpoint", default=None,
                         help="checkpoint file to resume from")
@@ -1292,6 +1595,13 @@ def main():
                              "it can be matched exactly against a baseline's "
                              "--budget for a fair equal-attention comparison. "
                              "Default: promote_top_pages*page_size (32).")
+    parser.add_argument("--tiered-promotion-budget", type=int, default=None,
+                        dest="tiered_promotion_budget",
+                        help="Maximum slow-tier rows promoted into VRAM per "
+                             "layer and policy step. Attention exposure remains "
+                             "controlled independently by --tiered-stt-expose. "
+                             "Default 32 preserves the corrected control; 0 "
+                             "disables migration while retaining slow attention.")
 
     args = parser.parse_args()
     
@@ -1302,6 +1612,13 @@ def main():
     torch.manual_seed(args.seed)
     np.random.seed(args.seed)
 
+    # Resolve and freeze the actual content before any comparison/resume.
+    task_rows = {task: load_task_data(task, args.data_dir) for task in args.tasks}
+    dataset_identity = {task: {
+        "row_count": len(rows),
+        "resolved_source": str(task_data_path(args.data_dir, task)) if args.data_dir else "hf_or_cached_fallback",
+        "content_sha256": hashlib.sha256(json.dumps(rows, sort_keys=True, ensure_ascii=False).encode()).hexdigest(),
+    } for task, rows in task_rows.items()}
     print(f"Loading model: {args.model}")
     tokenizer = AutoTokenizer.from_pretrained(args.model, trust_remote_code=True)
     model = AutoModelForCausalLM.from_pretrained(
@@ -1337,53 +1654,6 @@ def main():
     tiered_vram = args.tiered_vram_budget if args.tiered_vram_budget is not None else args.budget // 3
     tiered_stt = args.tiered_stt_budget if args.tiered_stt_budget is not None else args.budget - tiered_vram
     
-    def make_policy(name):
-        if name == "full":
-            return FullCachePolicy()
-        elif name == "streamingllm":
-            return StreamingLLMPolicy(
-                start_size=sink, 
-                recent_size=args.budget - sink
-            )
-        elif name == "h2o":
-            return H2OPolicy(
-                budget=args.budget, 
-                start_size=sink, 
-                recent_size=recent
-            )
-        elif name == "snapkv":
-            return SnapKVPolicy(
-                budget=args.budget, 
-                start_size=sink, 
-                recent_size=recent
-            )
-        elif name == "quest":
-            return QuestPolicy(
-                page_size=16,
-                attend_top_pages=4,
-                start_size=sink,
-                recent_size=recent
-            )
-        elif name == "tieredkv":
-            # FIXED: Now uses the REAL TieredKVCache from src/
-            # The total budget (VRAM + STT) equals args.budget
-            # This is memory-fair: same total memory as baselines
-            return TieredKVPolicy(
-                sram_budget=tiered_vram,
-                stt_budget=tiered_stt,
-                start_size=sink,
-                recent_size=recent,
-                page_size=16,
-                promote_top_pages=2,
-                sttram_bifurcation_frac=args.sttram_bifurcation_frac,
-                stt_expose_quota=args.tiered_stt_expose,
-                stt_live_floor=args.stt_live_floor,
-                kv_dtype=(None if args.tiered_kv_dtype == "float32"
-                          else getattr(torch, args.tiered_kv_dtype)),
-            )
-        else:
-            raise ValueError(f"Unknown method: {name}")
-    
     # Config fingerprint: a checkpoint used to be resumed unconditionally --
     # any (task, method) pair already in the file was skipped with no check
     # that it was produced under the SAME --budget/--tiered-vram-budget/
@@ -1393,10 +1663,14 @@ def main():
     # config into a results table whose "config" block claims the new one.
     config_fingerprint = {
         "model": args.model,
+        "model_identity": model_artifact_identity(args.model),
+        "aggregation": "sampled_task_mean; not official LongBench-E length-bin aggregation",
+        "prefill_last_logits": args.prefill_last_logits,
         "budget": args.budget,
         "tiered_vram_budget": tiered_vram,
         "tiered_stt_budget": tiered_stt,
         "tiered_stt_expose": args.tiered_stt_expose,
+        "tiered_promotion_budget": args.tiered_promotion_budget,
         "sttram_bifurcation_frac": args.sttram_bifurcation_frac,
         "sink": sink,
         "recent": recent,
@@ -1412,14 +1686,24 @@ def main():
         "max_ctx": args.max_ctx,
         "seed": args.seed,
         "tiered_kv_dtype": args.tiered_kv_dtype,
+        "tiered_stt_kv_dtype": args.tiered_stt_kv_dtype,
+        "tiered_prefill_chunk_size": args.tiered_prefill_chunk_size,
         # page_size / promote_top_pages are hardcoded in make_policy() above
         # and determine the DEFAULT stt_expose_quota (promote_top_pages x
         # page_size = 32). Fingerprint them so a future change of the
         # hardcodes cannot silently blend with old checkpoints.
         "page_size": 16,
         "promote_top_pages": 2,
+        "tiered_promotion_budget": args.tiered_promotion_budget,
         "stt_live_floor": args.stt_live_floor,
         "write_aware_lambda": args.write_aware_lambda,
+        "tiered_inclusive": args.tiered_inclusive,
+        "runtime": runtime_identity(),
+        "protocol": "reference_prompts_task_chat_v3",
+        "data_dir": args.data_dir,
+        "dataset_identity": dataset_identity,
+        "dataset_sha256": ({t: hashlib.sha256(task_data_path(args.data_dir, t).read_bytes()).hexdigest()
+                            for t in args.tasks} if args.data_dir else None),
     }
 
     # Load checkpoint so we can skip already-finished work
@@ -1428,6 +1712,10 @@ def main():
         with open(ckpt_path) as f:
             all_results = json.load(f)
         stored_fp = all_results.get("_config_fingerprint")
+        if stored_fp is not None:
+            stored_fp = {"prefill_last_logits": False, **stored_fp}
+        if stored_fp is None and not args.allow_checkpoint_mismatch:
+            raise RuntimeError("Checkpoint has no fingerprint; use a new output path or explicitly allow mismatch")
         if stored_fp is None:
             print(f"  [WARNING] checkpoint {ckpt_path} predates config "
                   f"fingerprinting -- cannot verify it matches this run's "
@@ -1460,20 +1748,22 @@ def main():
                 print(f"\n--- {mname} [SKIPPED — already in checkpoint] ---")
                 continue
             
-            policy = make_policy(mname)
+            policy = make_policy(mname, args)
             print(f"\n--- {policy.name} ---")
             
             is_instruct = "instruct" in args.model.lower()
             score, sample_scores = evaluate_task(
                 model, tokenizer, task, policy, args.device,
-                args.max_samples, is_instruct, max_ctx=args.max_ctx
+                args.max_samples, is_instruct, max_ctx=args.max_ctx, data_dir=args.data_dir,
+                prefill_last_logits=args.prefill_last_logits, dataset_rows=task_rows[task]
             )
 
             if task not in all_results:
                 all_results[task] = {}
             all_results[task][mname] = {"score": score,
                                         "n": len(sample_scores),
-                                        "sample_scores": sample_scores}
+                                        "sample_scores": sample_scores,
+                                        "samples": policy.sample_records}
             
             # Store cache statistics if available
             if hasattr(policy, "stats"):
@@ -1484,8 +1774,7 @@ def main():
             # Save checkpoint immediately (fingerprint stamped every save so
             # a later resume can detect a config change -- see above)
             all_results["_config_fingerprint"] = config_fingerprint
-            with open(ckpt_path, "w") as f:
-                json.dump(all_results, f, indent=2)
+            atomic_json(ckpt_path, all_results)
             print(f"  [checkpoint saved → {ckpt_path}]")
 
             # Long documents under eager attention (needed for output_attentions)
@@ -1523,25 +1812,11 @@ def main():
     os.makedirs(os.path.dirname(args.json) if os.path.dirname(args.json) else ".", 
                 exist_ok=True)
     output = {
-        "config": {
-            "model": args.model, 
-            "budget": args.budget,
-            "tasks": args.tasks, 
-            "methods": args.methods,
-            "tiered_vram_budget": tiered_vram,
-            "tiered_stt_budget": tiered_stt,
-            "tiered_stt_expose": args.tiered_stt_expose,
-            "sttram_bifurcation_frac": args.sttram_bifurcation_frac,
-            "max_ctx": args.max_ctx,
-            "max_samples": args.max_samples,
-            "seed": args.seed,
-            "tiered_kv_dtype": args.tiered_kv_dtype,
-        },
+        "config": {**config_fingerprint, "tasks": args.tasks, "methods": args.methods},
         "results": {k: v for k, v in all_results.items() if k != "_config_fingerprint"},
     }
     
-    with open(args.json, "w") as f:
-        json.dump(output, f, indent=2)
+    atomic_json(args.json, output)
     print(f"\nSaved → {args.json}")
 
 if __name__ == "__main__":

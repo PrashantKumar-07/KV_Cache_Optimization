@@ -1,0 +1,25 @@
+{
+  "timestamp_utc": "2026-10-03T12:15:51.600519+00:00",
+  "mechanism": "Tiny real Mistral GPU integration; single-token native phases interleaved with genuine2/32-token legacy append fallback and return to native mode.",
+  "settings": {
+    "layers": 4,
+    "attention_heads": 4,
+    "KV_heads": 2,
+    "dim": 16,
+    "vocab": 128,
+    "context": 512,
+    "hot": 191,
+    "cold": 64,
+    "append_sizes": [
+      1,
+      2,
+      1,
+      32,
+      1,
+      1
+    ],
+    "seed": 7
+  },
+  "primary": "Exact BF16 visible/hot/cold KV, CPU/F32 metadata/positions/flags/slots/free order, logits/predictions and cumulative counters at all7 boundaries against same-config ordinary bulk. Four native CPU phases, two append fallback steps, actual reattachment and return to native mode; no borrowed source mutation/lease or hook leak.",
+  "limits": "Integration preservation only. Not a fullmodel performance, independent quality, serving or physical STT claim."
+}

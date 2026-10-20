@@ -1,0 +1,8 @@
+{
+  "cause": "GCC11 lacks _mm512_cvtpbh_ps BF16 intrinsic in officialbf16_util.c. GCC12header suppliesit; directunchangedsourcecompilation withGCC12passed.",
+  "correction": "SetCC=/usr/bin/gcc-12; keepCXXg++11; noMDCIsource/algorithmchanges. Resumeonly failedbuildstage andnotyetexecutedIceCachestage.",
+  "failed_evidence": "build_official_bf16_dci.log",
+  "failed_status": "build_status.json",
+  "probe": "gcc-12 -std=c11 -mavx512bf16 -mavx512bw -mavx512vl -I.../M-DCI/include -c .../M-DCI/src/bf16_util.c =>exit0",
+  "script_sha256": "239a2911bc001a6b356ad11ea70786496bea5adc78b550ed621a29cf37931173"
+}

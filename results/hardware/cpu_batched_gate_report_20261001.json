@@ -1,0 +1,81 @@
+{
+  "scope": "CPU-DRAM same-policy fixed-stream full-loop gate; GPU-tier/quality/SnapKV/STT gates remain open",
+  "raw_sha256": "b5875e776412bc14e5fa92f859460a5dca7312cb4679f259fc377a1264d41415",
+  "source_bundle_sha256": "de3814f50a584dc5bf3913c1f827d1bcbd2758854265f0c61cfee6c97f2241d8",
+  "source_bundle_matches_executed_hashes": true,
+  "arms": 12,
+  "exact_state_history_predictions_counters_and_useful_payload": true,
+  "latency": {
+    "fast": {
+      "median_ms": 90.68531449884176,
+      "p95_ms": 109.21809142455459
+    },
+    "batched": {
+      "median_ms": 80.01734036952257,
+      "p95_ms": 89.24126410856843
+    },
+    "latency_gate_passed": true,
+    "blocks": [
+      {
+        "fast": 88.16295489668846,
+        "batched": 80.01734036952257
+      },
+      {
+        "fast": 89.2611462622881,
+        "batched": 79.95276059955359
+      },
+      {
+        "fast": 91.54231939464808,
+        "batched": 79.82164341956377
+      }
+    ]
+  },
+  "gain_percent": 11.763728436378129,
+  "resources": {
+    "fast": {
+      "median_ttft_ms": 2062.9505,
+      "max_prefill_peak_gpu_bytes": 18594276864,
+      "max_decode_peak_gpu_bytes": 14910151168,
+      "final_gpu_allocated_bytes": [
+        14627208192,
+        14627224576
+      ],
+      "occupied_host_tensor_bytes": [
+        212344832
+      ],
+      "reserved_host_tensor_bytes": [
+        212344832
+      ]
+    },
+    "batched": {
+      "median_ttft_ms": 2145.035,
+      "max_prefill_peak_gpu_bytes": 18594276864,
+      "max_decode_peak_gpu_bytes": 14913245696,
+      "final_gpu_allocated_bytes": [
+        14626980864
+      ],
+      "occupied_host_tensor_bytes": [
+        212344832
+      ],
+      "reserved_host_tensor_bytes": [
+        402784256
+      ]
+    }
+  },
+  "useful_payload_bytes": {
+    "h2d": 315621376,
+    "d2h_total": 212344832,
+    "d2h_initial": 201326592,
+    "d2h_decode": 11018240
+  },
+  "batched_physical_dispatches": {
+    "h2d": [
+      76
+    ],
+    "shared_decode_d2h": [
+      25
+    ],
+    "per_layer_initial_d2h": 32
+  },
+  "limitations": "Reserved host tensors are final live reservations, not allocator/process peak. Initial consolidation briefly owns old per-layer pools plus shared pool (up to 805568512 bytes of host tensors); pinned allocator may retain freed blocks. No physical STT/controller/energy or freely generated QA quality claim. Only homogeneous layers and single-token decode tested. History observer present in both latency arms; complete-state hashing only in separate parity runs."
+}

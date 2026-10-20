@@ -1,0 +1,27 @@
+{
+  "timestamp_utc": "2026-10-03T13:18:06.385269+00:00",
+  "mechanism": "Place each layer immediately using frozen unchanged placement body, allocate its final visible/hot shared root during prefill with a reserved append row, store a logical future-cache view, return original full KV for current attention; global handoff fills the cold tail through unchanged batched reads before decode. Native CPU phase ownership applies after handoff. No selector/math/precision/cold transfer payload change.",
+  "why_distinct": "Earlier hot-only layerwise placement passed prefill reduction but failed strict GPU decode guard; it stays stopped. New final shared root is allocated once during layer placement and reused by global visibility, avoiding later hot/visible allocation turnover. Current measured649/1982 prefill is10.838% above faithful Snap guard; this composition targets that concrete gap.",
+  "control": "results/hardware/prompt_boundary_comparison_v1/cpu.json",
+  "control_sha256": "9e000d07d8faa75497ec947ff01072868dca7697a931b0bd9bf0aa10231b0433",
+  "snap": "results/hardware/prompt_boundary_comparison_v1/snap.json",
+  "snap_sha256": "ca246a0b2a903d6e5dab1ebf59a922dcc934e9ff1143f0dd433d00b1e2a7f428",
+  "old_placement_source": "results/hardware/layerwise_prefill_placement_v1/candidate.py",
+  "old_placement_sha256": "840710836385bfce773451645b94410f8eed041f1f34982a127134577e724032",
+  "old_stop_sha256": "4af1345203c900a096c228cc7cdc6ebdf511f626a62c380808d3a5daefd64c9d",
+  "settings": {
+    "hot": 649,
+    "cold": 1982,
+    "exposed": 32,
+    "context": 16384,
+    "decode": 50
+  },
+  "gates": [
+    "CPU shared-root/current-KV/geometry/partial-hook cleanup tests and full suite",
+    "Tiny real GPU full logits/hot/cold/visible/metadata/slots parity, future cold tail filled at global handoff, partial exception pinned/lease cleanup",
+    "Fullmodel4K12 and16K50 frozen prediction/state/counters/native KV replay, no fallback, all32 early shared roots consumed",
+    ">=10% lower whole-prefill allocated peak vs frozen current649/1982 control; strict GPU-only decode active/reserved<=2%worse, scoped plus pinned/CPU<=512MiB; prefill peak<=10% above faithful Snap; initial KV341MiB and width geometry unchanged"
+  ],
+  "stop": "Any correctness fault must be fixed with preserved attempts; failed resource primary/guard stops this candidate before timing/generation/quality/adoption. No favorable retry. No whole-trajectory resource equality or finalholdout tuning.",
+  "limits": "Research-only, no production/default changes. Passing components do not complete joint P0/P1/P2. Native containers/unowned CPU/driver allocations unmeasured."
+}

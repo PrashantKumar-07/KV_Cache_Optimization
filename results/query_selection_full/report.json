@@ -1,0 +1,111 @@
+{
+  "scope": "paired selected tasks/samples/model/seed; conditional bootstrap only",
+  "runtime": {
+    "git_revision": "be7e700d84d46b47e32ba5b9870c8b71783b9e53",
+    "source_sha256": "bcc2b8520906db2db0a85494d441a4e688e571a356f1f6bc00c6c493d71dc548",
+    "packages": {
+      "torch": "2.5.1+cu124",
+      "transformers": "5.15.0",
+      "datasets": "2.19.2",
+      "numpy": "2.2.6",
+      "accelerate": "1.14.0",
+      "huggingface_hub": "1.27.0",
+      "rouge": "1.0.1"
+    }
+  },
+  "selector_sha256": "d6326141d0bdf7cf23f4acccba35f9589b045991f86d1c0bf928aee293e5ebf2",
+  "control_directory": "results/shadow_ablation_full",
+  "tasks": [
+    "multifieldqa_en",
+    "qasper",
+    "narrativeqa",
+    "hotpotqa",
+    "triviaqa",
+    "gov_report"
+  ],
+  "quality": {
+    "baseline": "lru",
+    "per_task": {
+      "multifieldqa_en": {
+        "n": 25,
+        "mean_difference": 4.427547969506586,
+        "se": 3.770182437735958
+      },
+      "qasper": {
+        "n": 25,
+        "mean_difference": 7.161771620203094,
+        "se": 2.946976338085574
+      },
+      "narrativeqa": {
+        "n": 25,
+        "mean_difference": 2.6426768993182645,
+        "se": 1.3359837107524288
+      },
+      "hotpotqa": {
+        "n": 25,
+        "mean_difference": 5.793577183050868,
+        "se": 3.1339889561829626
+      },
+      "triviaqa": {
+        "n": 25,
+        "mean_difference": 0.03809523809523796,
+        "se": 3.4916940641530614
+      },
+      "gov_report": {
+        "n": 10,
+        "mean_difference": 6.015471869522368,
+        "se": 1.6193977462918443
+      }
+    },
+    "scores": {
+      "multifieldqa_en": {
+        "tieredkv": 59.68,
+        "lru": 55.25
+      },
+      "qasper": {
+        "tieredkv": 20.44,
+        "lru": 13.28
+      },
+      "narrativeqa": {
+        "tieredkv": 21.28,
+        "lru": 18.63
+      },
+      "hotpotqa": {
+        "tieredkv": 43.73,
+        "lru": 37.93
+      },
+      "triviaqa": {
+        "tieredkv": 78.3,
+        "lru": 78.27
+      },
+      "gov_report": {
+        "tieredkv": 32.94,
+        "lru": 26.93
+      }
+    },
+    "task_balanced_mean_difference": 4.346523463282737,
+    "paired_bootstrap_95pct_interval": [
+      2.119444333092539,
+      6.607847811982956
+    ],
+    "bootstrap_draws": 10000,
+    "seed": 0
+  },
+  "counters": {
+    "query": {
+      "paid_writes": 537511,
+      "writes_saved": 2262940,
+      "promoted": 2620419,
+      "demoted": 2800451,
+      "decode_steps": 5632
+    },
+    "lru": {
+      "paid_writes": 339097,
+      "writes_saved": 2510023,
+      "promoted": 2678720,
+      "demoted": 2849120,
+      "decode_steps": 5331
+    }
+  },
+  "caveat": "The same input samples can generate different output lengths. Separate-GPU per-request elapsed times are not a controlled latency comparison. STT tier is simulated on GPU."
+}

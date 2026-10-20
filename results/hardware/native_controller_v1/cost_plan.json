@@ -1,0 +1,27 @@
+{
+  "timestamp_utc": "2026-10-03T08:08:00.297637+00:00",
+  "mechanism": "Native CPU controller plans/backup lookup/physical address expansion plus grouped GPU timestamp ranking, composed with bounded shared ownership; paired ordinaryBulk quiet3ABBA.",
+  "settings": {
+    "hot": 991,
+    "cold": 1090,
+    "quota": 32,
+    "context": 16384,
+    "decode": 50,
+    "warmup": 1,
+    "seed": 0,
+    "prefill_last_logits": true
+  },
+  "prompt": "results/remediation_v3/latency_prompt.txt",
+  "teachers": "results/shadow_ablation_full/fixed_stream_20260929.json",
+  "control": "results/hardware/layerwise_prefill_placement_v1/control_shared.json",
+  "query": "results/hardware/native_controller_v1/resource.json",
+  "correctness_proof_sha256": "fff99958dceb1cf9698786116d0f1a95c9a382b6bf8f63117103bb95335034b3",
+  "resource_proof_sha256": "916e723bbab3b9ccda260c4a6d8c995599f19875e8213d4c4818fb1167e6b7bb",
+  "primary": ">=5% median wholeloop improvement AND >=4ms saved; p95<=2% worse and TTFT<=10% worse. All300 measured predictions per arm, finalstate/counters/native KV traffic exact. Every measured trial nativeplans50/fallback0, backups1600, addresses101, rankgroups51/rankmetadata5555328B. Ownership descriptor12864000B/1200uploads derived; complete timing/GPUpeaks charge all descriptor work. Warmupincludedappend3200/fallback0. Hooks/leases released;25quietGPU0 observations.",
+  "stop": "Failed primary stops native controller expansion/adoption without favorable timing retry. Passing requires wider preservation/freegeneration/recycling and current faithfulbaseline/quality joint gates.",
+  "limits": "One model/seed/fixedteacher; before/after PID observations. Fresh scoped active432.116MiB plus CPUarray bound0.172MiB. CPU/C++/Python allocator internals are unmeasured. Descriptor bytes are separate from nativeKV and not physical PCIe transactions; total extra vs ordinary not independently instrumented. No quality/faithfulbaseline/physicalSTT/fullprocess claim.",
+  "prompt_sha256": "18695714f26e35cb8d2b039ae9efb3b7e64291cbd7bcd91956efc07e16a732cd",
+  "teachers_sha256": "620ac3a383997c9afbc6a3f0b06acec9f261d5a2a5827bf5988e0bb5b69f12a2",
+  "control_sha256": "9449721be00001a6e4ada6e243be61e1d100dc4eb6508afa0122c4c8d8275ee0",
+  "query_sha256": "d552802aff9ba13dcfa4bec888347e4a1228f08cb1081b041020b7a685608e5b"
+}

@@ -1,0 +1,82 @@
+{
+  "source_identity_and_boundary_storage_equations_verified": true,
+  "shared_ceiling_passed": true,
+  "actual_usage_equal": false,
+  "arms": [
+    {
+      "arm": "snap",
+      "total_owned_kv_range_bytes": [
+        510656512,
+        536870912
+      ],
+      "gpu_owned_kv_range_bytes": [
+        510656512,
+        536870912
+      ],
+      "cpu_owned_kv_range_bytes": [
+        0,
+        0
+      ],
+      "decode_attended_rows_range": [
+        975,
+        1024
+      ],
+      "final_distinct_owned_kv_storage_bytes": {
+        "cuda:0": 536870912
+      },
+      "diagnostic_model_peak_gpu_allocated_bytes": 16958268416
+    },
+    {
+      "arm": "gpu",
+      "total_owned_kv_range_bytes": [
+        468582400,
+        479068160
+      ],
+      "gpu_owned_kv_range_bytes": [
+        468582400,
+        479068160
+      ],
+      "cpu_owned_kv_range_bytes": [
+        0,
+        0
+      ],
+      "decode_attended_rows_range": [
+        1024,
+        1024
+      ],
+      "final_distinct_owned_kv_storage_bytes": {
+        "cuda:0": 479068160
+      },
+      "diagnostic_model_peak_gpu_allocated_bytes": 18694876672
+    },
+    {
+      "arm": "cpu_direct",
+      "total_owned_kv_range_bytes": [
+        536870912,
+        536870912
+      ],
+      "gpu_owned_kv_range_bytes": [
+        263979008,
+        263979008
+      ],
+      "cpu_owned_kv_range_bytes": [
+        272891904,
+        272891904
+      ],
+      "decode_attended_rows_range": [
+        1024,
+        1024
+      ],
+      "final_distinct_owned_kv_storage_bytes": {
+        "cuda:0": 263979008,
+        "cpu": 272891904
+      },
+      "diagnostic_model_peak_gpu_allocated_bytes": 18627830784
+    }
+  ],
+  "boundaries": 153,
+  "layer_decode_width_observations": 4800,
+  "raw_sha256": "f923a129f32f41215c7e7fe4463c8c795c3afa64b1ea8d5be052102ff1288f12",
+  "source_bundle_sha256": "174983012e2ca2fb80949c27a8714998f7848805cbd661540fbe4a32bc804fc8",
+  "limitations": "One fixed teacher stream and model; equal ceilings, unequal actual bytes/widths and cold capacities. Boundary KV ownership includes visible copies and complete pinned roots, excludes metadata, retained allocator blocks and transient staging. Observed CUDA peaks include diagnostic synchronization. No quality, latency, throughput, model-memory saving or physical-STT gate."
+}

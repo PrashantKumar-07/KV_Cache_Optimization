@@ -1,0 +1,217 @@
+{
+  "config": {
+    "model": "../models/mistral-7b-instruct",
+    "data_dir": "../hf_cache/datasets/downloads/extracted/5def9c7eaf83951e1cee75902d8611ef764ad88dd289e8f0bf97ff658a3eb83a/data",
+    "tasks": [
+      "qasper",
+      "narrativeqa"
+    ],
+    "max_samples": 5,
+    "strategy": "query",
+    "seed": 0,
+    "max_ctx": 31500,
+    "tiered_vram_budget": 992,
+    "tiered_stt_budget": 3104,
+    "recent": 128,
+    "stt_expose_quota": 32,
+    "real_query_prefill": true,
+    "sttram_bifurcation_frac": 0.75,
+    "kv_dtype": "bfloat16",
+    "runtime": {
+      "git_revision": "be7e700d84d46b47e32ba5b9870c8b71783b9e53",
+      "source_sha256": "e8bf6bd3a3729bbbbd723062c06f9f73f3b29b3714c74e273b2cf4f2efbc3529",
+      "packages": {
+        "torch": "2.5.1+cu124",
+        "transformers": "5.14.1",
+        "datasets": "5.0.0",
+        "numpy": "2.2.6",
+        "accelerate": "1.14.0",
+        "huggingface_hub": "1.24.0",
+        "rouge": "1.0.1"
+      }
+    },
+    "selector_sha256": "c9e5a36768f9055169b244c11b2be45be8d4cafb56c7b248a07e1bb78eb7f695",
+    "dataset_sha256": {
+      "qasper": "97d95c01221a17a2ce51f9180d65a671bf2998504a2ff0cccffe97e9b08444d8",
+      "narrativeqa": "0fb8d08ba5cdad4b74244224b0dc2e8b41ee6b850d954a13eb2d282621ce2f71"
+    }
+  },
+  "results": {
+    "qasper": {
+      "tieredkv": {
+        "score": 27.13,
+        "n": 5,
+        "sample_scores": [
+          85.71,
+          22.22,
+          7.69,
+          20.0,
+          0.0
+        ],
+        "samples": [
+          {
+            "sample_id": "3b91dce7ca41a9d16a1d0c61806c139db583a053ddb582bf79df3ff56f8e0344",
+            "prediction": "They selected different Facebook pages, including FoxNews, CNN, ESPN, New York Times, Time magazine, Huffington Post Weird News, The Guardian, Cartoon Network, Cooking Light, Home Cooking Adventure, Justin Bieber, Nickelodeon, and Spongebob.",
+            "score": 85.71428571428571,
+            "elapsed_s": 10.272272380068898,
+            "prompt_tokens": 4895,
+            "generated_tokens": 65,
+            "final_resident_kv_payload_bytes": 446623744,
+            "prefill_s": 1.1156851183623075,
+            "prefill_peak_alloc_bytes": 16171263488
+          },
+          {
+            "sample_id": "5f59f94cd91401a55bcd3b6b24b78cd2c4c78e8ee6e7663e0ac8b97306444f08",
+            "prediction": "The paper proposes attention models to infer the latent context that triggers an instructor intervention.",
+            "score": 22.22222222222222,
+            "elapsed_s": 3.3976040445268154,
+            "prompt_tokens": 5415,
+            "generated_tokens": 20,
+            "final_resident_kv_payload_bytes": 440614912,
+            "prefill_s": 0.6744220703840256,
+            "prefill_peak_alloc_bytes": 16292001280
+          },
+          {
+            "sample_id": "9d37c5305ff63838fd6b7c96f13d10cfc388955672b1a629e5c0a8c2a89c520d",
+            "prediction": "In addition to F-scores and Kappa statistics, the importance of features is analyzed by ranking them based on Chi squared test and Information Gain test.",
+            "score": 7.6923076923076925,
+            "elapsed_s": 5.4356823824346066,
+            "prompt_tokens": 5549,
+            "generated_tokens": 34,
+            "final_resident_kv_payload_bytes": 442241024,
+            "prefill_s": 0.7001865170896053,
+            "prefill_peak_alloc_bytes": 16329600000
+          },
+          {
+            "sample_id": "5b60c062453de695f70d5f313a868a3c630068a85084fc9c456760f41e84d0f3",
+            "prediction": "The baselines were plain stacked LSTMs.",
+            "score": 20.0,
+            "elapsed_s": 2.1879905611276627,
+            "prompt_tokens": 5175,
+            "generated_tokens": 12,
+            "final_resident_kv_payload_bytes": 439762944,
+            "prefill_s": 0.6406427212059498,
+            "prefill_peak_alloc_bytes": 16240737280
+          },
+          {
+            "sample_id": "a25d41e770a5f1816e04f39227fecd7dfcd9b83b25842e413d0f8fcb447b2092",
+            "prediction": "jiant specifically mentions support for PyTorch, AllenNLP, and HuggingFace's Transformers, which are all Python-based. Therefore, it is not explicitly stated that jiant is compatible with models in any other programming language.",
+            "score": 0.0,
+            "elapsed_s": 7.786953214555979,
+            "prompt_tokens": 3956,
+            "generated_tokens": 53,
+            "final_resident_kv_payload_bytes": 444096512,
+            "prefill_s": 0.4652256444096565,
+            "prefill_peak_alloc_bytes": 15945263104
+          }
+        ],
+        "cache_stats": {
+          "demoted": 101577,
+          "promoted": 95849,
+          "promotions_deferred": 87447,
+          "paid_writes": 9166,
+          "writes_saved": 92411,
+          "dropped": 0,
+          "write_savings_pct": 91.0,
+          "decode_steps": 179,
+          "stt_starved_steps": 0,
+          "stt_unused_steps": 0,
+          "mean_stt_exposed": 32.0,
+          "stt_expose_quota": 32,
+          "stt_exposed_total": 5888,
+          "stt_exposure_samples": 184,
+          "modeled_latency_us": 53306.6,
+          "modeled_energy_nj": 2296312954.9
+        }
+      }
+    },
+    "narrativeqa": {
+      "tieredkv": {
+        "score": 20.37,
+        "n": 5,
+        "sample_scores": [
+          30.77,
+          0.0,
+          28.57,
+          30.0,
+          12.5
+        ],
+        "samples": [
+          {
+            "sample_id": "27a07bedff812ae2c3fece3ac4a1f1db11f00793a3598fa94f1fa286ea347cb9",
+            "prediction": "Saltram is an inmate at the Mulvilles' residence.",
+            "score": 30.769230769230766,
+            "elapsed_s": 7.24225708283484,
+            "prompt_tokens": 31500,
+            "generated_tokens": 16,
+            "final_resident_kv_payload_bytes": 440029184,
+            "prefill_s": 5.075953541323543,
+            "prefill_peak_alloc_bytes": 22889513984
+          },
+          {
+            "sample_id": "dfeb4058f4507fa2d2a6f80f6c230cc08e3c7eaa8221bead1ccee5ba90a57488",
+            "prediction": "Ann only feels gratitude towards Mary.",
+            "score": 0.0,
+            "elapsed_s": 6.08603048697114,
+            "prompt_tokens": 31500,
+            "generated_tokens": 8,
+            "final_resident_kv_payload_bytes": 439590912,
+            "prefill_s": 5.069652754813433,
+            "prefill_peak_alloc_bytes": 22888809472
+          },
+          {
+            "sample_id": "b75b8f1d9f0027543e6f4d84ca94997765d41f9a6eda749df309b0070caee3d8",
+            "prediction": "The witch lives on Atlas' mountain.",
+            "score": 28.571428571428577,
+            "elapsed_s": 2.5391577892005444,
+            "prompt_tokens": 9674,
+            "generated_tokens": 10,
+            "final_resident_kv_payload_bytes": 439758848,
+            "prefill_s": 1.2516848910599947,
+            "prefill_peak_alloc_bytes": 17369085440
+          },
+          {
+            "sample_id": "5f2d99ab2d103d5f04d78f3e7a3b76f633fabeab2eb86a785cf76ed7ac77249e",
+            "prediction": "Crito proposed a plan for Socrates to escape from prison.",
+            "score": 30.0,
+            "elapsed_s": 3.27610744535923,
+            "prompt_tokens": 9887,
+            "generated_tokens": 15,
+            "final_resident_kv_payload_bytes": 440033280,
+            "prefill_s": 1.2790895085781813,
+            "prefill_peak_alloc_bytes": 17429826560
+          },
+          {
+            "sample_id": "254d602c75f8a37865dd7b4a2b7efbb25194b5064a29a07d7038b92d6add6c3d",
+            "prediction": "Baron Henry preferred to ride down Otto instead of killing him outright.",
+            "score": 12.5,
+            "elapsed_s": 7.124403215944767,
+            "prompt_tokens": 31500,
+            "generated_tokens": 15,
+            "final_resident_kv_payload_bytes": 439808000,
+            "prefill_s": 5.099180679768324,
+            "prefill_peak_alloc_bytes": 22888809472
+          }
+        ],
+        "cache_stats": {
+          "demoted": 42198,
+          "promoted": 40310,
+          "promotions_deferred": 20106,
+          "paid_writes": 5719,
+          "writes_saved": 36479,
+          "dropped": 0,
+          "write_savings_pct": 86.4,
+          "decode_steps": 59,
+          "stt_starved_steps": 0,
+          "stt_unused_steps": 0,
+          "mean_stt_exposed": 32.0,
+          "stt_expose_quota": 32,
+          "stt_exposed_total": 2048,
+          "stt_exposure_samples": 64,
+          "modeled_latency_us": 19222.6,
+          "modeled_energy_nj": 762652393.5
+        }
+      }
+    }
+  }
+}

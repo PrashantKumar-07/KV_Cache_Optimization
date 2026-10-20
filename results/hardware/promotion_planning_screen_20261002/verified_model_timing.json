@@ -1,0 +1,59 @@
+{
+  "verified": true,
+  "actual_control": "ordinary_native_reuse",
+  "actual_candidate": "bulk_promotion_native_reuse",
+  "summary": {
+    "fused_bounded": {
+      "median_ms": 65.97314681857824,
+      "p95_ms": 73.08214288204908,
+      "ttft_ms": 2288.8848688453436,
+      "prefill_peak_gb": 18.627831296,
+      "decode_peak_gb": 14.789913088
+    },
+    "native_reuse": {
+      "median_ms": 62.52175383269787,
+      "p95_ms": 67.93660102412105,
+      "ttft_ms": 2285.0500140339136,
+      "prefill_peak_gb": 18.627831296,
+      "decode_peak_gb": 14.789913088
+    }
+  },
+  "blocks": [
+    {
+      "fused_bounded": 66.40175171196461,
+      "native_reuse": 62.37831152975559
+    },
+    {
+      "fused_bounded": 65.60124829411507,
+      "native_reuse": 62.52210773527622
+    },
+    {
+      "fused_bounded": 66.2579033523798,
+      "native_reuse": 62.74612247943878
+    }
+  ],
+  "median_improvement_pct": 5.2315118382506025,
+  "regression_guards": {
+    "p95": true,
+    "ttft": true,
+    "prefill_peak": true,
+    "decode_peak": true,
+    "all_blocks": true
+  },
+  "latency_gate_passed": true,
+  "advance_to_mandatory_stress": true,
+  "candidate_ready_for_cli": false,
+  "measured_tokens_per_arm": 300,
+  "exact_final_state_history_ids_counters_payload_dispatch_root": true,
+  "full_suite_passed": 199,
+  "limitations": "One development prompt/model/seed and geometry, same CPU backend and logical policy, existing recorded timing/synchronization. No SnapKV/quality/physicalSTT/actual-resource/serving-superiority claim; mandatory stress and ordinary CLI adoption gates still required.",
+  "evidence_sha256": {
+    "model_plan.json": "d60ec8f8740dc336368521b39978b6bdd6610e1f7893152151e6290a7e24e625",
+    "model_source.tar.gz": "1c2fdba7ff4271eedd82e50fce789514a52ca62fe226175f0317241697e93b8c",
+    "model_native_source.tar.gz": "10753bfa8d8034e3c194ce0317c3f4dcd83a2534eb04b90b454c2be4604f923b",
+    "verified_model_parity.json": "0d269540fdc65a463acc9b76f4c522b30c1c6f89a63a380c604768de5e5d2ae8",
+    "model_timing.json": "84cc171c570b788c9a18ed14794cb168ee1b55f1dd05a16c664267f44a411897",
+    "model_timing.log": "102f20946d73d1928c0650320adf9974070a7aa39df998175fd6314178b668b6",
+    "full_suite.txt": "33a7d7790aefaf72952d531ddeb37fb6f4f6492aa6292dd45b7e9628755f496c"
+  }
+}

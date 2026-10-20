@@ -1,0 +1,119 @@
+{
+  "config": {
+    "model": "../models/mistral-7b-instruct",
+    "budget": 1024,
+    "tiered_vram_budget": 1024,
+    "tiered_stt_budget": 2048,
+    "tiered_stt_expose": null,
+    "sttram_bifurcation_frac": 0.75,
+    "sink": 4,
+    "recent": 128,
+    "max_samples": 5,
+    "tasks": [
+      "multifieldqa_en"
+    ],
+    "max_ctx": 31500,
+    "seed": 0,
+    "tiered_kv_dtype": "bfloat16",
+    "page_size": 16,
+    "promote_top_pages": 2,
+    "stt_live_floor": 1,
+    "write_aware_lambda": 0.0,
+    "runtime": {
+      "git_revision": "be7e700d84d46b47e32ba5b9870c8b71783b9e53",
+      "source_sha256": "c5db18225a65ab143ed3194d51c8d701606bdfca04b34665f3d87c824ecce727",
+      "packages": {
+        "torch": "2.5.1+cu124",
+        "transformers": "5.15.0",
+        "datasets": "2.19.2",
+        "numpy": "2.2.6",
+        "accelerate": "1.14.0",
+        "huggingface_hub": "1.27.0",
+        "rouge": "1.0.1"
+      }
+    },
+    "protocol": "task_chat_exclusions_v2",
+    "data_dir": "../hf_cache/datasets/downloads/extracted/5def9c7eaf83951e1cee75902d8611ef764ad88dd289e8f0bf97ff658a3eb83a/data",
+    "dataset_sha256": {
+      "multifieldqa_en": "678a51335e3c90e0dd43bf1131045e4f2859cc693e7eded89cc6a1ee8d18faff"
+    },
+    "methods": [
+      "tieredkv"
+    ]
+  },
+  "results": {
+    "multifieldqa_en": {
+      "tieredkv": {
+        "score": 40.92,
+        "n": 5,
+        "sample_scores": [
+          26.67,
+          100.0,
+          0.0,
+          25.0,
+          52.94
+        ],
+        "samples": [
+          {
+            "sample_id": "b3a9da1dd79b69143f46fb4ea37f3159f11a4585b68604cbda50c0adf4da65a1",
+            "prediction": "Permanent damage to the VR headset, specifically the lenses, may occur if they are exposed to sunlight or strong light. This can result in visual distortions or a loss of clarity in the virtual environment. It is recommended to avoid direct sunlight or strong artificial light when using the VR headset",
+            "score": 26.666666666666668,
+            "elapsed_s": 8.844184007495642,
+            "prompt_tokens": 6689,
+            "generated_tokens": 64
+          },
+          {
+            "sample_id": "66fbe72f15b70e8c8cc090467f3ac90f03c8fb6063e3346cd82d7778cd7b1cf9",
+            "prediction": "Vice admiral",
+            "score": 100.0,
+            "elapsed_s": 0.7358887735754251,
+            "prompt_tokens": 3463,
+            "generated_tokens": 4
+          },
+          {
+            "sample_id": "49117774123dc2f3ec95d7bbc61950987252760875cec6cac53ff18be0913744",
+            "prediction": "William Rokebye",
+            "score": 0.0,
+            "elapsed_s": 1.391944594681263,
+            "prompt_tokens": 8098,
+            "generated_tokens": 5
+          },
+          {
+            "sample_id": "816c7d4d2ca3f7843b2d0f795c0617530c81f992857280a719dc8801a10592cf",
+            "prediction": "South Bastia District, Yerevan, Armenia - The most active group of fans for Urartu Football Club is the South Bastia District Ultras.",
+            "score": 25.0,
+            "elapsed_s": 3.9218456018716097,
+            "prompt_tokens": 1892,
+            "generated_tokens": 34
+          },
+          {
+            "sample_id": "670c6b828aaca397f191fff5fc6422ec944d1f3e88cfa9c9a853369093e10caa",
+            "prediction": "The recommended space for using the VR headset is at least 2 meters by 2 meters (or 6.6 feet by 6.6 feet).",
+            "score": 52.94117647058824,
+            "elapsed_s": 4.820363452658057,
+            "prompt_tokens": 6683,
+            "generated_tokens": 35
+          }
+        ],
+        "cache_stats": {
+          "demoted": 73984,
+          "promoted": 69600,
+          "promotions_deferred": 70688,
+          "paid_writes": 10698,
+          "writes_saved": 63286,
+          "dropped": 0,
+          "write_savings_pct": 85.5,
+          "decode_steps": 137,
+          "stt_starved_steps": 0,
+          "stt_unused_steps": 0,
+          "mean_stt_exposed": 32.0,
+          "stt_expose_quota": 32,
+          "stt_exposed_total": 4544,
+          "stt_exposure_samples": 142,
+          "modeled_latency_us": 42362.4,
+          "modeled_energy_nj": 1813365653.5
+        }
+      }
+    }
+  }
+}

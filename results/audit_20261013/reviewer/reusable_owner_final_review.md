@@ -1,0 +1,9 @@
+# Reusable exact-root final critical review
+
+No blocking findings in stable prototype. Independently ran focused28CPUtests; main593suite passes. Source hashes/logs recorded in `reusable_owner_final_review.json`. No GPU job or source edits by reviewer at this stage.
+
+Owner creationthread and provisioning-token reservation reject foreignthread/reentrant/overlapping cold acquisition before CUDA; failure rollback clears acquiring/token. Geometry/device/context stay fixed. Release rejects stale/foreign/incomplete leases; close rejects activelease and foreignthread even before allocation. Pool retains BulkPayloadPool operations, drops partialconstructor poolreference before releasing only its acquiredlease. Policy rejects foreignowner/stalemanagertoken before mutating parentstate and captures deduplicated union of manager/layercaches, including attached-before-failed-bifurcation views. Complete parentreset waits IO; leftoverview cleanup finishes before release. Cleanup failure retainsbusy lease for quarantine, preventing reuse. Finalclose intentionally requires all leases/views gone; driver finalizer waits allocatingcontext.
+
+Persistent root remains resident/accounted while idle: policyreset must showtokenNone plus one live264MiBroot, notzero; finalownerclose must producezero with one allocate/releasepair across sequentialrequests. Native pointerrange, aliascleanup, stagedwriteordering, changedprompt stale-slot unreachable behavior and model/fullmetadata parity remain prospective integration gates. No concurrentservice/multiplecontext/geometrymigration support inferred.
+
+Earlier leak-expecting edge probe was started against a changing/preliminary prototype and failed its expectation after guards had already been added. It is an obsolete CPUreviewharness attempt, not a defect result in this stableversion; original file preserved. Do not rerun it expecting leaks. Stablecontract negativecases are covered by focusedtests.

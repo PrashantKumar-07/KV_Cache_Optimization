@@ -1,0 +1,12 @@
+{
+  "timestamp_utc": "2026-10-03T09:02:43.693637+00:00",
+  "reference": "results/hardware/layerwise_prefill_placement_v1/control_shared.json",
+  "reference_sha256": "9449721be00001a6e4ada6e243be61e1d100dc4eb6508afa0122c4c8d8275ee0",
+  "purpose": "Record real ordinary metadata/slot transitions as a frozen validation corpus for full CPU state-layout redesign. No model timing retry or candidate expansion.",
+  "requirements": [
+    "1600 layer transitions over frozen16K50; preserve predictions/finalstate/counters/native KV",
+    "Store exact typed CPU flags/streaks, GPU F32 metadata bits, positions, physical slot/free ordering, prepared victims and outcomes",
+    "Verify decoded replay of backup/demotion/positions/grace plus cold occupancy/slot invariants; keep saturation limits explicit"
+  ],
+  "limits": "Diagnostic wrapper synchronizes and serializes snapshots; instrumented times invalid for latency. Recorded decisions are inputs, not independent proof of selection/promotion. One model/seed; no final-holdout tuning. No full-project claim."
+}

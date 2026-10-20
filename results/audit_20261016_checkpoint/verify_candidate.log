@@ -1,0 +1,173 @@
+{
+  "verification_passed": true,
+  "plan_sha256": "57a460770e3b4f06cc72bdc4e190b0e43f69a5a0ce7481e8133b5732a003c52b",
+  "rows": 135,
+  "predictions_rescored": 405,
+  "metric_reference_sha256": "e22e2a2662e0f7e683137fa3541f64edb6a801e9138d16d2f3459a6ab9941323",
+  "verifier_sha256": "5dd5a8290085a998bc7dd886fc34eb956f36ae0330312b2e09a1caeb35f0f5f9",
+  "vs_old": {
+    "candidate": "candidate",
+    "control": "tiered_hot992",
+    "endpoint": "equal-task macro mean paired score difference, percentage points",
+    "point_estimate": 0.559236353039959,
+    "ci95": [
+      -0.18520179995474115,
+      1.5881067941460305
+    ],
+    "draws": 10000,
+    "seed": 0,
+    "task_order": [
+      "gov_report",
+      "hotpotqa",
+      "multifieldqa_en",
+      "narrativeqa",
+      "qasper",
+      "triviaqa"
+    ],
+    "method": "resample target-document groups with replacement independently within each task; retain all examples within each selected group; equal weight task means",
+    "per_task_descriptive": {
+      "gov_report": {
+        "rows": 10,
+        "document_groups": 10,
+        "paired_mean_difference": -0.22940736150437466,
+        "descriptive_unadjusted_ci95": [
+          -1.9604391665305418,
+          1.6788474871900745
+        ]
+      },
+      "hotpotqa": {
+        "rows": 25,
+        "document_groups": 25,
+        "paired_mean_difference": 0.0,
+        "descriptive_unadjusted_ci95": [
+          0.0,
+          0.0
+        ]
+      },
+      "multifieldqa_en": {
+        "rows": 25,
+        "document_groups": 19,
+        "paired_mean_difference": 0.03442372463649093,
+        "descriptive_unadjusted_ci95": [
+          -0.1069201069201063,
+          0.21446808510638335
+        ]
+      },
+      "narrativeqa": {
+        "rows": 25,
+        "document_groups": 15,
+        "paired_mean_difference": 1.4552036199095022,
+        "descriptive_unadjusted_ci95": [
+          0.0,
+          3.521870286576169
+        ]
+      },
+      "qasper": {
+        "rows": 25,
+        "document_groups": 23,
+        "paired_mean_difference": -0.3048018648018648,
+        "descriptive_unadjusted_ci95": [
+          -1.363636363636363,
+          0.3372781065088755
+        ]
+      },
+      "triviaqa": {
+        "rows": 25,
+        "document_groups": 25,
+        "paired_mean_difference": 2.4,
+        "descriptive_unadjusted_ci95": [
+          0.0,
+          7.2
+        ]
+      }
+    },
+    "interpretation": "Preregistered quality contrast under disclosed unequal cache geometry; not a SOTA or equal-physical-memory test"
+  },
+  "vs_faithful_snap": {
+    "candidate": "candidate",
+    "control": "snapkv_faithful",
+    "endpoint": "equal-task macro mean paired score difference, percentage points",
+    "point_estimate": -0.059135671866652695,
+    "ci95": [
+      -2.0432536902167238,
+      1.8532515281694495
+    ],
+    "draws": 10000,
+    "seed": 0,
+    "task_order": [
+      "gov_report",
+      "hotpotqa",
+      "multifieldqa_en",
+      "narrativeqa",
+      "qasper",
+      "triviaqa"
+    ],
+    "method": "resample target-document groups with replacement independently within each task; retain all examples within each selected group; equal weight task means",
+    "per_task_descriptive": {
+      "gov_report": {
+        "rows": 10,
+        "document_groups": 10,
+        "paired_mean_difference": -3.1010576875342513,
+        "descriptive_unadjusted_ci95": [
+          -6.275768050132937,
+          0.6779796374350091
+        ]
+      },
+      "hotpotqa": {
+        "rows": 25,
+        "document_groups": 25,
+        "paired_mean_difference": 3.1534640522875805,
+        "descriptive_unadjusted_ci95": [
+          -0.8689449112978537,
+          9.12044817927171
+        ]
+      },
+      "multifieldqa_en": {
+        "rows": 25,
+        "document_groups": 19,
+        "paired_mean_difference": -2.031702431188728,
+        "descriptive_unadjusted_ci95": [
+          -10.513352576555382,
+          3.4450985842928463
+        ]
+      },
+      "narrativeqa": {
+        "rows": 25,
+        "document_groups": 15,
+        "paired_mean_difference": 2.8682905394067846,
+        "descriptive_unadjusted_ci95": [
+          -0.6097051940485715,
+          6.230271228127088
+        ]
+      },
+      "qasper": {
+        "rows": 25,
+        "document_groups": 23,
+        "paired_mean_difference": -2.7295227898855883,
+        "descriptive_unadjusted_ci95": [
+          -6.091901850497482,
+          0.6520084205346857
+        ]
+      },
+      "triviaqa": {
+        "rows": 25,
+        "document_groups": 25,
+        "paired_mean_difference": 1.4857142857142862,
+        "descriptive_unadjusted_ci95": [
+          -2.7428571428571416,
+          7.2
+        ]
+      }
+    },
+    "interpretation": "Preregistered quality contrast under disclosed unequal cache geometry; not a SOTA or equal-physical-memory test"
+  },
+  "registered_gate": {
+    "gain_vs_old_at_least_1": false,
+    "lower95_vs_old_above_0": false,
+    "no_task_mean_loss_beyond_5": true,
+    "point_gain_vs_faithful_snap_above_0": false
+  },
+  "advance": false,
+  "decision": "REJECT and STOP candidate expansion",
+  "scope": "Consumed original135 development only. Faithful Snap comparison has disclosed unequal cache geometry. No SOTA or independent quality claim."
+}

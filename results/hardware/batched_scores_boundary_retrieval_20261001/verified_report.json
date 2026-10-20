@@ -1,0 +1,107 @@
+{
+  "raw_sha256": "513727ec358c43860ff9ef0e6ab1d8ba6fa19738f21f8a78e8635df98d76a508",
+  "manifest_sha256": "870fc4ec457bb6dde9e4d2804f21691907e694d01221ef3d502c505cca1731c7",
+  "source_bundle_sha256": "190fa0c483ca10dbf3c5e6ba1292eea36823657db6127496ca46cb3bb6eb855d",
+  "source_token_id_and_pair_identities_verified": true,
+  "integrity_passed": true,
+  "pairs": 16,
+  "model_prompt_lengths": [
+    1,
+    1023,
+    1024,
+    1025,
+    3071,
+    3072,
+    3073,
+    16384,
+    31500
+  ],
+  "empty_case": "zero-generation no-op, not zero-length model forward",
+  "all_layers_cold_capacity_reached": 2048,
+  "largest_step_promoted": 1024,
+  "largest_step_paid_writes": 1056,
+  "retrieval_quality_passed": false,
+  "retrieval_results": [
+    {
+      "case": "needle_16384_0.1",
+      "prompt_tokens": 16384,
+      "gpu_correct": false,
+      "cpu_correct": false,
+      "oracle_correct": true,
+      "fully_dropped_answer_layers": 32,
+      "full_answer_span_layers": 0,
+      "retained_answer_token_range": [
+        0,
+        0
+      ]
+    },
+    {
+      "case": "needle_16384_0.5",
+      "prompt_tokens": 16384,
+      "gpu_correct": false,
+      "cpu_correct": false,
+      "oracle_correct": true,
+      "fully_dropped_answer_layers": 29,
+      "full_answer_span_layers": 0,
+      "retained_answer_token_range": [
+        0,
+        4
+      ]
+    },
+    {
+      "case": "needle_16384_0.9",
+      "prompt_tokens": 16384,
+      "gpu_correct": false,
+      "cpu_correct": false,
+      "oracle_correct": true,
+      "fully_dropped_answer_layers": 29,
+      "full_answer_span_layers": 0,
+      "retained_answer_token_range": [
+        0,
+        11
+      ]
+    },
+    {
+      "case": "needle_31500_0.1",
+      "prompt_tokens": 31500,
+      "gpu_correct": false,
+      "cpu_correct": false,
+      "oracle_correct": true,
+      "fully_dropped_answer_layers": 32,
+      "full_answer_span_layers": 0,
+      "retained_answer_token_range": [
+        0,
+        0
+      ]
+    },
+    {
+      "case": "needle_31500_0.5",
+      "prompt_tokens": 31500,
+      "gpu_correct": false,
+      "cpu_correct": false,
+      "oracle_correct": true,
+      "fully_dropped_answer_layers": 31,
+      "full_answer_span_layers": 0,
+      "retained_answer_token_range": [
+        0,
+        5
+      ]
+    },
+    {
+      "case": "needle_31500_0.9",
+      "prompt_tokens": 31500,
+      "gpu_correct": false,
+      "cpu_correct": false,
+      "oracle_correct": true,
+      "fully_dropped_answer_layers": 30,
+      "full_answer_span_layers": 0,
+      "retained_answer_token_range": [
+        0,
+        5
+      ]
+    }
+  ],
+  "conclusion": "Backend preserves GPU policy exactly through boundaries and bursts. Shared sparse prefill selection drops rare answer spans and misses every needle; full cache recovers every case. This constrains retrieval robustness; no broad quality promotion.",
+  "oracle_memory_scope": "Oracle is descriptive quality only. Peak includes live generation; final allocation is captured after generation returns without a retained KV owner, so is not comparable steady KV memory.",
+  "limitations": "Synthetic repeated distractors and exact-ID prompts. Oracle is a descriptive full-cache reference, with unequal resources. Shared sparse-policy answer failures are not correctness of retrieval or quality superiority. Diagnostic times are not ABBA latency. No second model/concurrency/process-peak/physical STT evidence."
+}

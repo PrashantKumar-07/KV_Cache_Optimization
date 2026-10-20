@@ -1,0 +1,22 @@
+{
+  "pilot_proof_sha256": "da44d690d6519b440c04351cec9391ab06f7897f83379d67654398edaf5515f2",
+  "source_bundle_sha256": "369701c697e1a15187bc3756b1fd44c3f5b6875d937205e7d2480db1224aeabd",
+  "context": 16384,
+  "decode": 50,
+  "blocks": 3,
+  "warmup": 1,
+  "order": [
+    "control",
+    "cleanup",
+    "cleanup",
+    "control"
+  ],
+  "primary": "GPU reserved peak reduction >=10%",
+  "guards": {
+    "ttft_pct": 10,
+    "prefill_allocated_peak_pct": 2,
+    "median_pct": 2,
+    "p95_pct": 2
+  },
+  "scope": "Same legacy synchronization/history instrumentation; complete-state hashing disabled for timings as usual. No request throughput/threaded serving claim."
+}

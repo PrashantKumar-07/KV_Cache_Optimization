@@ -1,0 +1,148 @@
+{
+  "config": {
+    "model": "../models/mistral-7b-instruct",
+    "data_dir": "../hf_cache/datasets/downloads/extracted/5def9c7eaf83951e1cee75902d8611ef764ad88dd289e8f0bf97ff658a3eb83a/data",
+    "tasks": [
+      "qasper",
+      "gov_report"
+    ],
+    "max_samples": 2,
+    "strategy": "centroid",
+    "seed": 0,
+    "max_ctx": 31500,
+    "candidate_pages": 32,
+    "tiered_vram_budget": 992,
+    "tiered_stt_budget": 3104,
+    "recent": 128,
+    "stt_expose_quota": 32,
+    "real_query_prefill": true,
+    "query_score_mode": "chunked",
+    "query_chunk_size": 128,
+    "sttram_bifurcation_frac": 0.75,
+    "kv_dtype": "bfloat16",
+    "runtime": {
+      "git_revision": "be7e700d84d46b47e32ba5b9870c8b71783b9e53",
+      "source_sha256": "f81473a52b3aabcd383594d67c7f0b271fcee0c547773f8a6f6663d7cdfb194a",
+      "packages": {
+        "torch": "2.5.1+cu124",
+        "transformers": "5.14.1",
+        "datasets": "5.0.0",
+        "numpy": "2.2.6",
+        "accelerate": "1.14.0",
+        "huggingface_hub": "1.24.0",
+        "rouge": "1.0.1"
+      }
+    },
+    "selector_sha256": "d9e3e4de3a2a7d797ff550b77750d72254ab7730370b7721a0d6b2a0cf505518",
+    "dataset_sha256": {
+      "qasper": "97d95c01221a17a2ce51f9180d65a671bf2998504a2ff0cccffe97e9b08444d8",
+      "gov_report": "0a3902fcf3d49f228549f02a2ef1ae84dbe8578b8be3d4611d54459487bdef84"
+    }
+  },
+  "results": {
+    "qasper": {
+      "tieredkv": {
+        "score": 53.97,
+        "n": 2,
+        "sample_scores": [
+          85.71,
+          22.22
+        ],
+        "samples": [
+          {
+            "sample_id": "3b91dce7ca41a9d16a1d0c61806c139db583a053ddb582bf79df3ff56f8e0344",
+            "prediction": "They selected different Facebook pages, including FoxNews, CNN, ESPN, New York Times, Time magazine, Huffington Post Weird News, The Guardian, Cartoon Network, Cooking Light, Home Cooking Adventure, Justin Bieber, Nickelodeon, and SpongeBob.",
+            "score": 85.71428571428571,
+            "elapsed_s": 18.109124291688204,
+            "prompt_tokens": 4895,
+            "generated_tokens": 66,
+            "final_resident_kv_payload_bytes": 446685184,
+            "prefill_s": 1.118360435590148,
+            "prefill_peak_alloc_bytes": 16089271808
+          },
+          {
+            "sample_id": "5f59f94cd91401a55bcd3b6b24b78cd2c4c78e8ee6e7663e0ac8b97306444f08",
+            "prediction": "The paper proposes attention models to infer the latent context that triggers an instructor intervention.",
+            "score": 22.22222222222222,
+            "elapsed_s": 5.596918545663357,
+            "prompt_tokens": 5415,
+            "generated_tokens": 20,
+            "final_resident_kv_payload_bytes": 440586240,
+            "prefill_s": 0.6351616196334362,
+            "prefill_peak_alloc_bytes": 16203744768
+          }
+        ],
+        "cache_stats": {
+          "demoted": 45520,
+          "promoted": 42832,
+          "promotions_deferred": 43184,
+          "paid_writes": 4139,
+          "writes_saved": 41381,
+          "dropped": 0,
+          "write_savings_pct": 90.9,
+          "decode_steps": 84,
+          "stt_starved_steps": 0,
+          "stt_unused_steps": 0,
+          "mean_stt_exposed": 32.0,
+          "stt_expose_quota": 32,
+          "stt_exposed_total": 2752,
+          "stt_exposure_samples": 86,
+          "modeled_latency_us": 24775.3,
+          "modeled_energy_nj": 1076507836.4
+        }
+      }
+    },
+    "gov_report": {
+      "tieredkv": {
+        "score": 27.09,
+        "n": 2,
+        "sample_scores": [
+          19.54,
+          34.65
+        ],
+        "samples": [
+          {
+            "sample_id": "11d3fe7a8c5f9be5c05ff2b46002fae136e91f31575249f5c3db054f4d0715ad",
+            "prediction": "The report highlights the complexity of information systems and their supply chains, particularly in the context of federal procurement of IT equipment and software. The report notes that federal agencies may have limited visibility into the global supply chains of their IT providers, increasing the risk of security vulnerabilities and potential threats. The report emphasizes the importance of the Federal Information Security Modernization Act (FISMA) in addressing supply chain risks throughout the life cycle of information systems, and discusses various guidelines and requirements issued by NIST and DHS to help agencies manage these risks. The report also mentions the risks posed by foreign cyber-threat nations and the importance of addressing supply chain vulnerabilities to protect federal information systems and data. The report concludes by emphasizing the urgency of federal agencies appropriately assessing, managing, and monitoring IT supply chain risks as part of their overall information security programs.",
+            "score": 19.540229521815967,
+            "elapsed_s": 47.95771100744605,
+            "prompt_tokens": 3308,
+            "generated_tokens": 181,
+            "final_resident_kv_payload_bytes": 460431360,
+            "prefill_s": 0.37616760842502117,
+            "prefill_peak_alloc_bytes": 15744445952
+          },
+          {
+            "sample_id": "56f5a37dac322a67081fbbce0ee9261106133f38ac8b4f38fc3555f5b593969d",
+            "prediction": "The report by the Government Accountability Office (GAO) examines grant programs awarded by the Departments of Health and Human Services (HHS), Labor (DOL), and Justice (DOJ) from 2007 to 2015 that were subject to statutory restrictions on religious-based hiring. HHS identified one grant program, the Projects for Assistance in Transition from Homelessness (PATH), where no grants were awarded to nonprofit organizations and therefore no faith-based organizations (FBOs) received funding. DOL identified 18 grant programs in its Employment and Training Administration (ETA) where 931 grantees were awarded grants, including 19 potential FBOs. DOJ identified at least 34 relevant grant programs, of which 25 from the Office for Violence Against Women (OVW) and 74 from other program offices were potential FBOs. Of the 117 potential FBOs identified across the three agencies, nine certified that they were exempt from statutory restrictions on religious-based hiring and were allowed to consider a prospective employee's religious beliefs in hiring decisions. The total funding awarded to these nine grantees was approximately $3.2 million, which is less than 1% of the total grants awarded by DOJ during this period. The agencies provide information on statutory restrictions and the process for seeking exemptions in grant announcements and on their websites. The report was provided to the Departments of Labor, Justice, and Health and Human Services, and will be made available to the public 30 days after the report date.",
+            "score": 34.645668827880776,
+            "elapsed_s": 94.61287304386497,
+            "prompt_tokens": 3548,
+            "generated_tokens": 349,
+            "final_resident_kv_payload_bytes": 487677952,
+            "prefill_s": 0.4071129262447357,
+            "prefill_peak_alloc_bytes": 15801967104
+          }
+        ],
+        "cache_stats": {
+          "demoted": 219282,
+          "promoted": 202386,
+          "promotions_deferred": 338286,
+          "paid_writes": 19376,
+          "writes_saved": 199906,
+          "dropped": 0,
+          "write_savings_pct": 91.2,
+          "decode_steps": 528,
+          "stt_starved_steps": 0,
+          "stt_unused_steps": 0,
+          "mean_stt_exposed": 32.0,
+          "stt_expose_quota": 32,
+          "stt_exposed_total": 16960,
+          "stt_exposure_samples": 530,
+          "modeled_latency_us": 147730.5,
+          "modeled_energy_nj": 6731604033.5
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,303 @@
+{
+  "scope": "paired first-N LongBench prompts; generation capped for token parity, not task scoring",
+  "config": {
+    "model": "../models/mistral-7b-instruct",
+    "data_dir": "../hf_cache/datasets/downloads/extracted/5def9c7eaf83951e1cee75902d8611ef764ad88dd289e8f0bf97ff658a3eb83a/data",
+    "output": "results/decode_overhead/batch_backup_parity_15.json",
+    "samples": 5,
+    "max_gen": 32,
+    "device": "cuda:0"
+  },
+  "runtime": {
+    "git_revision": "be7e700d84d46b47e32ba5b9870c8b71783b9e53",
+    "source_sha256": "5483c328007091769d35dab9fed72480a63c4c805d121e85fcb1fac6dde6f0e9",
+    "packages": {
+      "torch": "2.5.1+cu124",
+      "transformers": "5.14.1",
+      "datasets": "5.0.0",
+      "numpy": "2.2.6",
+      "accelerate": "1.14.0",
+      "huggingface_hub": "1.24.0",
+      "rouge": "1.0.1"
+    }
+  },
+  "dataset_sha256": {
+    "qasper": "97d95c01221a17a2ce51f9180d65a671bf2998504a2ff0cccffe97e9b08444d8",
+    "narrativeqa": "0fb8d08ba5cdad4b74244224b0dc2e8b41ee6b850d954a13eb2d282621ce2f71",
+    "gov_report": "0a3902fcf3d49f228549f02a2ef1ae84dbe8578b8be3d4611d54459487bdef84"
+  },
+  "rows": [
+    {
+      "task": "qasper",
+      "sample": 0,
+      "prompt_sha256": "d257840a4192bc766308aef922b9493b9d444150656ae5ed48104d465743f828",
+      "equal_prediction": true,
+      "predictions": {
+        "row_updates": "They selected Facebook pages based on intuition and performance on development data, including Time, The Guardian, and Disney. (Note: This information is not explicitly",
+        "batched": "They selected Facebook pages based on intuition and performance on development data, including Time, The Guardian, and Disney. (Note: This information is not explicitly"
+      },
+      "saved_writes": {
+        "row_updates": 14566,
+        "batched": 14566
+      },
+      "paid_writes": {
+        "row_updates": 2330,
+        "batched": 2330
+      }
+    },
+    {
+      "task": "qasper",
+      "sample": 1,
+      "prompt_sha256": "777ff4c421b098812c862413f45cf8bd79aaa22be29d67ab52135646a707597c",
+      "equal_prediction": true,
+      "predictions": {
+        "row_updates": "The context used to predict instructor intervention is identified by inferring the context scope, which is a contiguous set of student posts.",
+        "batched": "The context used to predict instructor intervention is identified by inferring the context scope, which is a contiguous set of student posts."
+      },
+      "saved_writes": {
+        "row_updates": 12655,
+        "batched": 12655
+      },
+      "paid_writes": {
+        "row_updates": 2129,
+        "batched": 2129
+      }
+    },
+    {
+      "task": "qasper",
+      "sample": 2,
+      "prompt_sha256": "66bc968a1c16c368a0c5eb45b42dc1bc30ecd0c0b3a0480747ab16e866470d82",
+      "equal_prediction": true,
+      "predictions": {
+        "row_updates": "In addition to F-scores, improvements in classification accuracy are demonstrated through the use of other evaluation metrics such as Chi-square test, Precision, Rec",
+        "batched": "In addition to F-scores, improvements in classification accuracy are demonstrated through the use of other evaluation metrics such as Chi-square test, Precision, Rec"
+      },
+      "saved_writes": {
+        "row_updates": 14758,
+        "batched": 14758
+      },
+      "paid_writes": {
+        "row_updates": 2138,
+        "batched": 2138
+      }
+    },
+    {
+      "task": "qasper",
+      "sample": 3,
+      "prompt_sha256": "2d7630a1f8d3cd024d35a17700c6d9fc7abf8bf07f8359e7c3be387b319a5cdd",
+      "equal_prediction": true,
+      "predictions": {
+        "row_updates": "The baselines were not explicitly stated in the provided information.",
+        "batched": "The baselines were not explicitly stated in the provided information."
+      },
+      "saved_writes": {
+        "row_updates": 4935,
+        "batched": 4935
+      },
+      "paid_writes": {
+        "row_updates": 1433,
+        "batched": 1433
+      }
+    },
+    {
+      "task": "qasper",
+      "sample": 4,
+      "prompt_sha256": "e9a6c0f34227de7c036d9e373a3ad7bfc97aaf3f2cde48f500684d30cdfb9002",
+      "equal_prediction": true,
+      "predictions": {
+        "row_updates": "jiant specifically mentions compatibility with Transformers, a library for natural language processing in Python, and does not mention support for models in other programming languages.",
+        "batched": "jiant specifically mentions compatibility with Transformers, a library for natural language processing in Python, and does not mention support for models in other programming languages."
+      },
+      "saved_writes": {
+        "row_updates": 14639,
+        "batched": 14639
+      },
+      "paid_writes": {
+        "row_updates": 2257,
+        "batched": 2257
+      }
+    },
+    {
+      "task": "narrativeqa",
+      "sample": 0,
+      "prompt_sha256": "02ef144f4dbef964eb6ccdb5fe38b98963b2b940a1a616417d01f2e3d45a8176",
+      "equal_prediction": true,
+      "predictions": {
+        "row_updates": "Saltram is an inmate of the Maddocks, living with them and receiving a substantial income from The Coxon Fund.",
+        "batched": "Saltram is an inmate of the Maddocks, living with them and receiving a substantial income from The Coxon Fund."
+      },
+      "saved_writes": {
+        "row_updates": 12927,
+        "batched": 12927
+      },
+      "paid_writes": {
+        "row_updates": 1889,
+        "batched": 1889
+      }
+    },
+    {
+      "task": "narrativeqa",
+      "sample": 1,
+      "prompt_sha256": "491d5789698191bac86c46cd2a1ea25ee60cc611da76240618a8b0598e10009e",
+      "equal_prediction": true,
+      "predictions": {
+        "row_updates": "Ann is unable to return Mary's feelings of affection.",
+        "batched": "Ann is unable to return Mary's feelings of affection."
+      },
+      "saved_writes": {
+        "row_updates": 4985,
+        "batched": 4985
+      },
+      "paid_writes": {
+        "row_updates": 1383,
+        "batched": 1383
+      }
+    },
+    {
+      "task": "narrativeqa",
+      "sample": 2,
+      "prompt_sha256": "f48dd8cba4ee1182b88a8187a8ecba12b07a222899f47935c710470f9acd77f8",
+      "equal_prediction": true,
+      "predictions": {
+        "row_updates": "The witch lives on Atlas.",
+        "batched": "The witch lives on Atlas."
+      },
+      "saved_writes": {
+        "row_updates": 2959,
+        "batched": 2959
+      },
+      "paid_writes": {
+        "row_updates": 1265,
+        "batched": 1265
+      }
+    },
+    {
+      "task": "narrativeqa",
+      "sample": 3,
+      "prompt_sha256": "f9e4b267c90b639bed8741592de13e5a990fe1d5e066fcf16879c33fca080a5e",
+      "equal_prediction": true,
+      "predictions": {
+        "row_updates": "Crito visited to persuade Socrates to escape from prison.",
+        "batched": "Crito visited to persuade Socrates to escape from prison."
+      },
+      "saved_writes": {
+        "row_updates": 5950,
+        "batched": 5950
+      },
+      "paid_writes": {
+        "row_updates": 1474,
+        "batched": 1474
+      }
+    },
+    {
+      "task": "narrativeqa",
+      "sample": 4,
+      "prompt_sha256": "16586d243ac5d7d5f1edd534550faddf59b813c258a2c3b8cc644fbb8138dfd6",
+      "equal_prediction": true,
+      "predictions": {
+        "row_updates": "Baron Henry spared Otto's life.",
+        "batched": "Baron Henry spared Otto's life."
+      },
+      "saved_writes": {
+        "row_updates": 3990,
+        "batched": 3990
+      },
+      "paid_writes": {
+        "row_updates": 1290,
+        "batched": 1290
+      }
+    },
+    {
+      "task": "gov_report",
+      "sample": 0,
+      "prompt_sha256": "3cdb2a114034271b82203b0abc854a91a0f2d616a2850717f2d25960d07bc6c3",
+      "equal_prediction": true,
+      "predictions": {
+        "row_updates": "The report highlights the complexities of designing and implementing information systems, which involve multiple suppliers and components from the global IT supply chain. The report emphasizes that the",
+        "batched": "The report highlights the complexities of designing and implementing information systems, which involve multiple suppliers and components from the global IT supply chain. The report emphasizes that the"
+      },
+      "saved_writes": {
+        "row_updates": 14339,
+        "batched": 14339
+      },
+      "paid_writes": {
+        "row_updates": 2557,
+        "batched": 2557
+      }
+    },
+    {
+      "task": "gov_report",
+      "sample": 1,
+      "prompt_sha256": "7d8b2f51157c82c0e7e7ec72db2a0d3c8e0b0a69d6114ca3650bd308b4ea0f46",
+      "equal_prediction": true,
+      "predictions": {
+        "row_updates": "The report by the Government Accountability Office (GAO) examines the compliance of the Departments of Labor (DOL), Health and Human Services (",
+        "batched": "The report by the Government Accountability Office (GAO) examines the compliance of the Departments of Labor (DOL), Health and Human Services ("
+      },
+      "saved_writes": {
+        "row_updates": 14237,
+        "batched": 14237
+      },
+      "paid_writes": {
+        "row_updates": 2659,
+        "batched": 2659
+      }
+    },
+    {
+      "task": "gov_report",
+      "sample": 2,
+      "prompt_sha256": "0a0a89157b6bc670a4ffcd5d5cd9b5dcdc79dfebc09f51c6e17a60bb89c20676",
+      "equal_prediction": true,
+      "predictions": {
+        "row_updates": "This report provides an overview of cybersecurity-related bills and hearings in the United States Congress during the 115th and 116th",
+        "batched": "This report provides an overview of cybersecurity-related bills and hearings in the United States Congress during the 115th and 116th"
+      },
+      "saved_writes": {
+        "row_updates": 13436,
+        "batched": 13436
+      },
+      "paid_writes": {
+        "row_updates": 3460,
+        "batched": 3460
+      }
+    },
+    {
+      "task": "gov_report",
+      "sample": 3,
+      "prompt_sha256": "da18c94aa0c9e40140b5e44c77e80b9e7d9c6d8750b8799d8161a7d885e65a89",
+      "equal_prediction": true,
+      "predictions": {
+        "row_updates": "The report by the government agency found that in the year under review, CBP seized over 300,000 items at the border, with",
+        "batched": "The report by the government agency found that in the year under review, CBP seized over 300,000 items at the border, with"
+      },
+      "saved_writes": {
+        "row_updates": 14125,
+        "batched": 14125
+      },
+      "paid_writes": {
+        "row_updates": 2771,
+        "batched": 2771
+      }
+    },
+    {
+      "task": "gov_report",
+      "sample": 4,
+      "prompt_sha256": "5d5ca0ea9dd24e61d8f3d0b797db3c3c58505077d804bd41984c9913ec07cf31",
+      "equal_prediction": true,
+      "predictions": {
+        "row_updates": "The report provides background information on the TAO-205 program, a Navy initiative to build six new fleet replenishment oilers. The program",
+        "batched": "The report provides background information on the TAO-205 program, a Navy initiative to build six new fleet replenishment oilers. The program"
+      },
+      "saved_writes": {
+        "row_updates": 14090,
+        "batched": 14090
+      },
+      "paid_writes": {
+        "row_updates": 2806,
+        "batched": 2806
+      }
+    }
+  ],
+  "all_equal": true,
+  "limitations": "Capped 32-token generation; exact prediction parity only, not a full quality score."
+}

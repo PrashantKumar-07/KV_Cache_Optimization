@@ -1,0 +1,15 @@
+{
+  "scope": "Opt-in prefill-last-logits API/CLI across ordinary evaluator, latency profiler, fresh-memory caller; defaultsFalse. No cache policy changes.",
+  "prerequisites": {
+    "results/hardware/prefill_last_logits_v1/verified_preservation.json": "6d0ca1343f4e987ab21135bc528ba6072a853cd83a75ba4feb5687421fdb41a4",
+    "results/hardware/prefill_last_logits_v1/verified_timing.json": "48e15f9678e354d044ae97287b8c2d7e0d61d84086b511b638d6ff3379f86fc9"
+  },
+  "checks": "Native-support validation; default behavior; normal/chunked/EOS/token limits; full tests; two ordinary fresh resources and24generationpairs replay frozen prototypes at both geometries; CLI help and option fingerprints.",
+  "compatibility": "Legacy evaluator checkpoint missing the new key treated asFalse; enabledflag hasdistinctfingerprint. Unsupported nativeAPI fails explicitly.",
+  "before": {
+    "experiments/longbench_eval.py": "a007cef437fe99a6d2e0b63b6bec754c8963813653d9c2543ad02d08f0fb1b15",
+    "experiments/latency_profile.py": "0752b0aa00502ee1557ad019ecd6b2377091578295661abf17a4385f7ee3e9c7",
+    "experiments/measure_fresh_process_memory.py": "765fc3e0fa8fb65ab3f377116fb4aee9b2f25f7695ce25a22eb2117bf07071f6"
+  },
+  "stop": "No adoption claim if integration preservation fails; no speed/full512MiB/physicalSTT claim."
+}

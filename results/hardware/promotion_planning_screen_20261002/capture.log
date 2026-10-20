@@ -1,0 +1,71 @@
+[transformers] `torch_dtype` is deprecated! Use `dtype` instead!
+Loading weights:   0%|          | 0/291 [00:00<?, ?it/s]Loading weights:   4%|▍         | 13/291 [00:00<00:02, 128.24it/s]Loading weights:  11%|█         | 31/291 [00:00<00:01, 155.14it/s]Loading weights:  17%|█▋        | 49/291 [00:00<00:01, 162.81it/s]Loading weights:  23%|██▎       | 67/291 [00:00<00:01, 166.25it/s]Loading weights:  29%|██▉       | 85/291 [00:00<00:01, 168.11it/s]Loading weights:  35%|███▌      | 103/291 [00:00<00:01, 167.79it/s]Loading weights:  41%|████      | 120/291 [00:00<00:01, 161.64it/s]Loading weights:  47%|████▋     | 137/291 [00:00<00:00, 156.64it/s]Loading weights:  53%|█████▎    | 153/291 [00:00<00:00, 148.69it/s]Loading weights:  58%|█████▊    | 168/291 [00:01<00:00, 145.64it/s]Loading weights:  63%|██████▎   | 184/291 [00:01<00:00, 149.55it/s]Loading weights:  69%|██████▉   | 202/291 [00:01<00:00, 156.42it/s]Loading weights:  75%|███████▍  | 218/291 [00:01<00:00, 156.14it/s]Loading weights:  80%|████████  | 234/291 [00:01<00:00, 148.12it/s]Loading weights:  87%|████████▋ | 252/291 [00:01<00:00, 155.33it/s]Loading weights:  92%|█████████▏| 269/291 [00:01<00:00, 159.31it/s]Loading weights:  98%|█████████▊| 286/291 [00:01<00:00, 160.39it/s]Loading weights: 100%|██████████| 291/291 [00:01<00:00, 158.71it/s]
+         533931 function calls (459499 primitive calls) in 0.600 seconds
+
+   Ordered by: cumulative time
+   List reduced from 254 to 60 due to restriction <60>
+
+   ncalls  tottime  percall  cumtime  percall filename:lineno(function)
+       10    0.000    0.000    0.557    0.056 batched_eviction_policy.py:39(_decode_step)
+       10    0.000    0.000    0.557    0.056 bounded_pinned_pool.py:26(_decode_step)
+       10    0.014    0.001    0.556    0.056 longbench_eval.py:848(_decode_step)
+       10    0.008    0.001    0.283    0.028 batched_eviction_policy.py:50(_prepare_decode_reads)
+       10    0.005    0.001    0.170    0.017 capture_promotion_inputs.py:22(prepare)
+      320    0.043    0.000    0.125    0.000 <deferred_production_eviction>:1(evict_and_demote)
+       10    0.000    0.000    0.121    0.012 compare_cpu_batched.py:28(_visible_tuple)
+       10    0.003    0.000    0.109    0.011 reuse_visible_policy.py:82(_visible_tuple)
+       10    0.006    0.001    0.088    0.009 <reuse_production_visibility>:1(_visible_tuple)
+       10    0.000    0.000    0.087    0.009 cpu_batched_cache.py:186(_prepare_decode_reads)
+ 63848/40    0.041    0.000    0.075    0.002 copy.py:128(deepcopy)
+   680/40    0.007    0.000    0.075    0.002 copy.py:227(_deepcopy_dict)
+       10    0.000    0.000    0.059    0.006 cpu_batched_cache.py:187(<dictcomp>)
+      320    0.001    0.000    0.058    0.000 longbench_eval.py:811(_promotion_plan)
+       10    0.001    0.000    0.057    0.006 probe_batched_eviction_selection.py:34(batched_victims)
+       20    0.000    0.000    0.044    0.002 capture_promotion_inputs.py:42(prefetch)
+       10    0.021    0.002    0.042    0.004 batched_score_policy.py:8(batched_update)
+      640    0.002    0.000    0.039    0.000 batched_eviction_policy.py:13(promote)
+       20    0.000    0.000    0.038    0.002 cpu_batched_cache.py:173(_prefetch)
+       20    0.004    0.000    0.037    0.002 cpu_batched_cache.py:79(read)
+      320    0.013    0.000    0.037    0.000 tiered_kv_cache.py:551(promote)
+      320    0.014    0.000    0.035    0.000 tiered_kv_cache.py:463(resolve_promotion_indices)
+      320    0.010    0.000    0.032    0.000 fused_eviction_policy.py:45(_compact_or_queue)
+       40    0.000    0.000    0.031    0.001 rnn.py:418(pad_sequence)
+       40    0.031    0.001    0.031    0.001 {built-in method torch._C._nn.pad_sequence}
+       10    0.001    0.000    0.030    0.003 <reuse_production_visibility>:78(<dictcomp>)
+      320    0.012    0.000    0.029    0.000 longbench_eval.py:839(_visible_cold_indices)
+      480    0.003    0.000    0.029    0.000 copy.py:201(_deepcopy_list)
+      320    0.004    0.000    0.028    0.000 tiered_kv_cache.py:640(append_tokens)
+       10    0.000    0.000    0.026    0.003 cpu_batched_cache.py:183(_prepare_visible_reads)
+     4015    0.026    0.000    0.026    0.000 {built-in method torch.cat}
+      320    0.008    0.000    0.025    0.000 tiered_kv_cache.py:524(promotion_rows)
+     1620    0.024    0.000    0.024    0.000 {method 'tolist' of 'torch._C.TensorBase' objects}
+ 5312/320    0.005    0.000    0.024    0.000 copy.py:210(_deepcopy_tuple)
+ 5312/320    0.002    0.000    0.024    0.000 copy.py:211(<listcomp>)
+      990    0.020    0.000    0.020    0.000 {built-in method numpy.asarray}
+       20    0.018    0.001    0.018    0.001 cpu_batched_cache.py:85(<listcomp>)
+       10    0.000    0.000    0.018    0.002 probe_batched_eviction_selection.py:41(<listcomp>)
+      320    0.003    0.000    0.018    0.000 probe_protected_mask_numpy.py:16(fast_mask)
+     2920    0.017    0.000    0.017    0.000 {method 'to' of 'torch._C.TensorBase' objects}
+      320    0.014    0.000    0.015    0.000 longbench_eval.py:817(<listcomp>)
+       10    0.001    0.000    0.015    0.001 <reuse_production_visibility>:31(<dictcomp>)
+      320    0.002    0.000    0.015    0.000 {built-in method fromkeys}
+     2560    0.013    0.000    0.013    0.000 {built-in method torch.zeros}
+     9984    0.013    0.000    0.013    0.000 tiered_kv_cache.py:529(<listcomp>)
+    10560    0.013    0.000    0.013    0.000 tiered_kv_cache.py:477(<genexpr>)
+       10    0.012    0.001    0.012    0.001 {built-in method torch._foreach_add_}
+       10    0.007    0.001    0.011    0.001 compare_cpu_batched.py:30(<dictcomp>)
+       10    0.004    0.000    0.011    0.001 reuse_visible_policy.py:32(can_reuse)
+      330    0.009    0.000    0.009    0.000 {built-in method torch.argsort}
+      640    0.003    0.000    0.009    0.000 reuse_visible_policy.py:102(_compose_visible)
+      960    0.009    0.000    0.009    0.000 {built-in method torch.where}
+   136208    0.008    0.000    0.008    0.000 {method 'get' of 'dict' objects}
+      345    0.008    0.000    0.008    0.000 {built-in method torch.tensor}
+      160    0.001    0.000    0.008    0.000 cpu_slot_cache.py:136(append_stt_pair)
+       10    0.002    0.000    0.008    0.001 native_reuse_visible.py:41(gather_into)
+      320    0.003    0.000    0.007    0.000 capture_promotion_inputs.py:31(<dictcomp>)
+      160    0.000    0.000    0.006    0.000 cpu_batched_cache.py:132(_write)
+      160    0.001    0.000    0.006    0.000 cpu_batched_cache.py:45(enqueue)
+      970    0.001    0.000    0.006    0.000 {built-in method builtins.all}
+
+
+

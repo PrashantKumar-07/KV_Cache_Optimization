@@ -1,0 +1,73 @@
+{
+  "finding_verified": true,
+  "status": "Upstreammulti-headprojectionlayout mismatch; no baseline modification and no quality/performance claim. Must trace intoDCI/fullGPUoffload before acceptingthebaseline.",
+  "source_file": "results/proper_baselines_20261016/IceCache-bf16/IceCache/source/icecache/adapter/modeling.py",
+  "source_sha256": "f20da54ad50a87aedf15513812d146905b2844c31288a09d559ffe813963b9f0",
+  "unchanged_executed_source_AST": "start = state.n_sink_pages * state.page_size\nend = (state.n_kv_pages - state.n_win_pages) * state.page_size\nkey = key_states.reshape(state.n_kv_heads, -1, state.head_dim)[:, start:end, :]\nprojected = torch.matmul(key, state.proj_vec[:-1]).to(torch.float32).reshape(state.n_kv_heads, -1, 1).detach().cpu().contiguous()",
+  "source_layout": "After rotary, key_states=[batch,sequence,KVheads,dim] contiguous; plainreshape(KVheads,sequence,dim) is not a head/sequence transpose. DCIoffloaded_pages_cat[0] uses actualhead-groupedkeys.",
+  "cases": [
+    {
+      "kv_heads": 1,
+      "shape": [
+        1,
+        192,
+        1
+      ],
+      "equal_to_index_key_head_layout": true,
+      "mismatched_projection_rows": 0,
+      "maximum_absolute_difference": 0.0,
+      "head0_actual_first8": [
+        32.0,
+        33.0,
+        34.0,
+        35.0,
+        36.0,
+        37.0,
+        38.0,
+        39.0
+      ],
+      "head0_expected_first8": [
+        32.0,
+        33.0,
+        34.0,
+        35.0,
+        36.0,
+        37.0,
+        38.0,
+        39.0
+      ]
+    },
+    {
+      "kv_heads": 8,
+      "shape": [
+        8,
+        192,
+        1
+      ],
+      "equal_to_index_key_head_layout": false,
+      "mismatched_projection_rows": 1530,
+      "maximum_absolute_difference": 195.125,
+      "head0_actual_first8": [
+        4.0,
+        4.125,
+        4.25,
+        4.375,
+        4.5,
+        4.625,
+        4.75,
+        4.875
+      ],
+      "head0_expected_first8": [
+        32.0,
+        33.0,
+        34.0,
+        35.0,
+        36.0,
+        37.0,
+        38.0,
+        39.0
+      ]
+    }
+  ],
+  "important": "Do NOT report a SOTAwinagainstthispotentiallybrokencontrol. Intendedhead-groupedreference/fixrequiresindependentreviewandprospective full-modelvalidation. Kernel/nonoffloadedmodel preflight remains useful but cannot validateDCIretrieval."
+}

@@ -1,0 +1,582 @@
+{
+  "config": {
+    "model": "../models/mistral-7b-instruct",
+    "data_dir": "results/baseline_fidelity/real_query_holdout_20260929/batch2/data",
+    "tasks": [
+      "qasper",
+      "narrativeqa",
+      "multifieldqa_en",
+      "hotpotqa",
+      "triviaqa",
+      "gov_report"
+    ],
+    "max_samples": 5,
+    "strategy": "lru",
+    "seed": 0,
+    "max_ctx": 31500,
+    "candidate_pages": 0,
+    "tiered_vram_budget": 992,
+    "tiered_stt_budget": 3104,
+    "recent": 128,
+    "stt_expose_quota": 32,
+    "real_query_prefill": true,
+    "query_score_mode": "chunked",
+    "query_chunk_size": 128,
+    "sttram_bifurcation_frac": 0.75,
+    "kv_dtype": "bfloat16",
+    "runtime": {
+      "git_revision": "be7e700d84d46b47e32ba5b9870c8b71783b9e53",
+      "source_sha256": "eea0cf48baa0804928f6f4a1c2674af3547dbac77cb2ea1b890805ba0473cd9e",
+      "packages": {
+        "torch": "2.5.1+cu124",
+        "transformers": "5.14.1",
+        "datasets": "5.0.0",
+        "numpy": "2.2.6",
+        "accelerate": "1.14.0",
+        "huggingface_hub": "1.24.0",
+        "rouge": "1.0.1"
+      }
+    },
+    "selector_sha256": "ecef20ea48be38f1ac9e5c9d0cce2fb89fa90c270dc968cf541a448d77b89876",
+    "page_index_sha256": null,
+    "page_candidates_sha256": null,
+    "dataset_sha256": {
+      "qasper": "f57718f8a24dff4d9cc9cedcbd57e18bf4d56e0fc44f0ed3cfb9029f166c6fa5",
+      "narrativeqa": "ab3753da8b69aa5a6df3a913e15b606b542cd6c16b20c15751f8daf9dc12779f",
+      "multifieldqa_en": "06b3d0ed2a7b9eaf99e778730944b8659a75246cc395f9b441987a230a9edff0",
+      "hotpotqa": "cf5b07ce35cf0046bc23ecf78889ec86e347f919e8eb86522888f3b6afd37c57",
+      "triviaqa": "338328badeb9f5713ca7d419843f80e89fd4ef2ee400d2b755aff2a13ab7414a",
+      "gov_report": "56bdc34704ddb4795624bff2a8d0312a41c4943ec4a0b5b6520ca6c694fcfb0e"
+    }
+  },
+  "results": {
+    "qasper": {
+      "tieredkv": {
+        "score": 25.47,
+        "n": 5,
+        "sample_scores": [
+          66.67,
+          15.0,
+          24.39,
+          21.28,
+          0.0
+        ],
+        "samples": [
+          {
+            "sample_id": "7895b01146c5fa150f6ae35f8353be48ee960026490cea40d1aed8ba1238d832",
+            "prediction": "The approach out-performs K-means, LEM, and DPEMM.",
+            "score": 66.66666666666666,
+            "elapsed_s": 2.7770316787064075,
+            "prompt_tokens": 6300,
+            "generated_tokens": 20,
+            "final_resident_kv_payload_bytes": 441716736,
+            "prefill_s": 1.2651037406176329,
+            "prefill_peak_alloc_bytes": 16406013952
+          },
+          {
+            "sample_id": "003131cf370675e37312c435024f025600b841b22683d9fa30b2dcd8774af190",
+            "prediction": "The off-the-shelf reward learning algorithm from RL adapted for joint data manipulation learning and model training is not explicitly stated in the article. However, it is mentioned that an off-the-shelf reward learning algorithm is used for learning manipulation parameters.",
+            "score": 15.0,
+            "elapsed_s": 5.433966094627976,
+            "prompt_tokens": 7652,
+            "generated_tokens": 58,
+            "final_resident_kv_payload_bytes": 446717952,
+            "prefill_s": 0.9443583097308874,
+            "prefill_peak_alloc_bytes": 16725507584
+          },
+          {
+            "sample_id": "ec4192e9de44612e6c81fde5f46e7fe191b170ea26d5cca359cb273e49399987",
+            "prediction": "The dataset models character's profiles using Human Level Attributes (HLAs) collected from TV shows, which are based on tropes and traceable back to specific characters.",
+            "score": 24.39024390243903,
+            "elapsed_s": 3.7474831994622946,
+            "prompt_tokens": 8024,
+            "generated_tokens": 36,
+            "final_resident_kv_payload_bytes": 443822080,
+            "prefill_s": 1.001855455338955,
+            "prefill_peak_alloc_bytes": 16813415936
+          },
+          {
+            "sample_id": "4fc3ffc8cff45be4ca7e98fc90948d5b5e9e51e8ddaf767d5de20341f49de237",
+            "prediction": "The baseline methods are: (1) Naive: a non-adaptive baseline, (2) ADAPT: a state-of-the-art domain adaptation method, (3) Source-only: a baseline that only uses source domain data, and (4) Target-only: a baseline that only uses target domain data.",
+            "score": 21.27659574468085,
+            "elapsed_s": 6.577460730448365,
+            "prompt_tokens": 7611,
+            "generated_tokens": 72,
+            "final_resident_kv_payload_bytes": 448552960,
+            "prefill_s": 0.9351948015391827,
+            "prefill_peak_alloc_bytes": 16715818496
+          },
+          {
+            "sample_id": "d310c384046982c71d6efc7cdc14b517ae53a1ade8b46d1230a99de09f96c9d5",
+            "prediction": "Yes. The article emphasizes the importance of interdisciplinary collaborations in computational analysis of text as social and cultural data.",
+            "score": 0.0,
+            "elapsed_s": 3.635703146457672,
+            "prompt_tokens": 11640,
+            "generated_tokens": 28,
+            "final_resident_kv_payload_bytes": 442761216,
+            "prefill_s": 1.504432275891304,
+            "prefill_peak_alloc_bytes": 17667919360
+          }
+        ],
+        "cache_stats": {
+          "demoted": 112992,
+          "promoted": 106304,
+          "promotions_deferred": 107712,
+          "paid_writes": 11664,
+          "writes_saved": 101328,
+          "dropped": 0,
+          "write_savings_pct": 89.7,
+          "decode_steps": 209,
+          "stt_starved_steps": 0,
+          "stt_unused_steps": 0,
+          "mean_stt_exposed": 32.0,
+          "stt_expose_quota": 32,
+          "stt_exposed_total": 6848,
+          "stt_exposure_samples": 214,
+          "modeled_latency_us": 62074.4,
+          "modeled_energy_nj": 2679227023.4
+        }
+      }
+    },
+    "narrativeqa": {
+      "tieredkv": {
+        "score": 9.64,
+        "n": 5,
+        "sample_scores": [
+          0.0,
+          30.0,
+          0.0,
+          18.18,
+          0.0
+        ],
+        "samples": [
+          {
+            "sample_id": "f5451f0d46a7df1e530868319d57b53e2869764ab8376f5035faa649f71fce2a",
+            "prediction": "Mary is taught to be an heiress after her brother dies.",
+            "score": 0.0,
+            "elapsed_s": 6.105376731604338,
+            "prompt_tokens": 31500,
+            "generated_tokens": 15,
+            "final_resident_kv_payload_bytes": 440926208,
+            "prefill_s": 4.9988113809376955,
+            "prefill_peak_alloc_bytes": 22412636160
+          },
+          {
+            "sample_id": "39954666764001f5104d1691c8df88a949676d26468f1f7d46a3f546a88b9b80",
+            "prediction": "A family quarrel was the cause of Mortimer Trefinnis' estrangement from his siblings.",
+            "score": 30.0,
+            "elapsed_s": 3.809420879930258,
+            "prompt_tokens": 14753,
+            "generated_tokens": 24,
+            "final_resident_kv_payload_bytes": 442236928,
+            "prefill_s": 1.9873078130185604,
+            "prefill_peak_alloc_bytes": 18403559936
+          },
+          {
+            "sample_id": "0ecc097ea5feb5b2948ca924a07eadbbd480b0ac379a0b75659396ad57a5923c",
+            "prediction": "Mrs. Porter, the housekeeper, and Dr. Mortimer both fainted upon seeing Brenda's dead body.",
+            "score": 0.0,
+            "elapsed_s": 4.040627781301737,
+            "prompt_tokens": 14751,
+            "generated_tokens": 27,
+            "final_resident_kv_payload_bytes": 442499072,
+            "prefill_s": 1.9870557840913534,
+            "prefill_peak_alloc_bytes": 18403086848
+          },
+          {
+            "sample_id": "fcc3b52b9bb9ddfdaa09d99d6d0703a2564ddd68f8213b6ce9fb6c86cb5d076f",
+            "prediction": "Reiko's husband dies.",
+            "score": 18.181818181818183,
+            "elapsed_s": 5.574979165568948,
+            "prompt_tokens": 31500,
+            "generated_tokens": 8,
+            "final_resident_kv_payload_bytes": 440139776,
+            "prefill_s": 5.01259208470583,
+            "prefill_peak_alloc_bytes": 22412636160
+          },
+          {
+            "sample_id": "654df278801efe4dc3cdcced0cd4250654ab76ef4f5c5d3d23627e7fcaaacdcf",
+            "prediction": "Eatonville, Florida",
+            "score": 0.0,
+            "elapsed_s": 4.489258591085672,
+            "prompt_tokens": 26894,
+            "generated_tokens": 6,
+            "final_resident_kv_payload_bytes": 439877632,
+            "prefill_s": 4.089421847835183,
+            "prefill_peak_alloc_bytes": 21272624128
+          }
+        ],
+        "cache_stats": {
+          "demoted": 41248,
+          "promoted": 38848,
+          "promotions_deferred": 37952,
+          "paid_writes": 7296,
+          "writes_saved": 33952,
+          "dropped": 0,
+          "write_savings_pct": 82.3,
+          "decode_steps": 75,
+          "stt_starved_steps": 0,
+          "stt_unused_steps": 0,
+          "mean_stt_exposed": 32.0,
+          "stt_expose_quota": 32,
+          "stt_exposed_total": 2560,
+          "stt_exposure_samples": 80,
+          "modeled_latency_us": 23370.1,
+          "modeled_energy_nj": 963804921.9
+        }
+      }
+    },
+    "multifieldqa_en": {
+      "tieredkv": {
+        "score": 27.27,
+        "n": 5,
+        "sample_scores": [
+          22.22,
+          30.77,
+          8.0,
+          46.81,
+          28.57
+        ],
+        "samples": [
+          {
+            "sample_id": "343c3c9b76d7ec32f1d537f9e3df0702bcfe0fef7c5c27e5250d8e5a846bd1e9",
+            "prediction": "The score achieved by the authors for Track-2 is 85.61%.",
+            "score": 22.22222222222222,
+            "elapsed_s": 1.8267743792384863,
+            "prompt_tokens": 3505,
+            "generated_tokens": 19,
+            "final_resident_kv_payload_bytes": 441450496,
+            "prefill_s": 0.41064099222421646,
+            "prefill_peak_alloc_bytes": 15775569920
+          },
+          {
+            "sample_id": "4cf5f5060e0e0ec82fbee689cf70a6da1bdcb7f2c7ea3dc47e0237a7c0ac0954",
+            "prediction": "The NLMS algorithm is engaged in the PLMS-PPIC method.",
+            "score": 30.769230769230766,
+            "elapsed_s": 1.9512531533837318,
+            "prompt_tokens": 6250,
+            "generated_tokens": 16,
+            "final_resident_kv_payload_bytes": 441188352,
+            "prefill_s": 0.762579457834363,
+            "prefill_peak_alloc_bytes": 16394198528
+          },
+          {
+            "sample_id": "f4241a3f7ce673f511d2518520172f6be8c7efb52322c1b533c146bf3eb0d7e6",
+            "prediction": "Using binary variables in the SLAS formulation can help reduce computational complexity by converting the mixed-integer optimization problem into a pure integer optimization problem. This can lead to faster solution times and improved overall performance. Additionally, the use of binary variables can simplify the constraints in the problem, making them easier to handle",
+            "score": 8.0,
+            "elapsed_s": 5.960821704939008,
+            "prompt_tokens": 7718,
+            "generated_tokens": 64,
+            "final_resident_kv_payload_bytes": 447483904,
+            "prefill_s": 0.9635384287685156,
+            "prefill_peak_alloc_bytes": 16741104640
+          },
+          {
+            "sample_id": "ba009dbb84d0f1f66c44f497d63312afbe333d73cb8ac6bd130075227e9b533b",
+            "prediction": "Potential applications of ferromagnetic semiconductors include spin injection into non-magnetic semiconductors, electrical manipulation of carrier-induced magnetism in magnetic semiconductors, and the fabrication of nanodevices such as memory nanodots and spin injection sources.",
+            "score": 46.80851063829787,
+            "elapsed_s": 6.401804467663169,
+            "prompt_tokens": 12180,
+            "generated_tokens": 62,
+            "final_resident_kv_payload_bytes": 447258624,
+            "prefill_s": 1.5746665447950363,
+            "prefill_peak_alloc_bytes": 17795528704
+          },
+          {
+            "sample_id": "a73b28faa75203051f4e920edfa3ce17b1edc322d08f11af470f68e5d0788046",
+            "prediction": "Yes, the denoiser can be applied to circuits with non-Clifford noise. The text specifically mentions that the denoiser can be used for any non-Clifford noise, not just uniform depolarizing noise.",
+            "score": 28.57142857142857,
+            "elapsed_s": 5.0667611584067345,
+            "prompt_tokens": 8203,
+            "generated_tokens": 52,
+            "final_resident_kv_payload_bytes": 445915136,
+            "prefill_s": 1.0312145091593266,
+            "prefill_peak_alloc_bytes": 16855716352
+          }
+        ],
+        "cache_stats": {
+          "demoted": 111968,
+          "promoted": 105312,
+          "promotions_deferred": 107680,
+          "paid_writes": 11597,
+          "writes_saved": 100371,
+          "dropped": 0,
+          "write_savings_pct": 89.6,
+          "decode_steps": 208,
+          "stt_starved_steps": 0,
+          "stt_unused_steps": 0,
+          "mean_stt_exposed": 32.0,
+          "stt_expose_quota": 32,
+          "stt_exposed_total": 6816,
+          "stt_exposure_samples": 213,
+          "modeled_latency_us": 61731.7,
+          "modeled_energy_nj": 2666178674.7
+        }
+      }
+    },
+    "hotpotqa": {
+      "tieredkv": {
+        "score": 25.83,
+        "n": 5,
+        "sample_scores": [
+          0.0,
+          16.67,
+          100.0,
+          0.0,
+          12.5
+        ],
+        "samples": [
+          {
+            "sample_id": "cfe8e61e305031ef7c5261338908e93526fad434b035d1980e5281c011663fc8",
+            "prediction": "Both Gevork Minaskanian and George Stambolian had a common pursuit in the field of literature and education. Gevork Minaskan",
+            "score": 0.0,
+            "elapsed_s": 3.051516206935048,
+            "prompt_tokens": 4724,
+            "generated_tokens": 32,
+            "final_resident_kv_payload_bytes": 443285504,
+            "prefill_s": 0.5621698275208473,
+            "prefill_peak_alloc_bytes": 16033585664
+          },
+          {
+            "sample_id": "2957b813abce61da3e6083254af21e25788e07587510506a9e8922add3301203",
+            "prediction": "The province where Be Quick '28 football club is located is Overijssel.",
+            "score": 16.666666666666668,
+            "elapsed_s": 2.277258735150099,
+            "prompt_tokens": 6905,
+            "generated_tokens": 19,
+            "final_resident_kv_payload_bytes": 441450496,
+            "prefill_s": 0.8573641739785671,
+            "prefill_peak_alloc_bytes": 16548982784
+          },
+          {
+            "sample_id": "161721842281e5d2fad24524144bc6d394b24eb37227b3c32b7680a507cbba32",
+            "prediction": "Tie Domi",
+            "score": 100.0,
+            "elapsed_s": 1.5310010183602571,
+            "prompt_tokens": 9403,
+            "generated_tokens": 5,
+            "final_resident_kv_payload_bytes": 439615488,
+            "prefill_s": 1.201468164101243,
+            "prefill_peak_alloc_bytes": 17139289600
+          },
+          {
+            "sample_id": "d43e30d09237ab3886ff2142fc68a6df8352ddee63baaf00577a9a96b1719b7d",
+            "prediction": "Ezequiel Lazaro was born in Buenos Aires. Therefore, the distance from his birthplace to Buenos Aires is 0 kilometers.",
+            "score": 0.0,
+            "elapsed_s": 4.513310521841049,
+            "prompt_tokens": 16206,
+            "generated_tokens": 30,
+            "final_resident_kv_payload_bytes": 443023360,
+            "prefill_s": 2.221157344058156,
+            "prefill_peak_alloc_bytes": 18746921472
+          },
+          {
+            "sample_id": "7df4a04cc24019169b8aed15c06c25eb9d1488e048b89dbac931b93a059b96f5",
+            "prediction": "The creolized forms of the Kongo language, specifically Kongo-Angola and Kongo-Cuban, are found in traditional African religions",
+            "score": 12.5,
+            "elapsed_s": 4.363095017150044,
+            "prompt_tokens": 14216,
+            "generated_tokens": 32,
+            "final_resident_kv_payload_bytes": 443285504,
+            "prefill_s": 1.9084901083260775,
+            "prefill_peak_alloc_bytes": 18276660224
+          }
+        ],
+        "cache_stats": {
+          "demoted": 61312,
+          "promoted": 57696,
+          "promotions_deferred": 58016,
+          "paid_writes": 8512,
+          "writes_saved": 52800,
+          "dropped": 0,
+          "write_savings_pct": 86.1,
+          "decode_steps": 113,
+          "stt_starved_steps": 0,
+          "stt_unused_steps": 0,
+          "mean_stt_exposed": 32.0,
+          "stt_expose_quota": 32,
+          "stt_exposed_total": 3776,
+          "stt_exposure_samples": 118,
+          "modeled_latency_us": 34314.0,
+          "modeled_energy_nj": 1450123984.9
+        }
+      }
+    },
+    "triviaqa": {
+      "tieredkv": {
+        "score": 93.33,
+        "n": 5,
+        "sample_scores": [
+          100.0,
+          66.67,
+          100.0,
+          100.0,
+          100.0
+        ],
+        "samples": [
+          {
+            "sample_id": "76dcf15b4db2a298b35a37c31e0c6c98eb881c8603d9f0b3f6190831aa196092",
+            "prediction": "Florence\nPassage:\nThe Great Wall of China\nThe Great Wall of China\nThe Great Wall of China is a series of fortifications made",
+            "score": 100.0,
+            "elapsed_s": 3.321728453040123,
+            "prompt_tokens": 6982,
+            "generated_tokens": 32,
+            "final_resident_kv_payload_bytes": 443285504,
+            "prefill_s": 0.8697585836052895,
+            "prefill_peak_alloc_bytes": 16567179776
+          },
+          {
+            "sample_id": "aadff40d7cd19a4706248a9009800952abf3b134b43c33fe915e480de0e0057c",
+            "prediction": "Rye Whiskey",
+            "score": 66.66666666666666,
+            "elapsed_s": 1.0247171018272638,
+            "prompt_tokens": 5196,
+            "generated_tokens": 6,
+            "final_resident_kv_payload_bytes": 439877632,
+            "prefill_s": 0.6251698192209005,
+            "prefill_peak_alloc_bytes": 16145125888
+          },
+          {
+            "sample_id": "35bf9673e53f882b31a6a7bb5e697a60a187f22f9d4956ff8944892fed839308",
+            "prediction": "Russia\nPassage:\nThe Great Barrier Reef\nThe Great Barrier Reef is the largest coral reef system in the world,",
+            "score": 100.0,
+            "elapsed_s": 3.81221878901124,
+            "prompt_tokens": 10532,
+            "generated_tokens": 32,
+            "final_resident_kv_payload_bytes": 443285504,
+            "prefill_s": 1.3604540657252073,
+            "prefill_peak_alloc_bytes": 17406086144
+          },
+          {
+            "sample_id": "75ea9cc5f4373cf90061262a9c285e211b3f71d949c62f57cd2ee8d0ab18da5d",
+            "prediction": "Green Bay Packers\n\nPassage:\nThe Great Wall of China\nThe Great Wall of China is a series of fortifications made of stone, brick",
+            "score": 100.0,
+            "elapsed_s": 5.074991270899773,
+            "prompt_tokens": 17864,
+            "generated_tokens": 32,
+            "final_resident_kv_payload_bytes": 443285504,
+            "prefill_s": 2.4404823891818523,
+            "prefill_peak_alloc_bytes": 19138726400
+          },
+          {
+            "sample_id": "583650b2d18f4eb3fdd5846ab1f47e34a937003d6d9cd2501420923af263e4b1",
+            "prediction": "Jackson Pollock",
+            "score": 100.0,
+            "elapsed_s": 2.7896921038627625,
+            "prompt_tokens": 18079,
+            "generated_tokens": 5,
+            "final_resident_kv_payload_bytes": 439615488,
+            "prefill_s": 2.4740380849689245,
+            "prefill_peak_alloc_bytes": 19189533184
+          }
+        ],
+        "cache_stats": {
+          "demoted": 56000,
+          "promoted": 52736,
+          "promotions_deferred": 51712,
+          "paid_writes": 8192,
+          "writes_saved": 47808,
+          "dropped": 0,
+          "write_savings_pct": 85.4,
+          "decode_steps": 102,
+          "stt_starved_steps": 0,
+          "stt_unused_steps": 0,
+          "mean_stt_exposed": 32.0,
+          "stt_expose_quota": 32,
+          "stt_exposed_total": 3424,
+          "stt_exposure_samples": 107,
+          "modeled_latency_us": 31199.7,
+          "modeled_energy_nj": 1309595926.5
+        }
+      }
+    },
+    "gov_report": {
+      "tieredkv": {
+        "score": 24.76,
+        "n": 5,
+        "sample_scores": [
+          24.1,
+          28.8,
+          19.32,
+          27.25,
+          24.3
+        ],
+        "samples": [
+          {
+            "sample_id": "287d0bc79997bf3c35d89942cbcdb90b8f610cb92918e231048af461d25e30c1",
+            "prediction": "The Renewable Fuel Standard (RFS) is a government mandate established by Congress as part of the Clean Air Act, requiring a minimum volume of biofuel in U.S. transportation fuels. The RFS includes both conventional biofuels, such as corn starch ethanol, and advanced biofuels, like cellulosic ethanol. The mandated minimum volume increases annually. Challenges to the RFS include infrastructure limitations, limited federal assistance, and concerns about the impact of small refinery exemptions on biofuel demand. The RFS has faced scrutiny in Congress, with some members proposing alternatives or modifications, while others argue for its continued importance in reducing greenhouse gas emissions and supporting the biofuels industry. The RFS has been successful in increasing the use of conventional biofuels and advanced biofuels, such as cellulosic ethanol, but has faced challenges in meeting its targets and ensuring a level playing field for all fuel types. The report provides a comprehensive overview of the RFS, its history, challenges, and ongoing debates in Congress.",
+            "score": 24.096385099070986,
+            "elapsed_s": 18.913537004962564,
+            "prompt_tokens": 5323,
+            "generated_tokens": 230,
+            "final_resident_kv_payload_bytes": 469504000,
+            "prefill_s": 0.6413537282496691,
+            "prefill_peak_alloc_bytes": 16175137792
+          },
+          {
+            "sample_id": "017904c212223f9db7cc88eaf9aec2fcca7907708de2ab966be08832c8bb516f",
+            "prediction": "The report outlines the limitations of Infantry Brigade Combat Teams (IBCTs) in the Army, particularly their lack of mobility and protection against enemy fire. To address these issues, the Army is undertaking three programs: GMV for Airborne IBCTs, ISV for other types of IBCTs, and MPF for enhanced protection. These programs aim to use commercially available vehicles to reduce development time and cost. However, Congress may have concerns regarding the deployability, sustainability, and affordability of these new vehicles, as well as their potential impact on the deployability of IBCTs. The report also mentions the establishment of six Security Force Assistance Brigades (SFABs), which could potentially be expanded into IBCTs, requiring additional vehicles. The report does not provide information on the Army's overall fielding plan for these vehicles or their production and delivery schedules.",
+            "score": 28.804347432788873,
+            "elapsed_s": 15.854358537122607,
+            "prompt_tokens": 5425,
+            "generated_tokens": 192,
+            "final_resident_kv_payload_bytes": 464330752,
+            "prefill_s": 0.6542808432132006,
+            "prefill_peak_alloc_bytes": 16199241216
+          },
+          {
+            "sample_id": "ce2d2304a424a78d54c7285b945c8894df6e54db74f8e2ebdbc7acfde71f10ad",
+            "prediction": "The report outlines the requirements for Positive Train Control (PTC) systems in railways to prevent train-to-train collisions, derailments due to excessive speed, incursions into work zone limits, and the movement of trains through switches left in the wrong position. The report states that all required railroads must implement PTC systems by the end of 2018, and interoperability between different railroads' systems is crucial for the nationwide safety benefits of PTC. The report also discusses the challenges railroads face in implementing PTC, including the complexity of the rail network and the need for interoperability between different systems. The report recommends that the Federal Railroad Administration (FRA) improve communication and coordination with railroads to help them overcome these challenges and ensure a successful implementation of PTC by the deadline.",
+            "score": 19.32367117412309,
+            "elapsed_s": 15.028951197862625,
+            "prompt_tokens": 5805,
+            "generated_tokens": 181,
+            "final_resident_kv_payload_bytes": 463814656,
+            "prefill_s": 0.7184385564178228,
+            "prefill_peak_alloc_bytes": 16289039872
+          },
+          {
+            "sample_id": "f63414fdfcd7f92f540f6748799c4d6af74701ddaec30d2ce6a90d2ac3ac3424",
+            "prediction": "The report by the government agency, GAO, examines the operation of the Federally Facilitated Marketplace (FFM) under the Patient Protection and Affordable Care Act (PPACA) in plan year 2015. Thirty-seven states relied on the FFM, while the remaining 14 states operated their own marketplaces. In total, about 12.7 million people enrolled in health plans through the FFM.\n\nThe report found that the FFM operated consistently with PPACA and relevant HHS regulations. The GAO conducted testing and found few instances of improper enrollments or subsidies. However, they did identify some areas for improvement, such as addressing data inconsistencies and enhancing fraud prevention measures.\n\nThe report also discusses the differences in eligibility determination processes between the FFM and state-based marketplaces. The FFM used data from the federal data services hub, while state-based marketplaces used various data sources. The GAO found that the use of different data sources did not significantly impact eligibility determination accuracy.\n\nOverall, the report concludes that the FFM effectively facilitated health insurance enrollment and subsidy payments for millions of Americans during the 2015 plan year. However, the GAO recommends that CMS take steps to address data inconsistencies and enhance fraud prevention measures to ensure the integrity of the marketplace.",
+            "score": 27.250607847336926,
+            "elapsed_s": 25.94157941453159,
+            "prompt_tokens": 11646,
+            "generated_tokens": 307,
+            "final_resident_kv_payload_bytes": 479756288,
+            "prefill_s": 1.5237208846956491,
+            "prefill_peak_alloc_bytes": 17669337600
+          },
+          {
+            "sample_id": "f52854b71e370b5631aa5d78ae60a6cdb5e165046bf67fb9d1a70bf4a29603a9",
+            "prediction": "The report discusses the rapid growth of Artificial Intelligence (AI) technology and its increasing importance to commercial investors, defense intellectuals, policymakers, and international competitors. The U.S., China, and Russia are investing heavily in AI for military applications, raising questions about military AI applications, their impact on warfare, and the role of Congress in shaping their development.\n\nThe report highlights recent initiatives, including the Chinese government's goal to become the world leader in AI by 2030 and the U.S. military's recognition of AI as a key technology for future wars. The report also discusses the ethical and policy implications of military AI, including the need for oversight and regulation.\n\nThe report notes that AI has the potential to revolutionize warfare, but its impact is not yet clear. Some experts believe that AI will create strategic instability and the risk of losing control in warfare, while others see it as a way to maintain a competitive edge.\n\nCongress has several tools at its disposal to shape the development of military AI, including funding, acquisitions, norms and standards, and international competition. The report emphasizes the need for careful consideration of the ethical and policy implications of military AI and the importance of maintaining a strong U.S. presence in this field to ensure national security objectives are met.\n\nThe report concludes by noting that the future of military AI is uncertain, but its potential impact is significant. Congress has a critical role to play in ensuring that advanced technologies are developed and used in a responsible and effective manner to support U.S. national security objectives.",
+            "score": 24.303797010735465,
+            "elapsed_s": 29.22669354453683,
+            "prompt_tokens": 16144,
+            "generated_tokens": 338,
+            "final_resident_kv_payload_bytes": 483663872,
+            "prefill_s": 2.2061065193265676,
+            "prefill_peak_alloc_bytes": 18732269568
+          }
+        ],
+        "cache_stats": {
+          "demoted": 657952,
+          "promoted": 618176,
+          "promotions_deferred": 654656,
+          "paid_writes": 45233,
+          "writes_saved": 612719,
+          "dropped": 0,
+          "write_savings_pct": 93.1,
+          "decode_steps": 1243,
+          "stt_starved_steps": 0,
+          "stt_unused_steps": 0,
+          "mean_stt_exposed": 32.0,
+          "stt_expose_quota": 32,
+          "stt_exposed_total": 39936,
+          "stt_exposure_samples": 1248,
+          "modeled_latency_us": 359937.5,
+          "modeled_energy_nj": 15912084832.3
+        }
+      }
+    }
+  }
+}

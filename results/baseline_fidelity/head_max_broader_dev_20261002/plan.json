@@ -1,0 +1,15 @@
+{
+  "mechanism": "Unchanged pooled-head max, no new ranking/window/kernel/budget knob; same single-global-token GQA layout.",
+  "prior_control": "results/hardware/bounded_pinned_pool_20261002/generation.json",
+  "prior_control_sha256": "4d055eae5f419af44d7e740324955c58ddfd3ef14a326f208529a172e573b4fa",
+  "original_manifest_sha256": "990463af8c12c3c3af67b475743194f0371768394b5ba706eabc63298fee96f6",
+  "development": "12 reused documents/two per six tasks, greedy seed0, native task generation caps and EOS, actual-query CPU bounded 991/1090, promotion32, maxappend32, fill.75, sinks4/recent128; alternating arms; exact old bounded control state/IDs/counters/payload.",
+  "prefill_cases": [
+    "needle_16384_0.1",
+    "needle_31500_0.1"
+  ],
+  "prefill": "Same exact16K and31500needle IDs; one warmup/arm, threeABBA blocks; charged model SDPAprefill, actual rotaryquery capture and CPUcache placement with CUDAcompletion, model-wide peakallocated; no decode. Stable placement hashes perarm, equal initial rows/payload/rootrequest.",
+  "quality_gate": "Taskbalanced paired-bootstrap10000draws seed20261006 CI lower>=-.5 plus no individualloss>10points; development gate only, no superiority claim. Record all outcomes, do not tune inspected freshholdouts.",
+  "prefill_gate": "At eachlength median model+placement time <=10%worse; candidatepeak <=controlpeak, same initial geometry/root reservation. Non-overlapping measuredtimes; no speed claim.",
+  "stop": "If either quality or prefill gate fails, reject this frozen candidate before unused qualitydocs. Passing only permits an independently preregistered newdocumentstudy; defaults stay unchanged."
+}

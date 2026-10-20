@@ -1,0 +1,196 @@
+{
+  "passed": false,
+  "plan_sha256": "e428d3264e95033d3423d09d2e31039e115fa64c033b569499899b56c12ec476",
+  "runtime": {
+    "git_revision": "be7e700d84d46b47e32ba5b9870c8b71783b9e53",
+    "source_sha256": "e1ccad3334843e69ace24036ba60744787f8201731512f88a8ee7c6a7413681a",
+    "packages": {
+      "torch": "2.5.1+cu124",
+      "transformers": "5.15.0",
+      "datasets": "2.19.2",
+      "numpy": "2.2.6",
+      "accelerate": "1.14.0",
+      "huggingface_hub": "1.27.0",
+      "rouge": "1.0.1"
+    }
+  },
+  "quiet_observations": [
+    {
+      "stage": "before_model_load",
+      "gpu": "0, GPU-5ae5c9c4-c441-9622-9599-9f6d69aa81a8, 0, 16",
+      "compute_processes": [],
+      "quiet": true,
+      "unexpected_compute_processes": []
+    },
+    {
+      "stage": "before_warmup",
+      "gpu": "0, GPU-5ae5c9c4-c441-9622-9599-9f6d69aa81a8, 0, 14260",
+      "compute_processes": [
+        "GPU-5ae5c9c4-c441-9622-9599-9f6d69aa81a8, 829636, ../venv_kvcache/bin/python, 14240"
+      ],
+      "quiet": true,
+      "unexpected_compute_processes": []
+    },
+    {
+      "stage": "before_trace",
+      "gpu": "0, GPU-5ae5c9c4-c441-9622-9599-9f6d69aa81a8, 4, 19174",
+      "compute_processes": [
+        "GPU-5ae5c9c4-c441-9622-9599-9f6d69aa81a8, 829636, ../venv_kvcache/bin/python, 19154"
+      ],
+      "quiet": true,
+      "unexpected_compute_processes": []
+    },
+    {
+      "stage": "after_trace",
+      "gpu": "0, GPU-5ae5c9c4-c441-9622-9599-9f6d69aa81a8, 0, 19188",
+      "compute_processes": [
+        "GPU-5ae5c9c4-c441-9622-9599-9f6d69aa81a8, 829636, ../venv_kvcache/bin/python, 19168"
+      ],
+      "quiet": true,
+      "unexpected_compute_processes": []
+    },
+    {
+      "stage": "after_cleanup",
+      "gpu": "0, GPU-5ae5c9c4-c441-9622-9599-9f6d69aa81a8, 0, 19188",
+      "compute_processes": [
+        "GPU-5ae5c9c4-c441-9622-9599-9f6d69aa81a8, 829636, ../venv_kvcache/bin/python, 19168"
+      ],
+      "quiet": true,
+      "unexpected_compute_processes": []
+    }
+  ],
+  "phase_ast": {
+    "candidate_ast_sha256": "6e59bea45682c43f2ca47e7c6202d0af70e69c3d44116328e31fdda7e7741889",
+    "annotated_ast_sha256": "165cacc7d5da25ca1e818fc73321fe405e6d6fe58beacd6d4e982eec2e6f66e0",
+    "annotations_unwrap_to_exact_candidate": true,
+    "phases": [
+      "live_index_lookup",
+      "query_projection_rotary",
+      "fast_key_materialization",
+      "native_cold_pair_read",
+      "attention_ranking",
+      "topk_cpu_ids",
+      "gpu_visible_composition",
+      "cpu_visible_metadata"
+    ]
+  },
+  "phases": [
+    {
+      "name": "query_phase/live_index_lookup",
+      "count": 1600,
+      "cpu_elapsed_total_ms": 161.2547750000041,
+      "cpu_self_total_ms": 141.14566500002798,
+      "attributed_device_total_ms": 0.7317510000043549,
+      "device_self_total_ms": 0.0
+    },
+    {
+      "name": "query_phase/query_projection_rotary",
+      "count": 1600,
+      "cpu_elapsed_total_ms": 362.4066809999747,
+      "cpu_self_total_ms": 130.64980499991356,
+      "attributed_device_total_ms": 100.10366000006348,
+      "device_self_total_ms": 0.0
+    },
+    {
+      "name": "query_phase/query_projection_rotary",
+      "count": 1600,
+      "cpu_elapsed_total_ms": 0.0,
+      "cpu_self_total_ms": 0.0,
+      "attributed_device_total_ms": 131.0245979999653,
+      "device_self_total_ms": 131.0245979999653
+    },
+    {
+      "name": "query_phase/fast_key_materialization",
+      "count": 1600,
+      "cpu_elapsed_total_ms": 381.4601600000057,
+      "cpu_self_total_ms": 264.57615000000783,
+      "attributed_device_total_ms": 18.790202000009828,
+      "device_self_total_ms": 0.0
+    },
+    {
+      "name": "query_phase/fast_key_materialization",
+      "count": 1600,
+      "cpu_elapsed_total_ms": 0.0,
+      "cpu_self_total_ms": 0.0,
+      "attributed_device_total_ms": 91.0810540000014,
+      "device_self_total_ms": 91.0810540000014
+    },
+    {
+      "name": "query_phase/native_cold_pair_read",
+      "count": 1600,
+      "cpu_elapsed_total_ms": 438.9896050000261,
+      "cpu_self_total_ms": 295.69159200017015,
+      "attributed_device_total_ms": 10.159299000004307,
+      "device_self_total_ms": 0.0
+    },
+    {
+      "name": "query_phase/native_cold_pair_read",
+      "count": 1600,
+      "cpu_elapsed_total_ms": 0.0,
+      "cpu_self_total_ms": 0.0,
+      "attributed_device_total_ms": 835.7042000000012,
+      "device_self_total_ms": 835.7042000000012
+    },
+    {
+      "name": "query_phase/attention_ranking",
+      "count": 1600,
+      "cpu_elapsed_total_ms": 406.7255479999995,
+      "cpu_self_total_ms": 116.6605399999926,
+      "attributed_device_total_ms": 31.31422599998815,
+      "device_self_total_ms": 0.0
+    },
+    {
+      "name": "query_phase/topk_cpu_ids",
+      "count": 1600,
+      "cpu_elapsed_total_ms": 285.7082649999927,
+      "cpu_self_total_ms": 66.18263300001435,
+      "attributed_device_total_ms": 22.946907000032255,
+      "device_self_total_ms": 0.0
+    },
+    {
+      "name": "query_phase/attention_ranking",
+      "count": 1600,
+      "cpu_elapsed_total_ms": 0.0,
+      "cpu_self_total_ms": 0.0,
+      "attributed_device_total_ms": 45.07651199999731,
+      "device_self_total_ms": 45.07651199999731
+    },
+    {
+      "name": "query_phase/topk_cpu_ids",
+      "count": 1600,
+      "cpu_elapsed_total_ms": 0.0,
+      "cpu_self_total_ms": 0.0,
+      "attributed_device_total_ms": 34.18232600000873,
+      "device_self_total_ms": 34.18232600000873
+    },
+    {
+      "name": "query_phase/gpu_visible_composition",
+      "count": 1600,
+      "cpu_elapsed_total_ms": 794.327609999992,
+      "cpu_self_total_ms": 468.1601950001,
+      "attributed_device_total_ms": 46.63285799995251,
+      "device_self_total_ms": 0.0
+    },
+    {
+      "name": "query_phase/gpu_visible_composition",
+      "count": 1600,
+      "cpu_elapsed_total_ms": 0.0,
+      "cpu_self_total_ms": 0.0,
+      "attributed_device_total_ms": 691.0363419999787,
+      "device_self_total_ms": 691.0363419999787
+    },
+    {
+      "name": "query_phase/cpu_visible_metadata",
+      "count": 1600,
+      "cpu_elapsed_total_ms": 35.53025600002939,
+      "cpu_self_total_ms": 35.53025600002939,
+      "attributed_device_total_ms": 0.0,
+      "device_self_total_ms": 0.0
+    }
+  ],
+  "fixed_query_state_counters_transfers_replayed": true,
+  "measured_selected_layers": 1600,
+  "error": "AssertionError: ",
+  "own_hooks_removed": true,
+  "index_metadata_released": true
+}

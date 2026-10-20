@@ -1,0 +1,27 @@
+{
+  "timestamp_utc": "2026-10-03T05:55:26.371292+00:00",
+  "mechanism": "Same frozen suffix query: read all cold keys for unchanged ranking; fetch only selected cold values with exact native one-channel gather. 3ABBA end-to-end component comparison, no selection change.",
+  "settings": {
+    "hot": 991,
+    "cold": 1090,
+    "quota": 32,
+    "context": 16384,
+    "decode": 50,
+    "warmup": 1,
+    "prefill_last_logits": true,
+    "seed": 0
+  },
+  "prompt": "results/remediation_v3/latency_prompt.txt",
+  "teachers": "results/shadow_ablation_full/fixed_stream_20260929.json",
+  "control": "results/hardware/query_visible_suffix_v1/resource.json",
+  "correctness_proof_sha256": "4f32876653618e735325d9e8ada386e56abea2cd24a1b122f2f56d80d7a51a66",
+  "resource_proof_sha256": "2949d9a806a7acee5088557057f49856b4da696cc0ef455a1ec7a437bdd809df",
+  "primary": ">=5% median decode improvement and >=4ms saved; p95<=2% worse, TTFT<=10% worse. All frozen state/pred/counters and each arm native payload/calls replay. Same D2H/index metadata; channel H2D is intentionally lower. 25 quiet GPU0 before/after PID checks.",
+  "stop": "Failed component primary stops standalone channel-reader expansion/adoption. Passing requires fresh ordinaryLRU guard before wider retrieval/adoption.",
+  "limits": "One model/seed fixedteacher; copied nativeKV payload excludes library H2D and physicalSTT/PCIe. No full512MiB or independentquality/adoption claim.",
+  "prompt_sha256": "18695714f26e35cb8d2b039ae9efb3b7e64291cbd7bcd91956efc07e16a732cd",
+  "teachers_sha256": "620ac3a383997c9afbc6a3f0b06acec9f261d5a2a5827bf5988e0bb5b69f12a2",
+  "control_sha256": "22a37e24ae42f364d8e3c7c15eed30cff206aa7c04b1c582285891b7dd2e3d85",
+  "query": "results/hardware/query_channel_reads_v1/resource.json",
+  "query_sha256": "b4815530bfb7762da84df96b807b82a3b16febfea9af1558d0af1e6ab4ef5ed7"
+}

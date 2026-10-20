@@ -1,0 +1,2411 @@
+FFFFFFFFFFFFFFFFFFFFFFFFF                                                [100%]
+=================================== FAILURES ===================================
+________ test_whole_demotion_retains_owners_and_emits_complete_commands ________
+
+    def test_whole_demotion_retains_owners_and_emits_complete_commands():
+        s=fixture();roots={k:a.ctypes.data for k,a in s.owners.items()}
+>       commands=s.demote(*packed([[0,2],[]]));s.validate_commands(commands)
+
+tests/test_cpu_state.py:26: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+experiments/cpu_state.py:62: in demote
+    result=kernel().demote(self.owners,victims,counts,inclusive);self.epoch+=1
+experiments/cpu_state.py:20: in kernel
+    subprocess.run(['g++','-std=c++17','-shared','-fPIC','-O2','-fno-fast-math','-I'+str(Path(torch.__file__).parent/'include'),'-I'+sysconfig.get_path('include'),str(source),'-o',str(temporary)],check=True,capture_output=True,text=True)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+input = None, capture_output = True, timeout = None, check = True
+popenargs = (['g++', '-std=c++17', '-shared', '-fPIC', '-O2', '-fno-fast-math', ...],)
+kwargs = {'text': True, 'stdout': -1, 'stderr': -1}
+
+    def run(*popenargs,
+            input=None, capture_output=False, timeout=None, check=False, **kwargs):
+        """Run command with arguments and return a CompletedProcess instance.
+    
+        The returned instance will have attributes args, returncode, stdout and
+        stderr. By default, stdout and stderr are not captured, and those attributes
+        will be None. Pass stdout=PIPE and/or stderr=PIPE in order to capture them,
+        or pass capture_output=True to capture both.
+    
+        If check is True and the exit code was non-zero, it raises a
+        CalledProcessError. The CalledProcessError object will have the return code
+        in the returncode attribute, and output & stderr attributes if those streams
+        were captured.
+    
+        If timeout is given, and the process takes too long, a TimeoutExpired
+        exception will be raised.
+    
+        There is an optional argument "input", allowing you to
+        pass bytes or a string to the subprocess's stdin.  If you use this argument
+        you may not also use the Popen constructor's "stdin" argument, as
+        it will be used internally.
+    
+        By default, all communication is in bytes, and therefore any "input" should
+        be bytes, and the stdout and stderr will be bytes. If in text mode, any
+        "input" should be a string, and stdout and stderr will be strings decoded
+        according to locale encoding, or by "encoding" if set. Text mode is
+        triggered by setting any of text, encoding, errors or universal_newlines.
+    
+        The other arguments are the same as for the Popen constructor.
+        """
+        if input is not None:
+            if kwargs.get('stdin') is not None:
+                raise ValueError('stdin and input arguments may not both be used.')
+            kwargs['stdin'] = PIPE
+    
+        if capture_output:
+            if kwargs.get('stdout') is not None or kwargs.get('stderr') is not None:
+                raise ValueError('stdout and stderr arguments may not be used '
+                                 'with capture_output.')
+            kwargs['stdout'] = PIPE
+            kwargs['stderr'] = PIPE
+    
+        with Popen(*popenargs, **kwargs) as process:
+            try:
+                stdout, stderr = process.communicate(input, timeout=timeout)
+            except TimeoutExpired as exc:
+                process.kill()
+                if _mswindows:
+                    # Windows accumulates the output in a single blocking
+                    # read() call run on child threads, with the timeout
+                    # being done in a join() on those threads.  communicate()
+                    # _after_ kill() is required to collect that and add it
+                    # to the exception.
+                    exc.stdout, exc.stderr = process.communicate()
+                else:
+                    # POSIX _communicate already populated the output so
+                    # far into the TimeoutExpired exception.
+                    process.wait()
+                raise
+            except:  # Including KeyboardInterrupt, communicate handled that.
+                process.kill()
+                # We don't call process.wait() as .__exit__ does that for us.
+                raise
+            retcode = process.poll()
+            if check and retcode:
+>               raise CalledProcessError(retcode, process.args,
+                                         output=stdout, stderr=stderr)
+E               subprocess.CalledProcessError: Command '['g++', '-std=c++17', '-shared', '-fPIC', '-O2', '-fno-fast-math', '-I/data/nishant/Nishant/Prashant/Project/venv_kvcache/lib/python3.10/site-packages/torch/include', '-I/usr/include/python3.10', '/data/nishant/Nishant/Prashant/Project/kv_cache/experiments/native_cpu_state.cpp', '-o', '/data/nishant/tieredkv_external/cpu_state_de313263222302ee/tieredkv_cpu_state_v1.pending.so']' returned non-zero exit status 1.
+
+/usr/lib/python3.10/subprocess.py:526: CalledProcessError
+____________ test_duplicate_cold_positions_restore_last_shadow_only ____________
+
+    def test_duplicate_cold_positions_restore_last_shadow_only():
+        s=CpuStateArena(1,3,4)
+        s.load(0,[9],[9,9],[False],[True,True],[False,True],np.array([1.,2.],np.float32),[2,0],[1,3])
+>       cmd=s.demote(*packed([[0]]))
+
+tests/test_cpu_state.py:43: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+experiments/cpu_state.py:62: in demote
+    result=kernel().demote(self.owners,victims,counts,inclusive);self.epoch+=1
+experiments/cpu_state.py:20: in kernel
+    subprocess.run(['g++','-std=c++17','-shared','-fPIC','-O2','-fno-fast-math','-I'+str(Path(torch.__file__).parent/'include'),'-I'+sysconfig.get_path('include'),str(source),'-o',str(temporary)],check=True,capture_output=True,text=True)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+input = None, capture_output = True, timeout = None, check = True
+popenargs = (['g++', '-std=c++17', '-shared', '-fPIC', '-O2', '-fno-fast-math', ...],)
+kwargs = {'text': True, 'stdout': -1, 'stderr': -1}
+
+    def run(*popenargs,
+            input=None, capture_output=False, timeout=None, check=False, **kwargs):
+        """Run command with arguments and return a CompletedProcess instance.
+    
+        The returned instance will have attributes args, returncode, stdout and
+        stderr. By default, stdout and stderr are not captured, and those attributes
+        will be None. Pass stdout=PIPE and/or stderr=PIPE in order to capture them,
+        or pass capture_output=True to capture both.
+    
+        If check is True and the exit code was non-zero, it raises a
+        CalledProcessError. The CalledProcessError object will have the return code
+        in the returncode attribute, and output & stderr attributes if those streams
+        were captured.
+    
+        If timeout is given, and the process takes too long, a TimeoutExpired
+        exception will be raised.
+    
+        There is an optional argument "input", allowing you to
+        pass bytes or a string to the subprocess's stdin.  If you use this argument
+        you may not also use the Popen constructor's "stdin" argument, as
+        it will be used internally.
+    
+        By default, all communication is in bytes, and therefore any "input" should
+        be bytes, and the stdout and stderr will be bytes. If in text mode, any
+        "input" should be a string, and stdout and stderr will be strings decoded
+        according to locale encoding, or by "encoding" if set. Text mode is
+        triggered by setting any of text, encoding, errors or universal_newlines.
+    
+        The other arguments are the same as for the Popen constructor.
+        """
+        if input is not None:
+            if kwargs.get('stdin') is not None:
+                raise ValueError('stdin and input arguments may not both be used.')
+            kwargs['stdin'] = PIPE
+    
+        if capture_output:
+            if kwargs.get('stdout') is not None or kwargs.get('stderr') is not None:
+                raise ValueError('stdout and stderr arguments may not be used '
+                                 'with capture_output.')
+            kwargs['stdout'] = PIPE
+            kwargs['stderr'] = PIPE
+    
+        with Popen(*popenargs, **kwargs) as process:
+            try:
+                stdout, stderr = process.communicate(input, timeout=timeout)
+            except TimeoutExpired as exc:
+                process.kill()
+                if _mswindows:
+                    # Windows accumulates the output in a single blocking
+                    # read() call run on child threads, with the timeout
+                    # being done in a join() on those threads.  communicate()
+                    # _after_ kill() is required to collect that and add it
+                    # to the exception.
+                    exc.stdout, exc.stderr = process.communicate()
+                else:
+                    # POSIX _communicate already populated the output so
+                    # far into the TimeoutExpired exception.
+                    process.wait()
+                raise
+            except:  # Including KeyboardInterrupt, communicate handled that.
+                process.kill()
+                # We don't call process.wait() as .__exit__ does that for us.
+                raise
+            retcode = process.poll()
+            if check and retcode:
+>               raise CalledProcessError(retcode, process.args,
+                                         output=stdout, stderr=stderr)
+E               subprocess.CalledProcessError: Command '['g++', '-std=c++17', '-shared', '-fPIC', '-O2', '-fno-fast-math', '-I/data/nishant/Nishant/Prashant/Project/venv_kvcache/lib/python3.10/site-packages/torch/include', '-I/usr/include/python3.10', '/data/nishant/Nishant/Prashant/Project/kv_cache/experiments/native_cpu_state.cpp', '-o', '/data/nishant/tieredkv_external/cpu_state_de313263222302ee/tieredkv_cpu_state_v1.pending.so']' returned non-zero exit status 1.
+
+/usr/lib/python3.10/subprocess.py:526: CalledProcessError
+_____________ test_exclusive_demotion_ignores_stored_shadow_flags ______________
+
+    def test_exclusive_demotion_ignores_stored_shadow_flags():
+>       s=fixture(1);cmd=s.demote(*packed([[0]]),inclusive=False)
+
+tests/test_cpu_state.py:49: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+experiments/cpu_state.py:62: in demote
+    result=kernel().demote(self.owners,victims,counts,inclusive);self.epoch+=1
+experiments/cpu_state.py:20: in kernel
+    subprocess.run(['g++','-std=c++17','-shared','-fPIC','-O2','-fno-fast-math','-I'+str(Path(torch.__file__).parent/'include'),'-I'+sysconfig.get_path('include'),str(source),'-o',str(temporary)],check=True,capture_output=True,text=True)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+input = None, capture_output = True, timeout = None, check = True
+popenargs = (['g++', '-std=c++17', '-shared', '-fPIC', '-O2', '-fno-fast-math', ...],)
+kwargs = {'text': True, 'stdout': -1, 'stderr': -1}
+
+    def run(*popenargs,
+            input=None, capture_output=False, timeout=None, check=False, **kwargs):
+        """Run command with arguments and return a CompletedProcess instance.
+    
+        The returned instance will have attributes args, returncode, stdout and
+        stderr. By default, stdout and stderr are not captured, and those attributes
+        will be None. Pass stdout=PIPE and/or stderr=PIPE in order to capture them,
+        or pass capture_output=True to capture both.
+    
+        If check is True and the exit code was non-zero, it raises a
+        CalledProcessError. The CalledProcessError object will have the return code
+        in the returncode attribute, and output & stderr attributes if those streams
+        were captured.
+    
+        If timeout is given, and the process takes too long, a TimeoutExpired
+        exception will be raised.
+    
+        There is an optional argument "input", allowing you to
+        pass bytes or a string to the subprocess's stdin.  If you use this argument
+        you may not also use the Popen constructor's "stdin" argument, as
+        it will be used internally.
+    
+        By default, all communication is in bytes, and therefore any "input" should
+        be bytes, and the stdout and stderr will be bytes. If in text mode, any
+        "input" should be a string, and stdout and stderr will be strings decoded
+        according to locale encoding, or by "encoding" if set. Text mode is
+        triggered by setting any of text, encoding, errors or universal_newlines.
+    
+        The other arguments are the same as for the Popen constructor.
+        """
+        if input is not None:
+            if kwargs.get('stdin') is not None:
+                raise ValueError('stdin and input arguments may not both be used.')
+            kwargs['stdin'] = PIPE
+    
+        if capture_output:
+            if kwargs.get('stdout') is not None or kwargs.get('stderr') is not None:
+                raise ValueError('stdout and stderr arguments may not be used '
+                                 'with capture_output.')
+            kwargs['stdout'] = PIPE
+            kwargs['stderr'] = PIPE
+    
+        with Popen(*popenargs, **kwargs) as process:
+            try:
+                stdout, stderr = process.communicate(input, timeout=timeout)
+            except TimeoutExpired as exc:
+                process.kill()
+                if _mswindows:
+                    # Windows accumulates the output in a single blocking
+                    # read() call run on child threads, with the timeout
+                    # being done in a join() on those threads.  communicate()
+                    # _after_ kill() is required to collect that and add it
+                    # to the exception.
+                    exc.stdout, exc.stderr = process.communicate()
+                else:
+                    # POSIX _communicate already populated the output so
+                    # far into the TimeoutExpired exception.
+                    process.wait()
+                raise
+            except:  # Including KeyboardInterrupt, communicate handled that.
+                process.kill()
+                # We don't call process.wait() as .__exit__ does that for us.
+                raise
+            retcode = process.poll()
+            if check and retcode:
+>               raise CalledProcessError(retcode, process.args,
+                                         output=stdout, stderr=stderr)
+E               subprocess.CalledProcessError: Command '['g++', '-std=c++17', '-shared', '-fPIC', '-O2', '-fno-fast-math', '-I/data/nishant/Nishant/Prashant/Project/venv_kvcache/lib/python3.10/site-packages/torch/include', '-I/usr/include/python3.10', '/data/nishant/Nishant/Prashant/Project/kv_cache/experiments/native_cpu_state.cpp', '-o', '/data/nishant/tieredkv_external/cpu_state_de313263222302ee/tieredkv_cpu_state_v1.pending.so']' returned non-zero exit status 1.
+
+/usr/lib/python3.10/subprocess.py:526: CalledProcessError
+____ test_reclaim_reorders_without_alias_corruption_and_preserves_f32_bits _____
+
+    def test_reclaim_reorders_without_alias_corruption_and_preserves_f32_bits():
+        s=CpuStateArena(1,4,6)
+        bits=np.array([0x80000000,0x7fc01234,0x7f801234,1],np.uint32)
+        s.load(0,[],[10,20,30,40],[],[True,False,True,False],[False,True,True,False],bits.view(np.float32),[3,0,5,1],[2,4])
+        roots={k:a.ctypes.data for k,a in s.owners.items()}
+>       s.reclaim(*packed([[3,0,2]]))
+
+tests/test_cpu_state.py:58: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+experiments/cpu_state.py:74: in reclaim
+    kernel().reclaim(self.owners,keeps,counts);self.epoch+=1
+experiments/cpu_state.py:20: in kernel
+    subprocess.run(['g++','-std=c++17','-shared','-fPIC','-O2','-fno-fast-math','-I'+str(Path(torch.__file__).parent/'include'),'-I'+sysconfig.get_path('include'),str(source),'-o',str(temporary)],check=True,capture_output=True,text=True)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+input = None, capture_output = True, timeout = None, check = True
+popenargs = (['g++', '-std=c++17', '-shared', '-fPIC', '-O2', '-fno-fast-math', ...],)
+kwargs = {'text': True, 'stdout': -1, 'stderr': -1}
+
+    def run(*popenargs,
+            input=None, capture_output=False, timeout=None, check=False, **kwargs):
+        """Run command with arguments and return a CompletedProcess instance.
+    
+        The returned instance will have attributes args, returncode, stdout and
+        stderr. By default, stdout and stderr are not captured, and those attributes
+        will be None. Pass stdout=PIPE and/or stderr=PIPE in order to capture them,
+        or pass capture_output=True to capture both.
+    
+        If check is True and the exit code was non-zero, it raises a
+        CalledProcessError. The CalledProcessError object will have the return code
+        in the returncode attribute, and output & stderr attributes if those streams
+        were captured.
+    
+        If timeout is given, and the process takes too long, a TimeoutExpired
+        exception will be raised.
+    
+        There is an optional argument "input", allowing you to
+        pass bytes or a string to the subprocess's stdin.  If you use this argument
+        you may not also use the Popen constructor's "stdin" argument, as
+        it will be used internally.
+    
+        By default, all communication is in bytes, and therefore any "input" should
+        be bytes, and the stdout and stderr will be bytes. If in text mode, any
+        "input" should be a string, and stdout and stderr will be strings decoded
+        according to locale encoding, or by "encoding" if set. Text mode is
+        triggered by setting any of text, encoding, errors or universal_newlines.
+    
+        The other arguments are the same as for the Popen constructor.
+        """
+        if input is not None:
+            if kwargs.get('stdin') is not None:
+                raise ValueError('stdin and input arguments may not both be used.')
+            kwargs['stdin'] = PIPE
+    
+        if capture_output:
+            if kwargs.get('stdout') is not None or kwargs.get('stderr') is not None:
+                raise ValueError('stdout and stderr arguments may not be used '
+                                 'with capture_output.')
+            kwargs['stdout'] = PIPE
+            kwargs['stderr'] = PIPE
+    
+        with Popen(*popenargs, **kwargs) as process:
+            try:
+                stdout, stderr = process.communicate(input, timeout=timeout)
+            except TimeoutExpired as exc:
+                process.kill()
+                if _mswindows:
+                    # Windows accumulates the output in a single blocking
+                    # read() call run on child threads, with the timeout
+                    # being done in a join() on those threads.  communicate()
+                    # _after_ kill() is required to collect that and add it
+                    # to the exception.
+                    exc.stdout, exc.stderr = process.communicate()
+                else:
+                    # POSIX _communicate already populated the output so
+                    # far into the TimeoutExpired exception.
+                    process.wait()
+                raise
+            except:  # Including KeyboardInterrupt, communicate handled that.
+                process.kill()
+                # We don't call process.wait() as .__exit__ does that for us.
+                raise
+            retcode = process.poll()
+            if check and retcode:
+>               raise CalledProcessError(retcode, process.args,
+                                         output=stdout, stderr=stderr)
+E               subprocess.CalledProcessError: Command '['g++', '-std=c++17', '-shared', '-fPIC', '-O2', '-fno-fast-math', '-I/data/nishant/Nishant/Prashant/Project/venv_kvcache/lib/python3.10/site-packages/torch/include', '-I/usr/include/python3.10', '/data/nishant/Nishant/Prashant/Project/kv_cache/experiments/native_cpu_state.cpp', '-o', '/data/nishant/tieredkv_external/cpu_state_de313263222302ee/tieredkv_cpu_state_v1.pending.so']' returned non-zero exit status 1.
+
+/usr/lib/python3.10/subprocess.py:526: CalledProcessError
+_______ test_promotions_preserve_order_grace_slots_and_live_floor[True] ________
+
+inclusive = True
+
+    @pytest.mark.parametrize('inclusive',[True,False])
+    def test_promotions_preserve_order_grace_slots_and_live_floor(inclusive):
+        s=CpuStateArena(1,6,5)
+        s.load(0,[0],[11,12,13],[False],[False]*3,[False,True,False],np.array([1,2,3],np.float32),[4,2,0],[1,3])
+>       commands=s.promote(*packed([[2,0]]),inclusive=inclusive,floor=1);s.validate_commands(commands)
+
+tests/test_cpu_state.py:68: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+experiments/cpu_state.py:67: in promote
+    result=kernel().promote(self.owners,rows,counts,inclusive,floor);self.epoch+=1
+experiments/cpu_state.py:20: in kernel
+    subprocess.run(['g++','-std=c++17','-shared','-fPIC','-O2','-fno-fast-math','-I'+str(Path(torch.__file__).parent/'include'),'-I'+sysconfig.get_path('include'),str(source),'-o',str(temporary)],check=True,capture_output=True,text=True)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+input = None, capture_output = True, timeout = None, check = True
+popenargs = (['g++', '-std=c++17', '-shared', '-fPIC', '-O2', '-fno-fast-math', ...],)
+kwargs = {'text': True, 'stdout': -1, 'stderr': -1}
+
+    def run(*popenargs,
+            input=None, capture_output=False, timeout=None, check=False, **kwargs):
+        """Run command with arguments and return a CompletedProcess instance.
+    
+        The returned instance will have attributes args, returncode, stdout and
+        stderr. By default, stdout and stderr are not captured, and those attributes
+        will be None. Pass stdout=PIPE and/or stderr=PIPE in order to capture them,
+        or pass capture_output=True to capture both.
+    
+        If check is True and the exit code was non-zero, it raises a
+        CalledProcessError. The CalledProcessError object will have the return code
+        in the returncode attribute, and output & stderr attributes if those streams
+        were captured.
+    
+        If timeout is given, and the process takes too long, a TimeoutExpired
+        exception will be raised.
+    
+        There is an optional argument "input", allowing you to
+        pass bytes or a string to the subprocess's stdin.  If you use this argument
+        you may not also use the Popen constructor's "stdin" argument, as
+        it will be used internally.
+    
+        By default, all communication is in bytes, and therefore any "input" should
+        be bytes, and the stdout and stderr will be bytes. If in text mode, any
+        "input" should be a string, and stdout and stderr will be strings decoded
+        according to locale encoding, or by "encoding" if set. Text mode is
+        triggered by setting any of text, encoding, errors or universal_newlines.
+    
+        The other arguments are the same as for the Popen constructor.
+        """
+        if input is not None:
+            if kwargs.get('stdin') is not None:
+                raise ValueError('stdin and input arguments may not both be used.')
+            kwargs['stdin'] = PIPE
+    
+        if capture_output:
+            if kwargs.get('stdout') is not None or kwargs.get('stderr') is not None:
+                raise ValueError('stdout and stderr arguments may not be used '
+                                 'with capture_output.')
+            kwargs['stdout'] = PIPE
+            kwargs['stderr'] = PIPE
+    
+        with Popen(*popenargs, **kwargs) as process:
+            try:
+                stdout, stderr = process.communicate(input, timeout=timeout)
+            except TimeoutExpired as exc:
+                process.kill()
+                if _mswindows:
+                    # Windows accumulates the output in a single blocking
+                    # read() call run on child threads, with the timeout
+                    # being done in a join() on those threads.  communicate()
+                    # _after_ kill() is required to collect that and add it
+                    # to the exception.
+                    exc.stdout, exc.stderr = process.communicate()
+                else:
+                    # POSIX _communicate already populated the output so
+                    # far into the TimeoutExpired exception.
+                    process.wait()
+                raise
+            except:  # Including KeyboardInterrupt, communicate handled that.
+                process.kill()
+                # We don't call process.wait() as .__exit__ does that for us.
+                raise
+            retcode = process.poll()
+            if check and retcode:
+>               raise CalledProcessError(retcode, process.args,
+                                         output=stdout, stderr=stderr)
+E               subprocess.CalledProcessError: Command '['g++', '-std=c++17', '-shared', '-fPIC', '-O2', '-fno-fast-math', '-I/data/nishant/Nishant/Prashant/Project/venv_kvcache/lib/python3.10/site-packages/torch/include', '-I/usr/include/python3.10', '/data/nishant/Nishant/Prashant/Project/kv_cache/experiments/native_cpu_state.cpp', '-o', '/data/nishant/tieredkv_external/cpu_state_de313263222302ee/tieredkv_cpu_state_v1.pending.so']' returned non-zero exit status 1.
+
+/usr/lib/python3.10/subprocess.py:526: CalledProcessError
+_______ test_promotions_preserve_order_grace_slots_and_live_floor[False] _______
+
+inclusive = False
+
+    @pytest.mark.parametrize('inclusive',[True,False])
+    def test_promotions_preserve_order_grace_slots_and_live_floor(inclusive):
+        s=CpuStateArena(1,6,5)
+        s.load(0,[0],[11,12,13],[False],[False]*3,[False,True,False],np.array([1,2,3],np.float32),[4,2,0],[1,3])
+>       commands=s.promote(*packed([[2,0]]),inclusive=inclusive,floor=1);s.validate_commands(commands)
+
+tests/test_cpu_state.py:68: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+experiments/cpu_state.py:67: in promote
+    result=kernel().promote(self.owners,rows,counts,inclusive,floor);self.epoch+=1
+experiments/cpu_state.py:20: in kernel
+    subprocess.run(['g++','-std=c++17','-shared','-fPIC','-O2','-fno-fast-math','-I'+str(Path(torch.__file__).parent/'include'),'-I'+sysconfig.get_path('include'),str(source),'-o',str(temporary)],check=True,capture_output=True,text=True)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+input = None, capture_output = True, timeout = None, check = True
+popenargs = (['g++', '-std=c++17', '-shared', '-fPIC', '-O2', '-fno-fast-math', ...],)
+kwargs = {'text': True, 'stdout': -1, 'stderr': -1}
+
+    def run(*popenargs,
+            input=None, capture_output=False, timeout=None, check=False, **kwargs):
+        """Run command with arguments and return a CompletedProcess instance.
+    
+        The returned instance will have attributes args, returncode, stdout and
+        stderr. By default, stdout and stderr are not captured, and those attributes
+        will be None. Pass stdout=PIPE and/or stderr=PIPE in order to capture them,
+        or pass capture_output=True to capture both.
+    
+        If check is True and the exit code was non-zero, it raises a
+        CalledProcessError. The CalledProcessError object will have the return code
+        in the returncode attribute, and output & stderr attributes if those streams
+        were captured.
+    
+        If timeout is given, and the process takes too long, a TimeoutExpired
+        exception will be raised.
+    
+        There is an optional argument "input", allowing you to
+        pass bytes or a string to the subprocess's stdin.  If you use this argument
+        you may not also use the Popen constructor's "stdin" argument, as
+        it will be used internally.
+    
+        By default, all communication is in bytes, and therefore any "input" should
+        be bytes, and the stdout and stderr will be bytes. If in text mode, any
+        "input" should be a string, and stdout and stderr will be strings decoded
+        according to locale encoding, or by "encoding" if set. Text mode is
+        triggered by setting any of text, encoding, errors or universal_newlines.
+    
+        The other arguments are the same as for the Popen constructor.
+        """
+        if input is not None:
+            if kwargs.get('stdin') is not None:
+                raise ValueError('stdin and input arguments may not both be used.')
+            kwargs['stdin'] = PIPE
+    
+        if capture_output:
+            if kwargs.get('stdout') is not None or kwargs.get('stderr') is not None:
+                raise ValueError('stdout and stderr arguments may not be used '
+                                 'with capture_output.')
+            kwargs['stdout'] = PIPE
+            kwargs['stderr'] = PIPE
+    
+        with Popen(*popenargs, **kwargs) as process:
+            try:
+                stdout, stderr = process.communicate(input, timeout=timeout)
+            except TimeoutExpired as exc:
+                process.kill()
+                if _mswindows:
+                    # Windows accumulates the output in a single blocking
+                    # read() call run on child threads, with the timeout
+                    # being done in a join() on those threads.  communicate()
+                    # _after_ kill() is required to collect that and add it
+                    # to the exception.
+                    exc.stdout, exc.stderr = process.communicate()
+                else:
+                    # POSIX _communicate already populated the output so
+                    # far into the TimeoutExpired exception.
+                    process.wait()
+                raise
+            except:  # Including KeyboardInterrupt, communicate handled that.
+                process.kill()
+                # We don't call process.wait() as .__exit__ does that for us.
+                raise
+            retcode = process.poll()
+            if check and retcode:
+>               raise CalledProcessError(retcode, process.args,
+                                         output=stdout, stderr=stderr)
+E               subprocess.CalledProcessError: Command '['g++', '-std=c++17', '-shared', '-fPIC', '-O2', '-fno-fast-math', '-I/data/nishant/Nishant/Prashant/Project/venv_kvcache/lib/python3.10/site-packages/torch/include', '-I/usr/include/python3.10', '/data/nishant/Nishant/Prashant/Project/kv_cache/experiments/native_cpu_state.cpp', '-o', '/data/nishant/tieredkv_external/cpu_state_de313263222302ee/tieredkv_cpu_state_v1.pending.so']' returned non-zero exit status 1.
+
+/usr/lib/python3.10/subprocess.py:526: CalledProcessError
+_______ test_rejects_entire_batch_before_mutating_first_layer[negative] ________
+
+fault = 'negative'
+
+    @pytest.mark.parametrize('fault',['negative','duplicate','range','count','dtype','strided','partition','overlap','readonly','counts_geometry','alias_command','misalignment','version'])
+    def test_rejects_entire_batch_before_mutating_first_layer(fault):
+        s=fixture();victims,counts=packed([[0],[2]])
+        if fault=='negative':victims[1,0]=-1
+        elif fault=='duplicate':victims,counts=packed([[0],[2,2]])
+        elif fault=='range':victims[1,0]=3
+        elif fault=='count':counts[1]=2
+        elif fault=='dtype':victims=victims.astype(np.int64)
+        elif fault=='strided':victims=np.array([[0,0],[2,2]],np.int32)[:,::2]
+        elif fault=='partition':s.owners['free'][1,0]=4
+        elif fault=='overlap':s.owners['resident']=s.owners['shadow']
+        elif fault=='readonly':s.owners['hot'].flags.writeable=False
+        elif fault=='counts_geometry':counts=np.ones(1,np.int32)
+        elif fault=='alias_command':victims=s.owners['slots'][:,:1]
+        elif fault=='misalignment':victims=np.ndarray((2,1),dtype=np.int32,buffer=bytearray(9),offset=1);victims[:]=0
+        else:s.owners['version'][1]=np.iinfo(np.int64).max
+        before={k:a.copy() for k,a in s.owners.items()};epoch=s.epoch
+>       with pytest.raises((ValueError,TypeError)):s.demote(victims,counts)
+
+tests/test_cpu_state.py:95: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+experiments/cpu_state.py:62: in demote
+    result=kernel().demote(self.owners,victims,counts,inclusive);self.epoch+=1
+experiments/cpu_state.py:20: in kernel
+    subprocess.run(['g++','-std=c++17','-shared','-fPIC','-O2','-fno-fast-math','-I'+str(Path(torch.__file__).parent/'include'),'-I'+sysconfig.get_path('include'),str(source),'-o',str(temporary)],check=True,capture_output=True,text=True)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+input = None, capture_output = True, timeout = None, check = True
+popenargs = (['g++', '-std=c++17', '-shared', '-fPIC', '-O2', '-fno-fast-math', ...],)
+kwargs = {'text': True, 'stdout': -1, 'stderr': -1}
+
+    def run(*popenargs,
+            input=None, capture_output=False, timeout=None, check=False, **kwargs):
+        """Run command with arguments and return a CompletedProcess instance.
+    
+        The returned instance will have attributes args, returncode, stdout and
+        stderr. By default, stdout and stderr are not captured, and those attributes
+        will be None. Pass stdout=PIPE and/or stderr=PIPE in order to capture them,
+        or pass capture_output=True to capture both.
+    
+        If check is True and the exit code was non-zero, it raises a
+        CalledProcessError. The CalledProcessError object will have the return code
+        in the returncode attribute, and output & stderr attributes if those streams
+        were captured.
+    
+        If timeout is given, and the process takes too long, a TimeoutExpired
+        exception will be raised.
+    
+        There is an optional argument "input", allowing you to
+        pass bytes or a string to the subprocess's stdin.  If you use this argument
+        you may not also use the Popen constructor's "stdin" argument, as
+        it will be used internally.
+    
+        By default, all communication is in bytes, and therefore any "input" should
+        be bytes, and the stdout and stderr will be bytes. If in text mode, any
+        "input" should be a string, and stdout and stderr will be strings decoded
+        according to locale encoding, or by "encoding" if set. Text mode is
+        triggered by setting any of text, encoding, errors or universal_newlines.
+    
+        The other arguments are the same as for the Popen constructor.
+        """
+        if input is not None:
+            if kwargs.get('stdin') is not None:
+                raise ValueError('stdin and input arguments may not both be used.')
+            kwargs['stdin'] = PIPE
+    
+        if capture_output:
+            if kwargs.get('stdout') is not None or kwargs.get('stderr') is not None:
+                raise ValueError('stdout and stderr arguments may not be used '
+                                 'with capture_output.')
+            kwargs['stdout'] = PIPE
+            kwargs['stderr'] = PIPE
+    
+        with Popen(*popenargs, **kwargs) as process:
+            try:
+                stdout, stderr = process.communicate(input, timeout=timeout)
+            except TimeoutExpired as exc:
+                process.kill()
+                if _mswindows:
+                    # Windows accumulates the output in a single blocking
+                    # read() call run on child threads, with the timeout
+                    # being done in a join() on those threads.  communicate()
+                    # _after_ kill() is required to collect that and add it
+                    # to the exception.
+                    exc.stdout, exc.stderr = process.communicate()
+                else:
+                    # POSIX _communicate already populated the output so
+                    # far into the TimeoutExpired exception.
+                    process.wait()
+                raise
+            except:  # Including KeyboardInterrupt, communicate handled that.
+                process.kill()
+                # We don't call process.wait() as .__exit__ does that for us.
+                raise
+            retcode = process.poll()
+            if check and retcode:
+>               raise CalledProcessError(retcode, process.args,
+                                         output=stdout, stderr=stderr)
+E               subprocess.CalledProcessError: Command '['g++', '-std=c++17', '-shared', '-fPIC', '-O2', '-fno-fast-math', '-I/data/nishant/Nishant/Prashant/Project/venv_kvcache/lib/python3.10/site-packages/torch/include', '-I/usr/include/python3.10', '/data/nishant/Nishant/Prashant/Project/kv_cache/experiments/native_cpu_state.cpp', '-o', '/data/nishant/tieredkv_external/cpu_state_de313263222302ee/tieredkv_cpu_state_v1.pending.so']' returned non-zero exit status 1.
+
+/usr/lib/python3.10/subprocess.py:526: CalledProcessError
+_______ test_rejects_entire_batch_before_mutating_first_layer[duplicate] _______
+
+fault = 'duplicate'
+
+    @pytest.mark.parametrize('fault',['negative','duplicate','range','count','dtype','strided','partition','overlap','readonly','counts_geometry','alias_command','misalignment','version'])
+    def test_rejects_entire_batch_before_mutating_first_layer(fault):
+        s=fixture();victims,counts=packed([[0],[2]])
+        if fault=='negative':victims[1,0]=-1
+        elif fault=='duplicate':victims,counts=packed([[0],[2,2]])
+        elif fault=='range':victims[1,0]=3
+        elif fault=='count':counts[1]=2
+        elif fault=='dtype':victims=victims.astype(np.int64)
+        elif fault=='strided':victims=np.array([[0,0],[2,2]],np.int32)[:,::2]
+        elif fault=='partition':s.owners['free'][1,0]=4
+        elif fault=='overlap':s.owners['resident']=s.owners['shadow']
+        elif fault=='readonly':s.owners['hot'].flags.writeable=False
+        elif fault=='counts_geometry':counts=np.ones(1,np.int32)
+        elif fault=='alias_command':victims=s.owners['slots'][:,:1]
+        elif fault=='misalignment':victims=np.ndarray((2,1),dtype=np.int32,buffer=bytearray(9),offset=1);victims[:]=0
+        else:s.owners['version'][1]=np.iinfo(np.int64).max
+        before={k:a.copy() for k,a in s.owners.items()};epoch=s.epoch
+>       with pytest.raises((ValueError,TypeError)):s.demote(victims,counts)
+
+tests/test_cpu_state.py:95: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+experiments/cpu_state.py:62: in demote
+    result=kernel().demote(self.owners,victims,counts,inclusive);self.epoch+=1
+experiments/cpu_state.py:20: in kernel
+    subprocess.run(['g++','-std=c++17','-shared','-fPIC','-O2','-fno-fast-math','-I'+str(Path(torch.__file__).parent/'include'),'-I'+sysconfig.get_path('include'),str(source),'-o',str(temporary)],check=True,capture_output=True,text=True)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+input = None, capture_output = True, timeout = None, check = True
+popenargs = (['g++', '-std=c++17', '-shared', '-fPIC', '-O2', '-fno-fast-math', ...],)
+kwargs = {'text': True, 'stdout': -1, 'stderr': -1}
+
+    def run(*popenargs,
+            input=None, capture_output=False, timeout=None, check=False, **kwargs):
+        """Run command with arguments and return a CompletedProcess instance.
+    
+        The returned instance will have attributes args, returncode, stdout and
+        stderr. By default, stdout and stderr are not captured, and those attributes
+        will be None. Pass stdout=PIPE and/or stderr=PIPE in order to capture them,
+        or pass capture_output=True to capture both.
+    
+        If check is True and the exit code was non-zero, it raises a
+        CalledProcessError. The CalledProcessError object will have the return code
+        in the returncode attribute, and output & stderr attributes if those streams
+        were captured.
+    
+        If timeout is given, and the process takes too long, a TimeoutExpired
+        exception will be raised.
+    
+        There is an optional argument "input", allowing you to
+        pass bytes or a string to the subprocess's stdin.  If you use this argument
+        you may not also use the Popen constructor's "stdin" argument, as
+        it will be used internally.
+    
+        By default, all communication is in bytes, and therefore any "input" should
+        be bytes, and the stdout and stderr will be bytes. If in text mode, any
+        "input" should be a string, and stdout and stderr will be strings decoded
+        according to locale encoding, or by "encoding" if set. Text mode is
+        triggered by setting any of text, encoding, errors or universal_newlines.
+    
+        The other arguments are the same as for the Popen constructor.
+        """
+        if input is not None:
+            if kwargs.get('stdin') is not None:
+                raise ValueError('stdin and input arguments may not both be used.')
+            kwargs['stdin'] = PIPE
+    
+        if capture_output:
+            if kwargs.get('stdout') is not None or kwargs.get('stderr') is not None:
+                raise ValueError('stdout and stderr arguments may not be used '
+                                 'with capture_output.')
+            kwargs['stdout'] = PIPE
+            kwargs['stderr'] = PIPE
+    
+        with Popen(*popenargs, **kwargs) as process:
+            try:
+                stdout, stderr = process.communicate(input, timeout=timeout)
+            except TimeoutExpired as exc:
+                process.kill()
+                if _mswindows:
+                    # Windows accumulates the output in a single blocking
+                    # read() call run on child threads, with the timeout
+                    # being done in a join() on those threads.  communicate()
+                    # _after_ kill() is required to collect that and add it
+                    # to the exception.
+                    exc.stdout, exc.stderr = process.communicate()
+                else:
+                    # POSIX _communicate already populated the output so
+                    # far into the TimeoutExpired exception.
+                    process.wait()
+                raise
+            except:  # Including KeyboardInterrupt, communicate handled that.
+                process.kill()
+                # We don't call process.wait() as .__exit__ does that for us.
+                raise
+            retcode = process.poll()
+            if check and retcode:
+>               raise CalledProcessError(retcode, process.args,
+                                         output=stdout, stderr=stderr)
+E               subprocess.CalledProcessError: Command '['g++', '-std=c++17', '-shared', '-fPIC', '-O2', '-fno-fast-math', '-I/data/nishant/Nishant/Prashant/Project/venv_kvcache/lib/python3.10/site-packages/torch/include', '-I/usr/include/python3.10', '/data/nishant/Nishant/Prashant/Project/kv_cache/experiments/native_cpu_state.cpp', '-o', '/data/nishant/tieredkv_external/cpu_state_de313263222302ee/tieredkv_cpu_state_v1.pending.so']' returned non-zero exit status 1.
+
+/usr/lib/python3.10/subprocess.py:526: CalledProcessError
+_________ test_rejects_entire_batch_before_mutating_first_layer[range] _________
+
+fault = 'range'
+
+    @pytest.mark.parametrize('fault',['negative','duplicate','range','count','dtype','strided','partition','overlap','readonly','counts_geometry','alias_command','misalignment','version'])
+    def test_rejects_entire_batch_before_mutating_first_layer(fault):
+        s=fixture();victims,counts=packed([[0],[2]])
+        if fault=='negative':victims[1,0]=-1
+        elif fault=='duplicate':victims,counts=packed([[0],[2,2]])
+        elif fault=='range':victims[1,0]=3
+        elif fault=='count':counts[1]=2
+        elif fault=='dtype':victims=victims.astype(np.int64)
+        elif fault=='strided':victims=np.array([[0,0],[2,2]],np.int32)[:,::2]
+        elif fault=='partition':s.owners['free'][1,0]=4
+        elif fault=='overlap':s.owners['resident']=s.owners['shadow']
+        elif fault=='readonly':s.owners['hot'].flags.writeable=False
+        elif fault=='counts_geometry':counts=np.ones(1,np.int32)
+        elif fault=='alias_command':victims=s.owners['slots'][:,:1]
+        elif fault=='misalignment':victims=np.ndarray((2,1),dtype=np.int32,buffer=bytearray(9),offset=1);victims[:]=0
+        else:s.owners['version'][1]=np.iinfo(np.int64).max
+        before={k:a.copy() for k,a in s.owners.items()};epoch=s.epoch
+>       with pytest.raises((ValueError,TypeError)):s.demote(victims,counts)
+
+tests/test_cpu_state.py:95: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+experiments/cpu_state.py:62: in demote
+    result=kernel().demote(self.owners,victims,counts,inclusive);self.epoch+=1
+experiments/cpu_state.py:20: in kernel
+    subprocess.run(['g++','-std=c++17','-shared','-fPIC','-O2','-fno-fast-math','-I'+str(Path(torch.__file__).parent/'include'),'-I'+sysconfig.get_path('include'),str(source),'-o',str(temporary)],check=True,capture_output=True,text=True)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+input = None, capture_output = True, timeout = None, check = True
+popenargs = (['g++', '-std=c++17', '-shared', '-fPIC', '-O2', '-fno-fast-math', ...],)
+kwargs = {'text': True, 'stdout': -1, 'stderr': -1}
+
+    def run(*popenargs,
+            input=None, capture_output=False, timeout=None, check=False, **kwargs):
+        """Run command with arguments and return a CompletedProcess instance.
+    
+        The returned instance will have attributes args, returncode, stdout and
+        stderr. By default, stdout and stderr are not captured, and those attributes
+        will be None. Pass stdout=PIPE and/or stderr=PIPE in order to capture them,
+        or pass capture_output=True to capture both.
+    
+        If check is True and the exit code was non-zero, it raises a
+        CalledProcessError. The CalledProcessError object will have the return code
+        in the returncode attribute, and output & stderr attributes if those streams
+        were captured.
+    
+        If timeout is given, and the process takes too long, a TimeoutExpired
+        exception will be raised.
+    
+        There is an optional argument "input", allowing you to
+        pass bytes or a string to the subprocess's stdin.  If you use this argument
+        you may not also use the Popen constructor's "stdin" argument, as
+        it will be used internally.
+    
+        By default, all communication is in bytes, and therefore any "input" should
+        be bytes, and the stdout and stderr will be bytes. If in text mode, any
+        "input" should be a string, and stdout and stderr will be strings decoded
+        according to locale encoding, or by "encoding" if set. Text mode is
+        triggered by setting any of text, encoding, errors or universal_newlines.
+    
+        The other arguments are the same as for the Popen constructor.
+        """
+        if input is not None:
+            if kwargs.get('stdin') is not None:
+                raise ValueError('stdin and input arguments may not both be used.')
+            kwargs['stdin'] = PIPE
+    
+        if capture_output:
+            if kwargs.get('stdout') is not None or kwargs.get('stderr') is not None:
+                raise ValueError('stdout and stderr arguments may not be used '
+                                 'with capture_output.')
+            kwargs['stdout'] = PIPE
+            kwargs['stderr'] = PIPE
+    
+        with Popen(*popenargs, **kwargs) as process:
+            try:
+                stdout, stderr = process.communicate(input, timeout=timeout)
+            except TimeoutExpired as exc:
+                process.kill()
+                if _mswindows:
+                    # Windows accumulates the output in a single blocking
+                    # read() call run on child threads, with the timeout
+                    # being done in a join() on those threads.  communicate()
+                    # _after_ kill() is required to collect that and add it
+                    # to the exception.
+                    exc.stdout, exc.stderr = process.communicate()
+                else:
+                    # POSIX _communicate already populated the output so
+                    # far into the TimeoutExpired exception.
+                    process.wait()
+                raise
+            except:  # Including KeyboardInterrupt, communicate handled that.
+                process.kill()
+                # We don't call process.wait() as .__exit__ does that for us.
+                raise
+            retcode = process.poll()
+            if check and retcode:
+>               raise CalledProcessError(retcode, process.args,
+                                         output=stdout, stderr=stderr)
+E               subprocess.CalledProcessError: Command '['g++', '-std=c++17', '-shared', '-fPIC', '-O2', '-fno-fast-math', '-I/data/nishant/Nishant/Prashant/Project/venv_kvcache/lib/python3.10/site-packages/torch/include', '-I/usr/include/python3.10', '/data/nishant/Nishant/Prashant/Project/kv_cache/experiments/native_cpu_state.cpp', '-o', '/data/nishant/tieredkv_external/cpu_state_de313263222302ee/tieredkv_cpu_state_v1.pending.so']' returned non-zero exit status 1.
+
+/usr/lib/python3.10/subprocess.py:526: CalledProcessError
+_________ test_rejects_entire_batch_before_mutating_first_layer[count] _________
+
+fault = 'count'
+
+    @pytest.mark.parametrize('fault',['negative','duplicate','range','count','dtype','strided','partition','overlap','readonly','counts_geometry','alias_command','misalignment','version'])
+    def test_rejects_entire_batch_before_mutating_first_layer(fault):
+        s=fixture();victims,counts=packed([[0],[2]])
+        if fault=='negative':victims[1,0]=-1
+        elif fault=='duplicate':victims,counts=packed([[0],[2,2]])
+        elif fault=='range':victims[1,0]=3
+        elif fault=='count':counts[1]=2
+        elif fault=='dtype':victims=victims.astype(np.int64)
+        elif fault=='strided':victims=np.array([[0,0],[2,2]],np.int32)[:,::2]
+        elif fault=='partition':s.owners['free'][1,0]=4
+        elif fault=='overlap':s.owners['resident']=s.owners['shadow']
+        elif fault=='readonly':s.owners['hot'].flags.writeable=False
+        elif fault=='counts_geometry':counts=np.ones(1,np.int32)
+        elif fault=='alias_command':victims=s.owners['slots'][:,:1]
+        elif fault=='misalignment':victims=np.ndarray((2,1),dtype=np.int32,buffer=bytearray(9),offset=1);victims[:]=0
+        else:s.owners['version'][1]=np.iinfo(np.int64).max
+        before={k:a.copy() for k,a in s.owners.items()};epoch=s.epoch
+>       with pytest.raises((ValueError,TypeError)):s.demote(victims,counts)
+
+tests/test_cpu_state.py:95: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+experiments/cpu_state.py:62: in demote
+    result=kernel().demote(self.owners,victims,counts,inclusive);self.epoch+=1
+experiments/cpu_state.py:20: in kernel
+    subprocess.run(['g++','-std=c++17','-shared','-fPIC','-O2','-fno-fast-math','-I'+str(Path(torch.__file__).parent/'include'),'-I'+sysconfig.get_path('include'),str(source),'-o',str(temporary)],check=True,capture_output=True,text=True)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+input = None, capture_output = True, timeout = None, check = True
+popenargs = (['g++', '-std=c++17', '-shared', '-fPIC', '-O2', '-fno-fast-math', ...],)
+kwargs = {'text': True, 'stdout': -1, 'stderr': -1}
+
+    def run(*popenargs,
+            input=None, capture_output=False, timeout=None, check=False, **kwargs):
+        """Run command with arguments and return a CompletedProcess instance.
+    
+        The returned instance will have attributes args, returncode, stdout and
+        stderr. By default, stdout and stderr are not captured, and those attributes
+        will be None. Pass stdout=PIPE and/or stderr=PIPE in order to capture them,
+        or pass capture_output=True to capture both.
+    
+        If check is True and the exit code was non-zero, it raises a
+        CalledProcessError. The CalledProcessError object will have the return code
+        in the returncode attribute, and output & stderr attributes if those streams
+        were captured.
+    
+        If timeout is given, and the process takes too long, a TimeoutExpired
+        exception will be raised.
+    
+        There is an optional argument "input", allowing you to
+        pass bytes or a string to the subprocess's stdin.  If you use this argument
+        you may not also use the Popen constructor's "stdin" argument, as
+        it will be used internally.
+    
+        By default, all communication is in bytes, and therefore any "input" should
+        be bytes, and the stdout and stderr will be bytes. If in text mode, any
+        "input" should be a string, and stdout and stderr will be strings decoded
+        according to locale encoding, or by "encoding" if set. Text mode is
+        triggered by setting any of text, encoding, errors or universal_newlines.
+    
+        The other arguments are the same as for the Popen constructor.
+        """
+        if input is not None:
+            if kwargs.get('stdin') is not None:
+                raise ValueError('stdin and input arguments may not both be used.')
+            kwargs['stdin'] = PIPE
+    
+        if capture_output:
+            if kwargs.get('stdout') is not None or kwargs.get('stderr') is not None:
+                raise ValueError('stdout and stderr arguments may not be used '
+                                 'with capture_output.')
+            kwargs['stdout'] = PIPE
+            kwargs['stderr'] = PIPE
+    
+        with Popen(*popenargs, **kwargs) as process:
+            try:
+                stdout, stderr = process.communicate(input, timeout=timeout)
+            except TimeoutExpired as exc:
+                process.kill()
+                if _mswindows:
+                    # Windows accumulates the output in a single blocking
+                    # read() call run on child threads, with the timeout
+                    # being done in a join() on those threads.  communicate()
+                    # _after_ kill() is required to collect that and add it
+                    # to the exception.
+                    exc.stdout, exc.stderr = process.communicate()
+                else:
+                    # POSIX _communicate already populated the output so
+                    # far into the TimeoutExpired exception.
+                    process.wait()
+                raise
+            except:  # Including KeyboardInterrupt, communicate handled that.
+                process.kill()
+                # We don't call process.wait() as .__exit__ does that for us.
+                raise
+            retcode = process.poll()
+            if check and retcode:
+>               raise CalledProcessError(retcode, process.args,
+                                         output=stdout, stderr=stderr)
+E               subprocess.CalledProcessError: Command '['g++', '-std=c++17', '-shared', '-fPIC', '-O2', '-fno-fast-math', '-I/data/nishant/Nishant/Prashant/Project/venv_kvcache/lib/python3.10/site-packages/torch/include', '-I/usr/include/python3.10', '/data/nishant/Nishant/Prashant/Project/kv_cache/experiments/native_cpu_state.cpp', '-o', '/data/nishant/tieredkv_external/cpu_state_de313263222302ee/tieredkv_cpu_state_v1.pending.so']' returned non-zero exit status 1.
+
+/usr/lib/python3.10/subprocess.py:526: CalledProcessError
+_________ test_rejects_entire_batch_before_mutating_first_layer[dtype] _________
+
+fault = 'dtype'
+
+    @pytest.mark.parametrize('fault',['negative','duplicate','range','count','dtype','strided','partition','overlap','readonly','counts_geometry','alias_command','misalignment','version'])
+    def test_rejects_entire_batch_before_mutating_first_layer(fault):
+        s=fixture();victims,counts=packed([[0],[2]])
+        if fault=='negative':victims[1,0]=-1
+        elif fault=='duplicate':victims,counts=packed([[0],[2,2]])
+        elif fault=='range':victims[1,0]=3
+        elif fault=='count':counts[1]=2
+        elif fault=='dtype':victims=victims.astype(np.int64)
+        elif fault=='strided':victims=np.array([[0,0],[2,2]],np.int32)[:,::2]
+        elif fault=='partition':s.owners['free'][1,0]=4
+        elif fault=='overlap':s.owners['resident']=s.owners['shadow']
+        elif fault=='readonly':s.owners['hot'].flags.writeable=False
+        elif fault=='counts_geometry':counts=np.ones(1,np.int32)
+        elif fault=='alias_command':victims=s.owners['slots'][:,:1]
+        elif fault=='misalignment':victims=np.ndarray((2,1),dtype=np.int32,buffer=bytearray(9),offset=1);victims[:]=0
+        else:s.owners['version'][1]=np.iinfo(np.int64).max
+        before={k:a.copy() for k,a in s.owners.items()};epoch=s.epoch
+>       with pytest.raises((ValueError,TypeError)):s.demote(victims,counts)
+
+tests/test_cpu_state.py:95: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+experiments/cpu_state.py:62: in demote
+    result=kernel().demote(self.owners,victims,counts,inclusive);self.epoch+=1
+experiments/cpu_state.py:20: in kernel
+    subprocess.run(['g++','-std=c++17','-shared','-fPIC','-O2','-fno-fast-math','-I'+str(Path(torch.__file__).parent/'include'),'-I'+sysconfig.get_path('include'),str(source),'-o',str(temporary)],check=True,capture_output=True,text=True)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+input = None, capture_output = True, timeout = None, check = True
+popenargs = (['g++', '-std=c++17', '-shared', '-fPIC', '-O2', '-fno-fast-math', ...],)
+kwargs = {'text': True, 'stdout': -1, 'stderr': -1}
+
+    def run(*popenargs,
+            input=None, capture_output=False, timeout=None, check=False, **kwargs):
+        """Run command with arguments and return a CompletedProcess instance.
+    
+        The returned instance will have attributes args, returncode, stdout and
+        stderr. By default, stdout and stderr are not captured, and those attributes
+        will be None. Pass stdout=PIPE and/or stderr=PIPE in order to capture them,
+        or pass capture_output=True to capture both.
+    
+        If check is True and the exit code was non-zero, it raises a
+        CalledProcessError. The CalledProcessError object will have the return code
+        in the returncode attribute, and output & stderr attributes if those streams
+        were captured.
+    
+        If timeout is given, and the process takes too long, a TimeoutExpired
+        exception will be raised.
+    
+        There is an optional argument "input", allowing you to
+        pass bytes or a string to the subprocess's stdin.  If you use this argument
+        you may not also use the Popen constructor's "stdin" argument, as
+        it will be used internally.
+    
+        By default, all communication is in bytes, and therefore any "input" should
+        be bytes, and the stdout and stderr will be bytes. If in text mode, any
+        "input" should be a string, and stdout and stderr will be strings decoded
+        according to locale encoding, or by "encoding" if set. Text mode is
+        triggered by setting any of text, encoding, errors or universal_newlines.
+    
+        The other arguments are the same as for the Popen constructor.
+        """
+        if input is not None:
+            if kwargs.get('stdin') is not None:
+                raise ValueError('stdin and input arguments may not both be used.')
+            kwargs['stdin'] = PIPE
+    
+        if capture_output:
+            if kwargs.get('stdout') is not None or kwargs.get('stderr') is not None:
+                raise ValueError('stdout and stderr arguments may not be used '
+                                 'with capture_output.')
+            kwargs['stdout'] = PIPE
+            kwargs['stderr'] = PIPE
+    
+        with Popen(*popenargs, **kwargs) as process:
+            try:
+                stdout, stderr = process.communicate(input, timeout=timeout)
+            except TimeoutExpired as exc:
+                process.kill()
+                if _mswindows:
+                    # Windows accumulates the output in a single blocking
+                    # read() call run on child threads, with the timeout
+                    # being done in a join() on those threads.  communicate()
+                    # _after_ kill() is required to collect that and add it
+                    # to the exception.
+                    exc.stdout, exc.stderr = process.communicate()
+                else:
+                    # POSIX _communicate already populated the output so
+                    # far into the TimeoutExpired exception.
+                    process.wait()
+                raise
+            except:  # Including KeyboardInterrupt, communicate handled that.
+                process.kill()
+                # We don't call process.wait() as .__exit__ does that for us.
+                raise
+            retcode = process.poll()
+            if check and retcode:
+>               raise CalledProcessError(retcode, process.args,
+                                         output=stdout, stderr=stderr)
+E               subprocess.CalledProcessError: Command '['g++', '-std=c++17', '-shared', '-fPIC', '-O2', '-fno-fast-math', '-I/data/nishant/Nishant/Prashant/Project/venv_kvcache/lib/python3.10/site-packages/torch/include', '-I/usr/include/python3.10', '/data/nishant/Nishant/Prashant/Project/kv_cache/experiments/native_cpu_state.cpp', '-o', '/data/nishant/tieredkv_external/cpu_state_de313263222302ee/tieredkv_cpu_state_v1.pending.so']' returned non-zero exit status 1.
+
+/usr/lib/python3.10/subprocess.py:526: CalledProcessError
+________ test_rejects_entire_batch_before_mutating_first_layer[strided] ________
+
+fault = 'strided'
+
+    @pytest.mark.parametrize('fault',['negative','duplicate','range','count','dtype','strided','partition','overlap','readonly','counts_geometry','alias_command','misalignment','version'])
+    def test_rejects_entire_batch_before_mutating_first_layer(fault):
+        s=fixture();victims,counts=packed([[0],[2]])
+        if fault=='negative':victims[1,0]=-1
+        elif fault=='duplicate':victims,counts=packed([[0],[2,2]])
+        elif fault=='range':victims[1,0]=3
+        elif fault=='count':counts[1]=2
+        elif fault=='dtype':victims=victims.astype(np.int64)
+        elif fault=='strided':victims=np.array([[0,0],[2,2]],np.int32)[:,::2]
+        elif fault=='partition':s.owners['free'][1,0]=4
+        elif fault=='overlap':s.owners['resident']=s.owners['shadow']
+        elif fault=='readonly':s.owners['hot'].flags.writeable=False
+        elif fault=='counts_geometry':counts=np.ones(1,np.int32)
+        elif fault=='alias_command':victims=s.owners['slots'][:,:1]
+        elif fault=='misalignment':victims=np.ndarray((2,1),dtype=np.int32,buffer=bytearray(9),offset=1);victims[:]=0
+        else:s.owners['version'][1]=np.iinfo(np.int64).max
+        before={k:a.copy() for k,a in s.owners.items()};epoch=s.epoch
+>       with pytest.raises((ValueError,TypeError)):s.demote(victims,counts)
+
+tests/test_cpu_state.py:95: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+experiments/cpu_state.py:62: in demote
+    result=kernel().demote(self.owners,victims,counts,inclusive);self.epoch+=1
+experiments/cpu_state.py:20: in kernel
+    subprocess.run(['g++','-std=c++17','-shared','-fPIC','-O2','-fno-fast-math','-I'+str(Path(torch.__file__).parent/'include'),'-I'+sysconfig.get_path('include'),str(source),'-o',str(temporary)],check=True,capture_output=True,text=True)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+input = None, capture_output = True, timeout = None, check = True
+popenargs = (['g++', '-std=c++17', '-shared', '-fPIC', '-O2', '-fno-fast-math', ...],)
+kwargs = {'text': True, 'stdout': -1, 'stderr': -1}
+
+    def run(*popenargs,
+            input=None, capture_output=False, timeout=None, check=False, **kwargs):
+        """Run command with arguments and return a CompletedProcess instance.
+    
+        The returned instance will have attributes args, returncode, stdout and
+        stderr. By default, stdout and stderr are not captured, and those attributes
+        will be None. Pass stdout=PIPE and/or stderr=PIPE in order to capture them,
+        or pass capture_output=True to capture both.
+    
+        If check is True and the exit code was non-zero, it raises a
+        CalledProcessError. The CalledProcessError object will have the return code
+        in the returncode attribute, and output & stderr attributes if those streams
+        were captured.
+    
+        If timeout is given, and the process takes too long, a TimeoutExpired
+        exception will be raised.
+    
+        There is an optional argument "input", allowing you to
+        pass bytes or a string to the subprocess's stdin.  If you use this argument
+        you may not also use the Popen constructor's "stdin" argument, as
+        it will be used internally.
+    
+        By default, all communication is in bytes, and therefore any "input" should
+        be bytes, and the stdout and stderr will be bytes. If in text mode, any
+        "input" should be a string, and stdout and stderr will be strings decoded
+        according to locale encoding, or by "encoding" if set. Text mode is
+        triggered by setting any of text, encoding, errors or universal_newlines.
+    
+        The other arguments are the same as for the Popen constructor.
+        """
+        if input is not None:
+            if kwargs.get('stdin') is not None:
+                raise ValueError('stdin and input arguments may not both be used.')
+            kwargs['stdin'] = PIPE
+    
+        if capture_output:
+            if kwargs.get('stdout') is not None or kwargs.get('stderr') is not None:
+                raise ValueError('stdout and stderr arguments may not be used '
+                                 'with capture_output.')
+            kwargs['stdout'] = PIPE
+            kwargs['stderr'] = PIPE
+    
+        with Popen(*popenargs, **kwargs) as process:
+            try:
+                stdout, stderr = process.communicate(input, timeout=timeout)
+            except TimeoutExpired as exc:
+                process.kill()
+                if _mswindows:
+                    # Windows accumulates the output in a single blocking
+                    # read() call run on child threads, with the timeout
+                    # being done in a join() on those threads.  communicate()
+                    # _after_ kill() is required to collect that and add it
+                    # to the exception.
+                    exc.stdout, exc.stderr = process.communicate()
+                else:
+                    # POSIX _communicate already populated the output so
+                    # far into the TimeoutExpired exception.
+                    process.wait()
+                raise
+            except:  # Including KeyboardInterrupt, communicate handled that.
+                process.kill()
+                # We don't call process.wait() as .__exit__ does that for us.
+                raise
+            retcode = process.poll()
+            if check and retcode:
+>               raise CalledProcessError(retcode, process.args,
+                                         output=stdout, stderr=stderr)
+E               subprocess.CalledProcessError: Command '['g++', '-std=c++17', '-shared', '-fPIC', '-O2', '-fno-fast-math', '-I/data/nishant/Nishant/Prashant/Project/venv_kvcache/lib/python3.10/site-packages/torch/include', '-I/usr/include/python3.10', '/data/nishant/Nishant/Prashant/Project/kv_cache/experiments/native_cpu_state.cpp', '-o', '/data/nishant/tieredkv_external/cpu_state_de313263222302ee/tieredkv_cpu_state_v1.pending.so']' returned non-zero exit status 1.
+
+/usr/lib/python3.10/subprocess.py:526: CalledProcessError
+_______ test_rejects_entire_batch_before_mutating_first_layer[partition] _______
+
+fault = 'partition'
+
+    @pytest.mark.parametrize('fault',['negative','duplicate','range','count','dtype','strided','partition','overlap','readonly','counts_geometry','alias_command','misalignment','version'])
+    def test_rejects_entire_batch_before_mutating_first_layer(fault):
+        s=fixture();victims,counts=packed([[0],[2]])
+        if fault=='negative':victims[1,0]=-1
+        elif fault=='duplicate':victims,counts=packed([[0],[2,2]])
+        elif fault=='range':victims[1,0]=3
+        elif fault=='count':counts[1]=2
+        elif fault=='dtype':victims=victims.astype(np.int64)
+        elif fault=='strided':victims=np.array([[0,0],[2,2]],np.int32)[:,::2]
+        elif fault=='partition':s.owners['free'][1,0]=4
+        elif fault=='overlap':s.owners['resident']=s.owners['shadow']
+        elif fault=='readonly':s.owners['hot'].flags.writeable=False
+        elif fault=='counts_geometry':counts=np.ones(1,np.int32)
+        elif fault=='alias_command':victims=s.owners['slots'][:,:1]
+        elif fault=='misalignment':victims=np.ndarray((2,1),dtype=np.int32,buffer=bytearray(9),offset=1);victims[:]=0
+        else:s.owners['version'][1]=np.iinfo(np.int64).max
+        before={k:a.copy() for k,a in s.owners.items()};epoch=s.epoch
+>       with pytest.raises((ValueError,TypeError)):s.demote(victims,counts)
+
+tests/test_cpu_state.py:95: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+experiments/cpu_state.py:62: in demote
+    result=kernel().demote(self.owners,victims,counts,inclusive);self.epoch+=1
+experiments/cpu_state.py:20: in kernel
+    subprocess.run(['g++','-std=c++17','-shared','-fPIC','-O2','-fno-fast-math','-I'+str(Path(torch.__file__).parent/'include'),'-I'+sysconfig.get_path('include'),str(source),'-o',str(temporary)],check=True,capture_output=True,text=True)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+input = None, capture_output = True, timeout = None, check = True
+popenargs = (['g++', '-std=c++17', '-shared', '-fPIC', '-O2', '-fno-fast-math', ...],)
+kwargs = {'text': True, 'stdout': -1, 'stderr': -1}
+
+    def run(*popenargs,
+            input=None, capture_output=False, timeout=None, check=False, **kwargs):
+        """Run command with arguments and return a CompletedProcess instance.
+    
+        The returned instance will have attributes args, returncode, stdout and
+        stderr. By default, stdout and stderr are not captured, and those attributes
+        will be None. Pass stdout=PIPE and/or stderr=PIPE in order to capture them,
+        or pass capture_output=True to capture both.
+    
+        If check is True and the exit code was non-zero, it raises a
+        CalledProcessError. The CalledProcessError object will have the return code
+        in the returncode attribute, and output & stderr attributes if those streams
+        were captured.
+    
+        If timeout is given, and the process takes too long, a TimeoutExpired
+        exception will be raised.
+    
+        There is an optional argument "input", allowing you to
+        pass bytes or a string to the subprocess's stdin.  If you use this argument
+        you may not also use the Popen constructor's "stdin" argument, as
+        it will be used internally.
+    
+        By default, all communication is in bytes, and therefore any "input" should
+        be bytes, and the stdout and stderr will be bytes. If in text mode, any
+        "input" should be a string, and stdout and stderr will be strings decoded
+        according to locale encoding, or by "encoding" if set. Text mode is
+        triggered by setting any of text, encoding, errors or universal_newlines.
+    
+        The other arguments are the same as for the Popen constructor.
+        """
+        if input is not None:
+            if kwargs.get('stdin') is not None:
+                raise ValueError('stdin and input arguments may not both be used.')
+            kwargs['stdin'] = PIPE
+    
+        if capture_output:
+            if kwargs.get('stdout') is not None or kwargs.get('stderr') is not None:
+                raise ValueError('stdout and stderr arguments may not be used '
+                                 'with capture_output.')
+            kwargs['stdout'] = PIPE
+            kwargs['stderr'] = PIPE
+    
+        with Popen(*popenargs, **kwargs) as process:
+            try:
+                stdout, stderr = process.communicate(input, timeout=timeout)
+            except TimeoutExpired as exc:
+                process.kill()
+                if _mswindows:
+                    # Windows accumulates the output in a single blocking
+                    # read() call run on child threads, with the timeout
+                    # being done in a join() on those threads.  communicate()
+                    # _after_ kill() is required to collect that and add it
+                    # to the exception.
+                    exc.stdout, exc.stderr = process.communicate()
+                else:
+                    # POSIX _communicate already populated the output so
+                    # far into the TimeoutExpired exception.
+                    process.wait()
+                raise
+            except:  # Including KeyboardInterrupt, communicate handled that.
+                process.kill()
+                # We don't call process.wait() as .__exit__ does that for us.
+                raise
+            retcode = process.poll()
+            if check and retcode:
+>               raise CalledProcessError(retcode, process.args,
+                                         output=stdout, stderr=stderr)
+E               subprocess.CalledProcessError: Command '['g++', '-std=c++17', '-shared', '-fPIC', '-O2', '-fno-fast-math', '-I/data/nishant/Nishant/Prashant/Project/venv_kvcache/lib/python3.10/site-packages/torch/include', '-I/usr/include/python3.10', '/data/nishant/Nishant/Prashant/Project/kv_cache/experiments/native_cpu_state.cpp', '-o', '/data/nishant/tieredkv_external/cpu_state_de313263222302ee/tieredkv_cpu_state_v1.pending.so']' returned non-zero exit status 1.
+
+/usr/lib/python3.10/subprocess.py:526: CalledProcessError
+________ test_rejects_entire_batch_before_mutating_first_layer[overlap] ________
+
+fault = 'overlap'
+
+    @pytest.mark.parametrize('fault',['negative','duplicate','range','count','dtype','strided','partition','overlap','readonly','counts_geometry','alias_command','misalignment','version'])
+    def test_rejects_entire_batch_before_mutating_first_layer(fault):
+        s=fixture();victims,counts=packed([[0],[2]])
+        if fault=='negative':victims[1,0]=-1
+        elif fault=='duplicate':victims,counts=packed([[0],[2,2]])
+        elif fault=='range':victims[1,0]=3
+        elif fault=='count':counts[1]=2
+        elif fault=='dtype':victims=victims.astype(np.int64)
+        elif fault=='strided':victims=np.array([[0,0],[2,2]],np.int32)[:,::2]
+        elif fault=='partition':s.owners['free'][1,0]=4
+        elif fault=='overlap':s.owners['resident']=s.owners['shadow']
+        elif fault=='readonly':s.owners['hot'].flags.writeable=False
+        elif fault=='counts_geometry':counts=np.ones(1,np.int32)
+        elif fault=='alias_command':victims=s.owners['slots'][:,:1]
+        elif fault=='misalignment':victims=np.ndarray((2,1),dtype=np.int32,buffer=bytearray(9),offset=1);victims[:]=0
+        else:s.owners['version'][1]=np.iinfo(np.int64).max
+        before={k:a.copy() for k,a in s.owners.items()};epoch=s.epoch
+>       with pytest.raises((ValueError,TypeError)):s.demote(victims,counts)
+
+tests/test_cpu_state.py:95: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+experiments/cpu_state.py:62: in demote
+    result=kernel().demote(self.owners,victims,counts,inclusive);self.epoch+=1
+experiments/cpu_state.py:20: in kernel
+    subprocess.run(['g++','-std=c++17','-shared','-fPIC','-O2','-fno-fast-math','-I'+str(Path(torch.__file__).parent/'include'),'-I'+sysconfig.get_path('include'),str(source),'-o',str(temporary)],check=True,capture_output=True,text=True)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+input = None, capture_output = True, timeout = None, check = True
+popenargs = (['g++', '-std=c++17', '-shared', '-fPIC', '-O2', '-fno-fast-math', ...],)
+kwargs = {'text': True, 'stdout': -1, 'stderr': -1}
+
+    def run(*popenargs,
+            input=None, capture_output=False, timeout=None, check=False, **kwargs):
+        """Run command with arguments and return a CompletedProcess instance.
+    
+        The returned instance will have attributes args, returncode, stdout and
+        stderr. By default, stdout and stderr are not captured, and those attributes
+        will be None. Pass stdout=PIPE and/or stderr=PIPE in order to capture them,
+        or pass capture_output=True to capture both.
+    
+        If check is True and the exit code was non-zero, it raises a
+        CalledProcessError. The CalledProcessError object will have the return code
+        in the returncode attribute, and output & stderr attributes if those streams
+        were captured.
+    
+        If timeout is given, and the process takes too long, a TimeoutExpired
+        exception will be raised.
+    
+        There is an optional argument "input", allowing you to
+        pass bytes or a string to the subprocess's stdin.  If you use this argument
+        you may not also use the Popen constructor's "stdin" argument, as
+        it will be used internally.
+    
+        By default, all communication is in bytes, and therefore any "input" should
+        be bytes, and the stdout and stderr will be bytes. If in text mode, any
+        "input" should be a string, and stdout and stderr will be strings decoded
+        according to locale encoding, or by "encoding" if set. Text mode is
+        triggered by setting any of text, encoding, errors or universal_newlines.
+    
+        The other arguments are the same as for the Popen constructor.
+        """
+        if input is not None:
+            if kwargs.get('stdin') is not None:
+                raise ValueError('stdin and input arguments may not both be used.')
+            kwargs['stdin'] = PIPE
+    
+        if capture_output:
+            if kwargs.get('stdout') is not None or kwargs.get('stderr') is not None:
+                raise ValueError('stdout and stderr arguments may not be used '
+                                 'with capture_output.')
+            kwargs['stdout'] = PIPE
+            kwargs['stderr'] = PIPE
+    
+        with Popen(*popenargs, **kwargs) as process:
+            try:
+                stdout, stderr = process.communicate(input, timeout=timeout)
+            except TimeoutExpired as exc:
+                process.kill()
+                if _mswindows:
+                    # Windows accumulates the output in a single blocking
+                    # read() call run on child threads, with the timeout
+                    # being done in a join() on those threads.  communicate()
+                    # _after_ kill() is required to collect that and add it
+                    # to the exception.
+                    exc.stdout, exc.stderr = process.communicate()
+                else:
+                    # POSIX _communicate already populated the output so
+                    # far into the TimeoutExpired exception.
+                    process.wait()
+                raise
+            except:  # Including KeyboardInterrupt, communicate handled that.
+                process.kill()
+                # We don't call process.wait() as .__exit__ does that for us.
+                raise
+            retcode = process.poll()
+            if check and retcode:
+>               raise CalledProcessError(retcode, process.args,
+                                         output=stdout, stderr=stderr)
+E               subprocess.CalledProcessError: Command '['g++', '-std=c++17', '-shared', '-fPIC', '-O2', '-fno-fast-math', '-I/data/nishant/Nishant/Prashant/Project/venv_kvcache/lib/python3.10/site-packages/torch/include', '-I/usr/include/python3.10', '/data/nishant/Nishant/Prashant/Project/kv_cache/experiments/native_cpu_state.cpp', '-o', '/data/nishant/tieredkv_external/cpu_state_de313263222302ee/tieredkv_cpu_state_v1.pending.so']' returned non-zero exit status 1.
+
+/usr/lib/python3.10/subprocess.py:526: CalledProcessError
+_______ test_rejects_entire_batch_before_mutating_first_layer[readonly] ________
+
+fault = 'readonly'
+
+    @pytest.mark.parametrize('fault',['negative','duplicate','range','count','dtype','strided','partition','overlap','readonly','counts_geometry','alias_command','misalignment','version'])
+    def test_rejects_entire_batch_before_mutating_first_layer(fault):
+        s=fixture();victims,counts=packed([[0],[2]])
+        if fault=='negative':victims[1,0]=-1
+        elif fault=='duplicate':victims,counts=packed([[0],[2,2]])
+        elif fault=='range':victims[1,0]=3
+        elif fault=='count':counts[1]=2
+        elif fault=='dtype':victims=victims.astype(np.int64)
+        elif fault=='strided':victims=np.array([[0,0],[2,2]],np.int32)[:,::2]
+        elif fault=='partition':s.owners['free'][1,0]=4
+        elif fault=='overlap':s.owners['resident']=s.owners['shadow']
+        elif fault=='readonly':s.owners['hot'].flags.writeable=False
+        elif fault=='counts_geometry':counts=np.ones(1,np.int32)
+        elif fault=='alias_command':victims=s.owners['slots'][:,:1]
+        elif fault=='misalignment':victims=np.ndarray((2,1),dtype=np.int32,buffer=bytearray(9),offset=1);victims[:]=0
+        else:s.owners['version'][1]=np.iinfo(np.int64).max
+        before={k:a.copy() for k,a in s.owners.items()};epoch=s.epoch
+>       with pytest.raises((ValueError,TypeError)):s.demote(victims,counts)
+
+tests/test_cpu_state.py:95: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+experiments/cpu_state.py:62: in demote
+    result=kernel().demote(self.owners,victims,counts,inclusive);self.epoch+=1
+experiments/cpu_state.py:20: in kernel
+    subprocess.run(['g++','-std=c++17','-shared','-fPIC','-O2','-fno-fast-math','-I'+str(Path(torch.__file__).parent/'include'),'-I'+sysconfig.get_path('include'),str(source),'-o',str(temporary)],check=True,capture_output=True,text=True)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+input = None, capture_output = True, timeout = None, check = True
+popenargs = (['g++', '-std=c++17', '-shared', '-fPIC', '-O2', '-fno-fast-math', ...],)
+kwargs = {'text': True, 'stdout': -1, 'stderr': -1}
+
+    def run(*popenargs,
+            input=None, capture_output=False, timeout=None, check=False, **kwargs):
+        """Run command with arguments and return a CompletedProcess instance.
+    
+        The returned instance will have attributes args, returncode, stdout and
+        stderr. By default, stdout and stderr are not captured, and those attributes
+        will be None. Pass stdout=PIPE and/or stderr=PIPE in order to capture them,
+        or pass capture_output=True to capture both.
+    
+        If check is True and the exit code was non-zero, it raises a
+        CalledProcessError. The CalledProcessError object will have the return code
+        in the returncode attribute, and output & stderr attributes if those streams
+        were captured.
+    
+        If timeout is given, and the process takes too long, a TimeoutExpired
+        exception will be raised.
+    
+        There is an optional argument "input", allowing you to
+        pass bytes or a string to the subprocess's stdin.  If you use this argument
+        you may not also use the Popen constructor's "stdin" argument, as
+        it will be used internally.
+    
+        By default, all communication is in bytes, and therefore any "input" should
+        be bytes, and the stdout and stderr will be bytes. If in text mode, any
+        "input" should be a string, and stdout and stderr will be strings decoded
+        according to locale encoding, or by "encoding" if set. Text mode is
+        triggered by setting any of text, encoding, errors or universal_newlines.
+    
+        The other arguments are the same as for the Popen constructor.
+        """
+        if input is not None:
+            if kwargs.get('stdin') is not None:
+                raise ValueError('stdin and input arguments may not both be used.')
+            kwargs['stdin'] = PIPE
+    
+        if capture_output:
+            if kwargs.get('stdout') is not None or kwargs.get('stderr') is not None:
+                raise ValueError('stdout and stderr arguments may not be used '
+                                 'with capture_output.')
+            kwargs['stdout'] = PIPE
+            kwargs['stderr'] = PIPE
+    
+        with Popen(*popenargs, **kwargs) as process:
+            try:
+                stdout, stderr = process.communicate(input, timeout=timeout)
+            except TimeoutExpired as exc:
+                process.kill()
+                if _mswindows:
+                    # Windows accumulates the output in a single blocking
+                    # read() call run on child threads, with the timeout
+                    # being done in a join() on those threads.  communicate()
+                    # _after_ kill() is required to collect that and add it
+                    # to the exception.
+                    exc.stdout, exc.stderr = process.communicate()
+                else:
+                    # POSIX _communicate already populated the output so
+                    # far into the TimeoutExpired exception.
+                    process.wait()
+                raise
+            except:  # Including KeyboardInterrupt, communicate handled that.
+                process.kill()
+                # We don't call process.wait() as .__exit__ does that for us.
+                raise
+            retcode = process.poll()
+            if check and retcode:
+>               raise CalledProcessError(retcode, process.args,
+                                         output=stdout, stderr=stderr)
+E               subprocess.CalledProcessError: Command '['g++', '-std=c++17', '-shared', '-fPIC', '-O2', '-fno-fast-math', '-I/data/nishant/Nishant/Prashant/Project/venv_kvcache/lib/python3.10/site-packages/torch/include', '-I/usr/include/python3.10', '/data/nishant/Nishant/Prashant/Project/kv_cache/experiments/native_cpu_state.cpp', '-o', '/data/nishant/tieredkv_external/cpu_state_de313263222302ee/tieredkv_cpu_state_v1.pending.so']' returned non-zero exit status 1.
+
+/usr/lib/python3.10/subprocess.py:526: CalledProcessError
+____ test_rejects_entire_batch_before_mutating_first_layer[counts_geometry] ____
+
+fault = 'counts_geometry'
+
+    @pytest.mark.parametrize('fault',['negative','duplicate','range','count','dtype','strided','partition','overlap','readonly','counts_geometry','alias_command','misalignment','version'])
+    def test_rejects_entire_batch_before_mutating_first_layer(fault):
+        s=fixture();victims,counts=packed([[0],[2]])
+        if fault=='negative':victims[1,0]=-1
+        elif fault=='duplicate':victims,counts=packed([[0],[2,2]])
+        elif fault=='range':victims[1,0]=3
+        elif fault=='count':counts[1]=2
+        elif fault=='dtype':victims=victims.astype(np.int64)
+        elif fault=='strided':victims=np.array([[0,0],[2,2]],np.int32)[:,::2]
+        elif fault=='partition':s.owners['free'][1,0]=4
+        elif fault=='overlap':s.owners['resident']=s.owners['shadow']
+        elif fault=='readonly':s.owners['hot'].flags.writeable=False
+        elif fault=='counts_geometry':counts=np.ones(1,np.int32)
+        elif fault=='alias_command':victims=s.owners['slots'][:,:1]
+        elif fault=='misalignment':victims=np.ndarray((2,1),dtype=np.int32,buffer=bytearray(9),offset=1);victims[:]=0
+        else:s.owners['version'][1]=np.iinfo(np.int64).max
+        before={k:a.copy() for k,a in s.owners.items()};epoch=s.epoch
+>       with pytest.raises((ValueError,TypeError)):s.demote(victims,counts)
+
+tests/test_cpu_state.py:95: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+experiments/cpu_state.py:62: in demote
+    result=kernel().demote(self.owners,victims,counts,inclusive);self.epoch+=1
+experiments/cpu_state.py:20: in kernel
+    subprocess.run(['g++','-std=c++17','-shared','-fPIC','-O2','-fno-fast-math','-I'+str(Path(torch.__file__).parent/'include'),'-I'+sysconfig.get_path('include'),str(source),'-o',str(temporary)],check=True,capture_output=True,text=True)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+input = None, capture_output = True, timeout = None, check = True
+popenargs = (['g++', '-std=c++17', '-shared', '-fPIC', '-O2', '-fno-fast-math', ...],)
+kwargs = {'text': True, 'stdout': -1, 'stderr': -1}
+
+    def run(*popenargs,
+            input=None, capture_output=False, timeout=None, check=False, **kwargs):
+        """Run command with arguments and return a CompletedProcess instance.
+    
+        The returned instance will have attributes args, returncode, stdout and
+        stderr. By default, stdout and stderr are not captured, and those attributes
+        will be None. Pass stdout=PIPE and/or stderr=PIPE in order to capture them,
+        or pass capture_output=True to capture both.
+    
+        If check is True and the exit code was non-zero, it raises a
+        CalledProcessError. The CalledProcessError object will have the return code
+        in the returncode attribute, and output & stderr attributes if those streams
+        were captured.
+    
+        If timeout is given, and the process takes too long, a TimeoutExpired
+        exception will be raised.
+    
+        There is an optional argument "input", allowing you to
+        pass bytes or a string to the subprocess's stdin.  If you use this argument
+        you may not also use the Popen constructor's "stdin" argument, as
+        it will be used internally.
+    
+        By default, all communication is in bytes, and therefore any "input" should
+        be bytes, and the stdout and stderr will be bytes. If in text mode, any
+        "input" should be a string, and stdout and stderr will be strings decoded
+        according to locale encoding, or by "encoding" if set. Text mode is
+        triggered by setting any of text, encoding, errors or universal_newlines.
+    
+        The other arguments are the same as for the Popen constructor.
+        """
+        if input is not None:
+            if kwargs.get('stdin') is not None:
+                raise ValueError('stdin and input arguments may not both be used.')
+            kwargs['stdin'] = PIPE
+    
+        if capture_output:
+            if kwargs.get('stdout') is not None or kwargs.get('stderr') is not None:
+                raise ValueError('stdout and stderr arguments may not be used '
+                                 'with capture_output.')
+            kwargs['stdout'] = PIPE
+            kwargs['stderr'] = PIPE
+    
+        with Popen(*popenargs, **kwargs) as process:
+            try:
+                stdout, stderr = process.communicate(input, timeout=timeout)
+            except TimeoutExpired as exc:
+                process.kill()
+                if _mswindows:
+                    # Windows accumulates the output in a single blocking
+                    # read() call run on child threads, with the timeout
+                    # being done in a join() on those threads.  communicate()
+                    # _after_ kill() is required to collect that and add it
+                    # to the exception.
+                    exc.stdout, exc.stderr = process.communicate()
+                else:
+                    # POSIX _communicate already populated the output so
+                    # far into the TimeoutExpired exception.
+                    process.wait()
+                raise
+            except:  # Including KeyboardInterrupt, communicate handled that.
+                process.kill()
+                # We don't call process.wait() as .__exit__ does that for us.
+                raise
+            retcode = process.poll()
+            if check and retcode:
+>               raise CalledProcessError(retcode, process.args,
+                                         output=stdout, stderr=stderr)
+E               subprocess.CalledProcessError: Command '['g++', '-std=c++17', '-shared', '-fPIC', '-O2', '-fno-fast-math', '-I/data/nishant/Nishant/Prashant/Project/venv_kvcache/lib/python3.10/site-packages/torch/include', '-I/usr/include/python3.10', '/data/nishant/Nishant/Prashant/Project/kv_cache/experiments/native_cpu_state.cpp', '-o', '/data/nishant/tieredkv_external/cpu_state_de313263222302ee/tieredkv_cpu_state_v1.pending.so']' returned non-zero exit status 1.
+
+/usr/lib/python3.10/subprocess.py:526: CalledProcessError
+_____ test_rejects_entire_batch_before_mutating_first_layer[alias_command] _____
+
+fault = 'alias_command'
+
+    @pytest.mark.parametrize('fault',['negative','duplicate','range','count','dtype','strided','partition','overlap','readonly','counts_geometry','alias_command','misalignment','version'])
+    def test_rejects_entire_batch_before_mutating_first_layer(fault):
+        s=fixture();victims,counts=packed([[0],[2]])
+        if fault=='negative':victims[1,0]=-1
+        elif fault=='duplicate':victims,counts=packed([[0],[2,2]])
+        elif fault=='range':victims[1,0]=3
+        elif fault=='count':counts[1]=2
+        elif fault=='dtype':victims=victims.astype(np.int64)
+        elif fault=='strided':victims=np.array([[0,0],[2,2]],np.int32)[:,::2]
+        elif fault=='partition':s.owners['free'][1,0]=4
+        elif fault=='overlap':s.owners['resident']=s.owners['shadow']
+        elif fault=='readonly':s.owners['hot'].flags.writeable=False
+        elif fault=='counts_geometry':counts=np.ones(1,np.int32)
+        elif fault=='alias_command':victims=s.owners['slots'][:,:1]
+        elif fault=='misalignment':victims=np.ndarray((2,1),dtype=np.int32,buffer=bytearray(9),offset=1);victims[:]=0
+        else:s.owners['version'][1]=np.iinfo(np.int64).max
+        before={k:a.copy() for k,a in s.owners.items()};epoch=s.epoch
+>       with pytest.raises((ValueError,TypeError)):s.demote(victims,counts)
+
+tests/test_cpu_state.py:95: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+experiments/cpu_state.py:62: in demote
+    result=kernel().demote(self.owners,victims,counts,inclusive);self.epoch+=1
+experiments/cpu_state.py:20: in kernel
+    subprocess.run(['g++','-std=c++17','-shared','-fPIC','-O2','-fno-fast-math','-I'+str(Path(torch.__file__).parent/'include'),'-I'+sysconfig.get_path('include'),str(source),'-o',str(temporary)],check=True,capture_output=True,text=True)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+input = None, capture_output = True, timeout = None, check = True
+popenargs = (['g++', '-std=c++17', '-shared', '-fPIC', '-O2', '-fno-fast-math', ...],)
+kwargs = {'text': True, 'stdout': -1, 'stderr': -1}
+
+    def run(*popenargs,
+            input=None, capture_output=False, timeout=None, check=False, **kwargs):
+        """Run command with arguments and return a CompletedProcess instance.
+    
+        The returned instance will have attributes args, returncode, stdout and
+        stderr. By default, stdout and stderr are not captured, and those attributes
+        will be None. Pass stdout=PIPE and/or stderr=PIPE in order to capture them,
+        or pass capture_output=True to capture both.
+    
+        If check is True and the exit code was non-zero, it raises a
+        CalledProcessError. The CalledProcessError object will have the return code
+        in the returncode attribute, and output & stderr attributes if those streams
+        were captured.
+    
+        If timeout is given, and the process takes too long, a TimeoutExpired
+        exception will be raised.
+    
+        There is an optional argument "input", allowing you to
+        pass bytes or a string to the subprocess's stdin.  If you use this argument
+        you may not also use the Popen constructor's "stdin" argument, as
+        it will be used internally.
+    
+        By default, all communication is in bytes, and therefore any "input" should
+        be bytes, and the stdout and stderr will be bytes. If in text mode, any
+        "input" should be a string, and stdout and stderr will be strings decoded
+        according to locale encoding, or by "encoding" if set. Text mode is
+        triggered by setting any of text, encoding, errors or universal_newlines.
+    
+        The other arguments are the same as for the Popen constructor.
+        """
+        if input is not None:
+            if kwargs.get('stdin') is not None:
+                raise ValueError('stdin and input arguments may not both be used.')
+            kwargs['stdin'] = PIPE
+    
+        if capture_output:
+            if kwargs.get('stdout') is not None or kwargs.get('stderr') is not None:
+                raise ValueError('stdout and stderr arguments may not be used '
+                                 'with capture_output.')
+            kwargs['stdout'] = PIPE
+            kwargs['stderr'] = PIPE
+    
+        with Popen(*popenargs, **kwargs) as process:
+            try:
+                stdout, stderr = process.communicate(input, timeout=timeout)
+            except TimeoutExpired as exc:
+                process.kill()
+                if _mswindows:
+                    # Windows accumulates the output in a single blocking
+                    # read() call run on child threads, with the timeout
+                    # being done in a join() on those threads.  communicate()
+                    # _after_ kill() is required to collect that and add it
+                    # to the exception.
+                    exc.stdout, exc.stderr = process.communicate()
+                else:
+                    # POSIX _communicate already populated the output so
+                    # far into the TimeoutExpired exception.
+                    process.wait()
+                raise
+            except:  # Including KeyboardInterrupt, communicate handled that.
+                process.kill()
+                # We don't call process.wait() as .__exit__ does that for us.
+                raise
+            retcode = process.poll()
+            if check and retcode:
+>               raise CalledProcessError(retcode, process.args,
+                                         output=stdout, stderr=stderr)
+E               subprocess.CalledProcessError: Command '['g++', '-std=c++17', '-shared', '-fPIC', '-O2', '-fno-fast-math', '-I/data/nishant/Nishant/Prashant/Project/venv_kvcache/lib/python3.10/site-packages/torch/include', '-I/usr/include/python3.10', '/data/nishant/Nishant/Prashant/Project/kv_cache/experiments/native_cpu_state.cpp', '-o', '/data/nishant/tieredkv_external/cpu_state_de313263222302ee/tieredkv_cpu_state_v1.pending.so']' returned non-zero exit status 1.
+
+/usr/lib/python3.10/subprocess.py:526: CalledProcessError
+_____ test_rejects_entire_batch_before_mutating_first_layer[misalignment] ______
+
+fault = 'misalignment'
+
+    @pytest.mark.parametrize('fault',['negative','duplicate','range','count','dtype','strided','partition','overlap','readonly','counts_geometry','alias_command','misalignment','version'])
+    def test_rejects_entire_batch_before_mutating_first_layer(fault):
+        s=fixture();victims,counts=packed([[0],[2]])
+        if fault=='negative':victims[1,0]=-1
+        elif fault=='duplicate':victims,counts=packed([[0],[2,2]])
+        elif fault=='range':victims[1,0]=3
+        elif fault=='count':counts[1]=2
+        elif fault=='dtype':victims=victims.astype(np.int64)
+        elif fault=='strided':victims=np.array([[0,0],[2,2]],np.int32)[:,::2]
+        elif fault=='partition':s.owners['free'][1,0]=4
+        elif fault=='overlap':s.owners['resident']=s.owners['shadow']
+        elif fault=='readonly':s.owners['hot'].flags.writeable=False
+        elif fault=='counts_geometry':counts=np.ones(1,np.int32)
+        elif fault=='alias_command':victims=s.owners['slots'][:,:1]
+        elif fault=='misalignment':victims=np.ndarray((2,1),dtype=np.int32,buffer=bytearray(9),offset=1);victims[:]=0
+        else:s.owners['version'][1]=np.iinfo(np.int64).max
+        before={k:a.copy() for k,a in s.owners.items()};epoch=s.epoch
+>       with pytest.raises((ValueError,TypeError)):s.demote(victims,counts)
+
+tests/test_cpu_state.py:95: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+experiments/cpu_state.py:62: in demote
+    result=kernel().demote(self.owners,victims,counts,inclusive);self.epoch+=1
+experiments/cpu_state.py:20: in kernel
+    subprocess.run(['g++','-std=c++17','-shared','-fPIC','-O2','-fno-fast-math','-I'+str(Path(torch.__file__).parent/'include'),'-I'+sysconfig.get_path('include'),str(source),'-o',str(temporary)],check=True,capture_output=True,text=True)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+input = None, capture_output = True, timeout = None, check = True
+popenargs = (['g++', '-std=c++17', '-shared', '-fPIC', '-O2', '-fno-fast-math', ...],)
+kwargs = {'text': True, 'stdout': -1, 'stderr': -1}
+
+    def run(*popenargs,
+            input=None, capture_output=False, timeout=None, check=False, **kwargs):
+        """Run command with arguments and return a CompletedProcess instance.
+    
+        The returned instance will have attributes args, returncode, stdout and
+        stderr. By default, stdout and stderr are not captured, and those attributes
+        will be None. Pass stdout=PIPE and/or stderr=PIPE in order to capture them,
+        or pass capture_output=True to capture both.
+    
+        If check is True and the exit code was non-zero, it raises a
+        CalledProcessError. The CalledProcessError object will have the return code
+        in the returncode attribute, and output & stderr attributes if those streams
+        were captured.
+    
+        If timeout is given, and the process takes too long, a TimeoutExpired
+        exception will be raised.
+    
+        There is an optional argument "input", allowing you to
+        pass bytes or a string to the subprocess's stdin.  If you use this argument
+        you may not also use the Popen constructor's "stdin" argument, as
+        it will be used internally.
+    
+        By default, all communication is in bytes, and therefore any "input" should
+        be bytes, and the stdout and stderr will be bytes. If in text mode, any
+        "input" should be a string, and stdout and stderr will be strings decoded
+        according to locale encoding, or by "encoding" if set. Text mode is
+        triggered by setting any of text, encoding, errors or universal_newlines.
+    
+        The other arguments are the same as for the Popen constructor.
+        """
+        if input is not None:
+            if kwargs.get('stdin') is not None:
+                raise ValueError('stdin and input arguments may not both be used.')
+            kwargs['stdin'] = PIPE
+    
+        if capture_output:
+            if kwargs.get('stdout') is not None or kwargs.get('stderr') is not None:
+                raise ValueError('stdout and stderr arguments may not be used '
+                                 'with capture_output.')
+            kwargs['stdout'] = PIPE
+            kwargs['stderr'] = PIPE
+    
+        with Popen(*popenargs, **kwargs) as process:
+            try:
+                stdout, stderr = process.communicate(input, timeout=timeout)
+            except TimeoutExpired as exc:
+                process.kill()
+                if _mswindows:
+                    # Windows accumulates the output in a single blocking
+                    # read() call run on child threads, with the timeout
+                    # being done in a join() on those threads.  communicate()
+                    # _after_ kill() is required to collect that and add it
+                    # to the exception.
+                    exc.stdout, exc.stderr = process.communicate()
+                else:
+                    # POSIX _communicate already populated the output so
+                    # far into the TimeoutExpired exception.
+                    process.wait()
+                raise
+            except:  # Including KeyboardInterrupt, communicate handled that.
+                process.kill()
+                # We don't call process.wait() as .__exit__ does that for us.
+                raise
+            retcode = process.poll()
+            if check and retcode:
+>               raise CalledProcessError(retcode, process.args,
+                                         output=stdout, stderr=stderr)
+E               subprocess.CalledProcessError: Command '['g++', '-std=c++17', '-shared', '-fPIC', '-O2', '-fno-fast-math', '-I/data/nishant/Nishant/Prashant/Project/venv_kvcache/lib/python3.10/site-packages/torch/include', '-I/usr/include/python3.10', '/data/nishant/Nishant/Prashant/Project/kv_cache/experiments/native_cpu_state.cpp', '-o', '/data/nishant/tieredkv_external/cpu_state_de313263222302ee/tieredkv_cpu_state_v1.pending.so']' returned non-zero exit status 1.
+
+/usr/lib/python3.10/subprocess.py:526: CalledProcessError
+________ test_rejects_entire_batch_before_mutating_first_layer[version] ________
+
+fault = 'version'
+
+    @pytest.mark.parametrize('fault',['negative','duplicate','range','count','dtype','strided','partition','overlap','readonly','counts_geometry','alias_command','misalignment','version'])
+    def test_rejects_entire_batch_before_mutating_first_layer(fault):
+        s=fixture();victims,counts=packed([[0],[2]])
+        if fault=='negative':victims[1,0]=-1
+        elif fault=='duplicate':victims,counts=packed([[0],[2,2]])
+        elif fault=='range':victims[1,0]=3
+        elif fault=='count':counts[1]=2
+        elif fault=='dtype':victims=victims.astype(np.int64)
+        elif fault=='strided':victims=np.array([[0,0],[2,2]],np.int32)[:,::2]
+        elif fault=='partition':s.owners['free'][1,0]=4
+        elif fault=='overlap':s.owners['resident']=s.owners['shadow']
+        elif fault=='readonly':s.owners['hot'].flags.writeable=False
+        elif fault=='counts_geometry':counts=np.ones(1,np.int32)
+        elif fault=='alias_command':victims=s.owners['slots'][:,:1]
+        elif fault=='misalignment':victims=np.ndarray((2,1),dtype=np.int32,buffer=bytearray(9),offset=1);victims[:]=0
+        else:s.owners['version'][1]=np.iinfo(np.int64).max
+        before={k:a.copy() for k,a in s.owners.items()};epoch=s.epoch
+>       with pytest.raises((ValueError,TypeError)):s.demote(victims,counts)
+
+tests/test_cpu_state.py:95: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+experiments/cpu_state.py:62: in demote
+    result=kernel().demote(self.owners,victims,counts,inclusive);self.epoch+=1
+experiments/cpu_state.py:20: in kernel
+    subprocess.run(['g++','-std=c++17','-shared','-fPIC','-O2','-fno-fast-math','-I'+str(Path(torch.__file__).parent/'include'),'-I'+sysconfig.get_path('include'),str(source),'-o',str(temporary)],check=True,capture_output=True,text=True)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+input = None, capture_output = True, timeout = None, check = True
+popenargs = (['g++', '-std=c++17', '-shared', '-fPIC', '-O2', '-fno-fast-math', ...],)
+kwargs = {'text': True, 'stdout': -1, 'stderr': -1}
+
+    def run(*popenargs,
+            input=None, capture_output=False, timeout=None, check=False, **kwargs):
+        """Run command with arguments and return a CompletedProcess instance.
+    
+        The returned instance will have attributes args, returncode, stdout and
+        stderr. By default, stdout and stderr are not captured, and those attributes
+        will be None. Pass stdout=PIPE and/or stderr=PIPE in order to capture them,
+        or pass capture_output=True to capture both.
+    
+        If check is True and the exit code was non-zero, it raises a
+        CalledProcessError. The CalledProcessError object will have the return code
+        in the returncode attribute, and output & stderr attributes if those streams
+        were captured.
+    
+        If timeout is given, and the process takes too long, a TimeoutExpired
+        exception will be raised.
+    
+        There is an optional argument "input", allowing you to
+        pass bytes or a string to the subprocess's stdin.  If you use this argument
+        you may not also use the Popen constructor's "stdin" argument, as
+        it will be used internally.
+    
+        By default, all communication is in bytes, and therefore any "input" should
+        be bytes, and the stdout and stderr will be bytes. If in text mode, any
+        "input" should be a string, and stdout and stderr will be strings decoded
+        according to locale encoding, or by "encoding" if set. Text mode is
+        triggered by setting any of text, encoding, errors or universal_newlines.
+    
+        The other arguments are the same as for the Popen constructor.
+        """
+        if input is not None:
+            if kwargs.get('stdin') is not None:
+                raise ValueError('stdin and input arguments may not both be used.')
+            kwargs['stdin'] = PIPE
+    
+        if capture_output:
+            if kwargs.get('stdout') is not None or kwargs.get('stderr') is not None:
+                raise ValueError('stdout and stderr arguments may not be used '
+                                 'with capture_output.')
+            kwargs['stdout'] = PIPE
+            kwargs['stderr'] = PIPE
+    
+        with Popen(*popenargs, **kwargs) as process:
+            try:
+                stdout, stderr = process.communicate(input, timeout=timeout)
+            except TimeoutExpired as exc:
+                process.kill()
+                if _mswindows:
+                    # Windows accumulates the output in a single blocking
+                    # read() call run on child threads, with the timeout
+                    # being done in a join() on those threads.  communicate()
+                    # _after_ kill() is required to collect that and add it
+                    # to the exception.
+                    exc.stdout, exc.stderr = process.communicate()
+                else:
+                    # POSIX _communicate already populated the output so
+                    # far into the TimeoutExpired exception.
+                    process.wait()
+                raise
+            except:  # Including KeyboardInterrupt, communicate handled that.
+                process.kill()
+                # We don't call process.wait() as .__exit__ does that for us.
+                raise
+            retcode = process.poll()
+            if check and retcode:
+>               raise CalledProcessError(retcode, process.args,
+                                         output=stdout, stderr=stderr)
+E               subprocess.CalledProcessError: Command '['g++', '-std=c++17', '-shared', '-fPIC', '-O2', '-fno-fast-math', '-I/data/nishant/Nishant/Prashant/Project/venv_kvcache/lib/python3.10/site-packages/torch/include', '-I/usr/include/python3.10', '/data/nishant/Nishant/Prashant/Project/kv_cache/experiments/native_cpu_state.cpp', '-o', '/data/nishant/tieredkv_external/cpu_state_de313263222302ee/tieredkv_cpu_state_v1.pending.so']' returned non-zero exit status 1.
+
+/usr/lib/python3.10/subprocess.py:526: CalledProcessError
+_________ test_phase_capacity_and_last_layer_errors_are_atomic[append] _________
+
+method = 'append'
+
+    @pytest.mark.parametrize('method',['append','promote','reclaim','overflow'])
+    def test_phase_capacity_and_last_layer_errors_are_atomic(method):
+        s=fixture();before={k:a.copy() for k,a in s.owners.items()}
+        with pytest.raises(ValueError):
+>           if method=='append':s.append_hot(*packed([[],list(range(6))],dtype=np.int64))
+
+tests/test_cpu_state.py:102: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+experiments/cpu_state.py:76: in append_hot
+    kernel().append_hot(self.owners,positions,counts);self.epoch+=1
+experiments/cpu_state.py:20: in kernel
+    subprocess.run(['g++','-std=c++17','-shared','-fPIC','-O2','-fno-fast-math','-I'+str(Path(torch.__file__).parent/'include'),'-I'+sysconfig.get_path('include'),str(source),'-o',str(temporary)],check=True,capture_output=True,text=True)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+input = None, capture_output = True, timeout = None, check = True
+popenargs = (['g++', '-std=c++17', '-shared', '-fPIC', '-O2', '-fno-fast-math', ...],)
+kwargs = {'text': True, 'stdout': -1, 'stderr': -1}
+
+    def run(*popenargs,
+            input=None, capture_output=False, timeout=None, check=False, **kwargs):
+        """Run command with arguments and return a CompletedProcess instance.
+    
+        The returned instance will have attributes args, returncode, stdout and
+        stderr. By default, stdout and stderr are not captured, and those attributes
+        will be None. Pass stdout=PIPE and/or stderr=PIPE in order to capture them,
+        or pass capture_output=True to capture both.
+    
+        If check is True and the exit code was non-zero, it raises a
+        CalledProcessError. The CalledProcessError object will have the return code
+        in the returncode attribute, and output & stderr attributes if those streams
+        were captured.
+    
+        If timeout is given, and the process takes too long, a TimeoutExpired
+        exception will be raised.
+    
+        There is an optional argument "input", allowing you to
+        pass bytes or a string to the subprocess's stdin.  If you use this argument
+        you may not also use the Popen constructor's "stdin" argument, as
+        it will be used internally.
+    
+        By default, all communication is in bytes, and therefore any "input" should
+        be bytes, and the stdout and stderr will be bytes. If in text mode, any
+        "input" should be a string, and stdout and stderr will be strings decoded
+        according to locale encoding, or by "encoding" if set. Text mode is
+        triggered by setting any of text, encoding, errors or universal_newlines.
+    
+        The other arguments are the same as for the Popen constructor.
+        """
+        if input is not None:
+            if kwargs.get('stdin') is not None:
+                raise ValueError('stdin and input arguments may not both be used.')
+            kwargs['stdin'] = PIPE
+    
+        if capture_output:
+            if kwargs.get('stdout') is not None or kwargs.get('stderr') is not None:
+                raise ValueError('stdout and stderr arguments may not be used '
+                                 'with capture_output.')
+            kwargs['stdout'] = PIPE
+            kwargs['stderr'] = PIPE
+    
+        with Popen(*popenargs, **kwargs) as process:
+            try:
+                stdout, stderr = process.communicate(input, timeout=timeout)
+            except TimeoutExpired as exc:
+                process.kill()
+                if _mswindows:
+                    # Windows accumulates the output in a single blocking
+                    # read() call run on child threads, with the timeout
+                    # being done in a join() on those threads.  communicate()
+                    # _after_ kill() is required to collect that and add it
+                    # to the exception.
+                    exc.stdout, exc.stderr = process.communicate()
+                else:
+                    # POSIX _communicate already populated the output so
+                    # far into the TimeoutExpired exception.
+                    process.wait()
+                raise
+            except:  # Including KeyboardInterrupt, communicate handled that.
+                process.kill()
+                # We don't call process.wait() as .__exit__ does that for us.
+                raise
+            retcode = process.poll()
+            if check and retcode:
+>               raise CalledProcessError(retcode, process.args,
+                                         output=stdout, stderr=stderr)
+E               subprocess.CalledProcessError: Command '['g++', '-std=c++17', '-shared', '-fPIC', '-O2', '-fno-fast-math', '-I/data/nishant/Nishant/Prashant/Project/venv_kvcache/lib/python3.10/site-packages/torch/include', '-I/usr/include/python3.10', '/data/nishant/Nishant/Prashant/Project/kv_cache/experiments/native_cpu_state.cpp', '-o', '/data/nishant/tieredkv_external/cpu_state_de313263222302ee/tieredkv_cpu_state_v1.pending.so']' returned non-zero exit status 1.
+
+/usr/lib/python3.10/subprocess.py:526: CalledProcessError
+________ test_phase_capacity_and_last_layer_errors_are_atomic[promote] _________
+
+method = 'promote'
+
+    @pytest.mark.parametrize('method',['append','promote','reclaim','overflow'])
+    def test_phase_capacity_and_last_layer_errors_are_atomic(method):
+        s=fixture();before={k:a.copy() for k,a in s.owners.items()}
+        with pytest.raises(ValueError):
+            if method=='append':s.append_hot(*packed([[],list(range(6))],dtype=np.int64))
+>           elif method=='promote':s.promote(*packed([[],[0]]))
+
+tests/test_cpu_state.py:103: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+experiments/cpu_state.py:67: in promote
+    result=kernel().promote(self.owners,rows,counts,inclusive,floor);self.epoch+=1
+experiments/cpu_state.py:20: in kernel
+    subprocess.run(['g++','-std=c++17','-shared','-fPIC','-O2','-fno-fast-math','-I'+str(Path(torch.__file__).parent/'include'),'-I'+sysconfig.get_path('include'),str(source),'-o',str(temporary)],check=True,capture_output=True,text=True)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+input = None, capture_output = True, timeout = None, check = True
+popenargs = (['g++', '-std=c++17', '-shared', '-fPIC', '-O2', '-fno-fast-math', ...],)
+kwargs = {'text': True, 'stdout': -1, 'stderr': -1}
+
+    def run(*popenargs,
+            input=None, capture_output=False, timeout=None, check=False, **kwargs):
+        """Run command with arguments and return a CompletedProcess instance.
+    
+        The returned instance will have attributes args, returncode, stdout and
+        stderr. By default, stdout and stderr are not captured, and those attributes
+        will be None. Pass stdout=PIPE and/or stderr=PIPE in order to capture them,
+        or pass capture_output=True to capture both.
+    
+        If check is True and the exit code was non-zero, it raises a
+        CalledProcessError. The CalledProcessError object will have the return code
+        in the returncode attribute, and output & stderr attributes if those streams
+        were captured.
+    
+        If timeout is given, and the process takes too long, a TimeoutExpired
+        exception will be raised.
+    
+        There is an optional argument "input", allowing you to
+        pass bytes or a string to the subprocess's stdin.  If you use this argument
+        you may not also use the Popen constructor's "stdin" argument, as
+        it will be used internally.
+    
+        By default, all communication is in bytes, and therefore any "input" should
+        be bytes, and the stdout and stderr will be bytes. If in text mode, any
+        "input" should be a string, and stdout and stderr will be strings decoded
+        according to locale encoding, or by "encoding" if set. Text mode is
+        triggered by setting any of text, encoding, errors or universal_newlines.
+    
+        The other arguments are the same as for the Popen constructor.
+        """
+        if input is not None:
+            if kwargs.get('stdin') is not None:
+                raise ValueError('stdin and input arguments may not both be used.')
+            kwargs['stdin'] = PIPE
+    
+        if capture_output:
+            if kwargs.get('stdout') is not None or kwargs.get('stderr') is not None:
+                raise ValueError('stdout and stderr arguments may not be used '
+                                 'with capture_output.')
+            kwargs['stdout'] = PIPE
+            kwargs['stderr'] = PIPE
+    
+        with Popen(*popenargs, **kwargs) as process:
+            try:
+                stdout, stderr = process.communicate(input, timeout=timeout)
+            except TimeoutExpired as exc:
+                process.kill()
+                if _mswindows:
+                    # Windows accumulates the output in a single blocking
+                    # read() call run on child threads, with the timeout
+                    # being done in a join() on those threads.  communicate()
+                    # _after_ kill() is required to collect that and add it
+                    # to the exception.
+                    exc.stdout, exc.stderr = process.communicate()
+                else:
+                    # POSIX _communicate already populated the output so
+                    # far into the TimeoutExpired exception.
+                    process.wait()
+                raise
+            except:  # Including KeyboardInterrupt, communicate handled that.
+                process.kill()
+                # We don't call process.wait() as .__exit__ does that for us.
+                raise
+            retcode = process.poll()
+            if check and retcode:
+>               raise CalledProcessError(retcode, process.args,
+                                         output=stdout, stderr=stderr)
+E               subprocess.CalledProcessError: Command '['g++', '-std=c++17', '-shared', '-fPIC', '-O2', '-fno-fast-math', '-I/data/nishant/Nishant/Prashant/Project/venv_kvcache/lib/python3.10/site-packages/torch/include', '-I/usr/include/python3.10', '/data/nishant/Nishant/Prashant/Project/kv_cache/experiments/native_cpu_state.cpp', '-o', '/data/nishant/tieredkv_external/cpu_state_de313263222302ee/tieredkv_cpu_state_v1.pending.so']' returned non-zero exit status 1.
+
+/usr/lib/python3.10/subprocess.py:526: CalledProcessError
+________ test_phase_capacity_and_last_layer_errors_are_atomic[reclaim] _________
+
+method = 'reclaim'
+
+    @pytest.mark.parametrize('method',['append','promote','reclaim','overflow'])
+    def test_phase_capacity_and_last_layer_errors_are_atomic(method):
+        s=fixture();before={k:a.copy() for k,a in s.owners.items()}
+        with pytest.raises(ValueError):
+            if method=='append':s.append_hot(*packed([[],list(range(6))],dtype=np.int64))
+            elif method=='promote':s.promote(*packed([[],[0]]))
+>           elif method=='reclaim':s.reclaim(*packed([[0],[2]]))
+            else:
+
+tests/test_cpu_state.py:104: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+experiments/cpu_state.py:74: in reclaim
+    kernel().reclaim(self.owners,keeps,counts);self.epoch+=1
+experiments/cpu_state.py:20: in kernel
+    subprocess.run(['g++','-std=c++17','-shared','-fPIC','-O2','-fno-fast-math','-I'+str(Path(torch.__file__).parent/'include'),'-I'+sysconfig.get_path('include'),str(source),'-o',str(temporary)],check=True,capture_output=True,text=True)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+input = None, capture_output = True, timeout = None, check = True
+popenargs = (['g++', '-std=c++17', '-shared', '-fPIC', '-O2', '-fno-fast-math', ...],)
+kwargs = {'text': True, 'stdout': -1, 'stderr': -1}
+
+    def run(*popenargs,
+            input=None, capture_output=False, timeout=None, check=False, **kwargs):
+        """Run command with arguments and return a CompletedProcess instance.
+    
+        The returned instance will have attributes args, returncode, stdout and
+        stderr. By default, stdout and stderr are not captured, and those attributes
+        will be None. Pass stdout=PIPE and/or stderr=PIPE in order to capture them,
+        or pass capture_output=True to capture both.
+    
+        If check is True and the exit code was non-zero, it raises a
+        CalledProcessError. The CalledProcessError object will have the return code
+        in the returncode attribute, and output & stderr attributes if those streams
+        were captured.
+    
+        If timeout is given, and the process takes too long, a TimeoutExpired
+        exception will be raised.
+    
+        There is an optional argument "input", allowing you to
+        pass bytes or a string to the subprocess's stdin.  If you use this argument
+        you may not also use the Popen constructor's "stdin" argument, as
+        it will be used internally.
+    
+        By default, all communication is in bytes, and therefore any "input" should
+        be bytes, and the stdout and stderr will be bytes. If in text mode, any
+        "input" should be a string, and stdout and stderr will be strings decoded
+        according to locale encoding, or by "encoding" if set. Text mode is
+        triggered by setting any of text, encoding, errors or universal_newlines.
+    
+        The other arguments are the same as for the Popen constructor.
+        """
+        if input is not None:
+            if kwargs.get('stdin') is not None:
+                raise ValueError('stdin and input arguments may not both be used.')
+            kwargs['stdin'] = PIPE
+    
+        if capture_output:
+            if kwargs.get('stdout') is not None or kwargs.get('stderr') is not None:
+                raise ValueError('stdout and stderr arguments may not be used '
+                                 'with capture_output.')
+            kwargs['stdout'] = PIPE
+            kwargs['stderr'] = PIPE
+    
+        with Popen(*popenargs, **kwargs) as process:
+            try:
+                stdout, stderr = process.communicate(input, timeout=timeout)
+            except TimeoutExpired as exc:
+                process.kill()
+                if _mswindows:
+                    # Windows accumulates the output in a single blocking
+                    # read() call run on child threads, with the timeout
+                    # being done in a join() on those threads.  communicate()
+                    # _after_ kill() is required to collect that and add it
+                    # to the exception.
+                    exc.stdout, exc.stderr = process.communicate()
+                else:
+                    # POSIX _communicate already populated the output so
+                    # far into the TimeoutExpired exception.
+                    process.wait()
+                raise
+            except:  # Including KeyboardInterrupt, communicate handled that.
+                process.kill()
+                # We don't call process.wait() as .__exit__ does that for us.
+                raise
+            retcode = process.poll()
+            if check and retcode:
+>               raise CalledProcessError(retcode, process.args,
+                                         output=stdout, stderr=stderr)
+E               subprocess.CalledProcessError: Command '['g++', '-std=c++17', '-shared', '-fPIC', '-O2', '-fno-fast-math', '-I/data/nishant/Nishant/Prashant/Project/venv_kvcache/lib/python3.10/site-packages/torch/include', '-I/usr/include/python3.10', '/data/nishant/Nishant/Prashant/Project/kv_cache/experiments/native_cpu_state.cpp', '-o', '/data/nishant/tieredkv_external/cpu_state_de313263222302ee/tieredkv_cpu_state_v1.pending.so']' returned non-zero exit status 1.
+
+/usr/lib/python3.10/subprocess.py:526: CalledProcessError
+________ test_phase_capacity_and_last_layer_errors_are_atomic[overflow] ________
+
+method = 'overflow'
+
+    @pytest.mark.parametrize('method',['append','promote','reclaim','overflow'])
+    def test_phase_capacity_and_last_layer_errors_are_atomic(method):
+        s=fixture();before={k:a.copy() for k,a in s.owners.items()}
+        with pytest.raises(ValueError):
+            if method=='append':s.append_hot(*packed([[],list(range(6))],dtype=np.int64))
+            elif method=='promote':s.promote(*packed([[],[0]]))
+            elif method=='reclaim':s.reclaim(*packed([[0],[2]]))
+            else:
+                # Exhaust the second layer's free space with legitimate cold rows.
+                s.load(1,[10,20,30],list(range(7)),[False]*3,[False]*7,[False]*7,np.zeros(7,np.float32),list(range(7)),[])
+                before={k:a.copy() for k,a in s.owners.items()}
+>               s.demote(*packed([[0],[2]]))
+
+tests/test_cpu_state.py:109: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+experiments/cpu_state.py:62: in demote
+    result=kernel().demote(self.owners,victims,counts,inclusive);self.epoch+=1
+experiments/cpu_state.py:20: in kernel
+    subprocess.run(['g++','-std=c++17','-shared','-fPIC','-O2','-fno-fast-math','-I'+str(Path(torch.__file__).parent/'include'),'-I'+sysconfig.get_path('include'),str(source),'-o',str(temporary)],check=True,capture_output=True,text=True)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+input = None, capture_output = True, timeout = None, check = True
+popenargs = (['g++', '-std=c++17', '-shared', '-fPIC', '-O2', '-fno-fast-math', ...],)
+kwargs = {'text': True, 'stdout': -1, 'stderr': -1}
+
+    def run(*popenargs,
+            input=None, capture_output=False, timeout=None, check=False, **kwargs):
+        """Run command with arguments and return a CompletedProcess instance.
+    
+        The returned instance will have attributes args, returncode, stdout and
+        stderr. By default, stdout and stderr are not captured, and those attributes
+        will be None. Pass stdout=PIPE and/or stderr=PIPE in order to capture them,
+        or pass capture_output=True to capture both.
+    
+        If check is True and the exit code was non-zero, it raises a
+        CalledProcessError. The CalledProcessError object will have the return code
+        in the returncode attribute, and output & stderr attributes if those streams
+        were captured.
+    
+        If timeout is given, and the process takes too long, a TimeoutExpired
+        exception will be raised.
+    
+        There is an optional argument "input", allowing you to
+        pass bytes or a string to the subprocess's stdin.  If you use this argument
+        you may not also use the Popen constructor's "stdin" argument, as
+        it will be used internally.
+    
+        By default, all communication is in bytes, and therefore any "input" should
+        be bytes, and the stdout and stderr will be bytes. If in text mode, any
+        "input" should be a string, and stdout and stderr will be strings decoded
+        according to locale encoding, or by "encoding" if set. Text mode is
+        triggered by setting any of text, encoding, errors or universal_newlines.
+    
+        The other arguments are the same as for the Popen constructor.
+        """
+        if input is not None:
+            if kwargs.get('stdin') is not None:
+                raise ValueError('stdin and input arguments may not both be used.')
+            kwargs['stdin'] = PIPE
+    
+        if capture_output:
+            if kwargs.get('stdout') is not None or kwargs.get('stderr') is not None:
+                raise ValueError('stdout and stderr arguments may not be used '
+                                 'with capture_output.')
+            kwargs['stdout'] = PIPE
+            kwargs['stderr'] = PIPE
+    
+        with Popen(*popenargs, **kwargs) as process:
+            try:
+                stdout, stderr = process.communicate(input, timeout=timeout)
+            except TimeoutExpired as exc:
+                process.kill()
+                if _mswindows:
+                    # Windows accumulates the output in a single blocking
+                    # read() call run on child threads, with the timeout
+                    # being done in a join() on those threads.  communicate()
+                    # _after_ kill() is required to collect that and add it
+                    # to the exception.
+                    exc.stdout, exc.stderr = process.communicate()
+                else:
+                    # POSIX _communicate already populated the output so
+                    # far into the TimeoutExpired exception.
+                    process.wait()
+                raise
+            except:  # Including KeyboardInterrupt, communicate handled that.
+                process.kill()
+                # We don't call process.wait() as .__exit__ does that for us.
+                raise
+            retcode = process.poll()
+            if check and retcode:
+>               raise CalledProcessError(retcode, process.args,
+                                         output=stdout, stderr=stderr)
+E               subprocess.CalledProcessError: Command '['g++', '-std=c++17', '-shared', '-fPIC', '-O2', '-fno-fast-math', '-I/data/nishant/Nishant/Prashant/Project/venv_kvcache/lib/python3.10/site-packages/torch/include', '-I/usr/include/python3.10', '/data/nishant/Nishant/Prashant/Project/kv_cache/experiments/native_cpu_state.cpp', '-o', '/data/nishant/tieredkv_external/cpu_state_de313263222302ee/tieredkv_cpu_state_v1.pending.so']' returned non-zero exit status 1.
+
+/usr/lib/python3.10/subprocess.py:526: CalledProcessError
+_____________ test_padding_and_unrelated_streak_bits_are_untouched _____________
+
+    def test_padding_and_unrelated_streak_bits_are_untouched():
+        s=fixture(1);s.owners['hot'][0,3:]=-555;s.owners['grace'][0,3:]=True
+        s.owners['cold'][0,4:]=-333;s.owners['streak'][0,1]=np.array([0x7fa01234],np.uint32).view(np.float32)[0]
+        expected=s.owners['streak'][0,1:2].view(np.uint32).copy()
+>       s.demote(*packed([[0,2]]))
+
+tests/test_cpu_state.py:117: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+experiments/cpu_state.py:62: in demote
+    result=kernel().demote(self.owners,victims,counts,inclusive);self.epoch+=1
+experiments/cpu_state.py:20: in kernel
+    subprocess.run(['g++','-std=c++17','-shared','-fPIC','-O2','-fno-fast-math','-I'+str(Path(torch.__file__).parent/'include'),'-I'+sysconfig.get_path('include'),str(source),'-o',str(temporary)],check=True,capture_output=True,text=True)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+input = None, capture_output = True, timeout = None, check = True
+popenargs = (['g++', '-std=c++17', '-shared', '-fPIC', '-O2', '-fno-fast-math', ...],)
+kwargs = {'text': True, 'stdout': -1, 'stderr': -1}
+
+    def run(*popenargs,
+            input=None, capture_output=False, timeout=None, check=False, **kwargs):
+        """Run command with arguments and return a CompletedProcess instance.
+    
+        The returned instance will have attributes args, returncode, stdout and
+        stderr. By default, stdout and stderr are not captured, and those attributes
+        will be None. Pass stdout=PIPE and/or stderr=PIPE in order to capture them,
+        or pass capture_output=True to capture both.
+    
+        If check is True and the exit code was non-zero, it raises a
+        CalledProcessError. The CalledProcessError object will have the return code
+        in the returncode attribute, and output & stderr attributes if those streams
+        were captured.
+    
+        If timeout is given, and the process takes too long, a TimeoutExpired
+        exception will be raised.
+    
+        There is an optional argument "input", allowing you to
+        pass bytes or a string to the subprocess's stdin.  If you use this argument
+        you may not also use the Popen constructor's "stdin" argument, as
+        it will be used internally.
+    
+        By default, all communication is in bytes, and therefore any "input" should
+        be bytes, and the stdout and stderr will be bytes. If in text mode, any
+        "input" should be a string, and stdout and stderr will be strings decoded
+        according to locale encoding, or by "encoding" if set. Text mode is
+        triggered by setting any of text, encoding, errors or universal_newlines.
+    
+        The other arguments are the same as for the Popen constructor.
+        """
+        if input is not None:
+            if kwargs.get('stdin') is not None:
+                raise ValueError('stdin and input arguments may not both be used.')
+            kwargs['stdin'] = PIPE
+    
+        if capture_output:
+            if kwargs.get('stdout') is not None or kwargs.get('stderr') is not None:
+                raise ValueError('stdout and stderr arguments may not be used '
+                                 'with capture_output.')
+            kwargs['stdout'] = PIPE
+            kwargs['stderr'] = PIPE
+    
+        with Popen(*popenargs, **kwargs) as process:
+            try:
+                stdout, stderr = process.communicate(input, timeout=timeout)
+            except TimeoutExpired as exc:
+                process.kill()
+                if _mswindows:
+                    # Windows accumulates the output in a single blocking
+                    # read() call run on child threads, with the timeout
+                    # being done in a join() on those threads.  communicate()
+                    # _after_ kill() is required to collect that and add it
+                    # to the exception.
+                    exc.stdout, exc.stderr = process.communicate()
+                else:
+                    # POSIX _communicate already populated the output so
+                    # far into the TimeoutExpired exception.
+                    process.wait()
+                raise
+            except:  # Including KeyboardInterrupt, communicate handled that.
+                process.kill()
+                # We don't call process.wait() as .__exit__ does that for us.
+                raise
+            retcode = process.poll()
+            if check and retcode:
+>               raise CalledProcessError(retcode, process.args,
+                                         output=stdout, stderr=stderr)
+E               subprocess.CalledProcessError: Command '['g++', '-std=c++17', '-shared', '-fPIC', '-O2', '-fno-fast-math', '-I/data/nishant/Nishant/Prashant/Project/venv_kvcache/lib/python3.10/site-packages/torch/include', '-I/usr/include/python3.10', '/data/nishant/Nishant/Prashant/Project/kv_cache/experiments/native_cpu_state.cpp', '-o', '/data/nishant/tieredkv_external/cpu_state_de313263222302ee/tieredkv_cpu_state_v1.pending.so']' returned non-zero exit status 1.
+
+/usr/lib/python3.10/subprocess.py:526: CalledProcessError
+_______________ test_declared_cpu_owner_bytes_and_logical_views ________________
+
+    def test_declared_cpu_owner_bytes_and_logical_views():
+        s=CpuStateArena(32,1055,1154)
+>       assert s.owned_bytes==32*(1055*9+1154*23+20)
+E       assert 1116896 == (32 * (((1055 * 9) + (1154 * 23)) + 20))
+E        +  where 1116896 = <cpu_state.CpuStateArena object at 0x787a60b27400>.owned_bytes
+
+tests/test_cpu_state.py:125: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_cpu_state.py::test_whole_demotion_retains_owners_and_emits_complete_commands
+FAILED tests/test_cpu_state.py::test_duplicate_cold_positions_restore_last_shadow_only
+FAILED tests/test_cpu_state.py::test_exclusive_demotion_ignores_stored_shadow_flags
+FAILED tests/test_cpu_state.py::test_reclaim_reorders_without_alias_corruption_and_preserves_f32_bits
+FAILED tests/test_cpu_state.py::test_promotions_preserve_order_grace_slots_and_live_floor[True]
+FAILED tests/test_cpu_state.py::test_promotions_preserve_order_grace_slots_and_live_floor[False]
+FAILED tests/test_cpu_state.py::test_rejects_entire_batch_before_mutating_first_layer[negative]
+FAILED tests/test_cpu_state.py::test_rejects_entire_batch_before_mutating_first_layer[duplicate]
+FAILED tests/test_cpu_state.py::test_rejects_entire_batch_before_mutating_first_layer[range]
+FAILED tests/test_cpu_state.py::test_rejects_entire_batch_before_mutating_first_layer[count]
+FAILED tests/test_cpu_state.py::test_rejects_entire_batch_before_mutating_first_layer[dtype]
+FAILED tests/test_cpu_state.py::test_rejects_entire_batch_before_mutating_first_layer[strided]
+FAILED tests/test_cpu_state.py::test_rejects_entire_batch_before_mutating_first_layer[partition]
+FAILED tests/test_cpu_state.py::test_rejects_entire_batch_before_mutating_first_layer[overlap]
+FAILED tests/test_cpu_state.py::test_rejects_entire_batch_before_mutating_first_layer[readonly]
+FAILED tests/test_cpu_state.py::test_rejects_entire_batch_before_mutating_first_layer[counts_geometry]
+FAILED tests/test_cpu_state.py::test_rejects_entire_batch_before_mutating_first_layer[alias_command]
+FAILED tests/test_cpu_state.py::test_rejects_entire_batch_before_mutating_first_layer[misalignment]
+FAILED tests/test_cpu_state.py::test_rejects_entire_batch_before_mutating_first_layer[version]
+FAILED tests/test_cpu_state.py::test_phase_capacity_and_last_layer_errors_are_atomic[append]
+FAILED tests/test_cpu_state.py::test_phase_capacity_and_last_layer_errors_are_atomic[promote]
+FAILED tests/test_cpu_state.py::test_phase_capacity_and_last_layer_errors_are_atomic[reclaim]
+FAILED tests/test_cpu_state.py::test_phase_capacity_and_last_layer_errors_are_atomic[overflow]
+FAILED tests/test_cpu_state.py::test_padding_and_unrelated_streak_bits_are_untouched
+FAILED tests/test_cpu_state.py::test_declared_cpu_owner_bytes_and_logical_views
+25 failed in 44.19s

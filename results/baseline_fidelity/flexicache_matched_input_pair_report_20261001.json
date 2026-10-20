@@ -1,0 +1,78 @@
+{
+  "passed": true,
+  "scope": "one reproducible adapted feasibility request; resources unmatched",
+  "baseline": "FlexiCache L40S port with recorded runtime and prefill-launch adapters",
+  "identical_input_output_pools_and_payload": true,
+  "full_scheduler_trace_equal": false,
+  "nonempty_scheduled_allocation_trace_equal": true,
+  "input_tokens": 1440,
+  "input_token_sha256": "54e41e6b9f3ef83377ff4985916145521fc1eb1ebe33a985cb503d275c10a890",
+  "generated_tokens": 64,
+  "score": 10.0,
+  "resource_matched": false,
+  "reserved_tensor_pool_bytes": {
+    "gpu_kv_cache_pool": 24713478144,
+    "cpu_kv_cache_pool": 193273528320,
+    "minmax_key_cache": 5354029056
+  },
+  "submitted_kv_transfers": {
+    "d2h": {
+      "calls": 4,
+      "paired_kv_pages": 17856,
+      "payload_bytes": 146276352
+    },
+    "h2d": {
+      "calls": 3,
+      "paired_kv_pages": 5242,
+      "payload_bytes": 42942464
+    }
+  },
+  "scheduler_allocation_snapshots": {
+    "counts": [
+      67,
+      71
+    ],
+    "idle_poll_counts": [
+      3,
+      7
+    ],
+    "first": {
+      "scheduled_tokens": 1440,
+      "gpu_pages_in_use": 24064,
+      "cpu_pages_in_use": 18048,
+      "minmax_pages_in_use": 256,
+      "pending_gpu_release_pages": 0
+    },
+    "last": {
+      "scheduled_tokens": 1,
+      "gpu_pages_in_use": 18304,
+      "cpu_pages_in_use": 18048,
+      "minmax_pages_in_use": 256,
+      "pending_gpu_release_pages": 0
+    },
+    "max_sampled_pages": {
+      "gpu_pages_in_use": 24064,
+      "cpu_pages_in_use": 18048,
+      "minmax_pages_in_use": 256
+    },
+    "scope": "allocated block snapshots, not filled useful KV occupancy or continuous peaks"
+  },
+  "observed_whole_request_seconds": [
+    11.205216750502586,
+    1.9681695438921452
+  ],
+  "generation_peak_gpu_allocated_bytes": [
+    44770327552,
+    44770327552
+  ],
+  "process_peak_rss_bytes": [
+    279718195200,
+    279672360960
+  ],
+  "limitations": "Single short request; reserved pools, allocations and submitted payload are distinct. Launch adaptation is reference-checked, not bitwise compared with unsupported original launch. Timing includes observers/compilation; no quality, speed, energy, STT endurance or matched-resource claim.",
+  "raw_inputs": {
+    "results/baseline_fidelity/flexicache_matched_input_pilot_v3_20261001.json": "2d776ff9a40c19013daac9f6b7a464ff037fdd42770ae03ab66df4b21b1e6228",
+    "results/baseline_fidelity/flexicache_matched_input_pilot_repeat_v3_20261001.json": "e2c7887c5eaacc7ac95d9d30e18470b5e71ebd1bce1ac03885fdfa39b9aa5f8d"
+  },
+  "reporter_sha256": "43d4a0e2c43e705c5610ab668535e44b1a355388429cd6bbbb56cabf9cc2cc97"
+}

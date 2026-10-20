@@ -1,0 +1,67 @@
+{
+  "scope": "isolated CPU operations, not end-to-end latency",
+  "shape": {
+    "heads": 8,
+    "rows": 1536,
+    "dim": 128,
+    "append_rows": 32,
+    "reserved_rows": 2081,
+    "dtype": "bfloat16"
+  },
+  "cpu_threads": 256,
+  "torch": "2.5.1+cu124",
+  "python": "3.10.12",
+  "seed": 0,
+  "warmup_per_block": 20,
+  "blocks": 5,
+  "repetitions": {
+    "append": 1000,
+    "gather": 2000
+  },
+  "operations": {
+    "append_cat": "torch.cat((x,v),dim=1)",
+    "append_reserved_copy": "reserved[:,n:n+add,:].copy_(v)",
+    "gather_contiguous": "torch.index_select(x,1,idx)",
+    "gather_reserved_view": "torch.index_select(reserved[:,:n,:],1,idx)"
+  },
+  "contiguous": {
+    "x": true,
+    "active_reserved": false
+  },
+  "ms_per_call_blocks": {
+    "append_cat": [
+      0.6294718068093061,
+      0.6201749183237553,
+      0.6288228295743465,
+      0.6300806310027838,
+      0.6297359187155962
+    ],
+    "append_reserved_copy": [
+      0.008320098742842674,
+      0.007124908268451691,
+      0.00787486881017685,
+      0.007220787927508354,
+      0.008094308897852898
+    ],
+    "gather_contiguous": [
+      0.0034879790619015694,
+      0.0032752584666013718,
+      0.003295072354376316,
+      0.003303202800452709,
+      0.0033066226169466972
+    ],
+    "gather_reserved_view": [
+      0.0862486083060503,
+      0.08698417618870735,
+      0.08590182848274708,
+      0.08678551763296127,
+      0.08722404111176729
+    ]
+  },
+  "ms_per_call_median": {
+    "append_cat": 0.6294718068093061,
+    "append_reserved_copy": 0.00787486881017685,
+    "gather_contiguous": 0.003303202800452709,
+    "gather_reserved_view": 0.08678551763296127
+  }
+}

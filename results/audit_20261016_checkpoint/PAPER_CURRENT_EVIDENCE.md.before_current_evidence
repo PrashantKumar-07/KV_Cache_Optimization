@@ -1,0 +1,74 @@
+# Native state and buffer reuse in a CPU-backed KV cache
+
+Anonymous working manuscript — evidence freeze, 3 October 2026.
+This manuscript reports supported component outcomes and a negative baseline comparison. It is not a completed submission: independent headline reproduction, independent quality, generality and physical-device validation remain open.
+
+## Abstract
+
+We evaluate a BF16 KV-cache prototype with a CPU DRAM cold tier, native transfers, fixed native CPU state and pooled GPU metadata. Native state phases preserve the existing retention policy on tested trajectories. Allocating final shared visible/hot buffers during per-layer prefill reduces fresh-process prefill allocation by11.22% relative to the same CPU policy's global placement. A fixed16K prompt/50-step faithful SnapKV comparison nevertheless finds54.59 versus25.25ms/token, with worse p95. Component memory improvements therefore do not establish a joint quality/latency/resource win. We retain failed outcomes and distinguish CPU DRAM measurements from unmeasured physical STT behavior.
+
+## Implementation and measurement
+
+The prototype stores grouped-head BF16 cold KV in owned pinned CPU roots and uses native batched transfers. Canonical native CPU arrays own hot/cold positions, grace, shadow/resident flags, streaks and logical/free physical slot order. Fixed GPU owners hold score/age/timestamp planes. Early shared prefill places each layer into its final visible/hot root while current attention consumes the original full prompt KV; the global handoff fills future cold tails. Unsupported multi-token appends use the ordinary scoring/state fallback and return to the native single-token path on tested cases.
+
+Tests use a local Mistral-7B-Instruct model, BF16, one seed and an L40S GPU. Resource audits use fresh processes, constant-model storage subtraction, phase allocation peaks, owned pinned allocator blocks and explicit native CPU array roots. This measured scope excludes unowned host memory and driver allocations. Predictions, state, counters and native KV payload/calls are compared to frozen same-configuration controls. Tiny GPU tests additionally compare full logits and payload bits and inject a partial-prefill exception to verify cleanup. Full-model teacher replay verifies state and predicted tokens; it does not independently measure task quality.
+
+The paired latency study uses one fixed16K prompt,50 teacher-forced decode forwards, one warm-up per arm and three ABBA blocks. Each arm has300 measured forwards. Host-visible token synchronization and required policy work are charged. Twenty-five before/after GPU process observations check interference; these are not continuous utilization monitoring. Diagnostic resource observations and state hashes are outside measured step timing.
+
+## Results
+
+| Measurement | Frozen control/reference | Early shared CPU result | Interpretation |
+|---|---:|---:|---|
+| Fresh prefill peak | Same CPU policy18.6278GB |16.5376GB |11.22% lower; memory primary passes |
+| Strict decode GPU active | Same CPU policy |5.47% lower |Decode allocation guard passes |
+| Scoped active including owned pinned/CPU | Same CPU policy385.59MiB |378.60MiB |Within512MiB measured scope |
+| Median decode | Faithful SnapKV25.2536ms |54.5887ms |CPU2.162x slower; primary fails |
+| p95 decode | Faithful SnapKV25.4677ms |59.9360ms |CPU135.34% worse; guard fails |
+| Median TTFT | Faithful SnapKV2050.86ms |2209.39ms |CPU+7.73%;10% guard passes |
+| Prefill allocation versus faithful SnapKV |16.8068GB |16.5376GB |CPU1.60% lower |
+
+All501 local tests pass. Full-model4K/12 and16K/50 replay preserves tested predictions, cache state, counters and native transfers with32 early roots and no fallback. Tiny GPU tests cover7 full-logit/cache boundaries, real2/32-token append fallback, return to native operation and partial-failure cleanup.
+
+At ex-ante capacities CPUhot649/cold1982 and Snap prompt682, each arm initially owns341MiB of resident KV storage. CPU ownership remains341MiB; Snap grows341–366MiB over decode. Stored KV head counts differ8 versus32; model attention has32 heads in both arms. CPU forward width682 versus Snap683–732 stays within the pilot's1.075 ratio. Initial equality does not prove equal full allocation trajectories, equal useful retention, equivalent attention work, or exact resource matching throughout decode.
+
+A separate earlier configuration, hot991/cold1090, improved over ordinary CPU control58.76→54.12ms/token (7.89%,4.64ms saved), with scoped memory433.33MiB. Those results use different capacities and cannot substitute for the current faithful-baseline comparison.
+
+## Failure analysis and limitations
+
+Current paired model-forward medians are approximately24.79ms for CPU TieredKV and25.11ms for SnapKV. CPU required policy work adds approximately29.80ms/token. An exact instrumented replay attributes work across scoring, visibility, transfers and per-layer state updates. Cold-library initialization and resource observers contaminate aggregate profile totals; nested cumulative costs overlap. They rank engineering hypotheses and do not predict additive savings.
+
+The latency primary and p95 guard fail. The early-shared candidate remains a recorded component result; candidate expansion/adoption stops under the preregistered protocol. No favorable retry or consumed final-holdout tuning is permitted. Existing development parity cannot establish unseen task quality. Historical DirectCPU independent quality failed non-inferiority and is not a current-candidate quality result. Physical controller pages, amplification, energy/endurance, broader model/seed/concurrency results and fair multi-request FlexiCache/IceCache comparisons remain unproved.
+
+## New standalone payload phase
+
+A later bounded group8 GPU primitive combines kept/paid KV gathering, exact BF16 new-token conversion, F32 metadata movement and timestamp updates. Standalone checks preserve every tested payload/metadata bit, including65536BF16 patterns, and reject six malformed batches before mutation. The503-test suite passes. Three supplied-decision32-layer cases at hot649/991 save7.62–8.06ms with improved p95 in3ABBA blocks and120 measured calls per arm/case. CPU ownership, physical slot/conflict bookkeeping and actual host transfers are excluded in both arms. This is an advancement screen, not a model improvement or replacement of the failed paired baseline result. [Frozen stage proof](results/hardware/bulk_payload_phase_v1/verified_stage.json).
+
+## Integrated payload controller
+
+The later default-off integration retains canonical CPU planning and promotion copies, fuses payload/metadata updates, and queues exact paid KV through the existing native physical-slot transfer path. The512-test suite passes. Tiny full-logit/cache checks cover multi-token fallback and a failure after GPU execution queues a transfer; cleanup flushes that queue and releases pinned storage. Full-model4K/12 and16K/50 replay preserves predictions, state, counters and native bytes/calls; all50 long-replay steps use the bulk path. Scoped memory is402.47MiB, charging a conservative new CPU descriptor/index scratch bound; strict GPU decode allocation rises0.11%. Global-prefill allocation is unchanged. Same-control quiet3ABBA macro timing improves59.9197→53.6177ms/token (10.52%,6.302ms), p95 improves68.5729→59.5876ms and TTFT improves2298.666→2279.822ms. All300 measured forwards per arm reproduce frozen predictions/state/counters/native transfers and25 quiet observations pass. Mandatory8K/31.5K/recycling stress passes, including307 reclaimed slots. Free generation preserves700 steps across12 reused development documents/six tasks; exclusive/floor/write-aware boundary replay preserves another150 paired steps. All owned jobs are terminal; no faithful-baseline joint win is established. [Timing proof](results/hardware/bulk_payload_controller_v1/verified_cost.json). [Resource proof](results/hardware/bulk_payload_controller_v1/verified_resources.json).
+
+## Separate-process reproduction and next hypothesis
+
+A second fresh-process3ABBA study reproduces the component result:61.5176→56.0359ms/token (8.91%,5.4817ms saved), p95 improves72.2942→62.6380ms and TTFT improves2302.252→2294.976ms. Frozen predictions/state/counters/native transfers match throughout300 measured forwards per arm;25 quiet observations and cleanup pass. Both runs use the same code/model/prompt/teacher stream/seed and harness; this is separate-process reproduction, not a separate investigator or generality evidence. [Frozen proof](results/hardware/bulk_payload_reproduction_v1/verified_cost.json), [headline CSV](results/hardware/bulk_payload_reproduction_v1/headline_component.csv), [LaTeX table](results/hardware/bulk_payload_reproduction_v1/headline_component.tex), [figures/hashes](results/hardware/bulk_payload_reproduction_v1/figures/manifest.json).
+
+Across six paired ABBA blocks, a posthoc10000-resample paired-block percentile bootstrap gives a gain interval8.04–12.47% and saved-time interval4.88–7.73ms. These intervals summarize run/block variation for the fixed prompt; six blocks do not establish task-population generalization or an additional preregistered promotion gate. [Analysis and limits](results/hardware/bulk_payload_reproduction_v1/reproduction_summary.json).
+
+A warmed exact16K50 profile of the current controller excludes cold native initialization and resource observers from policy/score calls. Nested instrumented costs overlap and are not additive savings. A separate stationary final-state cold-visibility screen charges ranking, nativeH2D and visible composition at7.52ms per call. Three ABBA blocks measure120 calls per arm;144 current calls including warm-up transfer576MiB while preserving cache/visible bits and native CPU owners. Its zero-work comparator has no semantics and predicts no achievable gain. This screen only justifies a bounded next prototype. [Warmed profile](results/hardware/bulk_payload_profile_v1/verified_profile.json), [screen](results/hardware/visibility_stage_ceiling_v1/verified_screen.json).
+
+## Native cold-boundary follow-up
+
+An opt-in native cold-boundary implementation directly gathers F32 timestamp rows, preserves the original grouped ranking and selected physical row order, uses the same mapped nativeH2D payload transfer, and scatters cold tails in one GPU launch. Three stationary3ABBA cases at hot649/991, including ragged tied/NaN timestamps, save4.87–6.49ms with exact tested payload/selection/metadata/native transfer parity. Nondefault-stream lifetime and atomic preflight rejection pass. These are stage timings, not achieved model gains. [Stage proof](results/hardware/native_cold_boundary_v1/verified_stage.json).
+
+The518-test suite and integrated tiny full-logit/cache tests pass, including multi-token fallback. Full-model4K/12 and16K/50 preserve predictions/state/counters/native bytes/calls; all50 ordinary steps use native cold composition. Scoped memory is424.15MiB, charging conservative descriptor/index scratch bounds; strict GPU active allocation, reservation and global-prefill peak remain unchanged versus the bulk control. Failure after coldH2D submission cleans up owned pinned storage, events, hooks and leases. [Resource proof](results/hardware/cold_boundary_controller_v1/verified_resources.json).
+
+The preregistered same-bulk-control whole-model speed experiment has no measured outcome: its quiet guard found an unrelated GPU0 process before model load and aborted with zero rows. The attempt is preserved; other users' processes were untouched. Mandatory candidate stress awaits a valid primary speed result. No quality, faithful-baseline or production adoption claim follows from these tests.
+
+## Independent data availability
+
+A refreshed local document-group inventory verifies source hashes and exact casefold/whitespace-normalized exclusions against recorded prior selections and sample IDs. MultifieldQA has17 eligible groups, so the existing20-per-task100-document selector cannot run unchanged; NarrativeQA has0 eligible groups in the local LongBench source. This availability result is not evidence of statistical quality, semantic independence or model-training exclusion. No new selection/evaluation ran and the consumed holdout remains closed. [Verified inventory readiness](results/baseline_fidelity/unused_document_readiness_20261003.json).
+
+## Reproducibility and completion boundary
+
+Frozen resource evidence: [resource proof](results/hardware/early_shared_cpu_phase_v1/verified_resources.json), source archives and job metadata in the same directory. Frozen timing evidence: [timing proof](results/hardware/early_shared_cpu_phase_v1/verified_cost.json). Scientific exports: [CSV, PNG/PDF and hashes](results/hardware/early_shared_cpu_phase_v1/figures/manifest.json). Diagnostic evidence: [exact profile replay](results/hardware/cpu_phase_policy_profile_v1/verified_profile.json), [attribution](results/hardware/cpu_phase_policy_profile_v1/attribution.json). Earlier distinct configuration: [CPU phase checkpoint](results/hardware/cpu_phase_score_guard_v1/verified_status.json).
+
+These artifacts support behavior preservation and component memory reductions on measured cases, plus the negative faithful-baseline speed finding. They do not complete the full research goal. The current requirement ledger and original archived scope remain binding. A supported submission needs the required independent headline reproduction and remaining acceptance evidence, or explicit changes to the research requirements; this draft does not silently make those changes.

@@ -1,0 +1,88 @@
+{
+  "verified": true,
+  "geometries": {
+    "shared": {
+      "arms": {
+        "cached_native_reuse": {
+          "median_ms": 65.62725640833378,
+          "p95_ms": 69.65471627190709,
+          "ttft_ms": 2218.607989139855,
+          "prefill_gpu_peak_gb": 18.627831296,
+          "decode_gpu_peak_gb": 14.780363776,
+          "block_median_ms": [
+            65.70903491228819,
+            62.32531741261482,
+            62.72444594651461
+          ]
+        },
+        "exact_native_reuse": {
+          "median_ms": 64.68302011489868,
+          "p95_ms": 69.04303273186088,
+          "ttft_ms": 2320.372893474996,
+          "prefill_gpu_peak_gb": 18.627831296,
+          "decode_gpu_peak_gb": 14.780363776,
+          "block_median_ms": [
+            64.85036853700876,
+            62.21874803304672,
+            63.4609991684556
+          ]
+        }
+      },
+      "regression_guards": {
+        "median": true,
+        "p95": true,
+        "ttft": true,
+        "prefill_peak": true
+      },
+      "median_change_pct": -1.4387867863316472,
+      "ttft_change_pct": 4.586880820464145,
+      "advance_to_integrity": true
+    },
+    "default": {
+      "arms": {
+        "cached_native_reuse": {
+          "median_ms": 66.8480796739459,
+          "p95_ms": 73.18151108920574,
+          "ttft_ms": 2305.2932154387236,
+          "prefill_gpu_peak_gb": 18.627831296,
+          "decode_gpu_peak_gb": 14.789913088,
+          "block_median_ms": [
+            67.2770757228136,
+            66.40525534749031,
+            65.98637718707323
+          ]
+        },
+        "exact_native_reuse": {
+          "median_ms": 66.93051103502512,
+          "p95_ms": 73.06666634976864,
+          "ttft_ms": 2484.514902345836,
+          "prefill_gpu_peak_gb": 18.627831296,
+          "decode_gpu_peak_gb": 14.789913088,
+          "block_median_ms": [
+            66.83449912816286,
+            67.18892138451338,
+            66.10165908932686
+          ]
+        }
+      },
+      "regression_guards": {
+        "median": true,
+        "p95": true,
+        "ttft": true,
+        "prefill_peak": true
+      },
+      "median_change_pct": 0.12331148700348571,
+      "ttft_change_pct": 7.774355370798447,
+      "advance_to_integrity": true
+    }
+  },
+  "advance_to_mandatory_integrity": true,
+  "no_new_speed_claim": true,
+  "memory_primary_sha256": "a8e451cee0f2cd195a718c011ba1fb7c3549ed4ddf4b9f56c9803bc893f8f13d",
+  "evidence_sha256": {
+    "abba_shared.json": "9b11d499550df7b85b7b14ad49e8114d54883a8fc730b757788919e0f77fe745",
+    "abba_default.json": "ad487b5a8901fdc3975fea32abd7105fa78aef4dcf87aa351935b44a42d3dbf1"
+  },
+  "verifier_sha256": "86ff8d187e081372ea0bdab5126f4d426752d88eef28c5b09783467d859d4305",
+  "limitations": "Memory architecture regression check only; same teacher/state/legacy history and synchronization instrumentation. Exact allocation/free work changes request lifecycle; model serving throughput/concurrency/independent quality/full-active-resource/CLI gates remain. No model-wide10%memory/physical STT or new SnapKV superiority claim."
+}

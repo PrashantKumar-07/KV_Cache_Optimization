@@ -1,0 +1,148 @@
+{
+  "passed": true,
+  "runtime": {
+    "git_revision": "be7e700d84d46b47e32ba5b9870c8b71783b9e53",
+    "source_sha256": "6687ce54f24b1372f958c406b037f650e492d82951611d59f1bb76364c4b692c",
+    "packages": {
+      "torch": "2.5.1+cu124",
+      "transformers": "5.15.0",
+      "datasets": "2.19.2",
+      "numpy": "2.2.6",
+      "accelerate": "1.14.0",
+      "huggingface_hub": "1.27.0",
+      "rouge": "1.0.1"
+    }
+  },
+  "checks": [
+    {
+      "consumer": 0,
+      "case": "all_bf16_f32_bits_overlapping_gather_release_pressure",
+      "kept_rows": 64,
+      "old_hot_owners_expired": true,
+      "exact_payload_and_untouched_tail": true
+    },
+    {
+      "consumer": 0,
+      "case": "all_bf16_f32_bits_overlapping_gather_release_pressure",
+      "kept_rows": 32,
+      "old_hot_owners_expired": true,
+      "exact_payload_and_untouched_tail": true
+    },
+    {
+      "consumer": 0,
+      "case": "all_bf16_f32_bits_overlapping_gather_release_pressure",
+      "kept_rows": 5,
+      "old_hot_owners_expired": true,
+      "exact_payload_and_untouched_tail": true
+    },
+    {
+      "consumer": 0,
+      "case": "all_bf16_f32_bits_overlapping_gather_release_pressure",
+      "kept_rows": 0,
+      "old_hot_owners_expired": true,
+      "exact_payload_and_untouched_tail": true
+    },
+    {
+      "consumer": 0,
+      "case": "all_bf16_f32_bits_overlapping_gather_release_pressure",
+      "kept_rows": 1,
+      "old_hot_owners_expired": true,
+      "exact_payload_and_untouched_tail": true
+    },
+    {
+      "consumer": 0,
+      "case": "gpu_forward_restoration",
+      "exact_payload": true,
+      "balanced_lease": true,
+      "expected_old_model_owner_expiry": [
+        true,
+        true,
+        true,
+        true
+      ],
+      "hooks_removed": true
+    },
+    {
+      "consumer": 0,
+      "case": "gpu_partial_exception_restoration",
+      "exact_payload": true,
+      "balanced_lease": true,
+      "expected_old_model_owner_expiry": [
+        true,
+        true,
+        false,
+        false
+      ],
+      "hooks_removed": true
+    },
+    {
+      "consumer": 1,
+      "case": "all_bf16_f32_bits_overlapping_gather_release_pressure",
+      "kept_rows": 64,
+      "old_hot_owners_expired": true,
+      "exact_payload_and_untouched_tail": true
+    },
+    {
+      "consumer": 1,
+      "case": "all_bf16_f32_bits_overlapping_gather_release_pressure",
+      "kept_rows": 32,
+      "old_hot_owners_expired": true,
+      "exact_payload_and_untouched_tail": true
+    },
+    {
+      "consumer": 1,
+      "case": "all_bf16_f32_bits_overlapping_gather_release_pressure",
+      "kept_rows": 5,
+      "old_hot_owners_expired": true,
+      "exact_payload_and_untouched_tail": true
+    },
+    {
+      "consumer": 1,
+      "case": "all_bf16_f32_bits_overlapping_gather_release_pressure",
+      "kept_rows": 0,
+      "old_hot_owners_expired": true,
+      "exact_payload_and_untouched_tail": true
+    },
+    {
+      "consumer": 1,
+      "case": "all_bf16_f32_bits_overlapping_gather_release_pressure",
+      "kept_rows": 1,
+      "old_hot_owners_expired": true,
+      "exact_payload_and_untouched_tail": true
+    },
+    {
+      "consumer": 1,
+      "case": "gpu_forward_restoration",
+      "exact_payload": true,
+      "balanced_lease": true,
+      "expected_old_model_owner_expiry": [
+        true,
+        true,
+        true,
+        true
+      ],
+      "hooks_removed": true
+    },
+    {
+      "consumer": 1,
+      "case": "gpu_partial_exception_restoration",
+      "exact_payload": true,
+      "balanced_lease": true,
+      "expected_old_model_owner_expiry": [
+        true,
+        true,
+        false,
+        false
+      ],
+      "hooks_removed": true
+    }
+  ],
+  "source_sha256": {
+    "experiments/prefill_owner_share.py": "939b0293ebd8bf4d2138e8b4cf8ccad7d4b5f1b0aa0a0331ed0ecb11135b0e50",
+    "experiments/forward_owner_release.py": "4a07e33de813d3e25548953301b237cac557704a442b892dab93abe44274075d",
+    "experiments/raw_input_reuse.py": "42199dcddc1a1ad154360d9b6a95a7e9d4e696fda89d3b8b918f663d3cee193d",
+    "tests/test_forward_owner_release.py": "0c269ca17a2233b033b8d55a501f76e2566d5381595bc08c52ea42cfb67db46e"
+  },
+  "driver_sha256": "cc1cdd9f192ca6116977d651deab1199e90b2f1693c21adb59bc2381a1c714f7",
+  "limits": "Untimed helper/real Torch hook checks; toy DynamicCache model, not Mistral compute. Producer-to-consumer handoff uses explicit events and caller record_stream. No automatic cross-stream ownership, concurrent model serving, latency or ordinary adoption claim."
+}

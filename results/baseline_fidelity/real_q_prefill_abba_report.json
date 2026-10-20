@@ -1,0 +1,119 @@
+{
+  "raw_sha256": "439bc597c1cec91e5780079349124f8c49469f4dc71f72361f091b9c4f1df83b",
+  "script_sha256": "41b8b24eb0ca20ee185ff61f657aa20976370bd71107e1cb346519fea456ce26",
+  "runtime": {
+    "git_revision": "be7e700d84d46b47e32ba5b9870c8b71783b9e53",
+    "source_sha256": "f81473a52b3aabcd383594d67c7f0b271fcee0c547773f8a6f6663d7cdfb194a",
+    "packages": {
+      "torch": "2.5.1+cu124",
+      "transformers": "5.14.1",
+      "datasets": "5.0.0",
+      "numpy": "2.2.6",
+      "accelerate": "1.14.0",
+      "huggingface_hub": "1.24.0",
+      "rouge": "1.0.1"
+    }
+  },
+  "protocol": "GPU0, bf16, first task example, SDPA full prompt; two warmups then three ABBA blocks. Time includes model prefill and cache placement, with CUDA completion; peak allocated includes model weights.",
+  "tasks": {
+    "qasper": {
+      "prompt_tokens": 4895,
+      "blocks": {
+        "seconds": [
+          {
+            "proxy": 0.5464095324277878,
+            "actual_query": 0.5875643137842417,
+            "relative_change_pct": 7.531856403309156
+          },
+          {
+            "proxy": 0.5466315830126405,
+            "actual_query": 0.588153650984168,
+            "relative_change_pct": 7.595987729557763
+          },
+          {
+            "proxy": 0.5523170307278633,
+            "actual_query": 0.5865486357361078,
+            "relative_change_pct": 6.1978181196282955
+          }
+        ],
+        "peak_alloc_bytes": [
+          {
+            "proxy": 16071119360.0,
+            "actual_query": 16087503872.0,
+            "relative_change_pct": 0.10195003616724208
+          },
+          {
+            "proxy": 16071119360.0,
+            "actual_query": 16087503872.0,
+            "relative_change_pct": 0.10195003616724208
+          },
+          {
+            "proxy": 16071119360.0,
+            "actual_query": 16087503872.0,
+            "relative_change_pct": 0.10195003616724208
+          }
+        ]
+      },
+      "seconds": {
+        "proxy_median_of_block_medians": 0.5466315830126405,
+        "actual_query_median_of_block_medians": 0.5875643137842417,
+        "median_relative_change_pct": 7.531856403309156
+      },
+      "peak_alloc_bytes": {
+        "proxy_median_of_block_medians": 16071119360.0,
+        "actual_query_median_of_block_medians": 16087503872.0,
+        "median_relative_change_pct": 0.10195003616724208
+      }
+    },
+    "narrativeqa": {
+      "prompt_tokens": 31500,
+      "blocks": {
+        "seconds": [
+          {
+            "proxy": 4.696710053831339,
+            "actual_query": 4.995183383114636,
+            "relative_change_pct": 6.354944756272896
+          },
+          {
+            "proxy": 4.759679978713393,
+            "actual_query": 5.001205141656101,
+            "relative_change_pct": 5.074399203788382
+          },
+          {
+            "proxy": 4.80570228304714,
+            "actual_query": 5.0368964886292815,
+            "relative_change_pct": 4.810830799854493
+          }
+        ],
+        "peak_alloc_bytes": [
+          {
+            "proxy": 22384662528.0,
+            "actual_query": 22418216960.0,
+            "relative_change_pct": 0.14989920870160933
+          },
+          {
+            "proxy": 22384662528.0,
+            "actual_query": 22418216960.0,
+            "relative_change_pct": 0.14989920870160933
+          },
+          {
+            "proxy": 22384662528.0,
+            "actual_query": 22418216960.0,
+            "relative_change_pct": 0.14989920870160933
+          }
+        ]
+      },
+      "seconds": {
+        "proxy_median_of_block_medians": 4.759679978713393,
+        "actual_query_median_of_block_medians": 5.001205141656101,
+        "median_relative_change_pct": 5.074399203788382
+      },
+      "peak_alloc_bytes": {
+        "proxy_median_of_block_medians": 22384662528.0,
+        "actual_query_median_of_block_medians": 22418216960.0,
+        "median_relative_change_pct": 0.14989920870160933
+      }
+    }
+  },
+  "scope": "Single prompt per task; three same-process ABBA blocks after warmup. Measured prefill plus placement only, not full-loop decode or TTFT."
+}

@@ -1,0 +1,136 @@
+{
+  "config": {
+    "model": "../models/mistral-7b-instruct",
+    "data_dir": "../hf_cache/datasets/downloads/extracted/5def9c7eaf83951e1cee75902d8611ef764ad88dd289e8f0bf97ff658a3eb83a/data",
+    "tasks": [
+      "qasper",
+      "gov_report"
+    ],
+    "max_samples": 2,
+    "strategy": "query",
+    "seed": 0,
+    "max_ctx": 31500,
+    "tiered_vram_budget": 992,
+    "tiered_stt_budget": 3104,
+    "recent": 128,
+    "stt_expose_quota": 32,
+    "sttram_bifurcation_frac": 0.75,
+    "kv_dtype": "bfloat16",
+    "runtime": {
+      "git_revision": "be7e700d84d46b47e32ba5b9870c8b71783b9e53",
+      "source_sha256": "8849a27f3c29d66599c538d51226d182e33037b569579cbc3b657bcd40681a0b",
+      "packages": {
+        "torch": "2.5.1+cu124",
+        "transformers": "5.14.1",
+        "datasets": "5.0.0",
+        "numpy": "2.2.6",
+        "accelerate": "1.14.0",
+        "huggingface_hub": "1.24.0",
+        "rouge": "1.0.1"
+      }
+    },
+    "selector_sha256": "e1a0b1e437ed90d6417253bde2efef0b790a59516783fbec1748e1a2628879fb",
+    "dataset_sha256": {
+      "qasper": "97d95c01221a17a2ce51f9180d65a671bf2998504a2ff0cccffe97e9b08444d8",
+      "gov_report": "0a3902fcf3d49f228549f02a2ef1ae84dbe8578b8be3d4611d54459487bdef84"
+    }
+  },
+  "results": {
+    "qasper": {
+      "tieredkv": {
+        "score": 13.12,
+        "n": 2,
+        "sample_scores": [
+          20.0,
+          6.25
+        ],
+        "samples": [
+          {
+            "sample_id": "3b91dce7ca41a9d16a1d0c61806c139db583a053ddb582bf79df3ff56f8e0344",
+            "prediction": "They selected different Facebook pages for the experiments, including Fox News, CNN, The Guardian, Disney, and others.",
+            "score": 20.0,
+            "elapsed_s": 4.633277950808406,
+            "prompt_tokens": 4895,
+            "generated_tokens": 25,
+            "final_resident_kv_payload_bytes": 451014656
+          },
+          {
+            "sample_id": "5f59f94cd91401a55bcd3b6b24b78cd2c4c78e8ee6e7663e0ac8b97306444f08",
+            "prediction": "The context used to predict instructor intervention is identified via different queries in the Any Post Attention (APA) model, and attention weights are obtained by normalizing the different queries.",
+            "score": 6.25,
+            "elapsed_s": 5.989019807428122,
+            "prompt_tokens": 5415,
+            "generated_tokens": 37,
+            "final_resident_kv_payload_bytes": 454348800
+          }
+        ],
+        "cache_stats": {
+          "demoted": 38467,
+          "promoted": 36547,
+          "promotions_deferred": 24893,
+          "paid_writes": 8556,
+          "writes_saved": 29911,
+          "dropped": 0,
+          "write_savings_pct": 77.8,
+          "decode_steps": 60,
+          "stt_starved_steps": 0,
+          "stt_unused_steps": 0,
+          "mean_stt_exposed": 32.0,
+          "stt_expose_quota": 32,
+          "stt_exposed_total": 1984,
+          "stt_exposure_samples": 62,
+          "modeled_latency_us": 20074.0,
+          "modeled_energy_nj": 775334723.6
+        }
+      }
+    },
+    "gov_report": {
+      "tieredkv": {
+        "score": 37.31,
+        "n": 2,
+        "sample_scores": [
+          32.64,
+          41.98
+        ],
+        "samples": [
+          {
+            "sample_id": "11d3fe7a8c5f9be5c05ff2b46002fae136e91f31575249f5c3db054f4d0715ad",
+            "prediction": "The report highlights the complexity of federal information systems and their global supply chains, which can consist of multiple tiers of outsourcing and involve suppliers from various countries. The Federal Information Security Modernization Act (FISMA) requires federal agencies to manage information security risks throughout the life cycle of their information systems, including supply chain risks. NIST provides guidelines to help agencies manage these risks, such as conducting due diligence on suppliers, implementing acquisition policies, and using risk management processes and mitigating controls. The report also notes that the reliance on complex, global IT supply chains introduces multiple risks, including the introduction of malicious logic, counterfeit hardware or software, and unintentional vulnerabilities. The report recommends that agencies develop and implement policies and procedures to address these risks and monitor compliance and effectiveness. The report also mentions that the four national security-related agencies have made some progress in addressing supply chain risks but have varying levels of implementation. The report concludes by emphasizing the importance of federal agencies appropriately assessing, managing, and monitoring IT supply chain risks to protect against potential adverse impacts on their operations, assets, and employees.",
+            "score": 32.642486616217894,
+            "elapsed_s": 35.56533387489617,
+            "prompt_tokens": 3308,
+            "generated_tokens": 238,
+            "final_resident_kv_payload_bytes": 504049664
+          },
+          {
+            "sample_id": "56f5a37dac322a67081fbbce0ee9261106133f38ac8b4f38fc3555f5b593969d",
+            "prediction": "The report by the Government Accountability Office (GAO) examines grant programs awarded by the Departments of Health and Human Services (HHS), Labor (DOL), and Justice (DOJ) from 2007 to 2015, focusing on those subject to statutory restrictions on religious-based hiring for which nonprofits were eligible to be primary recipients.\n\nHHS identified one grant program, the PATH program, which was subject to such restrictions but no grants were awarded to nonprofit organizations. DOL identified 18 programs, 931 grantees, and 19 potential faith-based organizations (FBOs). DOJ identified at least 34 relevant grant programs, 604 grantees, and 25 potential FBOs.\n\nOf the 117 potential FBOs identified across the three agencies, nine faith-based grantees, all of which were awarded DOJ grants, certified that they were exempt from statutory restrictions on religious-based hiring. These grantees stated that hiring individuals of the same faith was crucial to their mission and organizational success.\n\nDOJ, DOL, and HHS all provide information on statutory restrictions on religious-based hiring and exemption processes to grant applicants and recipients through various methods. However, some potential FBOs that did not certify for an exemption could not recall seeing the information in the grant application or award documentation.\n\nThe total funding awarded to the nine exempted grantees was approximately $3.2 million, which is less than 1% of the $804 million in grants that DOJ awarded during this period that are subject to statutory restrictions.\n\nThe report concludes that while the agencies require grantees seeking exemptions to self-certify, they vary in how they review and approve requests. DOJ does not review self-certifications, while DOL requires grantees to submit their request for review and approval by the Assistant Secretary. HHS has only one grant program subject to a statutory restriction on religious-based hiring and for which FBOs are eligible to be primary recipients, but no faith-based recipients were identified during the study period.",
+            "score": 41.975308160999845,
+            "elapsed_s": 73.72426857054234,
+            "prompt_tokens": 3548,
+            "generated_tokens": 481,
+            "final_resident_kv_payload_bytes": 530386944
+          }
+        ],
+        "cache_stats": {
+          "demoted": 297771,
+          "promoted": 274827,
+          "promotions_deferred": 459381,
+          "paid_writes": 41738,
+          "writes_saved": 256033,
+          "dropped": 0,
+          "write_savings_pct": 86.0,
+          "decode_steps": 717,
+          "stt_starved_steps": 0,
+          "stt_unused_steps": 0,
+          "mean_stt_exposed": 32.0,
+          "stt_expose_quota": 32,
+          "stt_exposed_total": 23008,
+          "stt_exposure_samples": 719,
+          "modeled_latency_us": 205739.0,
+          "modeled_energy_nj": 9151320227.8
+        }
+      }
+    }
+  }
+}

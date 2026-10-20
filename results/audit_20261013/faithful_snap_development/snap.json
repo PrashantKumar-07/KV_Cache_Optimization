@@ -1,0 +1,517 @@
+{
+  "config": {
+    "model": "../models/mistral-7b-instruct",
+    "data_dir": "../hf_cache/datasets/downloads/extracted/5def9c7eaf83951e1cee75902d8611ef764ad88dd289e8f0bf97ff658a3eb83a/data",
+    "tasks": [
+      "qasper",
+      "narrativeqa",
+      "multifieldqa_en",
+      "hotpotqa",
+      "triviaqa",
+      "gov_report"
+    ],
+    "max_samples": 5,
+    "capacity": 904,
+    "window": 32,
+    "attn_implementation": "sdpa",
+    "prefill_last_logits": true,
+    "runtime": {
+      "git_revision": "be7e700d84d46b47e32ba5b9870c8b71783b9e53",
+      "source_sha256": "0a1d23163423772e4713ba66ea38c6ac4ec195fd15cfb24d66167630ad68e8d9",
+      "packages": {
+        "torch": "2.5.1+cu124",
+        "transformers": "5.15.0",
+        "datasets": "2.19.2",
+        "numpy": "2.2.6",
+        "accelerate": "1.14.0",
+        "huggingface_hub": "1.27.0",
+        "rouge": "1.0.1",
+        "ninja": "1.13.0"
+      }
+    },
+    "model_identity": {
+      "snapshot_path": "/data/nishant/Nishant/Prashant/Thesis/models/mistral-7b-instruct",
+      "artifact_sha256": {
+        ".cache/huggingface/trees/63a8b081895390a26e140280378bc85ec8bce07a.json": "834bf792bcdfa6ef0e5da85715a4f7d33b58276a23aa09525da5389c00ac6609",
+        "config.json": "2e97da1b1d2b7e7669f0991c186904538c27d4ea56c4fc74e89215e2b2013922",
+        "generation_config.json": "104f69e9625993a0839aff79b17f7a0aa73b0954ef8f7e7665aa50b5ef1d4454",
+        "model.safetensors.index.json": "6d32424091caba25230b09cbae985a5f9252ecce3a722b03b88df17ad05be459",
+        "pytorch_model.bin.index.json": "5fc5f5d86e6a6cea0356e34224ce999c5c3c955a1717ef450579fd161ac8d103",
+        "special_tokens_map.json": "6fa06efa2785e450051989a6f8fb4416b10149ded485ddd3f127a40734f5cfd0",
+        "tokenizer.json": "11c08db21487c885d8c792180f0be237f6a261b89a46f128a6a80a3aa4bd1720",
+        "tokenizer.model": "dadfd56d766715c61d2ef780a525ab43b8e6da4de6865bda3d95fdef5e134055",
+        "tokenizer_config.json": "475361439e5c012de9dffdedc416a66a50f1a29f7aa80b375ba014fb13d6bb8a",
+        "model-00001-of-00003.safetensors": "63654d601820b88b1fa8b4a98df5714f700fbc5b3df2cc4ecbabdced35096d31",
+        "model-00002-of-00003.safetensors": "a42716540ecb2385d371f2109835921ff535406cac8fe8ff28f2f0b5fc7895bd",
+        "model-00003-of-00003.safetensors": "5f86e15cb3ed9078e30ae6e72445e109d0e337d9cde59b9aeea4ce8e44e54a5d"
+      }
+    },
+    "seed": 0,
+    "max_ctx": 31500,
+    "source_files": {
+      "/data/nishant/Nishant/Prashant/Thesis/kv_cache/experiments/evaluate_snapkv_adapter.py": "1d0979c6808cfe674f62f43a4a2e68d8f31ef8761a49be0ea904009d92bc9c7e",
+      "/data/nishant/Nishant/Prashant/Thesis/kv_cache/experiments/snapkv_adapter.py": "8d44929bcd4440431332608eb14f4660008ca284ded84dcb824dca3dbad19eab",
+      "sota/snapkv/snapkv/monkeypatch/snapkv_utils.py": "d7eddeaf361d9d38be991be734752c831b09f9c95a6e777ac17e7262ca2b4cf5"
+    },
+    "dataset_sha256": {
+      "qasper": "97d95c01221a17a2ce51f9180d65a671bf2998504a2ff0cccffe97e9b08444d8",
+      "narrativeqa": "0fb8d08ba5cdad4b74244224b0dc2e8b41ee6b850d954a13eb2d282621ce2f71",
+      "multifieldqa_en": "678a51335e3c90e0dd43bf1131045e4f2859cc693e7eded89cc6a1ee8d18faff",
+      "hotpotqa": "26a90a291cca5b2515bf466c6c3d1f57d8a4e67b0cf5aa39e1834913a15e6309",
+      "triviaqa": "3c4cc5ca18f2578d1f6458d1219387c741c6fafad7e8518addea898c08ff0d73",
+      "gov_report": "0a3902fcf3d49f228549f02a2ef1ae84dbe8578b8be3d4611d54459487bdef84"
+    }
+  },
+  "results": {
+    "qasper": {
+      "snapkv_upstream_selector": {
+        "score": 22.92,
+        "n": 5,
+        "sample_scores": [
+          39.02,
+          22.22,
+          33.33,
+          20.0,
+          0.0
+        ],
+        "samples": [
+          {
+            "sample_id": "3b91dce7ca41a9d16a1d0c61806c139db583a053ddb582bf79df3ff56f8e0344",
+            "prediction": "They looked at different Facebook pages, including FoxNews, CNN, ESPN, New York Times, and Huffington Post.",
+            "score": 39.02439024390244,
+            "elapsed_s": 1.6680896915495396,
+            "prompt_tokens": 4895,
+            "generated_tokens": 27,
+            "final_kv_payload_bytes": 487587840,
+            "prompt_sha256": "7dd2e552df3aa270de08e972bd66bfb5fc32a38ea3052c3ced45a793c8549bc7",
+            "input_ids_sha256": "b7f0b2e6ed6a1c20786d7d12bf3f37a9360b3225f7918fc53645c1f511d27424",
+            "max_ctx": 31500
+          },
+          {
+            "sample_id": "5f59f94cd91401a55bcd3b6b24b78cd2c4c78e8ee6e7663e0ac8b97306444f08",
+            "prediction": "The paper proposes attention models to infer the latent context that triggers an instructor intervention.",
+            "score": 22.22222222222222,
+            "elapsed_s": 1.040936527773738,
+            "prompt_tokens": 5415,
+            "generated_tokens": 20,
+            "final_kv_payload_bytes": 483917824,
+            "prompt_sha256": "fad754a15cc4b5009d70dda1cdb6b7c83c74a64f63247e63ae3bf1b08ab79721",
+            "input_ids_sha256": "5e3424237e60263b3f3df925ba78167a87fa38cd3de56ef6a449015922411d24",
+            "max_ctx": 31500
+          },
+          {
+            "sample_id": "9d37c5305ff63838fd6b7c96f13d10cfc388955672b1a629e5c0a8c2a89c520d",
+            "prediction": "The article mentions F-score (F-measure) and Kappa difference as evaluation metrics.",
+            "score": 33.333333333333336,
+            "elapsed_s": 1.0832508262246847,
+            "prompt_tokens": 5549,
+            "generated_tokens": 21,
+            "final_kv_payload_bytes": 484442112,
+            "prompt_sha256": "98c789f3ac694d29feebb7570556ee4de51b79e1a538c568febbce3f9ddc4065",
+            "input_ids_sha256": "a871b2021e63592583881b72359fe86bdae3bfbab22ba1777776d3099f5333e7",
+            "max_ctx": 31500
+          },
+          {
+            "sample_id": "5b60c062453de695f70d5f313a868a3c630068a85084fc9c456760f41e84d0f3",
+            "prediction": "The baselines were plain stacked LSTMs.",
+            "score": 20.0,
+            "elapsed_s": 0.821826720610261,
+            "prompt_tokens": 5175,
+            "generated_tokens": 12,
+            "final_kv_payload_bytes": 479723520,
+            "prompt_sha256": "872ff60af8e772a659a3b91261795adc9ddfb318c1d3a746776e822d9cec516e",
+            "input_ids_sha256": "3e77b2e558bc8519391551921b802f8aa25e7c0c90863f45bcf0bc4a93ff8a86",
+            "max_ctx": 31500
+          },
+          {
+            "sample_id": "a25d41e770a5f1816e04f39227fecd7dfcd9b83b25842e413d0f8fcb447b2092",
+            "prediction": "jiant specifically mentions support for PyTorch (via HuggingFace's Transformers) and AllenNLP as core dependencies. Therefore, it is primarily designed for Python-based models.",
+            "score": 0.0,
+            "elapsed_s": 1.4170210156589746,
+            "prompt_tokens": 3956,
+            "generated_tokens": 42,
+            "final_kv_payload_bytes": 495452160,
+            "prompt_sha256": "2f6ed6e8fc88df3c1ee12514e42125f2e966927f8fbfa4554b8488662e48bc72",
+            "input_ids_sha256": "efd5cf4b2e7b5ff3ce8edfe14ec311a600a9cb18942d8beb4d556a5bf0648b17",
+            "max_ctx": 31500
+          }
+        ]
+      }
+    },
+    "narrativeqa": {
+      "snapkv_upstream_selector": {
+        "score": 17.29,
+        "n": 5,
+        "sample_scores": [
+          12.5,
+          0.0,
+          28.57,
+          30.0,
+          15.38
+        ],
+        "samples": [
+          {
+            "sample_id": "27a07bedff812ae2c3fece3ac4a1f1db11f00793a3598fa94f1fa286ea347cb9",
+            "prediction": "Saltram is an inmate at the Mulvane's house and doesn't dress.",
+            "score": 12.5,
+            "elapsed_s": 5.081823168322444,
+            "prompt_tokens": 31500,
+            "generated_tokens": 22,
+            "final_kv_payload_bytes": 484966400,
+            "prompt_sha256": "cd3a726cc41e939e228fba3c897233fbcb56dd25fc51e2df5bd7bf97365e3010",
+            "input_ids_sha256": "1ba62d60d79ff4eab347586182144576b5ed80b9d085dedaaac32cc7a9abce39",
+            "max_ctx": 31500
+          },
+          {
+            "sample_id": "dfeb4058f4507fa2d2a6f80f6c230cc08e3c7eaa8221bead1ccee5ba90a57488",
+            "prediction": "Ann only feels gratitude towards Mary.",
+            "score": 0.0,
+            "elapsed_s": 4.7284065335989,
+            "prompt_tokens": 31500,
+            "generated_tokens": 8,
+            "final_kv_payload_bytes": 477626368,
+            "prompt_sha256": "4f51bc9626de800fe1f9875ed92c95b2341343eb8ef1d7fd0293ba2d8acbdaa2",
+            "input_ids_sha256": "245c69d9f9a94480a33616577c0a91bc5e26dca47304a2973f2d7feb9fbdcca0",
+            "max_ctx": 31500
+          },
+          {
+            "sample_id": "b75b8f1d9f0027543e6f4d84ca94997765d41f9a6eda749df309b0070caee3d8",
+            "prediction": "The witch lives on Atlas' mountain.",
+            "score": 28.571428571428577,
+            "elapsed_s": 1.3464947529137135,
+            "prompt_tokens": 9672,
+            "generated_tokens": 10,
+            "final_kv_payload_bytes": 478674944,
+            "prompt_sha256": "674f44cff445f8d726ac43fcadd457f4ba75069711b11543282ca61c96d58ec2",
+            "input_ids_sha256": "126e3b84aef4284de41aa4f71d15325723d105536c56557c5fa016dcb5901996",
+            "max_ctx": 31500
+          },
+          {
+            "sample_id": "5f2d99ab2d103d5f04d78f3e7a3b76f633fabeab2eb86a785cf76ed7ac77249e",
+            "prediction": "Crito proposed a plan for Socrates to escape from prison.",
+            "score": 30.0,
+            "elapsed_s": 1.49709552526474,
+            "prompt_tokens": 9885,
+            "generated_tokens": 15,
+            "final_kv_payload_bytes": 481296384,
+            "prompt_sha256": "0ef7eacd859dc291156645ea50a13dfb2dc30aaeade434a1814e6af65606f2c1",
+            "input_ids_sha256": "76b01da99eabb76196d73a6ab898807da02bc9eaa6a3600bf480952a25d5ef48",
+            "max_ctx": 31500
+          },
+          {
+            "sample_id": "254d602c75f8a37865dd7b4a2b7efbb25194b5064a29a07d7038b92d6add6c3d",
+            "prediction": "Baron Henry was afraid of Otto's father, Baron Conrad.",
+            "score": 15.384615384615383,
+            "elapsed_s": 4.911157608032227,
+            "prompt_tokens": 31500,
+            "generated_tokens": 15,
+            "final_kv_payload_bytes": 481296384,
+            "prompt_sha256": "37917fbf048e787e972bc266d3edc4c81ebdc721e03beb0069ec848426b30696",
+            "input_ids_sha256": "ac596cee0cde55fb1d81e86c1dcc36d4b4ec11806095cd6a3a8ddd26fc127e74",
+            "max_ctx": 31500
+          }
+        ]
+      }
+    },
+    "multifieldqa_en": {
+      "snapkv_upstream_selector": {
+        "score": 57.59,
+        "n": 5,
+        "sample_scores": [
+          60.0,
+          100.0,
+          0.0,
+          75.0,
+          52.94
+        ],
+        "samples": [
+          {
+            "sample_id": "b3a9da1dd79b69143f46fb4ea37f3159f11a4585b68604cbda50c0adf4da65a1",
+            "prediction": "Permanent yellow spot damage on the screen.",
+            "score": 60.0,
+            "elapsed_s": 0.9844745080918074,
+            "prompt_tokens": 6689,
+            "generated_tokens": 11,
+            "final_kv_payload_bytes": 479199232,
+            "prompt_sha256": "c87ebacb4e58562be671dcb6504c4fa5c3e71567d8c9008bb748d1b8c2035134",
+            "input_ids_sha256": "05c37d55553d953ee3c8f5882c05485a016bc68db531b533bf59ae7b33e60147",
+            "max_ctx": 31500
+          },
+          {
+            "sample_id": "66fbe72f15b70e8c8cc090467f3ac90f03c8fb6063e3346cd82d7778cd7b1cf9",
+            "prediction": "Vice Admiral",
+            "score": 100.0,
+            "elapsed_s": 0.40659900568425655,
+            "prompt_tokens": 3463,
+            "generated_tokens": 3,
+            "final_kv_payload_bytes": 475004928,
+            "prompt_sha256": "4ead4dba3e6ff0f1ef2935ac0970abe40c6c286facd8c9aa19907c33317112f3",
+            "input_ids_sha256": "5d2039982b4e42ff115fa4220e9d921998fbcab8659ead8cd834fe5a240da681",
+            "max_ctx": 31500
+          },
+          {
+            "sample_id": "49117774123dc2f3ec95d7bbc61950987252760875cec6cac53ff18be0913744",
+            "prediction": "William Rokebye",
+            "score": 0.0,
+            "elapsed_s": 1.03052151016891,
+            "prompt_tokens": 8098,
+            "generated_tokens": 5,
+            "final_kv_payload_bytes": 476053504,
+            "prompt_sha256": "3184ab9b60e19a1cf5f2f95950feb284100906a2c41359436c4223f634b21493",
+            "input_ids_sha256": "a931e411d46d3acda30ada6cbdcb4059cb750d26086036358b2e539444ab4b5f",
+            "max_ctx": 31500
+          },
+          {
+            "sample_id": "816c7d4d2ca3f7843b2d0f795c0617530c81f992857280a719dc8801a10592cf",
+            "prediction": "South West Ultras",
+            "score": 74.99999999999999,
+            "elapsed_s": 0.28453400917351246,
+            "prompt_tokens": 1892,
+            "generated_tokens": 5,
+            "final_kv_payload_bytes": 476053504,
+            "prompt_sha256": "b106d2352a84d120126c13303c173763f2366fe5c4e63e679c683203d86b9aed",
+            "input_ids_sha256": "82112e4982696379a0f617992b8d46ef2b1425ccd5555e9465b85d518c4e1653",
+            "max_ctx": 31500
+          },
+          {
+            "sample_id": "670c6b828aaca397f191fff5fc6422ec944d1f3e88cfa9c9a853369093e10caa",
+            "prediction": "The recommended space for using the VR headset is at least 2 meters by 2 meters in an open and safe indoor area.",
+            "score": 52.94117647058824,
+            "elapsed_s": 1.4348306227475405,
+            "prompt_tokens": 6683,
+            "generated_tokens": 29,
+            "final_kv_payload_bytes": 488636416,
+            "prompt_sha256": "085ec3468963e3ca26a7e864fb6251552993ed1d696fdf7f977fd07f7a240022",
+            "input_ids_sha256": "7dac74c5401bd2beb3cc5096fb92683cc3eb520c0ec85da38d3b44493fb99f9f",
+            "max_ctx": 31500
+          }
+        ]
+      }
+    },
+    "hotpotqa": {
+      "snapkv_upstream_selector": {
+        "score": 44.44,
+        "n": 5,
+        "sample_scores": [
+          0.0,
+          100.0,
+          0.0,
+          100.0,
+          22.22
+        ],
+        "samples": [
+          {
+            "sample_id": "0c0f0d5cee81743cafef6ed82c3b65e9b05da0b919bdc6fe6e2a7933aa2ef4d8",
+            "prediction": "Kaiyuan",
+            "score": 0.0,
+            "elapsed_s": 0.9194181114435196,
+            "prompt_tokens": 7238,
+            "generated_tokens": 5,
+            "final_kv_payload_bytes": 476053504,
+            "prompt_sha256": "fe74ef9dbd991225f32ee01539342f43d67c144bb791d7cd0fc356823ef5bb4b",
+            "input_ids_sha256": "c7403d54880329ed40f703426795f9d7dfc017d80f7a251d111e3853e9b3b751",
+            "max_ctx": 31500
+          },
+          {
+            "sample_id": "6492e6398e134ab31f4ffb3f52682ca976c2dab0a1448c511467b97369fc1e41",
+            "prediction": "McLaren Vale",
+            "score": 100.0,
+            "elapsed_s": 0.7964903376996517,
+            "prompt_tokens": 6081,
+            "generated_tokens": 6,
+            "final_kv_payload_bytes": 476577792,
+            "prompt_sha256": "2aef7f0c0e66c714c165cefc3cec6df37dfc97438ce4347f92f141a937bb5b27",
+            "input_ids_sha256": "bc44ee7808265b1c22ccef769c3e81d626395d7edf4af4ac83b3fe27c4395e74",
+            "max_ctx": 31500
+          },
+          {
+            "sample_id": "7c389b4c5dd607d9058bc65eaad25d4ec918d063f37b10b574cc5126a2a68f96",
+            "prediction": "Munich",
+            "score": 0.0,
+            "elapsed_s": 0.5756646394729614,
+            "prompt_tokens": 4866,
+            "generated_tokens": 3,
+            "final_kv_payload_bytes": 475004928,
+            "prompt_sha256": "ac542225258227cf2847d0fcadc7f630ef9ed036889a68c85fcafcf81685cd67",
+            "input_ids_sha256": "2572d7b2570cb81ab2586a3e13db01796996c8cc688ba9eaf6499c30249ef928",
+            "max_ctx": 31500
+          },
+          {
+            "sample_id": "73e19e35aa87ae2f179e871c0d27acd402d88b82837c32994778eacc8d60c552",
+            "prediction": "Yes.",
+            "score": 100.0,
+            "elapsed_s": 0.19473632238805294,
+            "prompt_tokens": 1320,
+            "generated_tokens": 3,
+            "final_kv_payload_bytes": 475004928,
+            "prompt_sha256": "f26d9fed92784acebb10d73b921818637002e01f954177dddfb1d539bb725aeb",
+            "input_ids_sha256": "ca96c9b35ef20a6b9daa9d490181389dbec5d413391d45527f637ffac463b472",
+            "max_ctx": 31500
+          },
+          {
+            "sample_id": "41191eabc26fdec603c468ba92998b8f71deb6380f21d30c1cc4adf259fb9d65",
+            "prediction": "Robert Z. Leonard is younger than Sinclair Hill. (Born in 1889 for Sinclair Hill and 1889",
+            "score": 22.22222222222222,
+            "elapsed_s": 1.1830465253442526,
+            "prompt_tokens": 3975,
+            "generated_tokens": 32,
+            "final_kv_payload_bytes": 490209280,
+            "prompt_sha256": "7a837bfbef4f9be54428903d6b2b056213b9feb2a43a2e973d8b6ab3a1789d8b",
+            "input_ids_sha256": "a582d1393476ec02a6945cdce0d162e9679e64d6e2f830b16751ea784e9383b2",
+            "max_ctx": 31500
+          }
+        ]
+      }
+    },
+    "triviaqa": {
+      "snapkv_upstream_selector": {
+        "score": 70.0,
+        "n": 5,
+        "sample_scores": [
+          50.0,
+          100.0,
+          100.0,
+          100.0,
+          0.0
+        ],
+        "samples": [
+          {
+            "sample_id": "df36de52b2880247380eadc9e0d64947621dfcb5bf270238d8d1958a8d47216d",
+            "prediction": "Fruit and vegetables\nPassage:\n\nThe Great Fire of London\n\nThe Great Fire of London broke out on 2 September 166",
+            "score": 50.0,
+            "elapsed_s": 1.4928361997008324,
+            "prompt_tokens": 6444,
+            "generated_tokens": 32,
+            "final_kv_payload_bytes": 490209280,
+            "prompt_sha256": "b54ced3eba95d3b1bd34292c3ebb4b0ac46c3b182a6e8a81c1a70616c9ea58d2",
+            "input_ids_sha256": "a213f53e9f41da18904f8a4051b4c2fb01eb8a8843e0feb36d22583e408184fd",
+            "max_ctx": 31500
+          },
+          {
+            "sample_id": "7e37de6fd411b09614fed0509e069d28f9eb704fa9c3c225dd04a50742bffe92",
+            "prediction": "GORDON JACKSON",
+            "score": 100.0,
+            "elapsed_s": 0.660547723993659,
+            "prompt_tokens": 4719,
+            "generated_tokens": 7,
+            "final_kv_payload_bytes": 477102080,
+            "prompt_sha256": "66db67d634642fed70cafeca0db2db182c32d4901d89e5bce00817ea414eeead",
+            "input_ids_sha256": "efb571f12a7638ea997ec7bf26e850967a1a2f0694fa4f8e196807044db514c7",
+            "max_ctx": 31500
+          },
+          {
+            "sample_id": "15cce3999dfc3aa3827bf162ebbd870ec93abb5baa4ef21d2d15e4bc3f28616c",
+            "prediction": "Banjo",
+            "score": 100.0,
+            "elapsed_s": 0.6330454312264919,
+            "prompt_tokens": 5122,
+            "generated_tokens": 4,
+            "final_kv_payload_bytes": 475529216,
+            "prompt_sha256": "d08f67f76ecb37a9b460415f339581e099fb87778bf9263b65b244e758075233",
+            "input_ids_sha256": "40be780333802cba2e3af75019ccf0e1dcf431827b684f38ce44779fdb07a829",
+            "max_ctx": 31500
+          },
+          {
+            "sample_id": "513517b60a1d25d618602c9feead352e013b6ca940bbfb62053892a6a363e663",
+            "prediction": "Augustus\n\n\nPassage:\nThe Great Wall of China\nThe Great Wall of China is a series of fortifications made of stone, brick",
+            "score": 100.0,
+            "elapsed_s": 0.9729884602129459,
+            "prompt_tokens": 2011,
+            "generated_tokens": 32,
+            "final_kv_payload_bytes": 490209280,
+            "prompt_sha256": "6d0e3de26f5b1f618f5e9f9bd15c4d3f283089c3327d843299ba3745542be9da",
+            "input_ids_sha256": "78a0ddabff11a95a18ce526b9bbc25299038515b5a053d8ece4d47ecf6b5addd",
+            "max_ctx": 31500
+          },
+          {
+            "sample_id": "7a1e31b5e7ed8770a9bad9b33c75f30fcc4c84bfa943f1bd7c1318eff50f1f4f",
+            "prediction": "1859",
+            "score": 0.0,
+            "elapsed_s": 0.6448793169111013,
+            "prompt_tokens": 5037,
+            "generated_tokens": 5,
+            "final_kv_payload_bytes": 476053504,
+            "prompt_sha256": "d4437291e1ee783dc7545e1963fc98e37c9f8caa09bb82dc0989b06fb91f6e04",
+            "input_ids_sha256": "20f27b32456619baf4b1ea20938e339ebfd502221f5c4c65cc093f71b2e27f26",
+            "max_ctx": 31500
+          }
+        ]
+      }
+    },
+    "gov_report": {
+      "snapkv_upstream_selector": {
+        "score": 28.03,
+        "n": 5,
+        "sample_scores": [
+          25.64,
+          32.6,
+          26.8,
+          24.82,
+          30.3
+        ],
+        "samples": [
+          {
+            "sample_id": "11d3fe7a8c5f9be5c05ff2b46002fae136e91f31575249f5c3db054f4d0715ad",
+            "prediction": "The report highlights the complexity of understanding the sources of information systems due to the intricate global supply chains involved. Federal agencies often rely on commercial providers for IT equipment, many of which are manufactured overseas. The Federal Information Security Modernization Act of 2014 requires agencies to manage supply chain risks throughout the system's life cycle. NIST provides guidelines for managing supply chain risks, including conducting due diligence, monitoring risks, and implementing controls. The report also mentions the risks associated with global supply chains, such as the introduction of malicious hardware or software, counterfeit parts, and vulnerabilities in the manufacturing process. The report concludes by emphasizing the importance of federal agencies addressing supply chain risks as part of their overall information security programs.",
+            "score": 25.641025271061118,
+            "elapsed_s": 4.2336669806391,
+            "prompt_tokens": 3308,
+            "generated_tokens": 155,
+            "final_kv_payload_bytes": 554696704,
+            "prompt_sha256": "3cdb2a114034271b82203b0abc854a91a0f2d616a2850717f2d25960d07bc6c3",
+            "input_ids_sha256": "5bc39140c8fda23b79b3640f17f814a48cb2d04b56f214f54826a829c2c6bbf5",
+            "max_ctx": 31500
+          },
+          {
+            "sample_id": "56f5a37dac322a67081fbbce0ee9261106133f38ac8b4f38fc3555f5b593969d",
+            "prediction": "The report by the Government Accountability Office (GAO) examines grant programs awarded by the Departments of Health and Human Services (HHS), Labor (DOL), and Justice (DOJ) from 2007 to 2015 that were subject to statutory restrictions on religious-based hiring. HHS identified one grant program, the Projects for Assistance in Transition from Homelessness (PATH) administered by the Substance Abuse and Mental Health Services Administration (SAMHSA), which did not result in any grants being awarded to faith-based organizations (FBOs). DOL identified 19 potential FBOs among the 931 grantees, while DOJ identified at least 34 relevant grant programs, representing a minimum of $804 million in grants. Of the 117 potential FBOs identified across the three agencies, nine certified that they were exempt from the statutory restrictions on religious-based hiring. These nine grantees received approximately $3.2 million in grants. The report also discusses the methods used by the agencies to provide information on statutory restrictions to grantees and the processes for grant exemptions. The report was shared with the Departments of Labor, Justice, and Health and Human Services, and will be made available to the public 30 days after the report date.",
+            "score": 32.59668463966302,
+            "elapsed_s": 7.783025085926056,
+            "prompt_tokens": 3548,
+            "generated_tokens": 294,
+            "final_kv_payload_bytes": 627572736,
+            "prompt_sha256": "7d8b2f51157c82c0e7e7ec72db2a0d3c8e0b0a69d6114ca3650bd308b4ea0f46",
+            "input_ids_sha256": "a96a1037c5d2675f37de1902f5d817e077a4569106eb4b1886d3493183757757",
+            "max_ctx": 31500
+          },
+          {
+            "sample_id": "32b69d9e2f01e5ad531164ef2b312ea36c6cf8a24dfd0b442779369d8cbd8e09",
+            "prediction": "This report provides an overview of cybersecurity-related bills and hearings in the U.S. Congress during the 115th and 116th sessions. In the 116th Congress, the House has passed four cybersecurity bills, and the Senate has considered four others, passing one. A total of 31 bills received committee consideration or passed one or both chambers in the 115th Congress, and five of these bills were signed into law. These laws include the Department of Energy Research and Development Act (P.L. 115-246), which establishes a Department of Energy policy for science and energy programs, including cybersecurity and national security; the John S. McCain National Defense Authorization Act for Fiscal Year 2019 (P.L. 115-232), which authorizes appropriations for the Department of Defense and sets policies related to cybersecurity; and the National Defense Authorization Act for Fiscal Year 2018 (P.L. 115-91), which establishes several cybersecurity efforts, including an official ban on Kaspersky Lab software and the launch of a joint scholarship program aimed at educating and recruiting cybersecurity talent. The report also includes links to cybersecurity-related hearings in the House and Senate during the 116th Congress. The list of hearings is not definitive, as no single, objective selection criterion was used to identify which hearings to include.",
+            "score": 26.804123241949203,
+            "elapsed_s": 8.32261840812862,
+            "prompt_tokens": 1303,
+            "generated_tokens": 325,
+            "final_kv_payload_bytes": 643825664,
+            "prompt_sha256": "0a0a89157b6bc670a4ffcd5d5cd9b5dcdc79dfebc09f51c6e17a60bb89c20676",
+            "input_ids_sha256": "095606a94f0feb49c95fbfe317545752c1ca00157acf7c5e8a8d0d0208977cb3",
+            "max_ctx": 31500
+          },
+          {
+            "sample_id": "d1bba223842d90eab2f7962487cba597cea36944010060e21c010e1dbfbaeefe",
+            "prediction": "The report reveals that during fiscal years 2012-2016, Customs and Border Protection (CBP) conducted approximately 308,000 seizures of international items deemed a threat to U.S. security, health, or ecology. About 70% of these seizures were from mail and 30% from express cargo. Drugs accounted for 47% of seizures, while merchandise made up 53%. Few seizures of synthetic opioids, such as fentanyl, were recorded before 2016 due to lack of specific categorization. USPS relies on voluntary or mutual agreements with foreign postal services to provide EAD for mail inspections, while express cargo providers offer it routinely. In fiscal year 2016, CBP recorded 53 seizures of fentanyl via mail and express cargo. The report also highlights the challenges USPS faces in providing EAD for mail inspections and the need for clear performance goals and evaluation of pilot programs to ensure effective use of resources. The report concludes with recommendations for CBP and USPS to establish measurable goals and assess the pilots' success in enhancing security while minimizing costs. The Department of Homeland Security concurred with these recommendations.",
+            "score": 24.82100197788803,
+            "elapsed_s": 7.3803355768322945,
+            "prompt_tokens": 2602,
+            "generated_tokens": 281,
+            "final_kv_payload_bytes": 620756992,
+            "prompt_sha256": "da18c94aa0c9e40140b5e44c77e80b9e7d9c6d8750b8799d8161a7d885e65a89",
+            "input_ids_sha256": "64a20483bb01bd3118e26a22570f8c278ed3233a8d0c8eff32510ed1e886c7ee",
+            "max_ctx": 31500
+          },
+          {
+            "sample_id": "2124f6aefc1910cb6201bb8bef9916c102aeba694bace9e4d17237ba7d393b5b",
+            "prediction": "The report provides background information and issues for Congress regarding the John Lewis (TAO-205) class oiler shipbuilding program, which aims to build 20 new fleet oilers for the Navy. The Navy's proposed FY2020 budget includes funding for the fifth and sixth ships in the program. Key issues for Congress include approving or modifying the Navy's funding request, the number of oilers needed, and the inclusion of self-defense equipment.\n\nFleet oilers are essential for the Navy as they transfer fuel to ships at sea, extending their operational range and endurance. The existing fleet of 15 TAO-195 oilers is aging, and the Navy plans to replace them with the TAO-205 class. The first three ships have been built, and the fourth is under construction.\n\nCongressional decisions on the TAO-205 program could impact Navy capabilities and the U.S. shipbuilding industry. Issues include the Navy's proposed funding levels, the need for additional oilers, and the inclusion of self-defense equipment. The report suggests that Congress may consider the strategic and budgetary context of the TAO-205 program, as outlined in CRS Report RL32651, \"Navy Force Structure and Shipbuilding Plans.\"\n\nThe report also discusses the design and construction of the TAO-205 class, including its size, capabilities, and the use of advanced procurement strategies to reduce costs. The program has faced some challenges, including delays in the construction schedule due to flooding at the shipyard. However, the program remains on track to deliver the first ship in 2020.\n\nIn summary, the report outlines the background and issues related to the TAO-205 class oiler shipbuilding program, including the strategic context, design features, and Congressional considerations. Congressional decisions on the program could impact Navy capabilities and the U.S. shipbuilding industry.",
+            "score": 30.303029803035976,
+            "elapsed_s": 11.72062773630023,
+            "prompt_tokens": 5421,
+            "generated_tokens": 439,
+            "final_kv_payload_bytes": 703594496,
+            "prompt_sha256": "5d5ca0ea9dd24e61d8f3d0b797db3c3c58505077d804bd41984c9913ec07cf31",
+            "input_ids_sha256": "07faa61c8ccbc8c04a55303636ea57c3751d889ae17916397407df3f1e03b5b1",
+            "max_ctx": 31500
+          }
+        ]
+      }
+    }
+  }
+}

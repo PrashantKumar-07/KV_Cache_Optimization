@@ -1,0 +1,146 @@
+{
+  "config": {
+    "model": "../models/mistral-7b-instruct",
+    "texts_jsonl": "../hf_cache/datasets/downloads/extracted/5def9c7eaf83951e1cee75902d8611ef764ad88dd289e8f0bf97ff658a3eb83a/data/gov_report_e.jsonl",
+    "max_len": 1024,
+    "checkpoints": [
+      256,
+      512,
+      1024
+    ],
+    "n_docs": 2,
+    "budget": 256,
+    "methods": [
+      "full",
+      "streamingllm",
+      "h2o",
+      "snapkv",
+      "tieredkv"
+    ],
+    "device": "cuda",
+    "seed": 0,
+    "runtime": {
+      "git_revision": "be7e700d84d46b47e32ba5b9870c8b71783b9e53",
+      "source_sha256": "c5db18225a65ab143ed3194d51c8d701606bdfca04b34665f3d87c824ecce727",
+      "packages": {
+        "torch": "2.5.1+cu124",
+        "transformers": "5.15.0",
+        "datasets": "2.19.2",
+        "numpy": "2.2.6",
+        "accelerate": "1.14.0",
+        "huggingface_hub": "1.27.0",
+        "rouge": "1.0.1"
+      }
+    },
+    "dataset_sha256": "0a3902fcf3d49f228549f02a2ef1ae84dbe8578b8be3d4611d54459487bdef84",
+    "protocol": "teacher_forced_single_token_v2",
+    "tiered_budgets": [
+      256,
+      512
+    ],
+    "tiered_dtype": "bfloat16",
+    "sttram_bifurcation_frac": 0.75
+  },
+  "results": {
+    "full": {
+      "256": {
+        "nll": 991.5099269060107,
+        "tokens": 512,
+        "documents": 2,
+        "ppl": 6.9347348954233645
+      },
+      "512": {
+        "nll": 1826.8605441919358,
+        "tokens": 1024,
+        "documents": 2,
+        "ppl": 5.953882335796466
+      },
+      "1024": {
+        "nll": 3394.8313063445294,
+        "tokens": 2048,
+        "documents": 2,
+        "ppl": 5.246874016301649
+      }
+    },
+    "streamingllm": {
+      "256": {
+        "nll": 991.5099269060107,
+        "tokens": 512,
+        "documents": 2,
+        "ppl": 6.9347348954233645
+      },
+      "512": {
+        "nll": 1870.0963173886655,
+        "tokens": 1024,
+        "documents": 2,
+        "ppl": 6.210652326477091
+      },
+      "1024": {
+        "nll": 3489.276025725683,
+        "tokens": 2048,
+        "documents": 2,
+        "ppl": 5.4945025688525755
+      }
+    },
+    "h2o": {
+      "256": {
+        "nll": 991.5099269060107,
+        "tokens": 512,
+        "documents": 2,
+        "ppl": 6.9347348954233645
+      },
+      "512": {
+        "nll": 1838.571602543455,
+        "tokens": 1024,
+        "documents": 2,
+        "ppl": 6.022365248684043
+      },
+      "1024": {
+        "nll": 3483.997403847073,
+        "tokens": 2048,
+        "documents": 2,
+        "ppl": 5.480358986760127
+      }
+    },
+    "snapkv": {
+      "256": {
+        "nll": 991.5099269060107,
+        "tokens": 512,
+        "documents": 2,
+        "ppl": 6.9347348954233645
+      },
+      "512": {
+        "nll": 1839.8484556056394,
+        "tokens": 1024,
+        "documents": 2,
+        "ppl": 6.029879381236769
+      },
+      "1024": {
+        "nll": 3487.211786618398,
+        "tokens": 2048,
+        "documents": 2,
+        "ppl": 5.4889672890442505
+      }
+    },
+    "tieredkv": {
+      "256": {
+        "nll": 991.5099269060107,
+        "tokens": 512,
+        "documents": 2,
+        "ppl": 6.9347348954233645
+      },
+      "512": {
+        "nll": 1834.231897581177,
+        "tokens": 1024,
+        "documents": 2,
+        "ppl": 5.996896512434517
+      },
+      "1024": {
+        "nll": 3413.8339312800153,
+        "tokens": 2048,
+        "documents": 2,
+        "ppl": 5.295784354570509
+      }
+    }
+  }
+}

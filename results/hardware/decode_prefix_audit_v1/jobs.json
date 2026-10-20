@@ -1,0 +1,44 @@
+[
+  {
+    "name": "shared",
+    "status": "finished",
+    "exit_code": 0,
+    "environment": {
+      "CUDA_VISIBLE_DEVICES": "0"
+    },
+    "lock": "/data/nishant/tieredkv_external/gpu0_model.lock",
+    "argv": [
+      "../venv_kvcache/bin/python",
+      "experiments/audit_decode_prefix.py",
+      "--hot",
+      "991",
+      "--cold",
+      "1090",
+      "--decode",
+      "12",
+      "--output",
+      "results/hardware/decode_prefix_audit_v1/shared.json"
+    ]
+  },
+  {
+    "name": "default",
+    "status": "finished",
+    "exit_code": 0,
+    "environment": {
+      "CUDA_VISIBLE_DEVICES": "0"
+    },
+    "lock": "/data/nishant/tieredkv_external/gpu0_model.lock",
+    "argv": [
+      "../venv_kvcache/bin/python",
+      "experiments/audit_decode_prefix.py",
+      "--hot",
+      "1024",
+      "--cold",
+      "2048",
+      "--decode",
+      "12",
+      "--output",
+      "results/hardware/decode_prefix_audit_v1/default.json"
+    ]
+  }
+]

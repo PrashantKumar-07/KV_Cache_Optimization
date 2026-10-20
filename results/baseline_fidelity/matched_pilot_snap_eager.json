@@ -1,0 +1,100 @@
+{
+  "config": {
+    "model": "../models/mistral-7b-instruct",
+    "data_dir": "../hf_cache/datasets/downloads/extracted/5def9c7eaf83951e1cee75902d8611ef764ad88dd289e8f0bf97ff658a3eb83a/data",
+    "tasks": [
+      "qasper",
+      "gov_report"
+    ],
+    "max_samples": 2,
+    "capacity": 1024,
+    "window": 32,
+    "attn_implementation": "eager",
+    "runtime": {
+      "git_revision": "be7e700d84d46b47e32ba5b9870c8b71783b9e53",
+      "source_sha256": "8849a27f3c29d66599c538d51226d182e33037b569579cbc3b657bcd40681a0b",
+      "packages": {
+        "torch": "2.5.1+cu124",
+        "transformers": "5.14.1",
+        "datasets": "5.0.0",
+        "numpy": "2.2.6",
+        "accelerate": "1.14.0",
+        "huggingface_hub": "1.24.0",
+        "rouge": "1.0.1"
+      }
+    },
+    "seed": 0,
+    "max_ctx": 31500,
+    "source_files": {
+      "/data/nishant/Nishant/Prashant/Project/kv_cache/experiments/evaluate_snapkv_adapter.py": "5533e29960c876ac179d14fe4cdda4852e71e167d4d7358f02ad15c74dfdc574",
+      "/data/nishant/Nishant/Prashant/Project/kv_cache/experiments/snapkv_adapter.py": "8d44929bcd4440431332608eb14f4660008ca284ded84dcb824dca3dbad19eab",
+      "sota/snapkv/snapkv/monkeypatch/snapkv_utils.py": "d7eddeaf361d9d38be991be734752c831b09f9c95a6e777ac17e7262ca2b4cf5"
+    },
+    "dataset_sha256": {
+      "qasper": "97d95c01221a17a2ce51f9180d65a671bf2998504a2ff0cccffe97e9b08444d8",
+      "gov_report": "0a3902fcf3d49f228549f02a2ef1ae84dbe8578b8be3d4611d54459487bdef84"
+    }
+  },
+  "results": {
+    "qasper": {
+      "snapkv_upstream_selector": {
+        "score": 30.62,
+        "n": 2,
+        "sample_scores": [
+          39.02,
+          22.22
+        ],
+        "samples": [
+          {
+            "sample_id": "3b91dce7ca41a9d16a1d0c61806c139db583a053ddb582bf79df3ff56f8e0344",
+            "prediction": "They looked at different Facebook pages, including FoxNews, CNN, ESPN, New York Times, and Huffington Post.",
+            "score": 39.02439024390244,
+            "elapsed_s": 2.9863176438957453,
+            "prompt_tokens": 4895,
+            "generated_tokens": 27,
+            "final_kv_payload_bytes": 550502400
+          },
+          {
+            "sample_id": "5f59f94cd91401a55bcd3b6b24b78cd2c4c78e8ee6e7663e0ac8b97306444f08",
+            "prediction": "The paper proposes attention models to infer the latent context that triggers an instructor intervention.",
+            "score": 22.22222222222222,
+            "elapsed_s": 2.6519007962197065,
+            "prompt_tokens": 5415,
+            "generated_tokens": 20,
+            "final_kv_payload_bytes": 546832384
+          }
+        ]
+      }
+    },
+    "gov_report": {
+      "snapkv_upstream_selector": {
+        "score": 32.08,
+        "n": 2,
+        "sample_scores": [
+          27.04,
+          37.11
+        ],
+        "samples": [
+          {
+            "sample_id": "11d3fe7a8c5f9be5c05ff2b46002fae136e91f31575249f5c3db054f4d0715ad",
+            "prediction": "The report highlights the complexity of understanding the sources of information systems due to the intricate global supply chains involved. Federal agencies often rely on commercial providers for IT equipment, many of which are manufactured overseas. The Federal Information Security Modernization Act of 2014 requires agencies to manage supply chain risks throughout the system's life cycle. NIST provides guidelines for managing supply chain risks, including conducting due diligence, identifying and mitigating risks, and implementing controls throughout the development process. The report also mentions several threats that can be introduced through the supply chain, such as malicious hardware or software, counterfeit parts, and insider threats. The report concludes by emphasizing the importance of federal agencies addressing supply chain risks as part of their overall information security programs.",
+            "score": 27.042253142630436,
+            "elapsed_s": 5.010613568127155,
+            "prompt_tokens": 3308,
+            "generated_tokens": 160,
+            "final_kv_payload_bytes": 620232704
+          },
+          {
+            "sample_id": "56f5a37dac322a67081fbbce0ee9261106133f38ac8b4f38fc3555f5b593969d",
+            "prediction": "The report by the Government Accountability Office (GAO) examines grant programs awarded by the Departments of Health and Human Services (HHS), Labor (DOL), and Justice (DOJ) from 2007 to 2015 that were subject to statutory restrictions on religious-based hiring. The report identified 2,586 grantees receiving funding through at least 53 grant programs, with 19 potential Faith-Based Organizations (FBOs) identified as potential recipients.\n\nHHS did not award any grants to FBOs under the Projects for Assistance in Transition from Homelessness (PATH) program, as no grants were awarded to nonprofit organizations during this period. DOL identified 18 programs with 931 grantees, including 19 potential FBOs. DOJ identified at least 34 grant programs, representing a minimum of 1,136 grantees, including 114 potential FBOs.\n\nOf the 117 potential FBOs identified across the three agencies, nine faith-based grantees certified that they were exempt from statutory restrictions on religious-based hiring. These grantees received approximately $3.2 million in funding, which is less than 1% of the total grants awarded during this period. The majority of the exempt grantees received funding between 2008 and 2010 and were awarded grants based on appropriations and committee reports.\n\nThe report also notes that DOJ was unable to identify all relevant grant programs and provide information on the number of potential FBOs that received grants. The agencies provide information on statutory restrictions to grant applicants and recipients through grant announcements and other methods.\n\nThe report concludes by stating that the number of grants awarded to FBOs subject to statutory restrictions on religious-based hiring is relatively small compared to the total number of grants awarded during this period. The report will be distributed to appropriate congressional committees and the Departments of Labor, Justice, and Health and Human Services.",
+            "score": 37.11340159246467,
+            "elapsed_s": 12.871322985738516,
+            "prompt_tokens": 3548,
+            "generated_tokens": 453,
+            "final_kv_payload_bytes": 773849088
+          }
+        ]
+      }
+    }
+  }
+}

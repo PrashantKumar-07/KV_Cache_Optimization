@@ -1,0 +1,26 @@
+{
+  "settings": {
+    "hot": 991,
+    "cold": 1090,
+    "quota": 32,
+    "context": 16384,
+    "decode": 50,
+    "warmup": 1,
+    "prefill_last_logits": true,
+    "seed": 0
+  },
+  "prompt": "results/remediation_v3/latency_prompt.txt",
+  "prompt_sha256": "18695714f26e35cb8d2b039ae9efb3b7e64291cbd7bcd91956efc07e16a732cd",
+  "teachers": "results/shadow_ablation_full/fixed_stream_20260929.json",
+  "teachers_sha256": "620ac3a383997c9afbc6a3f0b06acec9f261d5a2a5827bf5988e0bb5b69f12a2",
+  "quiet": "Capture physicalGPU0 compute PID list before loading and before/after each row; only this own model PID allowed. OtherGPU1 workload untouched. Contamination stops and invalidates speed/adoption claim.",
+  "timestamp_utc": "2026-10-03T04:07:25.681185+00:00",
+  "correctness_proof_sha256": "cbd48248ab458d8721a3e0047603ce913eedb92cb1369985e08453fa879033bb",
+  "resource_proof_sha256": "47d77cdf9defd5b323355b8550864be1715644728ba03e0a9ae29bcfa503f11d",
+  "control": "results/hardware/pool_query_selector_v1/resource.json",
+  "control_sha256": "1c80e89e8b353b5e6ba6b62cfa60ae29a9fea1896f163d798ed26923afdbdda1",
+  "mechanism": "ThreeABBA16K50/warmup1 paired original nativePool full-query hook versus batchedGPU-source-index full-query hook. Same nativeQ/ranking/choices/visiblegeometry/KVpayload, candidate metadata charged.",
+  "primary": ">=5%median decode improvement vs originalquery, p95<=2%worse,TTFT<=10%worse; exact frozenquerystate/counters/predictions/nativeKVbytes; allownhooks/resetindexcleanup andquietGPU0.",
+  "stop": "Failedcomponentprimary stops expansion; no retryforfavorablemetrics. Passing component does not establish ordinaryLRU<=2%latency guard or independentNI/512MiB/matchedfaithfulbaseline/adoption. No stoppedfullscan qualityretry.",
+  "limits": "One model/seed fixedteacher component latency. IndexH2Dmetadata measured candidate-only, oldgenericindices notseparately measured. Core retrieval remains fullscan; no totalH2D saving/physicalSTT/fullgoal proof."
+}

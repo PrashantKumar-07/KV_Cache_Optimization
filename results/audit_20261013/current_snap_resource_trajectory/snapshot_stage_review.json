@@ -1,0 +1,12 @@
+{
+  "recorded_utc": "2026-10-15T08:40:07.899000+00:00",
+  "reviewer": "root-agent",
+  "snapshot_stages": {
+    "snap": "After complete prefill/decode model.forward; output released.",
+    "native": "Inside policy _bifurcate/_decode_step before caller apply_tuple_kv_inplace commits visibleKV to HFcache. InitialGPUallocation includes outgoing fullprefill cache, so not an idle serving boundary."
+  },
+  "initial_native_gpu_allocation_cannot_be_used_as_steady_requirement": true,
+  "native_max_decode_policy_boundary_gpu_excess_bytes": 150118400,
+  "next_proof": "Instrument post apply_tuple_kv_inplace boundary for both arms before fairresource matching. Continue separate prefill and decode peak measurements.",
+  "snap_projection_overhead": "_capture reprojects both Q and K before native attention projects them again; existing latency claims against it must disclose adapter overhead. Reuse actual q_proj output with exact selectedKV/logit proof before new timing."
+}

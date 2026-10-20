@@ -1,0 +1,27 @@
+{
+  "timestamp_utc": "2026-10-03T11:53:16.109096+00:00",
+  "mechanism": "Full canonical native CPU state phases with pooled GPU metadata and KV compaction",
+  "settings": {
+    "hot": 991,
+    "cold": 1090,
+    "quota": 32,
+    "context": 16384,
+    "decode": 50,
+    "warmup": 1,
+    "seed": 0,
+    "prefill_last_logits": true
+  },
+  "prompt": "results/remediation_v3/latency_prompt.txt",
+  "teachers": "results/shadow_ablation_full/fixed_stream_20260929.json",
+  "control": "results/hardware/layerwise_prefill_placement_v1/control_shared.json",
+  "query": "results/hardware/cpu_phase_controller_v1/resource.json",
+  "correctness_proof_sha256": "244d1d71a586017d0f6173802c5595a25a7cb24dd0b65cd373a03d93b94c1964",
+  "resource_proof_sha256": "f5bb3b5b6afec296844a47bec54a0ba47c23655d8f4bbc0ea205f5d90dd4b6e9",
+  "primary": "Quiet 3ABBA: >=5% median wholeloop improvement AND >=4ms saved, p95 <=2% worse, TTFT <=10% worse. Exact frozen300 measured predictions/arm, finalstate/counters/native KV. Each measured candidate prepare50/compact200, pooled descriptors6457600B, arena417792B, scratch32536512B; fallback0. Hooks and leases released;25 quietGPU0 observations. CPU promote/append/demote50 each, evictions1600, CPU fallback0, CPU roots1116896B.",
+  "stop": "Failed primary stops CPU phase controller expansion/adoption; no favorable timing retry.",
+  "limits": "One model/seed/fixed teacher. Scoped active plus owned pinned and CPU array roots 433.333MiB. Native container/Python heap/allocator internals unmeasured. No quality, faithful baseline, physical STT or full process claim.",
+  "prompt_sha256": "18695714f26e35cb8d2b039ae9efb3b7e64291cbd7bcd91956efc07e16a732cd",
+  "teachers_sha256": "620ac3a383997c9afbc6a3f0b06acec9f261d5a2a5827bf5988e0bb5b69f12a2",
+  "control_sha256": "9449721be00001a6e4ada6e243be61e1d100dc4eb6508afa0122c4c8d8275ee0",
+  "query_sha256": "f77776be90e84f67900237f906ebc135e3f16691e8482d754d1d2778f5282dad"
+}

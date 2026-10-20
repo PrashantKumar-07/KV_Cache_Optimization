@@ -1,0 +1,51 @@
+[transformers] `torch_dtype` is deprecated! Use `dtype` instead!
+Loading weights:   0%|          | 0/291 [00:00<?, ?it/s]Loading weights:   4%|▍         | 13/291 [00:00<00:02, 123.02it/s]Loading weights:   9%|▉         | 26/291 [00:00<00:02, 118.20it/s]Loading weights:  14%|█▎        | 40/291 [00:00<00:01, 126.80it/s]Loading weights:  18%|█▊        | 53/291 [00:00<00:02, 113.27it/s]Loading weights:  23%|██▎       | 67/291 [00:00<00:01, 117.89it/s]Loading weights:  27%|██▋       | 79/291 [00:00<00:01, 114.30it/s]Loading weights:  32%|███▏      | 94/291 [00:00<00:01, 120.21it/s]Loading weights:  37%|███▋      | 107/291 [00:00<00:01, 118.66it/s]Loading weights:  41%|████      | 119/291 [00:01<00:01, 118.44it/s]Loading weights:  45%|████▌     | 131/291 [00:01<00:01, 114.71it/s]Loading weights:  49%|████▉     | 144/291 [00:01<00:01, 117.06it/s]Loading weights:  54%|█████▍    | 157/291 [00:01<00:01, 118.19it/s]Loading weights:  58%|█████▊    | 169/291 [00:01<00:01, 114.44it/s]Loading weights:  63%|██████▎   | 184/291 [00:01<00:00, 119.83it/s]Loading weights:  67%|██████▋   | 196/291 [00:01<00:00, 115.37it/s]Loading weights:  72%|███████▏  | 209/291 [00:01<00:00, 119.19it/s]Loading weights:  76%|███████▌  | 221/291 [00:01<00:00, 115.27it/s]Loading weights:  80%|████████  | 233/291 [00:01<00:00, 115.52it/s]Loading weights:  85%|████████▍ | 247/291 [00:02<00:00, 117.78it/s]Loading weights:  89%|████████▉ | 259/291 [00:02<00:00, 114.05it/s]Loading weights:  93%|█████████▎| 271/291 [00:02<00:00, 115.10it/s]Loading weights:  97%|█████████▋| 283/291 [00:02<00:00, 116.44it/s]Loading weights: 100%|██████████| 291/291 [00:02<00:00, 117.82it/s]
+  [SnapKV upstream selector] qasper 5/5  Score=11.17
+Traceback (most recent call last):
+  File "/data/nishant/Nishant/Prashant/Project/kv_cache/experiments/evaluate_snapkv_adapter.py", line 84, in <module>
+    main()
+  File "/data/nishant/Nishant/Prashant/Project/kv_cache/experiments/evaluate_snapkv_adapter.py", line 74, in main
+    score, samples = bench.evaluate_task(model, tokenizer, task, policy, 'cuda',
+  File "/data/nishant/Nishant/Prashant/Project/kv_cache/experiments/longbench_eval.py", line 1275, in evaluate_task
+    pred = generate_with_policy(
+  File "/home/nishant/.local/lib/python3.10/site-packages/torch/utils/_contextlib.py", line 116, in decorate_context
+    return func(*args, **kwargs)
+  File "/data/nishant/Nishant/Prashant/Project/kv_cache/experiments/evaluate_snapkv_adapter.py", line 23, in generate
+    out = model(ids, past_key_values=cache, use_cache=True,
+  File "/home/nishant/.local/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1736, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "/home/nishant/.local/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1747, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/home/nishant/.local/lib/python3.10/site-packages/transformers/utils/generic.py", line 911, in wrapper
+    output = func(self, *args, **kwargs)
+  File "/home/nishant/.local/lib/python3.10/site-packages/transformers/models/mistral/modeling_mistral.py", line 447, in forward
+    outputs: BaseModelOutputWithPast = self.model(
+  File "/home/nishant/.local/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1736, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "/home/nishant/.local/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1747, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/home/nishant/.local/lib/python3.10/site-packages/transformers/utils/generic.py", line 1040, in wrapper
+    output = func(self, *args, **kwargs)
+  File "/home/nishant/.local/lib/python3.10/site-packages/transformers/utils/output_capturing.py", line 262, in wrapper
+    outputs = func(self, *args, **kwargs)
+  File "/home/nishant/.local/lib/python3.10/site-packages/transformers/models/mistral/modeling_mistral.py", line 385, in forward
+    hidden_states = decoder_layer(
+  File "/home/nishant/.local/lib/python3.10/site-packages/transformers/modeling_layers.py", line 110, in __call__
+    return super().__call__(*args, **kwargs)
+  File "/home/nishant/.local/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1736, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "/home/nishant/.local/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1747, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/home/nishant/.local/lib/python3.10/site-packages/transformers/models/mistral/modeling_mistral.py", line 224, in forward
+    hidden_states, _ = self.self_attn(
+  File "/home/nishant/.local/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1736, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "/home/nishant/.local/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1844, in _call_impl
+    return inner()
+  File "/home/nishant/.local/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1790, in inner
+    result = forward_call(*args, **kwargs)
+  File "/home/nishant/.local/lib/python3.10/site-packages/transformers/models/mistral/modeling_mistral.py", line 164, in forward
+    attn_output, attn_weights = attention_interface(
+  File "/home/nishant/.local/lib/python3.10/site-packages/transformers/models/mistral/modeling_mistral.py", line 109, in eager_attention_forward
+    attn_weights = torch.matmul(query, key_states.transpose(2, 3)) * scaling
+torch.OutOfMemoryError: CUDA out of memory. Tried to allocate 59.14 GiB. GPU 0 has a total capacity of 44.52 GiB of which 26.16 GiB is free. Including non-PyTorch memory, this process has 18.34 GiB memory in use. Of the allocated memory 16.57 GiB is allocated by PyTorch, and 1.27 GiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)

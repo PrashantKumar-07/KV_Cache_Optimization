@@ -1,0 +1,43 @@
+{
+  "created_utc": "2026-10-16T07:49:50.948070+00:00",
+  "purpose": "Paper-grade fairness contract; freeze claim/design before resource comparisons, not results",
+  "quality_evaluation_in_progress": {
+    "method": "Official current KV-head SnapKV,1024promptcapacity/growingdecode",
+    "data": "All1474originalsource records; descriptive alreadyconsumed; compare existingoriginal135 andfullpopulations separately",
+    "common": "ExactMistral7Bweights/tokenizer/BF16,inputtokenIDs,31500context,prompts/EOS/maxgen/scorers; actualqueryselector independentlyproved",
+    "not_claimed": "Sameinitialpromptcapacity is notmatchedwholememory orfixedthroughoutdecodewidth; currentrunalone is notthe finalresource-matchedpapercomparison"
+  },
+  "proper_baseline_requirements": [
+    "Pin officialcommit, precisionbranch anddependencies; retainunmodifiedalgorithm sources andseparatebuild-onlydiffs.",
+    "Independent selector/kernel/model correctness; no baselineprediction ormetric hardcoding.",
+    "Use thesame runtime for directlypairedsystemtiming; ifofficialdependencyversiondiffers, runourmethodandFullreference inthat environment orseparatelyproveequivalence andlabelruntime difference. Never comparecross-environment latencyasfullymatched.",
+    "Give competitors fastestcorrectsupportedbackend, upstreamvalidCPUthreadsetting, anddocumentindexconstruction/transfer/storage costs.",
+    "Record allinput/config/rawresults/errors, deterministicorder andper-samplecheckpoints. No silent missing rows, cherry-pickedtasks, orfavorable retries."
+  ],
+  "resource_axes_to_report": [
+    "Measured postcommit GPU allocation delta frompreloadedmodel; countvisiblecopies/staging/retainedhot.",
+    "Host cold KV pluspinnedrootcapacity andindex/canonicalmetadata, includingidlepersistentmemory.",
+    "PrefillpeakGPUandCPU separately, TTFT includesindex/prefill/copy/provisioning asdefined.",
+    "Actualattendedtokenwidthperstep, allheadcounts/dtypes, prompt/decodegrowth; generatedoutputtokens.",
+    "Measured full-loop latency/p95 andquality together; analyticSTTtraffic/energy assumptions separate fromGPU/CPU measurements."
+  ],
+  "comparison_panels": {
+    "initial_payload_reproduction": "Same1024initialcompressedbudget withgrowingSnap vsboundedTiered, unmatchedbudgetsdirectlydisclosed; usefuldescriptivecontrol only.",
+    "gpu_working_set_envelope": "Requireeveryarm withinone preregistered steadyGPUceiling; commonCPUceiling, allCPUindexcharged, measurethroughoutrequest. Baselinecapacitymustallowdecodegrowth; do nothandicapupstreambyarbitraryold1024limitifcompetingforlargerGPUenvelope.",
+    "whole_resource_tradeoff": "Plotquality against actualGPU andhostcapacity, TTFTanddecode; labeltradeoffs ratherthanglobaldominance whenaxes differ."
+  },
+  "before_next_gpu_run": "Choose exactphysicalmemory/CPU/latency ceilings andalgorithmconfigs fromcapacityarithmetic andoriginal135development only; snapshotcodeanddata, independentreview andprospectivegates. Do notuse nowunblinded1339finalrecordstotune.800transferreservedrowsmuststayunscoreduntilcandidatepassesdevelopment/resourcegates.",
+  "current_status": "Official current GQA SnapKV1474 quality run active. IceCache BF16 build/import complete; independently validated proposed projection correction CPU/index/layout, queued GPU kernel/nonoffload then actualtiny offload gates. Still no IceCache pretrained7B/quality/performance claim. Headroom remains deferred.",
+  "modern_baseline_and_novelty_review": "results/proper_baselines_20261016/paper_baseline_scope_review.json",
+  "paper_claim_requirements": [
+    "A win over named SnapKV/IceCache controls is not globalSOTA. Keep original goal of genuine improvements, validate relevant additional modern comparators for any broader claim.",
+    "RocketKV official pinned Mistral implementation is next practical modern quality comparator; its attention budget differs from retained cache capacity, use original allocation formula and charge both.",
+    "FlexiCache already offloads stable-head pages once and retains host copies (MLSys2026 section3.3). Do not claim write-once backup alone as novel. Need distinct bounded-capacity/write-quality contribution with evidence.",
+    "Figure3 decode-only savings cannot substitute for whole-request initial-placement accounting. Use independent hot992 whole-request proof for that figure and label fixed-trace counterfactual; physicalendurance and actualexclusive-policy ablation remain unproved."
+  ],
+  "root_checked_primary_sources": [
+    "https://proceedings.mlsys.org/paper_files/paper/2026/file/94bcb01789fccf15afe2764d8fe0f40e-Paper-Conference.pdf section3.3 lines451-457",
+    "https://github.com/NVlabs/RocketKV official source and pinned localcommit63637c8eb4b06b5eb83cd687723b0eeb19f48f65",
+    "https://raw.githubusercontent.com/NVlabs/RocketKV/main/config/pipeline_config/longbench/mistral-7b-instruct-v0.2.json"
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "timestamp_utc": "2026-10-03T12:24:57.036830+00:00",
+  "reference": "results/hardware/layerwise_prefill_placement_v1/control_shared.json",
+  "reference_sha256": "9449721be00001a6e4ada6e243be61e1d100dc4eb6508afa0122c4c8d8275ee0",
+  "correctness_proof_sha256": "804d467889d7bf205a60b03cb6aad14bd9e104f2d4fc2a80ee423a9c452f9618",
+  "primary": "Exact frozen50 predictions/state/counters/native KV. Pooled prepare50/compaction200 and fastappend1600 with no fallback. Active GPU minus constant plus owned pinned <=512MiB, also plus CPU array bound <=512MiB; prefill <=10% worse. Charge arena and descriptors via GPU peaks. Failure stops timing expansion.",
+  "limits": "Public Torch GPU peaks plus owned pinned and conservative CPU array roots. Native container/Python heap/allocator and non-Torch GPU/driver allocations unmeasured. Descriptor bytes are logical uploaded bytes, not physical transactions.",
+  "mechanism": "CPU phase controller with single-query scoring guard, unchanged phases, plus primitive actual ownership/geometry observation.",
+  "cpu_owner_charge_bytes": 1116896,
+  "actual_driver": "audit_geometry_resources.py",
+  "actual_driver_sha256": "6c617a1346fe25b7b95bdcac8bb399364461477fcf6e6ab31153596bfc9ebb57"
+}

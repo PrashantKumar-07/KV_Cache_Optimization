@@ -1,0 +1,24 @@
+{
+  "mechanism": "Native Mistral logits_to_keep=1 on prefill calls only; retain the verified caller output release in both arms.",
+  "stage": "preregistered before implementation",
+  "scope": "Research caller wrappers only; ordinary source/defaults unchanged until required gates.",
+  "control": "Current ordinary bulk caller with all prompt logits",
+  "candidate": "Same caller and ordinary bulk policy, prefill logits_to_keep=1",
+  "resource_primary": "At least 10% less active decode peak minus constant model storage plus measured actual pinned host ranges, unchanged phase reset.",
+  "preservation": "50 fixed-stream predictions/state/counters/transfers; 24 free-generation pairs across six tasks/two geometries, 16 exact fields and all frozen ordinary rows.",
+  "guards": "TTFT <=10% worse and prefill peak <=2% worse in 3 ABBA blocks per geometry before ordinary integration. Quiet GPU required for timing. Whole reserved and full512MiB gates separate.",
+  "initial_geometry": [
+    991,
+    1090
+  ],
+  "context": 16384,
+  "teacher_steps": 50,
+  "stop": "Failure of primary or exact preservation stops resource/ordinary expansion; document negative results.",
+  "sources_control": {
+    "experiments/longbench_eval.py": "a007cef437fe99a6d2e0b63b6bec754c8963813653d9c2543ad02d08f0fb1b15",
+    "experiments/measure_fresh_process_memory.py": "765fc3e0fa8fb65ab3f377116fb4aee9b2f25f7695ce25a22eb2117bf07071f6"
+  },
+  "prior_proof_sha256": "74d6fca656373e020d5a7c0a23ed4b766b76c47cfede2cf23867fbc556ea80f5",
+  "local_model_source_sha256": "1788d06fe8af9f66043ab900e8739c272ee2ce30b1f011e697c33a77b037d291",
+  "limits": "One locally available Mistral model, BF16 payload/F32 metadata, CPU DRAM surrogate. No physicalSTT, quality-superiority, concurrency or whole-resource equality claim."
+}

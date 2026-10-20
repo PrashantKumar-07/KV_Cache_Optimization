@@ -1,0 +1,262 @@
+{
+  "config": {
+    "output": "results/hardware/cpu_slots_model_parity_8k_16k_20261001.json",
+    "contexts": [
+      8192,
+      16384
+    ],
+    "decode": 5,
+    "blocks": 0,
+    "warmup": 0
+  },
+  "runtime": {
+    "git_revision": "be7e700d84d46b47e32ba5b9870c8b71783b9e53",
+    "source_sha256": "56ecd8b2cc023783d27862e034ba7e11163c915401139c1d75c8dc76e261f48e",
+    "packages": {
+      "torch": "2.5.1+cu124",
+      "transformers": "5.15.0",
+      "datasets": "2.19.2",
+      "numpy": "2.2.6",
+      "accelerate": "1.14.0",
+      "huggingface_hub": "1.27.0",
+      "rouge": "1.0.1"
+    }
+  },
+  "runner_sha256": "dc55d5f72605b72d9acc317cf42931e106486c623ef94fcb4e2c692d35b76489",
+  "backend_sha256": "5eaec8fdb0e9d0d3316820f2129b55f66b8c11c3ed3579b6f16c97ee0a1fd293",
+  "scope": "CPU-DRAM surrogate, fixed-stream full-loop model/policy; observed history overhead included",
+  "rows": [
+    {
+      "context": 8192,
+      "block": 0,
+      "arm": "fast",
+      "timing_scope": "end_to_end_model_policy_token",
+      "ttft_ms": 1515.569,
+      "itl_ms": 102.909,
+      "mean_itl_ms": 122.5206982344389,
+      "forward_ms": 25.352099910378456,
+      "peak_memory_gb": 14.90852352,
+      "prefill_peak_memory_gb": 16.543131136,
+      "trials": [
+        {
+          "ttft_ms": 1515.568770468235,
+          "step_ms": [
+            261.3998204469681,
+            72.20892980694771,
+            104.54890504479408,
+            71.53699547052383,
+            102.90884040296078
+          ],
+          "forward_ms": [
+            64.9549812078476,
+            26.149533689022064,
+            25.208283215761185,
+            25.352099910378456,
+            25.25128424167633
+          ],
+          "prefill_peak_memory_gb": 16.543131136,
+          "decode_peak_memory_gb": 14.90852352,
+          "predicted_token_ids": [
+            1263,
+            808,
+            5745,
+            264,
+            15988
+          ],
+          "prefill_forward_ms": 1188.1163530051708,
+          "paid_writes": 1179,
+          "writes_saved": 1989,
+          "demoted": 3168,
+          "promoted": 3008,
+          "decode_steps": 5
+        }
+      ],
+      "final_gpu_allocated_bytes": 14628199424,
+      "state_sha256": "fbbee293d4ff891868b5d61c6a03d39b4708366034c5f0a9f78e11f0da082a56",
+      "history_sha256": "3563fa7b60cf8955996eff2247c18c9071f52b17ecf40287f8a31dd380b6013a",
+      "explicit_h2d_payload_bytes": 37486592,
+      "explicit_d2h_payload_bytes": 206155776,
+      "initial_d2h_payload_bytes": 201326592,
+      "occupied_host_bytes": 206155776,
+      "reserved_host_bytes": 206155776
+    },
+    {
+      "context": 8192,
+      "block": 0,
+      "arm": "slots",
+      "timing_scope": "end_to_end_model_policy_token",
+      "ttft_ms": 1309.115,
+      "itl_ms": 97.196,
+      "mean_itl_ms": 91.29583425819874,
+      "forward_ms": 25.243472307920456,
+      "peak_memory_gb": 14.909725696,
+      "prefill_peak_memory_gb": 16.543131136,
+      "trials": [
+        {
+          "ttft_ms": 1309.115033596754,
+          "step_ms": [
+            97.34517708420753,
+            77.1380141377449,
+            97.19578921794891,
+            74.6515691280365,
+            110.14862172305584
+          ],
+          "forward_ms": [
+            25.798600167036057,
+            25.243472307920456,
+            25.19455924630165,
+            25.262603536248207,
+            25.190409272909164
+          ],
+          "prefill_peak_memory_gb": 16.543131136,
+          "decode_peak_memory_gb": 14.909725696,
+          "predicted_token_ids": [
+            1263,
+            808,
+            5745,
+            264,
+            15988
+          ],
+          "prefill_forward_ms": 810.5487953871489,
+          "paid_writes": 1179,
+          "writes_saved": 1989,
+          "demoted": 3168,
+          "promoted": 3008,
+          "decode_steps": 5
+        }
+      ],
+      "final_gpu_allocated_bytes": 14628723712,
+      "state_sha256": "fbbee293d4ff891868b5d61c6a03d39b4708366034c5f0a9f78e11f0da082a56",
+      "history_sha256": "3563fa7b60cf8955996eff2247c18c9071f52b17ecf40287f8a31dd380b6013a",
+      "explicit_h2d_payload_bytes": 37486592,
+      "explicit_d2h_payload_bytes": 206155776,
+      "initial_d2h_payload_bytes": 201326592,
+      "occupied_host_bytes": 206155776,
+      "reserved_host_bytes": 402784256,
+      "native_d2h_calls": 128,
+      "native_h2d_calls": 288
+    },
+    {
+      "context": 16384,
+      "block": 0,
+      "arm": "fast",
+      "timing_scope": "end_to_end_model_policy_token",
+      "ttft_ms": 2005.377,
+      "itl_ms": 104.529,
+      "mean_itl_ms": 98.42632040381432,
+      "forward_ms": 25.226350873708725,
+      "peak_memory_gb": 14.909023232,
+      "prefill_peak_memory_gb": 18.594276864,
+      "trials": [
+        {
+          "ttft_ms": 2005.3768251091242,
+          "step_ms": [
+            132.1456227451563,
+            73.01483117043972,
+            109.54608395695686,
+            72.8964414447546,
+            104.5286227017641
+          ],
+          "forward_ms": [
+            25.226350873708725,
+            25.30132420361042,
+            25.159934535622597,
+            25.281263515353203,
+            25.21216869354248
+          ],
+          "prefill_peak_memory_gb": 18.594276864,
+          "decode_peak_memory_gb": 14.909023232,
+          "predicted_token_ids": [
+            418,
+            18577,
+            3857,
+            4241,
+            7616
+          ],
+          "prefill_forward_ms": 1789.5363084971905,
+          "paid_writes": 1159,
+          "writes_saved": 2009,
+          "demoted": 3168,
+          "promoted": 3008,
+          "decode_steps": 5
+        }
+      ],
+      "final_gpu_allocated_bytes": 14627621888,
+      "state_sha256": "44275d537dcf267448e830bbcb210fc21f0678e19918f85f3c6532d7a46ced44",
+      "history_sha256": "2083ccdbeb94c7d9e4607539ea1ba91f4d57c3506c9a9605f3ab2d0284fb2c7c",
+      "explicit_h2d_payload_bytes": 37486592,
+      "explicit_d2h_payload_bytes": 206073856,
+      "initial_d2h_payload_bytes": 201326592,
+      "occupied_host_bytes": 206073856,
+      "reserved_host_bytes": 206073856
+    },
+    {
+      "context": 16384,
+      "block": 0,
+      "arm": "slots",
+      "timing_scope": "end_to_end_model_policy_token",
+      "ttft_ms": 2006.38,
+      "itl_ms": 99.518,
+      "mean_itl_ms": 90.43891467154026,
+      "forward_ms": 25.265589356422424,
+      "peak_memory_gb": 14.909023232,
+      "prefill_peak_memory_gb": 18.594276864,
+      "trials": [
+        {
+          "ttft_ms": 2006.3799675554037,
+          "step_ms": [
+            99.74169172346592,
+            77.50112377107143,
+            99.51848350465298,
+            75.21871663630009,
+            100.21455772221088
+          ],
+          "forward_ms": [
+            28.100116178393364,
+            25.272687897086143,
+            25.22563934326172,
+            25.265589356422424,
+            25.21507814526558
+          ],
+          "prefill_peak_memory_gb": 18.594276864,
+          "decode_peak_memory_gb": 14.909023232,
+          "predicted_token_ids": [
+            418,
+            18577,
+            3857,
+            4241,
+            7616
+          ],
+          "prefill_forward_ms": 1795.3601516783237,
+          "paid_writes": 1159,
+          "writes_saved": 2009,
+          "demoted": 3168,
+          "promoted": 3008,
+          "decode_steps": 5
+        }
+      ],
+      "final_gpu_allocated_bytes": 14627621888,
+      "state_sha256": "44275d537dcf267448e830bbcb210fc21f0678e19918f85f3c6532d7a46ced44",
+      "history_sha256": "2083ccdbeb94c7d9e4607539ea1ba91f4d57c3506c9a9605f3ab2d0284fb2c7c",
+      "explicit_h2d_payload_bytes": 37486592,
+      "explicit_d2h_payload_bytes": 206073856,
+      "initial_d2h_payload_bytes": 201326592,
+      "occupied_host_bytes": 206073856,
+      "reserved_host_bytes": 402784256,
+      "native_d2h_calls": 128,
+      "native_h2d_calls": 288
+    }
+  ],
+  "passed": true,
+  "prompt_sha256": "18695714f26e35cb8d2b039ae9efb3b7e64291cbd7bcd91956efc07e16a732cd",
+  "teacher_token_ids": [
+    28723,
+    14343,
+    18577,
+    3857,
+    4241,
+    7616
+  ],
+  "gpu": "NVIDIA L40S",
+  "exact_model_policy_state_and_payload": true
+}

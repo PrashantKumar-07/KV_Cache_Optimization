@@ -1,0 +1,27 @@
+{
+  "timestamp_utc": "2026-10-03T07:35:59.949871+00:00",
+  "mechanism": "Bounded deferred ownership; two verified native gather/scatter passes per group of <=8 layers; frozen ordinary Bulk paired quiet 3ABBA.",
+  "settings": {
+    "hot": 991,
+    "cold": 1090,
+    "quota": 32,
+    "context": 16384,
+    "decode": 50,
+    "warmup": 1,
+    "seed": 0,
+    "prefill_last_logits": true
+  },
+  "prompt": "results/remediation_v3/latency_prompt.txt",
+  "teachers": "results/shadow_ablation_full/fixed_stream_20260929.json",
+  "control": "results/hardware/layerwise_prefill_placement_v1/control_shared.json",
+  "query": "results/hardware/bounded_deferred_ownership_v1/resource.json",
+  "correctness_proof_sha256": "7c0de52ebb75f3e2f0e8b014e3faa355307e2067e573c917c5b0b6e214ca90a1",
+  "resource_proof_sha256": "a232cae61fc6f8ec3f3e3545db60eb5b8e2e55246364b438ffa68ba3e0ac953a",
+  "primary": ">=5% median whole-loop decode improvement AND >=4ms saved; p95 <=2% worse, TTFT <=10% worse. All 300 measured predictions per arm, final state, counters, native KV payload/calls exact. Fast append3200 including warmup, fallback0; measured deferred1600/groups200/scratch32473088 bytes, immediate0. Owned leases/hooks released; 25 quiet GPU0 observations.",
+  "stop": "Failed primary stops bounded deferred ownership expansion/adoption; no favorable timing retry. Passing requires broader correctness/free generation/recycling and faithful baseline/quality joint gates.",
+  "limits": "One Mistral/seed/fixed teacher. Before/after PID checks, not continuous monitoring. Separate fresh scoped active memory432.116 MiB includes owned pinned block and bounded scratch; whole reserved envelope5089.492 MiB. No whole-process memory, independent quality, faithful baseline win or physical STT claim.",
+  "prompt_sha256": "18695714f26e35cb8d2b039ae9efb3b7e64291cbd7bcd91956efc07e16a732cd",
+  "teachers_sha256": "620ac3a383997c9afbc6a3f0b06acec9f261d5a2a5827bf5988e0bb5b69f12a2",
+  "control_sha256": "9449721be00001a6e4ada6e243be61e1d100dc4eb6508afa0122c4c8d8275ee0",
+  "query_sha256": "1abd7a60a622f193076a88855d1b5b3a857886e9d6700e7bc747e743d93c4e94"
+}

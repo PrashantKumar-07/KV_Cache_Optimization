@@ -1,0 +1,15 @@
+{
+  "timestamp_utc": "2026-10-03T08:55:33.733221+00:00",
+  "purpose": "Diagnostic only: localize remaining controller cost after pooled layout passes replay/memory and fails wholeloop speed. No timing retry/adoption; profiles are instrumentation-distorted.",
+  "control": "results/hardware/layerwise_prefill_placement_v1/control_shared.json",
+  "candidate": "results/hardware/pooled_controller_v1/resource.json",
+  "requirements": [
+    "Replay frozen50 predictions/finalstate/counters/native KV in both arms",
+    "Confirm pooledprepare50/compact200/no fallback and lease/hook/pinned cleanup",
+    "Attribute call counts and exclusive/inclusive policy costs; do not add overlapping times as savings"
+  ],
+  "limits": "One policy-only profile/arm, CUDA waits included and distorted. Diagnostic does not reverse failed quiet3ABBA or establish a causal fix, physical STT, quality or completion claim.",
+  "control_sha256": "9449721be00001a6e4ada6e243be61e1d100dc4eb6508afa0122c4c8d8275ee0",
+  "candidate_sha256": "5990c7a4cb782edcde037a6b2ffbd927cdd49b027361e853db11d8f11b86c3e8",
+  "failed_cost_sha256": "a2a62bb8021c8d1ccb21f2c532e29c5c10569200eef811f4238e9caa4e85c3cc"
+}

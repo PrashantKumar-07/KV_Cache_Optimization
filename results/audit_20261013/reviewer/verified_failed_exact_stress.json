@@ -1,0 +1,375 @@
+{
+  "diagnostic_verified": true,
+  "all_registered_stress_gates_passed": false,
+  "source_attestation": {
+    "verified": true,
+    "recorded_utc": "2026-10-14T07:08:14.994471+00:00",
+    "source_count": 5914,
+    "archive_plan_live_equal": true,
+    "runtime": {
+      "git_revision": "be7e700d84d46b47e32ba5b9870c8b71783b9e53",
+      "source_sha256": "2a2ab264d01574e1bd3b8fe5f4f67da78a19a2e4d8fcd633bc4be0fded10b2b2",
+      "packages": {
+        "torch": "2.5.1+cu124",
+        "transformers": "5.15.0",
+        "datasets": "2.19.2",
+        "numpy": "2.2.6",
+        "accelerate": "1.14.0",
+        "huggingface_hub": "1.27.0",
+        "rouge": "1.0.1",
+        "ninja": "1.13.0"
+      }
+    },
+    "cases": {
+      "exact_stress_8192_cold256": {
+        "plan_sha256": "748c12b87c74dcdaca2a587b540cac68b33c7a70b6b432621758c2135cb40028",
+        "runner_sha256": "7e620a27a62f432449030121b8cbc7cf5a27f97ffb368adf4b2ca5da155f45a7",
+        "raw_sha256": "6359641b8dbced6498f722c98cf185ddab08b2bbc14d2c3a1bae3ea1e90a3ac0",
+        "prompt_sha256": "18695714f26e35cb8d2b039ae9efb3b7e64291cbd7bcd91956efc07e16a732cd",
+        "settings": {
+          "context": 8192,
+          "decode": 50,
+          "hot": 1024,
+          "cold": 256,
+          "fraction": 0.75,
+          "quota": 32,
+          "recent": 128,
+          "dtype": "BF16",
+          "last_logits": true,
+          "seed": 0
+        }
+      },
+      "exact_stress_31500_cold2048": {
+        "plan_sha256": "0c86e731fbb7e995a87565bad4fd34b01ac4e5b84e6d2483bc55c1186e5063aa",
+        "runner_sha256": "889f295082e8ea11b7e972f0872f3cd47358d8347da781f75c9609b725ac2c4e",
+        "raw_sha256": "0a61f422dad8373c306ec7c4e77f6d7ee5c134adc2f0f15b4bb63b396c1245a8",
+        "prompt_sha256": "18695714f26e35cb8d2b039ae9efb3b7e64291cbd7bcd91956efc07e16a732cd",
+        "settings": {
+          "context": 31500,
+          "decode": 50,
+          "hot": 1024,
+          "cold": 2048,
+          "fraction": 0.75,
+          "quota": 32,
+          "recent": 128,
+          "dtype": "BF16",
+          "last_logits": true,
+          "seed": 0
+        }
+      }
+    }
+  },
+  "model_artifacts_rehashed": 12,
+  "cases": {
+    "exact_stress_8192_cold256": {
+      "diagnostic_verified": true,
+      "registered_parity_gate_passed": false,
+      "reason": "native visibility coverage41 instead of required50; never loosen gate",
+      "finite_full_vocab_bytes_exact_arrays": 51,
+      "payload_position_shadow_trace_points_each32layers": 51,
+      "decoded_predictions_recomputed_from_logits": 50,
+      "native_CPU_append_steps": 50,
+      "CPU_fallback_steps": 0,
+      "native_cold_visibility_steps": 41,
+      "inferred_non_native_visibility_steps": 9,
+      "successful_hooks_closed": true,
+      "exact_live_roots_zero_after_reset": true,
+      "post_state_live_counts": [
+        {
+          "tracepoint": 0,
+          "minimum_live_across_layers": 192,
+          "maximum_live_across_layers": 192
+        },
+        {
+          "tracepoint": 1,
+          "minimum_live_across_layers": 193,
+          "maximum_live_across_layers": 193
+        },
+        {
+          "tracepoint": 2,
+          "minimum_live_across_layers": 194,
+          "maximum_live_across_layers": 194
+        },
+        {
+          "tracepoint": 3,
+          "minimum_live_across_layers": 195,
+          "maximum_live_across_layers": 195
+        },
+        {
+          "tracepoint": 4,
+          "minimum_live_across_layers": 196,
+          "maximum_live_across_layers": 196
+        },
+        {
+          "tracepoint": 5,
+          "minimum_live_across_layers": 197,
+          "maximum_live_across_layers": 197
+        },
+        {
+          "tracepoint": 6,
+          "minimum_live_across_layers": 198,
+          "maximum_live_across_layers": 198
+        },
+        {
+          "tracepoint": 7,
+          "minimum_live_across_layers": 199,
+          "maximum_live_across_layers": 199
+        },
+        {
+          "tracepoint": 8,
+          "minimum_live_across_layers": 200,
+          "maximum_live_across_layers": 200
+        },
+        {
+          "tracepoint": 9,
+          "minimum_live_across_layers": 201,
+          "maximum_live_across_layers": 201
+        },
+        {
+          "tracepoint": 10,
+          "minimum_live_across_layers": 202,
+          "maximum_live_across_layers": 202
+        },
+        {
+          "tracepoint": 11,
+          "minimum_live_across_layers": 203,
+          "maximum_live_across_layers": 203
+        },
+        {
+          "tracepoint": 12,
+          "minimum_live_across_layers": 204,
+          "maximum_live_across_layers": 204
+        },
+        {
+          "tracepoint": 13,
+          "minimum_live_across_layers": 205,
+          "maximum_live_across_layers": 205
+        },
+        {
+          "tracepoint": 14,
+          "minimum_live_across_layers": 206,
+          "maximum_live_across_layers": 206
+        },
+        {
+          "tracepoint": 15,
+          "minimum_live_across_layers": 207,
+          "maximum_live_across_layers": 207
+        },
+        {
+          "tracepoint": 16,
+          "minimum_live_across_layers": 208,
+          "maximum_live_across_layers": 208
+        },
+        {
+          "tracepoint": 17,
+          "minimum_live_across_layers": 209,
+          "maximum_live_across_layers": 209
+        },
+        {
+          "tracepoint": 18,
+          "minimum_live_across_layers": 210,
+          "maximum_live_across_layers": 210
+        },
+        {
+          "tracepoint": 19,
+          "minimum_live_across_layers": 211,
+          "maximum_live_across_layers": 211
+        },
+        {
+          "tracepoint": 20,
+          "minimum_live_across_layers": 212,
+          "maximum_live_across_layers": 212
+        },
+        {
+          "tracepoint": 21,
+          "minimum_live_across_layers": 213,
+          "maximum_live_across_layers": 213
+        },
+        {
+          "tracepoint": 22,
+          "minimum_live_across_layers": 214,
+          "maximum_live_across_layers": 214
+        },
+        {
+          "tracepoint": 23,
+          "minimum_live_across_layers": 215,
+          "maximum_live_across_layers": 215
+        },
+        {
+          "tracepoint": 24,
+          "minimum_live_across_layers": 216,
+          "maximum_live_across_layers": 216
+        },
+        {
+          "tracepoint": 25,
+          "minimum_live_across_layers": 217,
+          "maximum_live_across_layers": 217
+        },
+        {
+          "tracepoint": 26,
+          "minimum_live_across_layers": 218,
+          "maximum_live_across_layers": 218
+        },
+        {
+          "tracepoint": 27,
+          "minimum_live_across_layers": 219,
+          "maximum_live_across_layers": 219
+        },
+        {
+          "tracepoint": 28,
+          "minimum_live_across_layers": 220,
+          "maximum_live_across_layers": 220
+        },
+        {
+          "tracepoint": 29,
+          "minimum_live_across_layers": 221,
+          "maximum_live_across_layers": 221
+        },
+        {
+          "tracepoint": 30,
+          "minimum_live_across_layers": 222,
+          "maximum_live_across_layers": 222
+        },
+        {
+          "tracepoint": 31,
+          "minimum_live_across_layers": 223,
+          "maximum_live_across_layers": 223
+        },
+        {
+          "tracepoint": 32,
+          "minimum_live_across_layers": 224,
+          "maximum_live_across_layers": 224
+        },
+        {
+          "tracepoint": 33,
+          "minimum_live_across_layers": 225,
+          "maximum_live_across_layers": 225
+        },
+        {
+          "tracepoint": 34,
+          "minimum_live_across_layers": 226,
+          "maximum_live_across_layers": 226
+        },
+        {
+          "tracepoint": 35,
+          "minimum_live_across_layers": 227,
+          "maximum_live_across_layers": 227
+        },
+        {
+          "tracepoint": 36,
+          "minimum_live_across_layers": 228,
+          "maximum_live_across_layers": 228
+        },
+        {
+          "tracepoint": 37,
+          "minimum_live_across_layers": 229,
+          "maximum_live_across_layers": 229
+        },
+        {
+          "tracepoint": 38,
+          "minimum_live_across_layers": 230,
+          "maximum_live_across_layers": 230
+        },
+        {
+          "tracepoint": 39,
+          "minimum_live_across_layers": 231,
+          "maximum_live_across_layers": 231
+        },
+        {
+          "tracepoint": 40,
+          "minimum_live_across_layers": 232,
+          "maximum_live_across_layers": 232
+        },
+        {
+          "tracepoint": 41,
+          "minimum_live_across_layers": 233,
+          "maximum_live_across_layers": 233
+        },
+        {
+          "tracepoint": 42,
+          "minimum_live_across_layers": 234,
+          "maximum_live_across_layers": 234
+        },
+        {
+          "tracepoint": 43,
+          "minimum_live_across_layers": 235,
+          "maximum_live_across_layers": 235
+        },
+        {
+          "tracepoint": 44,
+          "minimum_live_across_layers": 236,
+          "maximum_live_across_layers": 236
+        },
+        {
+          "tracepoint": 45,
+          "minimum_live_across_layers": 237,
+          "maximum_live_across_layers": 237
+        },
+        {
+          "tracepoint": 46,
+          "minimum_live_across_layers": 238,
+          "maximum_live_across_layers": 238
+        },
+        {
+          "tracepoint": 47,
+          "minimum_live_across_layers": 239,
+          "maximum_live_across_layers": 239
+        },
+        {
+          "tracepoint": 48,
+          "minimum_live_across_layers": 240,
+          "maximum_live_across_layers": 240
+        },
+        {
+          "tracepoint": 49,
+          "minimum_live_across_layers": 241,
+          "maximum_live_across_layers": 241
+        },
+        {
+          "tracepoint": 50,
+          "minimum_live_across_layers": 242,
+          "maximum_live_across_layers": 242
+        }
+      ],
+      "empty_live_explanation_supported": false,
+      "fallback_reason": "Unrecorded: all post-state traces have positive live count in every layer. Could be an unsupported geometry/ownership boundary; which rejection condition fired cannot be proved from hashes/positions without strides/owner/version/branch records.",
+      "allocation_events": [
+        {
+          "kind": "allocate",
+          "token": 1,
+          "bytes": 41943040
+        },
+        {
+          "kind": "release",
+          "token": 1,
+          "bytes": 41943040
+        }
+      ]
+    },
+    "exact_stress_31500_cold2048": {
+      "diagnostic_verified": true,
+      "registered_parity_gate_passed": false,
+      "reason": "pre-forward harness precondition: frozen prompt30907tokens shorter than requested31500",
+      "tokenizer_count_independently_reproduced": 30907,
+      "arm_results": 0,
+      "persisted_logits_arrays": 0,
+      "quality_or_performance_outcome": null,
+      "cleanup": "ExitStack cleanup is present in source but no successful-row hook/allocation counters were saved; do not claim runtime closure verification"
+    }
+  },
+  "limits": [
+    "No new GPU/model experiments or favorable retries",
+    "Payload/logit equivalence is distinct from nativepath coverage",
+    "No physicalSTT/SOTA/timing or broad correctness claim"
+  ],
+  "evidence_sha256": {
+    "results/audit_20261013/exact_stress_8192_cold256/plan.json": "748c12b87c74dcdaca2a587b540cac68b33c7a70b6b432621758c2135cb40028",
+    "results/audit_20261013/exact_stress_8192_cold256/run_parity.py": "7e620a27a62f432449030121b8cbc7cf5a27f97ffb368adf4b2ca5da155f45a7",
+    "results/audit_20261013/exact_stress_8192_cold256/parity.json": "6359641b8dbced6498f722c98cf185ddab08b2bbc14d2c3a1bae3ea1e90a3ac0",
+    "results/audit_20261013/exact_stress_8192_cold256/parity.log": "d9b38cfb58a0e868ee60d1a813f4a7759f0a4b6a1485693971f4fb8f47648f79",
+    "results/audit_20261013/exact_stress_31500_cold2048/plan.json": "0c86e731fbb7e995a87565bad4fd34b01ac4e5b84e6d2483bc55c1186e5063aa",
+    "results/audit_20261013/exact_stress_31500_cold2048/run_parity.py": "889f295082e8ea11b7e972f0872f3cd47358d8347da781f75c9609b725ac2c4e",
+    "results/audit_20261013/exact_stress_31500_cold2048/parity.json": "0a61f422dad8373c306ec7c4e77f6d7ee5c134adc2f0f15b4bb63b396c1245a8",
+    "results/audit_20261013/exact_stress_31500_cold2048/parity.log": "d444c1ec02824ebd56fe9cba479e9ea1a395db5d30c9ed6232cafd06ba15d11f"
+  }
+}

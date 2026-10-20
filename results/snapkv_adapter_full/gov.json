@@ -1,0 +1,147 @@
+{
+  "config": {
+    "model": "../models/mistral-7b-instruct",
+    "data_dir": "../hf_cache/datasets/downloads/extracted/5def9c7eaf83951e1cee75902d8611ef764ad88dd289e8f0bf97ff658a3eb83a/data",
+    "tasks": [
+      "gov_report"
+    ],
+    "max_samples": 10,
+    "capacity": 1024,
+    "window": 32,
+    "runtime": {
+      "git_revision": "be7e700d84d46b47e32ba5b9870c8b71783b9e53",
+      "source_sha256": "bcc2b8520906db2db0a85494d441a4e688e571a356f1f6bc00c6c493d71dc548",
+      "packages": {
+        "torch": "2.5.1+cu124",
+        "transformers": "5.15.0",
+        "datasets": "2.19.2",
+        "numpy": "2.2.6",
+        "accelerate": "1.14.0",
+        "huggingface_hub": "1.27.0",
+        "rouge": "1.0.1"
+      }
+    },
+    "seed": 0,
+    "max_ctx": 31500,
+    "source_files": {
+      "/data/nishant/Nishant/Prashant/Project/kv_cache/experiments/evaluate_snapkv_adapter.py": "3fcf3cced1ae7f89c2e9b183d8fd8cbaa00d92c00889135a97c740b61659cd46",
+      "/data/nishant/Nishant/Prashant/Project/kv_cache/experiments/snapkv_adapter.py": "8d44929bcd4440431332608eb14f4660008ca284ded84dcb824dca3dbad19eab",
+      "sota/snapkv/snapkv/monkeypatch/snapkv_utils.py": "d7eddeaf361d9d38be991be734752c831b09f9c95a6e777ac17e7262ca2b4cf5"
+    },
+    "dataset_sha256": {
+      "gov_report": "0a3902fcf3d49f228549f02a2ef1ae84dbe8578b8be3d4611d54459487bdef84"
+    }
+  },
+  "results": {
+    "gov_report": {
+      "snapkv_upstream_selector": {
+        "score": 30.32,
+        "n": 10,
+        "sample_scores": [
+          24.5,
+          36.36,
+          33.33,
+          32.41,
+          36.54,
+          29.73,
+          30.35,
+          28.16,
+          28.32,
+          23.53
+        ],
+        "samples": [
+          {
+            "sample_id": "11d3fe7a8c5f9be5c05ff2b46002fae136e91f31575249f5c3db054f4d0715ad",
+            "prediction": "The report highlights the complexity of understanding the sources of information systems due to the intricate global supply chains involved. Federal agencies often rely on commercial providers for IT equipment, many of which are manufactured overseas. The Federal Information Security Modernization Act of 2014 requires agencies to manage supply chain risks and ensure information security throughout the system's life cycle. NIST provides guidelines for managing supply chain risks, including conducting due diligence, identifying and mitigating risks, and implementing controls throughout the system development life cycle. The report also mentions several risks associated with supply chains, such as malicious hardware, counterfeit parts, and insider threats. The report concludes by emphasizing the importance of federal agencies addressing supply chain risks as part of their overall information security programs.",
+            "score": 24.501424131459977,
+            "elapsed_s": 10.154908526688814,
+            "prompt_tokens": 3308,
+            "generated_tokens": 160,
+            "final_kv_payload_bytes": 620232704
+          },
+          {
+            "sample_id": "56f5a37dac322a67081fbbce0ee9261106133f38ac8b4f38fc3555f5b593969d",
+            "prediction": "The report by the Government Accountability Office (GAO) examines grant programs awarded by the Departments of Health and Human Services (HHS), Labor (DOL), and Justice (DOJ) from 2007 to 2015 that were subject to statutory restrictions on religious-based hiring. The report identified 2,586 grantees receiving funding through at least 53 grant programs, with 19 potential Faith-Based Organizations (FBOs) identified as potential recipients.\n\nHHS did not award any grants to FBOs under the Projects for Assistance in Transition from Homelessness (PATH) program, as no grants were awarded to nonprofit organizations during this period. DOL identified 18 programs with 931 grantees, including 19 potential FBOs. DOJ identified at least 34 grant programs, representing a minimum of 1,136 grantees, including 114 potential FBOs.\n\nOf the 117 potential FBOs identified across the three agencies, nine faith-based grantees certified that they were exempt from statutory restrictions on religious-based hiring. These grantees received approximately $3.2 million in funding, which is less than 1% of the total grants awarded during this period. The majority of the exempt grantees received funding between 2008 and 2010 and were required to seek approval from their respective agencies to be exempt.\n\nThe report also notes that the agencies provide information on statutory restrictions on religious-based hiring to grant applicants and recipients through various methods, including grant announcements and web pages. However, the report suggests that more could be done to ensure that potential grantees are aware of these restrictions and the exemption process.\n\nThe report concludes by stating that the Departments of Labor, Justice, and Health and Human Services awarded grants to at least 2,586 grantees through at least 53 grant programs that were subject to statutory restrictions on religious-based hiring from 2007 to 2015. Nine faith-based grantees were identified as exempt from these restrictions and received approximately $3.2 million in funding. The report recommends that the agencies take steps to improve communication with potential grantees regarding religious",
+            "score": 36.36363588832772,
+            "elapsed_s": 26.027655696496367,
+            "prompt_tokens": 3548,
+            "generated_tokens": 512,
+            "final_kv_payload_bytes": 804782080
+          },
+          {
+            "sample_id": "32b69d9e2f01e5ad531164ef2b312ea36c6cf8a24dfd0b442779369d8cbd8e09",
+            "prediction": "This report provides an overview of cybersecurity-related bills and hearings in the U.S. Congress during the 115th and 116th sessions. In the 116th Congress, the House has passed four cybersecurity bills, and the Senate has considered four others, passing one. A total of 31 bills received committee consideration or passed one or both chambers in the 115th Congress, and five of these bills were signed into law. These laws include the Department of Energy Research and Innovation Act, the John S. McCain National Defense Authorization Act, and the National Defense Authorization Act for Fiscal Year 2017, which established various cybersecurity efforts and policies. The report also lists cybersecurity-related hearings in the 116th Congress, arranged by date and committee, but notes that the list is not definitive. The report includes references to additional CRS reports for further information on cybersecurity legislation and issues.",
+            "score": 33.3333328419076,
+            "elapsed_s": 11.970758073031902,
+            "prompt_tokens": 1303,
+            "generated_tokens": 208,
+            "final_kv_payload_bytes": 645398528
+          },
+          {
+            "sample_id": "d1bba223842d90eab2f7962487cba597cea36944010060e21c010e1dbfbaeefe",
+            "prediction": "The report reveals that during fiscal years 2012-2016, Customs and Border Protection (CBP) conducted approximately 308,000 seizures of international items deemed a threat to U.S. security, health, business, or ecology. About 70% of these seizures were from mail and 30% from express cargo. Drugs accounted for 47% of all seizures, while merchandise made up 53%. The report notes an increase in focus on identifying methods to stop the entry of synthetic opioids, specifically fentanyl, into the U.S. CBP reported zero seizures of fentanyl from 2012-2015 due to data categorization issues, but recorded 53 seizures in 2016.\n\nThe report also highlights the challenges in targeting and inspecting mail from the U.S. Postal Service (USPS) compared to express cargo. USPS relies on voluntary or mutual agreements for providing EAD (Advance Electronic Data) to CBP for targeted mail inspections. In 2016, USPS provided EAD for roughly one-third of all inbound international mail, but only half of that for March 2017. CBP and USPS are currently piloting programs to test the effectiveness of using EAD to target mail for inspection. However, the report states that these pilots lack clear performance goals and have not yet been assessed for success or failure.\n\nThe report also discusses the costs and benefits of using EAD to target mail for inspection. While there may be potential benefits, such as increased identification of threats and reduced costs from fewer inspections, the report notes that the costs associated with implementing these programs and the data needed to assess their effectiveness are not yet known. The report recommends that CBP and USPS establish clear performance goals and assess the pilots for success or failure before expanding their efforts. The Department of Homeland Security concurred with this recommendation.",
+            "score": 32.409381200940174,
+            "elapsed_s": 25.3816483207047,
+            "prompt_tokens": 2602,
+            "generated_tokens": 438,
+            "final_kv_payload_bytes": 765984768
+          },
+          {
+            "sample_id": "2124f6aefc1910cb6201bb8bef9916c102aeba694bace9e4d17237ba7d393b5b",
+            "prediction": "The report provides background information and issues for Congress regarding the John Lewis (TAO-205) class oiler shipbuilding program, which aims to build 20 new fleet oilers for the Navy. The Navy's proposed FY2020 budget includes funding for the procurement of the fifth and sixth ships in the program. Key issues for Congress include approving or modifying the Navy's funding request, the number of oilers needed, and the inclusion of self-defense equipment.\n\nFleet oilers are essential for the Navy as they transfer fuel to ships at sea, extending their operational range and endurance. The existing fleet of 15 TAO-195 class oilers is aging, and the Navy plans to replace them with the TAO-205 class. The first three ships have been procured, and the fourth is under construction.\n\nCongress may consider approving or modifying the Navy's FY2020 funding request for the TAO-205 program. Issues include the total number of oilers needed, the cost per ship, and the inclusion of self-defense equipment. The Navy's proposed budget requests $1.051 billion for the procurement of the fifth and sixth ships, with an average procurement cost of $525.5 million each.\n\nAnother issue for Congress is the number of oilers needed. The Navy plans to procure 20 ships in total, with a goal of one ship per year from FY2020 to FY2024. However, some experts argue that the Navy may need more oilers to support its growing fleet and operational requirements.\n\nA third issue is the inclusion of self-defense equipment on the oilers. Some argue that the oilers should be able to defend themselves against potential threats, while others argue that the added cost and complexity may not be worth it.\n\nThe report also discusses the strategic importance of fleet oilers and the role they play in supporting Navy operations. It highlights the need for a reliable and capable oiler fleet to ensure the Navy's operational readiness and flexibility.\n\nIn conclusion, the report provides background information and key issues for Congress regarding the John Lewis (TAO-205) class oiler shipbuilding program. Congress will need to consider the Navy's proposed FY20",
+            "score": 36.538461039776465,
+            "elapsed_s": 30.339677695184946,
+            "prompt_tokens": 5421,
+            "generated_tokens": 512,
+            "final_kv_payload_bytes": 804782080
+          },
+          {
+            "sample_id": "20d272b6ca2744e326ebebfd65eb280c18c5f619dae3d7640eeac7b34dcfa78b",
+            "prediction": "The Unemployment Compensation (UC) program is a joint federal-state initiative financed through the Federal Unemployment Tax Act (FUTA) and State Unemployment Tax Act (SUTA). The program's primary goal is to provide financial assistance during periods of unemployment and help mitigate the economic impact of recessions. When the economy is strong, UC revenues grow, and the surplus is used to build reserves. During economic downturns, UC benefits increase, and reserves are drawn down. States are responsible for administering their UC programs and financing Extended Benefits (EB) through their SUTA accounts. When a state faces insufficient funds to pay for UC benefits, it can borrow from the federal government. However, these loans must be repaid with interest, and failure to do so can result in increased federal unemployment taxes for employers. The report highlights the importance of maintaining adequate SUTA reserves to avoid the need for federal loans and the associated credit reductions and increased taxes. The report also discusses the historical use of federal loans during the most recent recession and the resulting credit reductions and increased taxes for some states. Employers are ultimately responsible for paying the federal unemployment taxes that fund the UC program.",
+            "score": 29.72972923171821,
+            "elapsed_s": 15.63950964063406,
+            "prompt_tokens": 3669,
+            "generated_tokens": 263,
+            "final_kv_payload_bytes": 674234368
+          },
+          {
+            "sample_id": "cc20f8185b5905db03022f47fd748bc07fe55e2332f9ae2b1123ae935f2efe41",
+            "prediction": "The report by the Government Accountability Office (GAO) highlights the Federal Communications Commission's (FCC) lack of evaluation of Lifeline program's performance in meeting its goals. The report mentions that FCC has taken recent steps towards evaluation but has not completed it in the past. The report raises concerns about the effectiveness of public funds being used in the changing world without proper evaluation and measurement of program performance.\n\nThe report also discusses several instances where FCC failed to conduct evaluations of Lifeline program, including a study that was planned but never conducted in 1999. In 2015, GAO recommended that FCC conduct a program evaluation to determine the extent to which Lifeline is efficiently and effectively reaching its goals. However, as of May 2017, FCC had not yet completed this evaluation.\n\nThe report also discusses some findings from the May 2017 evaluation, which included the fact that FCC did not know how many of the 12.3 million households receiving Lifeline also had non-Lifeline phone service. The report also found that some providers were offering lower-cost broadband options to low-income consumers that were less expensive than the FCC's benchmark price for Lifeline broadband.\n\nThe report recommends that FCC conduct a program evaluation to determine the extent to which Lifeline is efficiently and effectively reaching its goals. The report also recommends that FCC address weaknesses in its financial controls and improve its transparency and accountability.\n\nOverall, the report highlights the importance of effective program evaluation in ensuring that public funds are being used efficiently and effectively to meet the needs of low-income Americans.",
+            "score": 30.35342994425163,
+            "elapsed_s": 21.69251311197877,
+            "prompt_tokens": 4716,
+            "generated_tokens": 364,
+            "final_kv_payload_bytes": 727187456
+          },
+          {
+            "sample_id": "2c759b1f62ed9c3e0855d47f34e32de1427b6a48a5ebeb33756655e659a99744",
+            "prediction": "The Government Accountability Office (GAO) report found that the Federal Communications Commission (FCC) has not effectively evaluated Lifeline's performance in meeting program goals. The report highlighted that FCC had called for evaluations in the past but never completed them. In 2015, GAO recommended a program evaluation to determine the extent to which Lifeline is efficiently and effectively reaching its goal of providing affordable telephone and broadband services to low-income households. However, FCC had not yet conducted this evaluation as of May 2017.\n\nThe report also noted that FCC did not know how many Lifeline participants also had non-Lifeline phone or broadband services, making it difficult to determine if the program was achieving its goal of increasing access to communications services for low-income households. Additionally, the report found that some providers offered lower-cost broadband options to low-income consumers that were not subject to the Universal Service Fund (USF) contribution requirement, potentially undercutting the Lifeline program.\n\nIn response to these findings, FCC had taken some steps toward evaluation, including hiring an outside contractor to conduct a program evaluation and setting a deadline for completion. However, the evaluation had not yet been completed as of May 2017. The report also recommended that FCC take actions to address weaknesses in the program, such as improving financial controls and addressing potential fraud and abuse.\n\nOverall, the report concluded that effective program evaluation and oversight are necessary for the FCC to ensure that Lifeline is efficiently and effectively meeting its goals of providing affordable communications services to low-income households.",
+            "score": 28.157349484802115,
+            "elapsed_s": 20.789360178634524,
+            "prompt_tokens": 4716,
+            "generated_tokens": 348,
+            "final_kv_payload_bytes": 718798848
+          },
+          {
+            "sample_id": "35456c7c22589a316a2db74c791ba0e44786a7327003f875a4524fa95f680223",
+            "prediction": "The report examines the use of tax incentives to promote energy production in the United States since the 1970s. Until the mid-2000s, most revenue losses from energy tax incentives were due to provisions benefiting fossil fuels. However, this trend has shifted, and currently, the majority of revenue losses come from renewable energy tax incentives. In 2017, 77.3% of U.S. energy production came from fossil fuels, while 22.7% came from renewables. The report notes that while the data on energy production and tax incentives can be useful for policymakers, it does not analyze the economic efficiency or effectiveness of the current system of energy tax incentives. The report also acknowledges several limitations, including the fact that it does not consider federal spending on energy outside of the tax code and that tax expenditures are estimates that do not reflect actual revenue losses. The report concludes by noting that the total value of energy tax incentives is projected to decline under current law, but this could change if expired provisions are extended or if new policies are enacted.",
+            "score": 28.32369899695948,
+            "elapsed_s": 14.794859016314149,
+            "prompt_tokens": 4614,
+            "generated_tokens": 244,
+            "final_kv_payload_bytes": 664272896
+          },
+          {
+            "sample_id": "46daa1fd32f4f8112eac81a99ea37ba1bc1d9e5f1c4fb25fd62bdac0144e370c",
+            "prediction": "The DEA, under the Department of Justice, is responsible for enforcing the Controlled Substances Act and regulating entities involved in the production, distribution, and disposal of controlled substances. The Disposal Act amended the Controlled Substances Act in 2010, allowing for the public disposal of unused controlled substances through authorized collectors. DEA regulations outline three methods for disposal: mail-back programs, take-back events, and disposal bins. Eligible entities, such as pharmacies and hospitals, must modify their DEA registration to become authorized collectors. As of April 2017, about 3% of eligible entities had registered as authorized collectors, with most being pharmacies or hospitals. Costs and uncertainty regarding regulations were identified as barriers to participation. DEA officials encourage communication and provide training to stakeholders. The report recommends addressing stakeholder concerns to increase participation in prescription drug disposal programs.",
+            "score": 23.529411357302386,
+            "elapsed_s": 12.104394663125277,
+            "prompt_tokens": 4011,
+            "generated_tokens": 200,
+            "final_kv_payload_bytes": 641204224
+          }
+        ]
+      }
+    }
+  }
+}

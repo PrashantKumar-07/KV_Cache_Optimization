@@ -1,0 +1,10 @@
+[transformers] `torch_dtype` is deprecated! Use `dtype` instead!
+Loading weights:   0%|          | 0/291 [00:00<?, ?it/s]Loading weights:   3%|▎         | 9/291 [00:00<00:03, 85.53it/s]Loading weights:   8%|▊         | 23/291 [00:00<00:02, 114.23it/s]Loading weights:  14%|█▎        | 40/291 [00:00<00:01, 136.58it/s]Loading weights:  19%|█▉        | 56/291 [00:00<00:01, 145.02it/s]Loading weights:  24%|██▍       | 71/291 [00:00<00:01, 140.86it/s]Loading weights:  30%|██▉       | 86/291 [00:00<00:01, 137.34it/s]Loading weights:  35%|███▌      | 103/291 [00:00<00:01, 144.12it/s]Loading weights:  42%|████▏     | 121/291 [00:00<00:01, 146.54it/s]Loading weights:  47%|████▋     | 136/291 [00:00<00:01, 147.42it/s]Loading weights:  52%|█████▏    | 151/291 [00:01<00:00, 145.14it/s]Loading weights:  57%|█████▋    | 167/291 [00:01<00:00, 145.76it/s]Loading weights:  63%|██████▎   | 184/291 [00:01<00:00, 146.05it/s]Loading weights:  69%|██████▉   | 202/291 [00:01<00:00, 150.74it/s]Loading weights:  75%|███████▍  | 218/291 [00:01<00:00, 144.09it/s]Loading weights:  80%|████████  | 233/291 [00:01<00:00, 139.04it/s]Loading weights:  85%|████████▌ | 248/291 [00:01<00:00, 141.84it/s]Loading weights:  91%|█████████ | 265/291 [00:01<00:00, 149.30it/s]Loading weights:  97%|█████████▋| 281/291 [00:01<00:00, 152.10it/s]Loading weights: 100%|██████████| 291/291 [00:02<00:00, 144.67it/s]
+Traceback (most recent call last):
+  File "/data/nishant/Nishant/Prashant/Thesis/kv_cache/results/audit_20261013/exact_stress_31500_cold2048/run_parity.py", line 70, in <module>
+    result=profile_one(model,tokenizer,policy,31500,n_decode=50,n_warmup=0,n_repeat=1,
+  File "/data/nishant/Nishant/Prashant/Thesis/venv_kvcache/lib/python3.10/site-packages/torch/utils/_contextlib.py", line 116, in decorate_context
+    return func(*args, **kwargs)
+  File "/data/nishant/Nishant/Prashant/Thesis/kv_cache/experiments/latency_profile.py", line 62, in profile_one
+    raise ValueError(f'Prompt has {ids.size(1)} tokens, fewer than requested {ctx_len}')
+ValueError: Prompt has 30907 tokens, fewer than requested 31500

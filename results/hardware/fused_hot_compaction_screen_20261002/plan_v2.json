@@ -1,0 +1,8 @@
+{
+  "previous": "verified_report.json",
+  "diagnostic": "diagnostic_v1.json",
+  "mechanism": "Keep native CUDA kernel/binary and tensorlayout unchanged; vectorize CPUkeep/range validation/position/grace preparation using alreadyinstalled NumPy; bulkfromnumpy descriptor/index uploads replace Pythonperindex loop and nestedtorch.tensor list conversion.",
+  "evidence": "PureCUDAmedian.52315ms; CPUprofile reports656000perindex generatorcalls/20stages, any validation andnestedlisttensor construction. Initial fullstage only.3663mssaving, rejected. No modelintegration on initialresult.",
+  "acceptance": "Same fixtures/seed13bitwisechecks/productionAST/3ABBA96steps perarm, completeCPUpreparation+validation+upload+allocation+kernel charged. Require>=4msmedian/allblocksfast/p95<=2%worse. No window/budget/ranking knob or inspected-quality tuning. Iffailsstop; ifpasses conditionalmodelprotocol fromoriginalplan.",
+  "native_binary_sha256": "0bae116c4ef89525e4fe3cced69935409b87631c2627d3536592e911cebfa610"
+}

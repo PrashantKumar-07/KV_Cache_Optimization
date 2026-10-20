@@ -1,0 +1,44 @@
+{
+  "model": "../models/mistral-7b-instruct",
+  "seed": 0,
+  "context": 16384,
+  "decode": 50,
+  "blocks": 3,
+  "order": [
+    "snap",
+    "cpu_direct",
+    "cpu_direct",
+    "snap",
+    "snap",
+    "cpu_direct",
+    "cpu_direct",
+    "snap",
+    "snap",
+    "cpu_direct",
+    "cpu_direct",
+    "snap"
+  ],
+  "warmup": 1,
+  "repeat": 1,
+  "resource_audit_sha256": "0a88b428b1651fd4ae6ab97dfa5b99a12511ffb6ff99f49f32723f91f3c72ce0",
+  "purpose": "Frozen shared-ceiling whole-loop systems diagnostic; no quality or exact-use claim.",
+  "acceptance": "Record all12arms; within-arm predicted IDs, counters, payload and final geometry repeat exactly. Recompute \u22655%median/p95\u22642%/all3blocks/TTFT\u226410% guards versusSnap; failures preserved. No capacity tuning on results.",
+  "timing": "Identical nested CUDA-sync wrapper for both arms. Eager decode both; Tiered requires weights. SDPA full prefill both. Boundary snapshot outside timing.",
+  "settings": {
+    "snap": {
+      "prompt_rows": 974,
+      "window": 32,
+      "kernel": 5
+    },
+    "gpu": {
+      "hot": 991,
+      "cold": 2082,
+      "exposed": 32
+    },
+    "cpu_direct": {
+      "hot": 991,
+      "cold": 1090,
+      "exposed": 32
+    }
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "timestamp_utc": "2026-10-03T08:49:49.303676+00:00",
+  "mechanism": "Fixed pooled GPU hot scores/ages/cold timestamps, fused prepare and bounded KV/F32 gather/scatter composed with native CPU controller.",
+  "settings": {
+    "hot": 991,
+    "cold": 1090,
+    "quota": 32,
+    "context": 16384,
+    "decode": 50,
+    "warmup": 1,
+    "seed": 0,
+    "prefill_last_logits": true
+  },
+  "prompt": "results/remediation_v3/latency_prompt.txt",
+  "teachers": "results/shadow_ablation_full/fixed_stream_20260929.json",
+  "control": "results/hardware/layerwise_prefill_placement_v1/control_shared.json",
+  "query": "results/hardware/pooled_controller_v1/resource.json",
+  "correctness_proof_sha256": "83494540cbe22f495805442b2a7616671ae16d22ea0c9e4a044a71d9a09063b7",
+  "resource_proof_sha256": "3b0bdce2694921d60da0965b2443551c59045397f0ec0b1b7b2309cf53a553a7",
+  "primary": "Quiet 3ABBA: >=5% median wholeloop improvement AND >=4ms saved, p95 <=2% worse, TTFT <=10% worse. Exact frozen300 measured predictions/arm, finalstate/counters/native KV. Each measured candidate prepare50/compact200, pooled descriptors6457600B, arena417792B, scratch32536512B; fallback0. Hooks and leases released;25 quietGPU0 observations.",
+  "stop": "Failed primary stops pooled controller expansion/adoption, no favorable timing retry.",
+  "limits": "One model/seed/fixed teacher. Scoped active432.096MiB plus CPUarray0.172MiB. GPU arena and descriptor work charged via GPU peaks and timing. Native container/Python heap/allocator internals unmeasured. No quality/faithfulbaseline/physical STT/fullprocess claim.",
+  "prompt_sha256": "18695714f26e35cb8d2b039ae9efb3b7e64291cbd7bcd91956efc07e16a732cd",
+  "teachers_sha256": "620ac3a383997c9afbc6a3f0b06acec9f261d5a2a5827bf5988e0bb5b69f12a2",
+  "control_sha256": "9449721be00001a6e4ada6e243be61e1d100dc4eb6508afa0122c4c8d8275ee0",
+  "query_sha256": "5990c7a4cb782edcde037a6b2ffbd927cdd49b027361e853db11d8f11b86c3e8"
+}

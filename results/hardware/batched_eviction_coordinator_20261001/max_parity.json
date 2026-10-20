@@ -1,0 +1,187 @@
+{
+  "config": {
+    "output": "results/hardware/batched_eviction_coordinator_20261001/max_parity.json",
+    "contexts": [
+      31500
+    ],
+    "decode": 5,
+    "blocks": 0,
+    "warmup": 0,
+    "control": "direct_scores",
+    "candidate": "eviction_scores",
+    "real_query_prefill": true,
+    "prompt_file": "results/hardware/batched_eviction_coordinator_20261001/max_context_prompt.txt"
+  },
+  "runtime": {
+    "git_revision": "be7e700d84d46b47e32ba5b9870c8b71783b9e53",
+    "source_sha256": "6687ce54f24b1372f958c406b037f650e492d82951611d59f1bb76364c4b692c",
+    "packages": {
+      "torch": "2.5.1+cu124",
+      "transformers": "5.15.0",
+      "datasets": "2.19.2",
+      "numpy": "2.2.6",
+      "accelerate": "1.14.0",
+      "huggingface_hub": "1.27.0",
+      "rouge": "1.0.1"
+    }
+  },
+  "runner_sha256": "1b94a562574c8a05803afcc971c8c7787bb0e4e601c988dbc047e3be9ebe531e",
+  "backend_sha256": "514aed658034ebdc0f3e1bc62c293cd7472c1eef3e0712e6f95995a33769d45b",
+  "slot_backend_sha256": "5eaec8fdb0e9d0d3316820f2129b55f66b8c11c3ed3579b6f16c97ee0a1fd293",
+  "query_capture_sha256": "7b8d811f2969c1f0ef94624560c4bc499745419ebefbbe08e6d8812a784affb4",
+  "score_backend_sha256": "d2dbca0ed7f8ff95f0ae1c29ddfd2c04ddeac238aa6f046eb465cafdaa4987a5",
+  "direct_backend_sha256": null,
+  "eviction_backend_sha256": {
+    "batched_eviction_policy.py": "d733c06effa2264a6a17dcb315d1955452c88dcfe9fa7cdcace55b7a3e158a80",
+    "direct_shared_pool.py": "accfa1d447fbb12f5854118fead36190f08df884ec5ee5e199a3d11368d88da3",
+    "probe_batched_eviction_selection.py": "b3377ce75cee0acfd0aa4ce7ac674ff1a8a0693d2549bdb91508b703531e4ef6",
+    "probe_protected_mask_numpy.py": "6dc1a3768803d2f4b0e24828672349d786e84889102a87bdb519287ee623ebdb"
+  },
+  "scope": "CPU-DRAM surrogate, fixed-stream full-loop model/policy; observed history overhead included",
+  "rows": [
+    {
+      "context": 31500,
+      "block": 0,
+      "arm": "direct_scores",
+      "timing_scope": "end_to_end_model_policy_token",
+      "ttft_ms": 5808.661,
+      "itl_ms": 365.211,
+      "mean_itl_ms": 372.2795069217682,
+      "forward_ms": 25.273704901337624,
+      "peak_memory_gb": 14.912258048,
+      "prefill_peak_memory_gb": 22.418217472,
+      "trials": [
+        {
+          "ttft_ms": 5808.661052957177,
+          "step_ms": [
+            415.0646608322859,
+            350.29985941946507,
+            368.4717398136854,
+            362.35026083886623,
+            365.21101370453835
+          ],
+          "forward_ms": [
+            51.52644403278828,
+            25.519998744130135,
+            25.13076364994049,
+            25.273704901337624,
+            25.23454837501049
+          ],
+          "prefill_peak_memory_gb": 22.418217472,
+          "decode_peak_memory_gb": 14.912258048,
+          "predicted_token_ids": [
+            415,
+            18577,
+            28723,
+            272,
+            7616
+          ],
+          "prefill_forward_ms": 4402.735227718949,
+          "paid_writes": 1152,
+          "writes_saved": 2016,
+          "demoted": 3168,
+          "promoted": 3008,
+          "decode_steps": 5
+        }
+      ],
+      "every_visible_state_sha256": [
+        "7f3841cc62dc9a349429ad1c63529c3f667ce3fd71f32a2456ec2b25ad112f82",
+        "360ac51e3dd63ecdab51f19f54eabd0b871635844e9ee5942a6306a8e4988e29",
+        "6aa368acddaa3714971b806b397f43142cb46cb0f3ef7e4a87e32f6d84c37bce",
+        "d36f3bd302d05f5affbfda1ea78fe6a54fc45776a43af10455ce767f192a920f",
+        "66fa61f222a3e1d00fdfa5288b6be7905281e87c98a23cbef19ffb262168098d",
+        "1e551d245cec90e9a722dff3afe20d356b8149a38027a247742cefc7bdc64269"
+      ],
+      "final_gpu_allocated_bytes": 14627977216,
+      "state_sha256": "1e551d245cec90e9a722dff3afe20d356b8149a38027a247742cefc7bdc64269",
+      "history_sha256": "55dd64d70e06e943d9d808742be82479bcb4495086da525d1ea1a7f49ac27fef",
+      "explicit_h2d_payload_bytes": 37486592,
+      "explicit_d2h_payload_bytes": 206045184,
+      "initial_d2h_payload_bytes": 201326592,
+      "occupied_host_bytes": 206045184,
+      "reserved_host_bytes": 402784256,
+      "native_d2h_calls": 35,
+      "per_layer_initial_d2h_calls": 0,
+      "native_h2d_calls": 9
+    },
+    {
+      "context": 31500,
+      "block": 0,
+      "arm": "eviction_scores",
+      "timing_scope": "end_to_end_model_policy_token",
+      "ttft_ms": 4994.95,
+      "itl_ms": 356.935,
+      "mean_itl_ms": 356.83819837868214,
+      "forward_ms": 25.27240850031376,
+      "peak_memory_gb": 14.914588672,
+      "prefill_peak_memory_gb": 22.418217472,
+      "trials": [
+        {
+          "ttft_ms": 4994.949612766504,
+          "step_ms": [
+            379.03900630772114,
+            341.146482154727,
+            365.3051573783159,
+            341.7653404176235,
+            356.9350056350231
+          ],
+          "forward_ms": [
+            25.5846306681633,
+            25.288978591561317,
+            25.17319656908512,
+            25.27240850031376,
+            25.16808547079563
+          ],
+          "prefill_peak_memory_gb": 22.418217472,
+          "decode_peak_memory_gb": 14.914588672,
+          "predicted_token_ids": [
+            415,
+            18577,
+            28723,
+            272,
+            7616
+          ],
+          "prefill_forward_ms": 4095.452081412077,
+          "paid_writes": 1152,
+          "writes_saved": 2016,
+          "demoted": 3168,
+          "promoted": 3008,
+          "decode_steps": 5
+        }
+      ],
+      "every_visible_state_sha256": [
+        "7f3841cc62dc9a349429ad1c63529c3f667ce3fd71f32a2456ec2b25ad112f82",
+        "360ac51e3dd63ecdab51f19f54eabd0b871635844e9ee5942a6306a8e4988e29",
+        "6aa368acddaa3714971b806b397f43142cb46cb0f3ef7e4a87e32f6d84c37bce",
+        "d36f3bd302d05f5affbfda1ea78fe6a54fc45776a43af10455ce767f192a920f",
+        "66fa61f222a3e1d00fdfa5288b6be7905281e87c98a23cbef19ffb262168098d",
+        "1e551d245cec90e9a722dff3afe20d356b8149a38027a247742cefc7bdc64269"
+      ],
+      "final_gpu_allocated_bytes": 14630041600,
+      "state_sha256": "1e551d245cec90e9a722dff3afe20d356b8149a38027a247742cefc7bdc64269",
+      "history_sha256": "55dd64d70e06e943d9d808742be82479bcb4495086da525d1ea1a7f49ac27fef",
+      "explicit_h2d_payload_bytes": 37486592,
+      "explicit_d2h_payload_bytes": 206045184,
+      "initial_d2h_payload_bytes": 201326592,
+      "occupied_host_bytes": 206045184,
+      "reserved_host_bytes": 402784256,
+      "native_d2h_calls": 35,
+      "per_layer_initial_d2h_calls": 0,
+      "native_h2d_calls": 9
+    }
+  ],
+  "passed": true,
+  "prompt_sha256": "44d127150e182f3fe0f83e4e1c005814bc7db9c61a1fd5ed21f4ab6535e816fc",
+  "teacher_token_ids": [
+    28723,
+    14343,
+    18577,
+    3857,
+    4241,
+    7616
+  ],
+  "gpu": "NVIDIA L40S",
+  "exact_model_policy_state": true,
+  "host_payload_comparison_scope": "equal between CPU arms",
+  "exact_model_policy_state_and_payload": true
+}

@@ -1,0 +1,47 @@
+{
+  "scope": "capacity-matched bandwidth arithmetic plus measured pinned CPU-DRAM/PCIe surrogate; no physical STT device",
+  "raw_artifact": "results/hardware/host_transfer_gpu0_v3.json",
+  "raw_sha256": "234b29b7366d310c3400a112ef3b4387864255bb251822a85b2582564a2393e6",
+  "runtime": {
+    "git_revision": "be7e700d84d46b47e32ba5b9870c8b71783b9e53",
+    "source_sha256": "2d2f083f40e14350d53be61bd0785b5c41d470d5e2b514ddfa3ae771963ec420",
+    "packages": {
+      "torch": "2.5.1+cu124",
+      "transformers": "5.14.1",
+      "datasets": "5.0.0",
+      "numpy": "2.2.6",
+      "accelerate": "1.14.0",
+      "huggingface_hub": "1.24.0",
+      "rouge": "1.0.1"
+    }
+  },
+  "gpu": "NVIDIA L40S",
+  "pcie_after": "4, 16",
+  "logical_bytes": {
+    "one_kv_token_all_layers": 131072,
+    "visible_32_tokens_all_layers": 4194304,
+    "full_cold_capacity": 268435456
+  },
+  "commercial_anchor": {
+    "devices": 2,
+    "device_capacity": "1 Gb per EMD4E001G; two devices match 256 MiB raw cold capacity",
+    "per_device_read_write_gbps": 2.7,
+    "ideal_aggregate_read_write_gbps": 5.4,
+    "source_product": "https://www.everspin.com/products/series/emd4e001g",
+    "source_bandwidth": "https://www.everspin.com/sites/default/files/pressdocs/IBM%20Release%204.28.24.pdf"
+  },
+  "nvidia_spec": "https://www.nvidia.com/en-in/data-center/l40s/",
+  "ideal_transfer_ms": {
+    "visible_stt_at_two_device_5p4_gbps": 0.776722962962963,
+    "visible_stt_at_hypothetical_50_gbps": 0.08388608,
+    "full_cold_stt_at_two_device_5p4_gbps": 49.71026962962963
+  },
+  "measured_gpu0_ms": {
+    "visible_1024_rows_host_to_gpu": 9.383585304021835,
+    "visible_32_layer_batches_host_to_gpu": 0.29901135712862015,
+    "visible_one_packed_host_to_gpu": 0.1709097996354103,
+    "full_cold_one_packed_host_to_gpu": 10.022245347499847,
+    "full_cold_one_packed_gpu_to_host": 10.200966149568558
+  },
+  "interpretation": "Bandwidth-only device floors omit controller/link latency, random access, queueing, writes, compute overlap and energy. Host copy timings include PyTorch launch/completion and are not STT measurements. 50 GB/s exceeds L40S PCIe Gen4 x16 nominal one-way ~32 GB/s."
+}

@@ -1,0 +1,26 @@
+{
+  "created_utc": "2026-10-16T08:27:15.128077+00:00",
+  "prerequisite": "Existing revised IceCache kernel/tiny nonoffloaded model queue must complete successfully; supervisor PID checked.",
+  "stages": [
+    {
+      "name": "icecache_tiny_offload",
+      "script": "results/proper_baselines_20261016/check_gpu_offload.py",
+      "python": "/data/nishant/Nishant/Prashant/Thesis/kv_cache/results/proper_baselines_20261016/venv_icecache/bin/python",
+      "output": "results/proper_baselines_20261016/offload_preflight.json",
+      "success": "verified",
+      "gpu": true,
+      "environment": {
+        "LD_LIBRARY_PATH": "/data/nishant/Nishant/Prashant/Thesis/kv_cache/results/proper_baselines_20261016/local_openblas/usr/lib/x86_64-linux-gnu/openblas-pthread",
+        "OMP_NUM_THREADS": "1",
+        "OPENBLAS_NUM_THREADS": "1"
+      },
+      "sha256": {
+        "results/proper_baselines_20261016/check_gpu_offload.py": "e42fda77ffbf0f77e679f678ed985f67413e4a4da147f4195518c10c38190483",
+        "results/proper_baselines_20261016/offload_preflight_plan.json": "95b8847d35344423ba4da7d541dba23398a72d4ab7e4225edaa1ae29703c0103",
+        "results/proper_baselines_20261016/root_offload_prelaunch_review.json": "f5f7dc8c8d303ac78b5fd3ba1de5239bdd91313441a577c77103e5c60d771b35",
+        "results/proper_baselines_20261016/projection_layout_correction.py": "0fb64dbda2f21a985b87f216bb9491b50297a57c127f77f83525d111307da5c0"
+      }
+    }
+  ],
+  "scope": "Actual corrected tiny offload correctness gate only, not quality/timing/SOTA. Stop on any failed prerequisite or gate."
+}

@@ -1,0 +1,122 @@
+{
+  "verified": true,
+  "actual_stage_gate_passed": true,
+  "summary": [
+    {
+      "hot": 649,
+      "cold": 1982,
+      "case": "actual_final",
+      "median_ms": {
+        "current": 9.852834977209568,
+        "native": 3.360375761985779
+      },
+      "p95_ms": {
+        "current": 10.6193196028471,
+        "native": 3.511311486363411
+      },
+      "saved_ms": 6.492459215223789,
+      "guards": {
+        "saved_ms": true,
+        "median": true,
+        "p95": true
+      },
+      "passed": true
+    },
+    {
+      "hot": 649,
+      "cold": 1982,
+      "case": "ragged_tied_nan",
+      "median_ms": {
+        "current": 10.096755810081959,
+        "native": 3.95852979272604
+      },
+      "p95_ms": {
+        "current": 10.615590400993824,
+        "native": 4.179958160966635
+      },
+      "saved_ms": 6.138226017355919,
+      "guards": {
+        "saved_ms": true,
+        "median": true,
+        "p95": true
+      },
+      "passed": true
+    },
+    {
+      "hot": 991,
+      "cold": 1090,
+      "case": "actual_final",
+      "median_ms": {
+        "current": 8.827843703329563,
+        "native": 3.9578108116984367
+      },
+      "p95_ms": {
+        "current": 9.335704613476992,
+        "native": 4.1935802437365055
+      },
+      "saved_ms": 4.870032891631126,
+      "guards": {
+        "saved_ms": true,
+        "median": true,
+        "p95": true
+      },
+      "passed": true
+    }
+  ],
+  "checks": [
+    {
+      "case": "649/1982/actual_final",
+      "exact": true,
+      "visible_sha256": "e277c2a561ef3b75b4d8d1764740b24a3346fc3aa1eaa189f34dedb2cbd723e0",
+      "native_h2d_bytes_per_call": 4194304
+    },
+    {
+      "case": "649/1982/ragged_tied_nan",
+      "exact": true,
+      "visible_sha256": "6eb6d0e4c10d9c1e8dcdc849e96e9acc0c0dcb7552963e8019092fab76380cb1",
+      "native_h2d_bytes_per_call": 4194304
+    },
+    {
+      "case": "649/1982/small_exposure",
+      "exact": true,
+      "visible_sha256": "12059fd7d86aab43053b7ff38cf11d13ca13035e01c9455b79c2f20b5e7e5547",
+      "native_h2d_bytes_per_call": 1572864
+    },
+    {
+      "case": "991/1090/actual_final",
+      "exact": true,
+      "visible_sha256": "c36d7094384d42632f97dc12847a59e9ea9f41de44d0436721cfa894d58b4a99",
+      "native_h2d_bytes_per_call": 4194304
+    }
+  ],
+  "atomic_rejections": [
+    {
+      "case": "empty",
+      "atomic": true
+    },
+    {
+      "case": "late_alias",
+      "atomic": true
+    },
+    {
+      "case": "slot",
+      "atomic": true
+    }
+  ],
+  "nondefault_stream_handoff_exact": true,
+  "measured_calls_per_arm_per_case": 120,
+  "tests_passed": 516,
+  "binary_path": "/data/nishant/tieredkv_external/cold_boundary_6bf1ffe23733cd3f/tieredkv_cold_boundary_v1.so",
+  "binary_sha256": "95bc1dc07aeb781f1e01ae0e16e50b994f7568ed58ff8eb109fd5862316d113f",
+  "evidence_sha256": {
+    "plan.json": "0881d9cec456e0a288b58fdb8cbce80fc29c27571e024e27fb66f19eb6f21e6b",
+    "gpu_implementation.json": "6d1b4fbc5bcf3ba37f6e3d1f69c4828a97354bf44b7278c96173b79accae8e4b",
+    "gpu_source.tar.gz": "e9428da436309f69269c99106692b94d28b85805019cab86da33cc856f5c9b73",
+    "gpu_stage.json": "2af61a65b03cc73569e3918d94a5c92427126a73bbcc235dbf903ceb6a30d3e4",
+    "gpu_job.json": "c7e8aed31742723c8d1d64f36f65c692c5be261b05b4c3dee82ac1cb0892d803",
+    "tests_job.json": "97e82c48e44e2fb82139aa885a6249a2593fb2a974a7235924cab364d26cdc5c"
+  },
+  "disposition": "Advance to separately preregistered model integration, exact GPU replay/fallback/cleanup, fresh resources and macro gate.",
+  "limits": "Standalone stationary cold-boundary prototype, not model improvement/complete512MiB/quality/faithful baseline or physicalSTT proof.",
+  "full_goal_complete": false
+}

@@ -1,0 +1,570 @@
+{
+  "passed": true,
+  "direct": true,
+  "real_query_prefill": true,
+  "trace_cuda": true,
+  "scope": "Diagnostic policy-only cProfile; profiled timings are not acceptance evidence.",
+  "runtime": {
+    "git_revision": "be7e700d84d46b47e32ba5b9870c8b71783b9e53",
+    "source_sha256": "6687ce54f24b1372f958c406b037f650e492d82951611d59f1bb76364c4b692c",
+    "packages": {
+      "torch": "2.5.1+cu124",
+      "transformers": "5.15.0",
+      "datasets": "2.19.2",
+      "numpy": "2.2.6",
+      "accelerate": "1.14.0",
+      "huggingface_hub": "1.27.0",
+      "rouge": "1.0.1"
+    }
+  },
+  "source_sha256": {
+    "experiments/profile_cpu_batched.py": "06779db14661264ed99c858f71a41eeff4e1d98c8d3dcff25a7a546a447e859f",
+    "experiments/cpu_batched_cache.py": "514aed658034ebdc0f3e1bc62c293cd7472c1eef3e0712e6f95995a33769d45b",
+    "experiments/cpu_slot_cache.py": "5eaec8fdb0e9d0d3316820f2129b55f66b8c11c3ed3579b6f16c97ee0a1fd293",
+    "experiments/compare_cpu_batched.py": "fe8c7a89314261b6aaa9565fd7ba44bf7cbeef71bfe7d5832c91aebed025582f",
+    "experiments/direct_shared_pool.py": "accfa1d447fbb12f5854118fead36190f08df884ec5ee5e199a3d11368d88da3",
+    "experiments/batched_score_policy.py": "d2dbca0ed7f8ff95f0ae1c29ddfd2c04ddeac238aa6f046eb465cafdaa4987a5",
+    "experiments/evaluate_query_selection.py": "581a5001941b7866b62417dc836c2979efeab28408450a0d95c650b9f2772afa"
+  },
+  "prompt_sha256": "18695714f26e35cb8d2b039ae9efb3b7e64291cbd7bcd91956efc07e16a732cd",
+  "teacher_token_ids": [
+    28723,
+    14343,
+    18577,
+    3857,
+    4241,
+    7616,
+    369,
+    460,
+    312,
+    2031,
+    286,
+    297,
+    10308,
+    833,
+    20983,
+    28723,
+    816,
+    1269,
+    4435,
+    298,
+    272,
+    2264,
+    2818,
+    356,
+    272,
+    7616,
+    478,
+    3874,
+    28723,
+    816,
+    835,
+    1269,
+    4870,
+    4435,
+    298,
+    4916,
+    272,
+    25312,
+    304,
+    1220,
+    2437,
+    302,
+    272,
+    2264,
+    28723,
+    816,
+    460,
+    10313,
+    12221,
+    302,
+    456
+  ],
+  "seed": 0,
+  "context": 16384,
+  "decode_steps": 50,
+  "gpu": "NVIDIA L40S",
+  "profiled_run_not_latency_gate": {
+    "timing_scope": "end_to_end_model_policy_token",
+    "ttft_ms": 3844.713,
+    "itl_ms": 99.219,
+    "mean_itl_ms": 99.81238305568695,
+    "forward_ms": 29.46667931973934,
+    "peak_memory_gb": 14.91332352,
+    "prefill_peak_memory_gb": 18.627831296,
+    "trials": [
+      {
+        "ttft_ms": 3844.7129391133785,
+        "step_ms": [
+          166.9396124780178,
+          86.34493313729763,
+          109.53525640070438,
+          87.19213493168354,
+          107.6886747032404,
+          89.63224664330482,
+          108.30508917570114,
+          87.03098259866238,
+          110.31817831099033,
+          86.9748443365097,
+          107.68134705722332,
+          89.7456556558609,
+          107.51941613852978,
+          86.86023578047752,
+          111.8927076458931,
+          86.9523249566555,
+          107.91511833667755,
+          90.51847644150257,
+          108.18911902606487,
+          86.88638731837273,
+          110.70469953119755,
+          87.0948750525713,
+          108.12671668827534,
+          90.542396530509,
+          108.56814868748188,
+          87.12094463407993,
+          111.18668131530285,
+          86.83526702225208,
+          114.17231336236,
+          90.87178111076355,
+          108.97842980921268,
+          87.02472783625126,
+          110.6844712048769,
+          86.7875274270773,
+          107.50367864966393,
+          90.45775048434734,
+          107.90612176060677,
+          87.0701503008604,
+          110.84546335041523,
+          87.16198801994324,
+          108.00842195749283,
+          89.95785936713219,
+          107.99386911094189,
+          87.33003214001656,
+          110.75489968061447,
+          87.35325001180172,
+          108.20936411619186,
+          90.93463979661465,
+          108.65077190101147,
+          87.65917085111141
+        ],
+        "forward_ms": [
+          71.98598608374596,
+          29.221046715974808,
+          29.430264607071877,
+          29.624365270137787,
+          29.997896403074265,
+          29.272614046931267,
+          29.962902888655663,
+          29.298996552824974,
+          29.536264017224312,
+          29.3387733399868,
+          29.620734974741936,
+          29.070375487208366,
+          29.655495658516884,
+          29.2778629809618,
+          29.752353206276894,
+          29.443472623825073,
+          29.751475900411606,
+          29.34139408171177,
+          29.900336638092995,
+          29.21297587454319,
+          29.62418459355831,
+          29.326435178518295,
+          29.804356396198273,
+          29.3712355196476,
+          29.988307505846024,
+          29.318923130631447,
+          29.513835906982422,
+          29.0900357067585,
+          35.5484988540411,
+          29.36413511633873,
+          29.974335804581642,
+          29.12931703031063,
+          29.48988601565361,
+          29.12512794137001,
+          29.494624584913254,
+          29.24150787293911,
+          29.67892773449421,
+          29.27127480506897,
+          29.616575688123703,
+          29.279345646500587,
+          29.615547508001328,
+          28.995545580983162,
+          29.664847999811172,
+          29.302727431058884,
+          29.527269303798676,
+          29.304036870598793,
+          29.632167890667915,
+          29.44282814860344,
+          29.913287609815598,
+          29.37786839902401
+        ],
+        "prefill_peak_memory_gb": 18.627831296,
+        "decode_peak_memory_gb": 14.91332352,
+        "predicted_token_ids": [
+          14343,
+          18577,
+          3857,
+          4241,
+          7616,
+          369,
+          460,
+          312,
+          2031,
+          286,
+          297,
+          10308,
+          833,
+          20983,
+          28723,
+          816,
+          1269,
+          4435,
+          298,
+          272,
+          2264,
+          2818,
+          356,
+          272,
+          7616,
+          478,
+          3874,
+          28723,
+          816,
+          460,
+          1269,
+          4870,
+          4435,
+          298,
+          4916,
+          272,
+          2264,
+          304,
+          1220,
+          2437,
+          302,
+          272,
+          2264,
+          28723,
+          816,
+          460,
+          10313,
+          12221,
+          302,
+          456
+        ],
+        "prefill_forward_ms": 2236.8064913898706,
+        "paid_writes": 2560,
+        "writes_saved": 23872,
+        "demoted": 26432,
+        "promoted": 24832,
+        "decode_steps": 50
+      }
+    ]
+  },
+  "cold_geometry": [
+    {
+      "step": 1,
+      "cold_min": 1569,
+      "cold_max": 1569,
+      "saturated_layers": 0
+    },
+    {
+      "step": 2,
+      "cold_min": 1569,
+      "cold_max": 1569,
+      "saturated_layers": 0
+    },
+    {
+      "step": 3,
+      "cold_min": 1570,
+      "cold_max": 1570,
+      "saturated_layers": 0
+    },
+    {
+      "step": 4,
+      "cold_min": 1570,
+      "cold_max": 1570,
+      "saturated_layers": 0
+    },
+    {
+      "step": 5,
+      "cold_min": 1572,
+      "cold_max": 1572,
+      "saturated_layers": 0
+    },
+    {
+      "step": 6,
+      "cold_min": 1572,
+      "cold_max": 1572,
+      "saturated_layers": 0
+    },
+    {
+      "step": 7,
+      "cold_min": 1574,
+      "cold_max": 1574,
+      "saturated_layers": 0
+    },
+    {
+      "step": 8,
+      "cold_min": 1574,
+      "cold_max": 1574,
+      "saturated_layers": 0
+    },
+    {
+      "step": 9,
+      "cold_min": 1576,
+      "cold_max": 1576,
+      "saturated_layers": 0
+    },
+    {
+      "step": 10,
+      "cold_min": 1576,
+      "cold_max": 1576,
+      "saturated_layers": 0
+    },
+    {
+      "step": 11,
+      "cold_min": 1578,
+      "cold_max": 1578,
+      "saturated_layers": 0
+    },
+    {
+      "step": 12,
+      "cold_min": 1578,
+      "cold_max": 1578,
+      "saturated_layers": 0
+    },
+    {
+      "step": 13,
+      "cold_min": 1580,
+      "cold_max": 1580,
+      "saturated_layers": 0
+    },
+    {
+      "step": 14,
+      "cold_min": 1580,
+      "cold_max": 1580,
+      "saturated_layers": 0
+    },
+    {
+      "step": 15,
+      "cold_min": 1582,
+      "cold_max": 1582,
+      "saturated_layers": 0
+    },
+    {
+      "step": 16,
+      "cold_min": 1582,
+      "cold_max": 1582,
+      "saturated_layers": 0
+    },
+    {
+      "step": 17,
+      "cold_min": 1584,
+      "cold_max": 1584,
+      "saturated_layers": 0
+    },
+    {
+      "step": 18,
+      "cold_min": 1584,
+      "cold_max": 1584,
+      "saturated_layers": 0
+    },
+    {
+      "step": 19,
+      "cold_min": 1586,
+      "cold_max": 1586,
+      "saturated_layers": 0
+    },
+    {
+      "step": 20,
+      "cold_min": 1586,
+      "cold_max": 1586,
+      "saturated_layers": 0
+    },
+    {
+      "step": 21,
+      "cold_min": 1588,
+      "cold_max": 1588,
+      "saturated_layers": 0
+    },
+    {
+      "step": 22,
+      "cold_min": 1588,
+      "cold_max": 1588,
+      "saturated_layers": 0
+    },
+    {
+      "step": 23,
+      "cold_min": 1590,
+      "cold_max": 1590,
+      "saturated_layers": 0
+    },
+    {
+      "step": 24,
+      "cold_min": 1590,
+      "cold_max": 1590,
+      "saturated_layers": 0
+    },
+    {
+      "step": 25,
+      "cold_min": 1592,
+      "cold_max": 1592,
+      "saturated_layers": 0
+    },
+    {
+      "step": 26,
+      "cold_min": 1592,
+      "cold_max": 1592,
+      "saturated_layers": 0
+    },
+    {
+      "step": 27,
+      "cold_min": 1594,
+      "cold_max": 1594,
+      "saturated_layers": 0
+    },
+    {
+      "step": 28,
+      "cold_min": 1594,
+      "cold_max": 1594,
+      "saturated_layers": 0
+    },
+    {
+      "step": 29,
+      "cold_min": 1596,
+      "cold_max": 1596,
+      "saturated_layers": 0
+    },
+    {
+      "step": 30,
+      "cold_min": 1596,
+      "cold_max": 1596,
+      "saturated_layers": 0
+    },
+    {
+      "step": 31,
+      "cold_min": 1598,
+      "cold_max": 1598,
+      "saturated_layers": 0
+    },
+    {
+      "step": 32,
+      "cold_min": 1598,
+      "cold_max": 1598,
+      "saturated_layers": 0
+    },
+    {
+      "step": 33,
+      "cold_min": 1600,
+      "cold_max": 1600,
+      "saturated_layers": 0
+    },
+    {
+      "step": 34,
+      "cold_min": 1600,
+      "cold_max": 1600,
+      "saturated_layers": 0
+    },
+    {
+      "step": 35,
+      "cold_min": 1602,
+      "cold_max": 1602,
+      "saturated_layers": 0
+    },
+    {
+      "step": 36,
+      "cold_min": 1602,
+      "cold_max": 1602,
+      "saturated_layers": 0
+    },
+    {
+      "step": 37,
+      "cold_min": 1604,
+      "cold_max": 1604,
+      "saturated_layers": 0
+    },
+    {
+      "step": 38,
+      "cold_min": 1604,
+      "cold_max": 1604,
+      "saturated_layers": 0
+    },
+    {
+      "step": 39,
+      "cold_min": 1606,
+      "cold_max": 1606,
+      "saturated_layers": 0
+    },
+    {
+      "step": 40,
+      "cold_min": 1606,
+      "cold_max": 1606,
+      "saturated_layers": 0
+    },
+    {
+      "step": 41,
+      "cold_min": 1608,
+      "cold_max": 1608,
+      "saturated_layers": 0
+    },
+    {
+      "step": 42,
+      "cold_min": 1608,
+      "cold_max": 1608,
+      "saturated_layers": 0
+    },
+    {
+      "step": 43,
+      "cold_min": 1610,
+      "cold_max": 1610,
+      "saturated_layers": 0
+    },
+    {
+      "step": 44,
+      "cold_min": 1610,
+      "cold_max": 1610,
+      "saturated_layers": 0
+    },
+    {
+      "step": 45,
+      "cold_min": 1612,
+      "cold_max": 1612,
+      "saturated_layers": 0
+    },
+    {
+      "step": 46,
+      "cold_min": 1612,
+      "cold_max": 1612,
+      "saturated_layers": 0
+    },
+    {
+      "step": 47,
+      "cold_min": 1614,
+      "cold_max": 1614,
+      "saturated_layers": 0
+    },
+    {
+      "step": 48,
+      "cold_min": 1614,
+      "cold_max": 1614,
+      "saturated_layers": 0
+    },
+    {
+      "step": 49,
+      "cold_min": 1616,
+      "cold_max": 1616,
+      "saturated_layers": 0
+    },
+    {
+      "step": 50,
+      "cold_min": 1616,
+      "cold_max": 1616,
+      "saturated_layers": 0
+    }
+  ],
+  "profile_sha256": "40215df35acd12f97c74bddd011f3407624af0e4398a894b17371419033f2e02",
+  "profile_text_sha256": "5ca0e6dea7e856700555d606330264b5f5b766e2a9dd8f2283905d77ac259710",
+  "limitations": "Only decode/score policy calls profiled. Implicit GPU waits and instrumentation distort times; overlapping call times are not additive savings. No speed gate or quality claim."
+}

@@ -1,0 +1,17 @@
+{
+  "timestamp_utc": "2026-10-03T08:44:04.129957+00:00",
+  "mechanism": "Integrate existing fixed GPU metadata arena, fused age/initialization and bounded KV/metadata compaction into a scoped controller. Preserve CPU promotion/backup semantics, cold reclaim ordering and unsupported fallback.",
+  "gates": [
+    "CPU ownership/fallback/order tests and full suite",
+    "Recorded 4K12 exact predictions/state/visibility/counters/native KV and nonzero pooled fast path",
+    "Fresh 16K50 actual memory <=512MiB including host and CPU bounds",
+    "Quiet 3ABBA, 300 forwards/arm: median >=5% AND >=4ms faster, p95 <=2% worse, TTFT <=10% worse"
+  ],
+  "stop": "Failed correctness stops expansion until bug corrected and archived. Failed resource or timing stops candidate adoption; no favorable timing retry.",
+  "limits": "Research only; no defaults, quality holdout tuning, physical STT or completion claim.",
+  "primitive_sources": {
+    "experiments/pooled_state.py": "1ea9bf1cb6cfb38c80f78e8e527d30edeb43a9c749a336b49b21eeca8b21a02a",
+    "experiments/native_pooled_state.cpp": "0f5afcf225a386f0e20b547660a95cadb8339da96188d2096c4af8eee8b3b006",
+    "experiments/native_pooled_state.cu": "90722a57f0df165d5212ac35f3fe9e98cc17b333a64a9f82b9a452eb216cccb0"
+  }
+}

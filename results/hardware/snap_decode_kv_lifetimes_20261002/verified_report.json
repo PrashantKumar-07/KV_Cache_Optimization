@@ -1,0 +1,32 @@
+{
+  "verified": true,
+  "source_data_boundary_and_prediction_identity_verified": true,
+  "lifetime_interval_sums_recomputed": true,
+  "decode_steps": 50,
+  "boundary_frames": 51,
+  "retained_transition_samples": 17700,
+  "observed_dispatch_samples": 126400,
+  "phase_peak_mib": {
+    "model_forward": 512.0,
+    "cache_update": 519.99609375
+  },
+  "cpu_policy_phase_peak_mib": {
+    "decode_update": 524.0,
+    "promotion_prepare": 527.75,
+    "visible_assembly": 528.2578125,
+    "fused_launch": 528.2578125,
+    "visible_reads": 404.3828125
+  },
+  "both_observed_paths_exceed_512mib": true,
+  "exact_physical_resources_equal": false,
+  "interpretation": "SnapKV grows each layer in place; observed overlap is about one old channel, not a full old modelcache. CPU rawtuple/replacement and shared-hot lifetimes create several independent overlaps. Scope/classifier differences preclude an exact total-resource ratio.",
+  "evidence_sha256": {
+    "result.json": "7df872f6d5ccc02bbc036e77baefe209ec5557118d74370f1ea89708db8704fd",
+    "source_manifest.json": "cc524992df86cc866c7b23ad4b29d5eb8e16fe177d47d159999e35e8c8272446",
+    "plan.json": "07a0b045ecb824cd6f7bf7224d0f6080dc7927e8af1191aae67304261cf8efef"
+  },
+  "source_bundle_sha256": "37a30674e4572bdc59e5e37d8fa94ca3d1ec632e8e417e72ff87e7dacb2e3fde",
+  "cpu_proof_sha256": "484c3fc2fd5a605c9018e29cb3e1313499c708f75cab84e181aa51706664ab41",
+  "verifier_sha256": "7afa217fe785e1af9a20b1197d060abdce0e3a8f01a77fd07a415f5d76358054",
+  "limitations": "Untimed one-model/seed/fixedstream Snap974expanded/window32/kernel5 decode; same weak-storage tracker, expanded KV rows>=974 also included. Small projected GQA KV tracked, expanded one-row copies/query shapes excluded. Shape-classified known KV/F32 copies only, metadata/model/attention temporaries, retained allocator blocks and freed-stream-pending buffers excluded. This lower bound is not full physical equality or a speed measurement."
+}

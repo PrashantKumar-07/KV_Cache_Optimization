@@ -1,0 +1,122 @@
+{
+  "config": {
+    "model": "../models/mistral-7b-instruct",
+    "budget": 1024,
+    "tiered_vram_budget": 1024,
+    "tiered_stt_budget": 2048,
+    "tiered_stt_expose": 32,
+    "sttram_bifurcation_frac": 0.75,
+    "sink": 4,
+    "recent": 128,
+    "max_samples": 5,
+    "tasks": [
+      "qasper"
+    ],
+    "max_ctx": 31500,
+    "seed": 0,
+    "tiered_kv_dtype": "bfloat16",
+    "tiered_stt_kv_dtype": "same",
+    "tiered_prefill_chunk_size": 1024,
+    "page_size": 16,
+    "promote_top_pages": 2,
+    "stt_live_floor": 1,
+    "write_aware_lambda": 0.0,
+    "tiered_inclusive": true,
+    "runtime": {
+      "git_revision": "be7e700d84d46b47e32ba5b9870c8b71783b9e53",
+      "source_sha256": "0575be28249a8f1ba90426321649c3ecd25d6c30b5e31c18023471149feb8dba",
+      "packages": {
+        "torch": "2.5.1+cu124",
+        "transformers": "5.15.0",
+        "datasets": "2.19.2",
+        "numpy": "2.2.6",
+        "accelerate": "1.14.0",
+        "huggingface_hub": "1.27.0",
+        "rouge": "1.0.1"
+      }
+    },
+    "protocol": "task_chat_exclusions_v2",
+    "data_dir": "../hf_cache/datasets/downloads/extracted/5def9c7eaf83951e1cee75902d8611ef764ad88dd289e8f0bf97ff658a3eb83a/data",
+    "dataset_sha256": {
+      "qasper": "97d95c01221a17a2ce51f9180d65a671bf2998504a2ff0cccffe97e9b08444d8"
+    },
+    "methods": [
+      "tieredkv"
+    ]
+  },
+  "results": {
+    "qasper": {
+      "tieredkv": {
+        "score": 11.72,
+        "n": 5,
+        "sample_scores": [
+          0.0,
+          13.33,
+          26.67,
+          18.6,
+          0.0
+        ],
+        "samples": [
+          {
+            "sample_id": "3b91dce7ca41a9d16a1d0c61806c139db583a053ddb582bf79df3ff56f8e0344",
+            "prediction": "They selected Facebook pages based on intuition and availability, and later chose specific pages based on performance on development data and label distribution.",
+            "score": 0.0,
+            "elapsed_s": 4.5442736111581326,
+            "prompt_tokens": 4895,
+            "generated_tokens": 27
+          },
+          {
+            "sample_id": "5f59f94cd91401a55bcd3b6b24b78cd2c4c78e8ee6e7663e0ac8b97306444f08",
+            "prediction": "The attended context representations are used to predict instructor intervention.",
+            "score": 13.333333333333334,
+            "elapsed_s": 2.3195687290281057,
+            "prompt_tokens": 5415,
+            "generated_tokens": 12
+          },
+          {
+            "sample_id": "9d37c5305ff63838fd6b7c96f13d10cfc388955672b1a629e5c0a8c2a89c520d",
+            "prediction": "In addition to F-scores, improvements in F-score and Kappa statistics are also analyzed.",
+            "score": 26.66666666666667,
+            "elapsed_s": 3.532614942640066,
+            "prompt_tokens": 5549,
+            "generated_tokens": 22
+          },
+          {
+            "sample_id": "5b60c062453de695f70d5f313a868a3c630068a85084fc9c456760f41e84d0f3",
+            "prediction": "The baselines were not explicitly stated in the article, but it can be inferred that they were plain stacked LSTMs.",
+            "score": 18.6046511627907,
+            "elapsed_s": 4.218547776341438,
+            "prompt_tokens": 5175,
+            "generated_tokens": 28
+          },
+          {
+            "sample_id": "a25d41e770a5f1816e04f39227fecd7dfcd9b83b25842e413d0f8fcb447b2092",
+            "prediction": "Jiant primarily supports models implemented in Python.",
+            "score": 0.0,
+            "elapsed_s": 1.7348891720175743,
+            "prompt_tokens": 3956,
+            "generated_tokens": 10
+          }
+        ],
+        "cache_stats": {
+          "demoted": 51776,
+          "promoted": 48768,
+          "promotions_deferred": 47488,
+          "paid_writes": 8220,
+          "writes_saved": 43556,
+          "dropped": 0,
+          "write_savings_pct": 84.1,
+          "decode_steps": 94,
+          "stt_starved_steps": 0,
+          "stt_unused_steps": 5,
+          "mean_stt_exposed": 30.68,
+          "stt_expose_quota": 32,
+          "stt_exposed_total": 3712,
+          "stt_exposure_samples": 121,
+          "modeled_latency_us": 29446.5,
+          "modeled_energy_nj": 1245248487.4
+        }
+      }
+    }
+  }
+}

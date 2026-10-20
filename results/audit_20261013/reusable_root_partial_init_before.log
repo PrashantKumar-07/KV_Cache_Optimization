@@ -1,0 +1,30 @@
+F                                                                        [100%]
+=================================== FAILURES ===================================
+___ test_failed_initialization_detaches_manager_cache_before_releasing_lease ___
+
+owner = <reusable_exact_root.ExactRootOwner object at 0x772e7c2b0100>
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x772e7c2b0cd0>
+
+    def test_failed_initialization_detaches_manager_cache_before_releasing_lease(owner,monkeypatch):
+        root=acquire(owner);token=owner.token
+        policy=module.ReusableExactPolicy(root_owner=owner)
+        manager=module.ReusableBulkPool.__new__(module.ReusableBulkPool)
+        manager.root_token=token
+        cache=SimpleNamespace(pool=root,manager=manager)
+        def close():
+            assert owner.token is token
+            cache.pool=None;cache.manager=None
+        cache.close=close;manager.caches={0:cache}
+        policy.manager=manager;policy.layer_caches={}  # Attached before bifurcation failed.
+        def complete(policy):
+            cache.manager=None;manager.caches.clear();policy.manager=None
+        monkeypatch.setattr(ColdBoundaryPolicy,'reset',complete)
+        policy.reset()
+>       assert cache.pool is None and owner.token is None
+E       assert (tensor([[[[0., 0.]],\n\n         [[0., 0.]],\n\n         [[0., 0.]],\n\n         [[0., 0.]]],\n\n\n        [[[0., 0.]],\n\n         [[0., 0.]],\n\n         [[0., 0.]],\n\n         [[0., 0.]]]], dtype=torch.bfloat16) is None)
+E        +  where tensor([[[[0., 0.]],\n\n         [[0., 0.]],\n\n         [[0., 0.]],\n\n         [[0., 0.]]],\n\n\n        [[[0., 0.]],\n\n         [[0., 0.]],\n\n         [[0., 0.]],\n\n         [[0., 0.]]]], dtype=torch.bfloat16) = namespace(pool=tensor([[[[0., 0.]],\n\n         [[0., 0.]],\n\n         [[0., 0.]],\n\n         [[0., 0.]]],\n\n\n        [[[0....e=<function test_failed_initialization_detaches_manager_cache_before_releasing_lease.<locals>.close at 0x772e7c2c7d90>).pool
+
+tests/test_reusable_exact_root.py:91: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_reusable_exact_root.py::test_failed_initialization_detaches_manager_cache_before_releasing_lease
+1 failed in 2.73s

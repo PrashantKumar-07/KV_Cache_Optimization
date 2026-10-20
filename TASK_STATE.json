@@ -1,0 +1,208 @@
+{
+  "schema": 2,
+  "updated_date": "2026-10-20",
+  "objective": "Complete research/engineering audit, correctness fixes, fair reproducible improvements and validated figures before writing four-page IEEE paper",
+  "status": "audit_and_improvement_in_progress; paper_paused; no_SOTA_superiority_established",
+  "resume_entrypoint": "START_HERE.md",
+  "user_constraints": [
+    "Paper work paused until audit/fixes/improvement evaluation finish",
+    "STT is simulated; no physical STT hardware requirement",
+    "Preserve historical raw outcomes and user preexisting dirty changes",
+    "Do not tune on consumed or final holdouts",
+    "Use server GPUs/CPU wisely; keep measurements honest",
+    "Consolidate superseded generated markdown only after review; retain evidence and useful history",
+    "15 October: verify and correct figures and flow diagram while preserving visual style; use actual evaluated values; improve toward SOTA then draft and refine IEEE paper.",
+    "Latest correction: original figure scientific questions, five-method comparisons and visual design must be preserved. Fig3 remove fraction1budget sweep; onlypaid/avoided writes. Architecture explicitly authorized redesign intoattractiveconcretepaperdiagram. Do notsubstitute2/3armdevelopmentpilots fororiginalfigures.",
+    "Permanent16October: everynew comparison must target defensiblepaperclaim, validatedupstreamalgorithm, frozenprotocol andexplicitresourcefairness. No expandingadaptedbaselinecomparisons/noSOTAclaimfromthem. Correctnessfirst, productiveexperimentpriority, realimprovements quickly."
+  ],
+  "running_jobs": [],
+  "process_audit": "Recorded October16 supervisors are terminal; do not restart from old PIDs. Check actual processes/GPU users before every new launch.",
+  "verified_results": {
+    "full_evaluation": {
+      "path": "results/full_evaluation_20261015/verified_results.json",
+      "requests": 10318,
+      "population_rows": 1474,
+      "scope": "Seven configurations on already consumed original six-task data; adapted controls do not establish SOTA.",
+      "primary_contrast": {
+        "candidate": "tiered_hot992",
+        "control": "snapkv_faithful",
+        "endpoint": "equal-task macro mean paired score difference, percentage points",
+        "point_estimate": -1.3657697027472167,
+        "ci95": [
+          -3.733465561517376,
+          0.33087942750911076
+        ],
+        "draws": 10000,
+        "seed": 0,
+        "task_order": [
+          "gov_report",
+          "hotpotqa",
+          "multifieldqa_en",
+          "qasper",
+          "triviaqa"
+        ],
+        "method": "resample target-document groups with replacement independently within each task; retain all examples within each selected group; equal weight task means",
+        "per_task_descriptive": {
+          "gov_report": {
+            "rows": 236,
+            "document_groups": 236,
+            "paired_mean_difference": -2.021753196970482,
+            "descriptive_unadjusted_ci95": [
+              -2.6080918779378695,
+              -1.4405259068136016
+            ]
+          },
+          "hotpotqa": {
+            "rows": 221,
+            "document_groups": 221,
+            "paired_mean_difference": 0.5495027400875327,
+            "descriptive_unadjusted_ci95": [
+              -1.558302794178025,
+              2.644155430969526
+            ]
+          },
+          "multifieldqa_en": {
+            "rows": 20,
+            "document_groups": 17,
+            "paired_mean_difference": -3.981158652322661,
+            "descriptive_unadjusted_ci95": [
+              -15.232091947966351,
+              3.495518429197528
+            ]
+          },
+          "qasper": {
+            "rows": 70,
+            "document_groups": 45,
+            "paired_mean_difference": -1.1440330793741478,
+            "descriptive_unadjusted_ci95": [
+              -3.466016125869782,
+              1.3532170841875064
+            ]
+          },
+          "triviaqa": {
+            "rows": 192,
+            "document_groups": 151,
+            "paired_mean_difference": -0.23140632515632512,
+            "descriptive_unadjusted_ci95": [
+              -1.1935735448273441,
+              0.7105597344339574
+            ]
+          }
+        },
+        "interpretation": "Preregistered quality contrast under disclosed unequal cache geometry; not a SOTA or equal-physical-memory test"
+      }
+    },
+    "official_current_GQA_SnapKV": {
+      "path": "results/gqa_baseline_20261016/verified_results.json",
+      "verified": true,
+      "requests": 1474,
+      "equal_task_macro": 39.522974643803614,
+      "scope": "Descriptive additional official KV-head comparator on already-unblinded1474originalsource records. No tuning, independence, equal-physical-memory or globalSOTA inference. CurrentSnap capacity1024 grows throughdecode; Tieredfixedhot992/1024+cold2048 has different memory. Recordpayloads are endpointstorages, notwholememory/runtimepeaks."
+    },
+    "whole_request_writes": {
+      "figure3_arm": "tiered_hot992",
+      "proof": "results/audit_20261016_current_figures/whole_request_writes_hot992_independent_proof.json",
+      "hot1024_separate_proof": "results/audit_20261016_current_figures/whole_request_writes_independent_proof.json",
+      "root_review": "Report identities/all per-task/global fields matched independent recomputation1474records/arm. Figure3 original style/decodevalues unchanged; README/status linked.",
+      "pooled_avoided_percent": 40.67930383412917,
+      "equal_task_macro_avoided_percent": 26.08807964573134,
+      "five_qa_pooled_avoided_percent": 16.765660059856543,
+      "scope": "Initial retained cold payload plus decoderwrites. Fixed-trace counterfactual, not actualexclusivepolicy/physicalendurance. GovReport dominates pooledsavedwrites."
+    },
+    "native_timing": "results/audit_20261015_fair_snap_v2/independently_verified_benchmark.json; failed advancement vs legacySnap, preserve losses"
+  },
+  "baseline_status": {
+    "IceCache": "Official BF16 source/build import/CPU layout/index proofs exist; proposed transpose correction independently reviewed. GPU preflight stopped on RMSnorm harness shape mismatch (2D supplied, kernel expects3D); offload queue did not run. No accepted IceCache quality/timing evidence. Diagnose/new preregistered output directory, never overwrite oldfailure.",
+    "IceCache_failure": "results/audit_20261016_checkpoint/icecache_kernel_tiny_model_v2.log",
+    "RocketKV": "Pinned official source/runtime installed; CPU receipt check stopped on direct_url archive hash metadata KeyError. Actual CUDA RoPE patch/FlashAttention/model correctness remain unvalidated. Preservefailure; fix receipt handling then validate.",
+    "RocketKV_failure": "results/proper_baselines_20261016/rocketkv_runtime_resume_status.json",
+    "source_bootstrap": "scripts/bootstrap_references.py --all fetches pinned optional sources; does not build or certify baselines."
+  },
+  "rejected_candidates": {
+    "exposure_prior": "results/improvement_design_20261016/verified_candidate.json; advancement failed, no expansion",
+    "query_combination": "results/audit_20261015_query_combination/verified_quality.json; failed gate",
+    "grouped_retention": "results/audit_20261013/reviewer/grouped_pilot_verified.json; failed gate",
+    "duplicate_page_query_mechanism": "results/improvement_design_20261016/cold_query_page_opportunity.json; rejected expansion"
+  },
+  "reserved_data": {
+    "path": "results/improvement_design_20261016/fresh_document_reserve.json",
+    "rows": 800,
+    "groups": 635,
+    "status": "reserved/unscored; only consume after prospective development/resource gate"
+  },
+  "figures": {
+    "verified_current": [
+      1,
+      2,
+      3,
+      4,
+      6,
+      7,
+      11,
+      12,
+      14
+    ],
+    "pending": [
+      8,
+      15
+    ],
+    "status_file": "figures_final/figure_status.json",
+    "rule": "Preserve original questions/style; only verified matching runs, no SOTAclaim from adaptedcontrols. Figure3 decode-only; whole-request companion includes initialplacement.",
+    "architecture": "figures/tieredkv_architecture_paper.svg"
+  },
+  "remaining_acceptance_gates": [
+    {
+      "requirement": "Corealgorithm/codecorrectness and edge/lifecyclecoverage",
+      "state": "FreshisolatedCPU andcleanstagingsnapshot601passed/1CUDA-specificskip;14GQAselectorchecks passed; simulatorprefill/16decode smoke passed. Broaderresearch/GPUcorrectness audit remainsopen."
+    },
+    {
+      "requirement": "Validated proper algorithm baselines",
+      "state": "Official current GQA SnapKV1474 completed and independentlyverified. IceCache stopped on RMSnorm harness shape mismatch; offloadcheck didnotexecute. RocketKV CPUreceipt failed; GPU/modelvalidation remainsopen."
+    },
+    {
+      "requirement": "Fair paired quality andresource constraints",
+      "state": "Identicalfrozenweights/input/generation/scoring; originalfinalprimarynegative. Resourcegeometryunequaldisclosed; matchedGPU+CPUenvelopes andservingtimingstillrequired; do notclaimsamecapacityiswholememoryequality."
+    },
+    {
+      "requirement": "Genuine improvements evaluatedprospectively",
+      "state": "Currentquery/grouped/exposureprior candidates failedgates andstopped. Actualquery/internalcontrollerresults preserved withinlimitedscope; SOTA notestablished.800cross-taskrows reserved beforeselection andunscored."
+    },
+    {
+      "requirement": "Figures trace matchingactualverifiedexperiments inoriginalstyle",
+      "state": "1/2/3/4/6/7/11/12/14current, adaptedfunctionalcomparisonnotpaperSOTAproof.8/15deferred untilpropercomparisons. Architecturecurrent."
+    },
+    {
+      "requirement": "Reproducibleclaims andconciseIEEEfourpagepaper",
+      "state": "Writeonlyafternecessaryaudit/results/figuregates; no unsupportedglobalSOTAorphysicalSTTclaim."
+    },
+    {
+      "requirement": "Distinct research contribution against relevant current prior art",
+      "state": "FlexiCachealreadyhaswriteoncehostcopies. Broaderqualityclaim requiresmoderncomparison e.gofficialRocketKV; Snap/IceCachealone cannotglobalSOTA. Resolve distinctbounded-capacity/write-quality contribution with actualevidence."
+    }
+  ],
+  "novelty_gate": {
+    "state": "Open: FlexiCache alreadyoffloads stable-head pagesonce and retains hostcopies, MLSys2026section3.3; rootcheckedprimaryPDF. Need distinctbounded-capacity/write-quality contribution with evidence.",
+    "primary_source": "https://proceedings.mlsys.org/paper_files/paper/2026/file/94bcb01789fccf15afe2764d8fe0f40e-Paper-Conference.pdf",
+    "rule": "No claimwriteoncebackupalone isnew or globalSOTA; original improvementgoal remains."
+  },
+  "next_actions": [
+    "Read START_HERE.md and this state; bootstrap core references and restore checksummed evidence, then run documented clean setup verification.",
+    "Diagnose/fix IceCache GPU preflight harness input shape, preserve failure, preregister new outputs, then real offload/KVscatter/pretrained7B correctness before anycomparison.",
+    "Fix RocketKV CPU receipt metadata parsing without changing algorithms; prove original FlashAttention/realRoPE/modelpath and common-runtime controls.",
+    "Preregister actual GPU+CPU resource envelopes and strongest valid configs; complete fair paired upstream quality/latency/storage comparisons. Equal initialtokenbudget alone is notwholememory fairness.",
+    "Investigate genuinely distinct improvements using development data only. Preserve failed gates; do not tune on1474 consumedfinalrecords or resurrectfailedcandidates.",
+    "Complete broader audit, figure8/15 experiments and matchingverifiedoriginal-style plots; onlythen draft IEEEfourpage paper."
+  ],
+  "historical_state": "results/publication_20261020/before_TASK_STATE.json",
+  "reproduction": "REPRODUCING.md",
+  "publication": {
+    "date": "2026-10-20",
+    "target_repository": "https://github.com/PrashantKumar-07/KV_Cache_Optimization",
+    "target_branch": "main",
+    "status": "prepared_and_validated; remote_write_authentication_blocked",
+    "commit_policy": "One new concise commit based on origin/main; no force-push.",
+    "clean_snapshot_validation": "results/publication_20261020/clean_snapshot_validation.json",
+    "evidence_integrity": "results/publication_20261020/current_evidence_integrity.json",
+    "auth_blocker": "Direct Git HTTPS has no credentials; SSHpublickey rejected; connected GitHubcreate_blob returned403 Resource not accessible by integration. No successfulremote write."
+  }
+}

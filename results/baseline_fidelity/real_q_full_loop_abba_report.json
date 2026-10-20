@@ -1,0 +1,103 @@
+{
+  "raw_sha256": "24738d8c7f445f3a07d8f62b7abec929645bbc9b19d3ff56704595bd8206192e",
+  "script_sha256": "098b8a6c5c7f9ad741d6dbdeea1076681f7c67fd1d9bed1cd9d78b0fb28ae8a9",
+  "config": {
+    "model": "../models/mistral-7b-instruct",
+    "ctx_len": 16384,
+    "decode": 50,
+    "order": [
+      "proxy",
+      "actual",
+      "actual",
+      "proxy",
+      "proxy",
+      "actual",
+      "actual",
+      "proxy",
+      "proxy",
+      "actual",
+      "actual",
+      "proxy"
+    ],
+    "compare_prefill": true,
+    "blocks": 3,
+    "tiered_vram_budget": 992,
+    "tiered_stt_budget": 3104,
+    "prompt_sha256": "18695714f26e35cb8d2b039ae9efb3b7e64291cbd7bcd91956efc07e16a732cd",
+    "selector_sha256": "1e390812c2f7e4d25e67f237961d548fb805913d88a76f4a3b9670f6b05f06b0",
+    "comparison_script_sha256": "c1d6a45ad7002eb13efddf23fc15304613835978c3c776a69ba1190560e26c12",
+    "runtime": {
+      "git_revision": "be7e700d84d46b47e32ba5b9870c8b71783b9e53",
+      "source_sha256": "f81473a52b3aabcd383594d67c7f0b271fcee0c547773f8a6f6663d7cdfb194a",
+      "packages": {
+        "torch": "2.5.1+cu124",
+        "transformers": "5.14.1",
+        "datasets": "5.0.0",
+        "numpy": "2.2.6",
+        "accelerate": "1.14.0",
+        "huggingface_hub": "1.24.0",
+        "rouge": "1.0.1"
+      }
+    },
+    "timing_scope": "end_to_end_model_policy_token_fixed_length"
+  },
+  "blocks": [
+    {
+      "proxy": {
+        "median_itl_ms": 146.25891111791134,
+        "p95_itl_ms": 148.66126030683517,
+        "median_ttft_ms": 2006.548,
+        "max_prefill_peak_gb": 18.594276352,
+        "max_decode_peak_gb": 15.255322624
+      },
+      "actual": {
+        "median_itl_ms": 144.71319876611233,
+        "p95_itl_ms": 147.01689882203937,
+        "median_ttft_ms": 2139.86,
+        "max_prefill_peak_gb": 18.792948224,
+        "max_decode_peak_gb": 15.237842944
+      },
+      "median_itl_change_pct": -1.056832940970609,
+      "p95_itl_change_pct": -1.106112972136697
+    },
+    {
+      "proxy": {
+        "median_itl_ms": 146.14494051784277,
+        "p95_itl_ms": 148.6686123535037,
+        "median_ttft_ms": 2070.799,
+        "max_prefill_peak_gb": 18.594276352,
+        "max_decode_peak_gb": 15.255322624
+      },
+      "actual": {
+        "median_itl_ms": 144.34350933879614,
+        "p95_itl_ms": 146.54527325183153,
+        "median_ttft_ms": 2214.4404999999997,
+        "max_prefill_peak_gb": 18.792948224,
+        "max_decode_peak_gb": 15.237842944
+      },
+      "median_itl_change_pct": -1.2326332835495557,
+      "p95_itl_change_pct": -1.428236308968367
+    },
+    {
+      "proxy": {
+        "median_itl_ms": 145.8670012652874,
+        "p95_itl_ms": 148.22656754404306,
+        "median_ttft_ms": 2077.6735,
+        "max_prefill_peak_gb": 18.594276352,
+        "max_decode_peak_gb": 15.255322624
+      },
+      "actual": {
+        "median_itl_ms": 144.07765120267868,
+        "p95_itl_ms": 146.43705748021603,
+        "median_ttft_ms": 2199.566,
+        "max_prefill_peak_gb": 18.792948224,
+        "max_decode_peak_gb": 15.237842944
+      },
+      "median_itl_change_pct": -1.2266996970441868,
+      "p95_itl_change_pct": -1.2072802423191198
+    }
+  ],
+  "scope": "One 16K real-text prompt, fixed 50-token decode, three same-process ABBA blocks. Timing is completed full model+policy loop, not throughput.",
+  "median_block_itl_change_pct": -1.2266996970441868,
+  "median_block_p95_change_pct": -1.2072802423191198
+}

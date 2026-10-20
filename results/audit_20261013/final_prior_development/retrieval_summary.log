@@ -1,0 +1,73 @@
+[transformers] `torch_dtype` is deprecated! Use `dtype` instead!
+Loading model: ../models/mistral-7b-instruct
+Loading weights:   0%|          | 0/291 [00:00<?, ?it/s]Loading weights:   4%|▍         | 13/291 [00:00<00:02, 125.17it/s]Loading weights:   9%|▉         | 27/291 [00:00<00:01, 133.17it/s]Loading weights:  14%|█▍        | 42/291 [00:00<00:01, 135.62it/s]Loading weights:  20%|██        | 59/291 [00:00<00:01, 142.13it/s]Loading weights:  26%|██▋       | 77/291 [00:00<00:01, 152.31it/s]Loading weights:  32%|███▏      | 94/291 [00:00<00:01, 150.89it/s]Loading weights:  38%|███▊      | 110/291 [00:00<00:01, 150.07it/s]Loading weights:  43%|████▎     | 126/291 [00:00<00:01, 136.10it/s]Loading weights:  48%|████▊     | 140/291 [00:01<00:01, 128.67it/s]Loading weights:  53%|█████▎    | 154/291 [00:01<00:01, 130.97it/s]Loading weights:  58%|█████▊    | 168/291 [00:01<00:00, 125.63it/s]Loading weights:  63%|██████▎   | 184/291 [00:01<00:00, 133.46it/s]Loading weights:  68%|██████▊   | 198/291 [00:01<00:00, 131.22it/s]Loading weights:  73%|███████▎  | 212/291 [00:01<00:00, 133.44it/s]Loading weights:  79%|███████▊  | 229/291 [00:01<00:00, 141.49it/s]Loading weights:  84%|████████▍ | 244/291 [00:01<00:00, 142.16it/s]Loading weights:  89%|████████▉ | 259/291 [00:01<00:00, 140.82it/s]Loading weights:  94%|█████████▍| 274/291 [00:01<00:00, 142.24it/s]Loading weights:  99%|█████████▉| 289/291 [00:02<00:00, 143.68it/s]Loading weights: 100%|██████████| 291/291 [00:02<00:00, 139.57it/s]
+
+============================================================
+Task: hotpotqa
+============================================================
+
+--- H2O ---
+  [H2O] hotpotqa 5/5  Score=45.00
+  H2O → hotpotqa: 45.00
+  [checkpoint saved → results/audit_20261013/final_prior_development/retrieval_summary.json.ckpt]
+
+--- SnapKV ---
+  [SnapKV] hotpotqa 5/5  Score=28.08
+  SnapKV → hotpotqa: 28.08
+  [checkpoint saved → results/audit_20261013/final_prior_development/retrieval_summary.json.ckpt]
+
+--- TieredKV ---
+  [TieredKV] hotpotqa 5/5  Score=48.00
+  TieredKV → hotpotqa: 48.00
+  [checkpoint saved → results/audit_20261013/final_prior_development/retrieval_summary.json.ckpt]
+
+============================================================
+Task: triviaqa
+============================================================
+
+--- H2O ---
+  [H2O] triviaqa 5/5  Score=70.00
+  H2O → triviaqa: 70.00
+  [checkpoint saved → results/audit_20261013/final_prior_development/retrieval_summary.json.ckpt]
+
+--- SnapKV ---
+  [SnapKV] triviaqa 5/5  Score=70.00
+  SnapKV → triviaqa: 70.00
+  [checkpoint saved → results/audit_20261013/final_prior_development/retrieval_summary.json.ckpt]
+
+--- TieredKV ---
+  [TieredKV] triviaqa 5/5  Score=70.00
+  TieredKV → triviaqa: 70.00
+  [checkpoint saved → results/audit_20261013/final_prior_development/retrieval_summary.json.ckpt]
+
+============================================================
+Task: gov_report
+============================================================
+
+--- H2O ---
+  [H2O] gov_report 5/5  Score=25.95
+  H2O → gov_report: 25.95
+  [checkpoint saved → results/audit_20261013/final_prior_development/retrieval_summary.json.ckpt]
+
+--- SnapKV ---
+  [SnapKV] gov_report 5/5  Score=27.33
+  SnapKV → gov_report: 27.33
+  [checkpoint saved → results/audit_20261013/final_prior_development/retrieval_summary.json.ckpt]
+
+--- TieredKV ---
+  [TieredKV] gov_report 5/5  Score=28.25
+  TieredKV → gov_report: 28.25
+  [checkpoint saved → results/audit_20261013/final_prior_development/retrieval_summary.json.ckpt]
+
+============================================================
+LONGBENCH RESULTS (F1 × 100)
+============================================================
+Task                             h2o        snapkv      tieredkv
+----------------------------------------------------------------
+hotpotqa                       45.00         28.08         48.00
+triviaqa                       70.00         70.00         70.00
+gov_report                     25.95         27.33         28.25
+----------------------------------------------------------------
+Average                        46.98         41.80         48.75
+
+Saved → results/audit_20261013/final_prior_development/retrieval_summary.json

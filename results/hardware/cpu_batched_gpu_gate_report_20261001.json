@@ -1,0 +1,66 @@
+{
+  "scope": "Same-policy GPU-resident versus batched CPU physical tier; exact fixed-stream state/predictions, unequal host resources",
+  "raw_sha256": "23278fbd47fdc28525f1b548d33f454a366d48baf62f8da963249c8c26b4baae",
+  "source_bundle_sha256": "069bf58f9752bb1714042d4ccdf905e3a798a85d6c1f4622bfc278927a2e58ce",
+  "arms": 12,
+  "all_state_history_predictions_and_logical_counters_match_prior_cpu_control": true,
+  "candidate_host_payload_matches_prior_cpu_control": true,
+  "latency": {
+    "gpu": {
+      "median_ms": 81.51547238230705,
+      "p95_ms": 88.31984717398882
+    },
+    "batched": {
+      "median_ms": 79.94054071605206,
+      "p95_ms": 88.89475427567959
+    },
+    "latency_gate_passed": false,
+    "blocks": [
+      {
+        "gpu": 79.59721144288778,
+        "batched": 79.94054071605206
+      },
+      {
+        "gpu": 79.84413579106331,
+        "batched": 80.03037888556719
+      },
+      {
+        "gpu": 81.51547238230705,
+        "batched": 79.87990695983171
+      }
+    ]
+  },
+  "speed_gain_percent": 1.9320646991635826,
+  "resources": {
+    "gpu": {
+      "median_ttft_ms": 2059.419,
+      "max_prefill_peak_gpu_bytes": 18594276864,
+      "max_decode_peak_gpu_bytes": 15137135104,
+      "median_final_gpu_allocated_bytes": 14856895488.0,
+      "occupied_host_tensor_bytes": [
+        0
+      ],
+      "reserved_host_tensor_bytes": [
+        0
+      ]
+    },
+    "batched": {
+      "median_ttft_ms": 2123.3575,
+      "max_prefill_peak_gpu_bytes": 18594276864,
+      "max_decode_peak_gpu_bytes": 14913245696,
+      "median_final_gpu_allocated_bytes": 14626980864.0,
+      "occupied_host_tensor_bytes": [
+        212344832
+      ],
+      "reserved_host_tensor_bytes": [
+        402784256
+      ]
+    }
+  },
+  "final_gpu_allocation_saved_bytes": 229914624.0,
+  "final_gpu_allocation_saved_percent": 1.547528043026912,
+  "speed_gate_passed": false,
+  "total_gpu_memory_gate_passed": false,
+  "decision": "retain opt-in CPU-control improvement; no GPU speed or total-memory gate promotion",
+  "limitations": "Single prompt/model/fixed stream. Final host reservation excludes transient consolidation and allocator retention. GPU host payload zero; CPU useful payload is real submitted K/V, not controller/STT traffic. No QA quality, faithful SnapKV or matched-resource claim."
+}

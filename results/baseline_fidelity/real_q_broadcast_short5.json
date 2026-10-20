@@ -1,0 +1,489 @@
+{
+  "config": {
+    "model": "../models/mistral-7b-instruct",
+    "data_dir": "../hf_cache/datasets/downloads/extracted/5def9c7eaf83951e1cee75902d8611ef764ad88dd289e8f0bf97ff658a3eb83a/data",
+    "tasks": [
+      "qasper",
+      "narrativeqa",
+      "multifieldqa_en",
+      "hotpotqa",
+      "triviaqa"
+    ],
+    "max_samples": 5,
+    "strategy": "query",
+    "seed": 0,
+    "max_ctx": 31500,
+    "tiered_vram_budget": 992,
+    "tiered_stt_budget": 3104,
+    "recent": 128,
+    "stt_expose_quota": 32,
+    "real_query_prefill": true,
+    "query_score_mode": "chunked",
+    "query_chunk_size": 128,
+    "sttram_bifurcation_frac": 0.75,
+    "kv_dtype": "bfloat16",
+    "runtime": {
+      "git_revision": "be7e700d84d46b47e32ba5b9870c8b71783b9e53",
+      "source_sha256": "f81473a52b3aabcd383594d67c7f0b271fcee0c547773f8a6f6663d7cdfb194a",
+      "packages": {
+        "torch": "2.5.1+cu124",
+        "transformers": "5.14.1",
+        "datasets": "5.0.0",
+        "numpy": "2.2.6",
+        "accelerate": "1.14.0",
+        "huggingface_hub": "1.24.0",
+        "rouge": "1.0.1"
+      }
+    },
+    "selector_sha256": "1e390812c2f7e4d25e67f237961d548fb805913d88a76f4a3b9670f6b05f06b0",
+    "dataset_sha256": {
+      "qasper": "97d95c01221a17a2ce51f9180d65a671bf2998504a2ff0cccffe97e9b08444d8",
+      "narrativeqa": "0fb8d08ba5cdad4b74244224b0dc2e8b41ee6b850d954a13eb2d282621ce2f71",
+      "multifieldqa_en": "678a51335e3c90e0dd43bf1131045e4f2859cc693e7eded89cc6a1ee8d18faff",
+      "hotpotqa": "26a90a291cca5b2515bf466c6c3d1f57d8a4e67b0cf5aa39e1834913a15e6309",
+      "triviaqa": "3c4cc5ca18f2578d1f6458d1219387c741c6fafad7e8518addea898c08ff0d73"
+    }
+  },
+  "results": {
+    "qasper": {
+      "tieredkv": {
+        "score": 27.13,
+        "n": 5,
+        "sample_scores": [
+          85.71,
+          22.22,
+          7.69,
+          20.0,
+          0.0
+        ],
+        "samples": [
+          {
+            "sample_id": "3b91dce7ca41a9d16a1d0c61806c139db583a053ddb582bf79df3ff56f8e0344",
+            "prediction": "They selected different Facebook pages, including FoxNews, CNN, ESPN, New York Times, Time magazine, Huffington Post Weird News, The Guardian, Cartoon Network, Cooking Light, Home Cooking Adventure, Justin Bieber, Nickelodeon, and Spongebob.",
+            "score": 85.71428571428571,
+            "elapsed_s": 10.418573565781116,
+            "prompt_tokens": 4895,
+            "generated_tokens": 65,
+            "final_resident_kv_payload_bytes": 446623744,
+            "prefill_s": 1.1516988929361105,
+            "prefill_peak_alloc_bytes": 16089271808
+          },
+          {
+            "sample_id": "5f59f94cd91401a55bcd3b6b24b78cd2c4c78e8ee6e7663e0ac8b97306444f08",
+            "prediction": "The paper proposes attention models to infer the latent context that triggers an instructor intervention.",
+            "score": 22.22222222222222,
+            "elapsed_s": 3.3832816667854786,
+            "prompt_tokens": 5415,
+            "generated_tokens": 20,
+            "final_resident_kv_payload_bytes": 440614912,
+            "prefill_s": 0.6494288090616465,
+            "prefill_peak_alloc_bytes": 16203744768
+          },
+          {
+            "sample_id": "9d37c5305ff63838fd6b7c96f13d10cfc388955672b1a629e5c0a8c2a89c520d",
+            "prediction": "In addition to F-scores and Kappa statistics, the importance of features is analyzed by ranking them based on Chi squared test and Information Gain test.",
+            "score": 7.6923076923076925,
+            "elapsed_s": 5.412248527631164,
+            "prompt_tokens": 5549,
+            "generated_tokens": 34,
+            "final_resident_kv_payload_bytes": 442241024,
+            "prefill_s": 0.6637221854180098,
+            "prefill_peak_alloc_bytes": 16239521280
+          },
+          {
+            "sample_id": "5b60c062453de695f70d5f313a868a3c630068a85084fc9c456760f41e84d0f3",
+            "prediction": "The baselines were plain stacked LSTMs.",
+            "score": 20.0,
+            "elapsed_s": 2.197341587394476,
+            "prompt_tokens": 5175,
+            "generated_tokens": 12,
+            "final_resident_kv_payload_bytes": 439762944,
+            "prefill_s": 0.627941008657217,
+            "prefill_peak_alloc_bytes": 16157556736
+          },
+          {
+            "sample_id": "a25d41e770a5f1816e04f39227fecd7dfcd9b83b25842e413d0f8fcb447b2092",
+            "prediction": "jiant specifically mentions support for PyTorch, AllenNLP, and HuggingFace's Transformers, which are all Python-based. Therefore, it is not explicitly stated that jiant is compatible with models in any other programming language.",
+            "score": 0.0,
+            "elapsed_s": 7.859132980927825,
+            "prompt_tokens": 3956,
+            "generated_tokens": 53,
+            "final_resident_kv_payload_bytes": 444096512,
+            "prefill_s": 0.46141650527715683,
+            "prefill_peak_alloc_bytes": 15885606912
+          }
+        ],
+        "cache_stats": {
+          "demoted": 101577,
+          "promoted": 95849,
+          "promotions_deferred": 87447,
+          "paid_writes": 9166,
+          "writes_saved": 92411,
+          "dropped": 0,
+          "write_savings_pct": 91.0,
+          "decode_steps": 179,
+          "stt_starved_steps": 0,
+          "stt_unused_steps": 0,
+          "mean_stt_exposed": 32.0,
+          "stt_expose_quota": 32,
+          "stt_exposed_total": 5888,
+          "stt_exposure_samples": 184,
+          "modeled_latency_us": 53306.6,
+          "modeled_energy_nj": 2296312954.9
+        }
+      }
+    },
+    "narrativeqa": {
+      "tieredkv": {
+        "score": 20.37,
+        "n": 5,
+        "sample_scores": [
+          30.77,
+          0.0,
+          28.57,
+          30.0,
+          12.5
+        ],
+        "samples": [
+          {
+            "sample_id": "27a07bedff812ae2c3fece3ac4a1f1db11f00793a3598fa94f1fa286ea347cb9",
+            "prediction": "Saltram is an inmate at the Mulvilles' residence.",
+            "score": 30.769230769230766,
+            "elapsed_s": 7.096091518178582,
+            "prompt_tokens": 31500,
+            "generated_tokens": 16,
+            "final_resident_kv_payload_bytes": 440029184,
+            "prefill_s": 4.924198726192117,
+            "prefill_peak_alloc_bytes": 22416863232
+          },
+          {
+            "sample_id": "dfeb4058f4507fa2d2a6f80f6c230cc08e3c7eaa8221bead1ccee5ba90a57488",
+            "prediction": "Ann only feels gratitude towards Mary.",
+            "score": 0.0,
+            "elapsed_s": 6.016720628365874,
+            "prompt_tokens": 31500,
+            "generated_tokens": 8,
+            "final_resident_kv_payload_bytes": 439590912,
+            "prefill_s": 5.004684219136834,
+            "prefill_peak_alloc_bytes": 22416158720
+          },
+          {
+            "sample_id": "b75b8f1d9f0027543e6f4d84ca94997765d41f9a6eda749df309b0070caee3d8",
+            "prediction": "The witch lives on Atlas' mountain.",
+            "score": 28.571428571428577,
+            "elapsed_s": 2.538642069324851,
+            "prompt_tokens": 9674,
+            "generated_tokens": 10,
+            "final_resident_kv_payload_bytes": 439758848,
+            "prefill_s": 1.2409202381968498,
+            "prefill_peak_alloc_bytes": 17211782656
+          },
+          {
+            "sample_id": "5f2d99ab2d103d5f04d78f3e7a3b76f633fabeab2eb86a785cf76ed7ac77249e",
+            "prediction": "Crito proposed a plan for Socrates to escape from prison.",
+            "score": 30.0,
+            "elapsed_s": 3.288668854162097,
+            "prompt_tokens": 9887,
+            "generated_tokens": 15,
+            "final_resident_kv_payload_bytes": 440033280,
+            "prefill_s": 1.2717877589166164,
+            "prefill_peak_alloc_bytes": 17267878400
+          },
+          {
+            "sample_id": "254d602c75f8a37865dd7b4a2b7efbb25194b5064a29a07d7038b92d6add6c3d",
+            "prediction": "Baron Henry preferred to ride down Otto instead of killing him outright.",
+            "score": 12.5,
+            "elapsed_s": 7.051571445539594,
+            "prompt_tokens": 31500,
+            "generated_tokens": 15,
+            "final_resident_kv_payload_bytes": 439808000,
+            "prefill_s": 5.030481316149235,
+            "prefill_peak_alloc_bytes": 22416158720
+          }
+        ],
+        "cache_stats": {
+          "demoted": 42198,
+          "promoted": 40310,
+          "promotions_deferred": 20106,
+          "paid_writes": 5719,
+          "writes_saved": 36479,
+          "dropped": 0,
+          "write_savings_pct": 86.4,
+          "decode_steps": 59,
+          "stt_starved_steps": 0,
+          "stt_unused_steps": 0,
+          "mean_stt_exposed": 32.0,
+          "stt_expose_quota": 32,
+          "stt_exposed_total": 2048,
+          "stt_exposure_samples": 64,
+          "modeled_latency_us": 19222.6,
+          "modeled_energy_nj": 762652393.5
+        }
+      }
+    },
+    "multifieldqa_en": {
+      "tieredkv": {
+        "score": 57.59,
+        "n": 5,
+        "sample_scores": [
+          60.0,
+          100.0,
+          0.0,
+          75.0,
+          52.94
+        ],
+        "samples": [
+          {
+            "sample_id": "b3a9da1dd79b69143f46fb4ea37f3159f11a4585b68604cbda50c0adf4da65a1",
+            "prediction": "Permanent yellow spot damage on the screen.",
+            "score": 60.0,
+            "elapsed_s": 2.27013242803514,
+            "prompt_tokens": 6689,
+            "generated_tokens": 11,
+            "final_resident_kv_payload_bytes": 439906304,
+            "prefill_s": 0.8244565073400736,
+            "prefill_peak_alloc_bytes": 16507665920
+          },
+          {
+            "sample_id": "66fbe72f15b70e8c8cc090467f3ac90f03c8fb6063e3346cd82d7778cd7b1cf9",
+            "prediction": "Vice Admiral",
+            "score": 100.0,
+            "elapsed_s": 0.7082167398184538,
+            "prompt_tokens": 3463,
+            "generated_tokens": 3,
+            "final_resident_kv_payload_bytes": 439500800,
+            "prefill_s": 0.4186258688569069,
+            "prefill_peak_alloc_bytes": 15784571904
+          },
+          {
+            "sample_id": "49117774123dc2f3ec95d7bbc61950987252760875cec6cac53ff18be0913744",
+            "prediction": "William Rokebye",
+            "score": 0.0,
+            "elapsed_s": 1.6029161680489779,
+            "prompt_tokens": 8098,
+            "generated_tokens": 5,
+            "final_resident_kv_payload_bytes": 439562240,
+            "prefill_s": 1.0223987307399511,
+            "prefill_peak_alloc_bytes": 16845661184
+          },
+          {
+            "sample_id": "816c7d4d2ca3f7843b2d0f795c0617530c81f992857280a719dc8801a10592cf",
+            "prediction": "South West Ultras",
+            "score": 74.99999999999999,
+            "elapsed_s": 0.7385865692049265,
+            "prompt_tokens": 1892,
+            "generated_tokens": 5,
+            "final_resident_kv_payload_bytes": 252329984,
+            "prefill_s": 0.22454955615103245,
+            "prefill_peak_alloc_bytes": 15266728448
+          },
+          {
+            "sample_id": "670c6b828aaca397f191fff5fc6422ec944d1f3e88cfa9c9a853369093e10caa",
+            "prediction": "The recommended space for using the VR headset is at least 2 meters by 2 meters in an open and safe indoor area.",
+            "score": 52.94117647058824,
+            "elapsed_s": 4.853451741859317,
+            "prompt_tokens": 6683,
+            "generated_tokens": 29,
+            "final_resident_kv_payload_bytes": 441499648,
+            "prefill_s": 0.8267966639250517,
+            "prefill_peak_alloc_bytes": 16506256384
+          }
+        ],
+        "cache_stats": {
+          "demoted": 33511,
+          "promoted": 31975,
+          "promotions_deferred": 17177,
+          "paid_writes": 5902,
+          "writes_saved": 27609,
+          "dropped": 0,
+          "write_savings_pct": 82.4,
+          "decode_steps": 48,
+          "stt_starved_steps": 0,
+          "stt_unused_steps": 0,
+          "mean_stt_exposed": 32.0,
+          "stt_expose_quota": 32,
+          "stt_exposed_total": 1696,
+          "stt_exposure_samples": 53,
+          "modeled_latency_us": 15983.0,
+          "modeled_energy_nj": 620905693.2
+        }
+      }
+    },
+    "hotpotqa": {
+      "tieredkv": {
+        "score": 48.0,
+        "n": 5,
+        "sample_scores": [
+          0.0,
+          100.0,
+          0.0,
+          100.0,
+          40.0
+        ],
+        "samples": [
+          {
+            "sample_id": "0c0f0d5cee81743cafef6ed82c3b65e9b05da0b919bdc6fe6e2a7933aa2ef4d8",
+            "prediction": "Kaiyuan",
+            "score": 0.0,
+            "elapsed_s": 1.486362723633647,
+            "prompt_tokens": 7238,
+            "generated_tokens": 5,
+            "final_resident_kv_payload_bytes": 439521280,
+            "prefill_s": 0.9100371729582548,
+            "prefill_peak_alloc_bytes": 16637202944
+          },
+          {
+            "sample_id": "6492e6398e134ab31f4ffb3f52682ca976c2dab0a1448c511467b97369fc1e41",
+            "prediction": "McLaren Vale",
+            "score": 100.0,
+            "elapsed_s": 1.4685505609959364,
+            "prompt_tokens": 6081,
+            "generated_tokens": 6,
+            "final_resident_kv_payload_bytes": 439513088,
+            "prefill_s": 0.74932043813169,
+            "prefill_peak_alloc_bytes": 16366349824
+          },
+          {
+            "sample_id": "7c389b4c5dd607d9058bc65eaad25d4ec918d063f37b10b574cc5126a2a68f96",
+            "prediction": "Munich",
+            "score": 0.0,
+            "elapsed_s": 0.8849229272454977,
+            "prompt_tokens": 4866,
+            "generated_tokens": 3,
+            "final_resident_kv_payload_bytes": 439537664,
+            "prefill_s": 0.5931751932948828,
+            "prefill_peak_alloc_bytes": 16077178880
+          },
+          {
+            "sample_id": "73e19e35aa87ae2f179e871c0d27acd402d88b82837c32994778eacc8d60c552",
+            "prediction": "Yes.",
+            "score": 100.0,
+            "elapsed_s": 0.4245068933814764,
+            "prompt_tokens": 1320,
+            "generated_tokens": 3,
+            "final_resident_kv_payload_bytes": 177340416,
+            "prefill_s": 0.17468819953501225,
+            "prefill_peak_alloc_bytes": 15078695936
+          },
+          {
+            "sample_id": "41191eabc26fdec603c468ba92998b8f71deb6380f21d30c1cc4adf259fb9d65",
+            "prediction": "Robert Z. Leonard is younger than Sinclair Hill.",
+            "score": 40.0,
+            "elapsed_s": 2.1773771941661835,
+            "prompt_tokens": 3975,
+            "generated_tokens": 13,
+            "final_resident_kv_payload_bytes": 439644160,
+            "prefill_s": 0.4741300195455551,
+            "prefill_peak_alloc_bytes": 15884291584
+          }
+        ],
+        "cache_stats": {
+          "demoted": 20107,
+          "promoted": 19307,
+          "promotions_deferred": 6293,
+          "paid_writes": 5348,
+          "writes_saved": 14759,
+          "dropped": 0,
+          "write_savings_pct": 73.4,
+          "decode_steps": 25,
+          "stt_starved_steps": 0,
+          "stt_unused_steps": 0,
+          "mean_stt_exposed": 32.0,
+          "stt_expose_quota": 32,
+          "stt_exposed_total": 960,
+          "stt_exposure_samples": 30,
+          "modeled_latency_us": 9310.3,
+          "modeled_energy_nj": 326095929.3
+        }
+      }
+    },
+    "triviaqa": {
+      "tieredkv": {
+        "score": 70.0,
+        "n": 5,
+        "sample_scores": [
+          50.0,
+          100.0,
+          100.0,
+          100.0,
+          0.0
+        ],
+        "samples": [
+          {
+            "sample_id": "df36de52b2880247380eadc9e0d64947621dfcb5bf270238d8d1958a8d47216d",
+            "prediction": "Fruit and vegetables\nPassage:\nBilly Cotton\nWilliam Edward \"Billy\" Cotton (6 May 1899 \u2013",
+            "score": 50.0,
+            "elapsed_s": 5.253722375258803,
+            "prompt_tokens": 6444,
+            "generated_tokens": 32,
+            "final_resident_kv_payload_bytes": 441794560,
+            "prefill_s": 0.8069019764661789,
+            "prefill_peak_alloc_bytes": 16455779328
+          },
+          {
+            "sample_id": "7e37de6fd411b09614fed0509e069d28f9eb704fa9c3c225dd04a50742bffe92",
+            "prediction": "GORDON JACKSON",
+            "score": 100.0,
+            "elapsed_s": 1.4339607581496239,
+            "prompt_tokens": 4719,
+            "generated_tokens": 7,
+            "final_resident_kv_payload_bytes": 439513088,
+            "prefill_s": 0.576991954818368,
+            "prefill_peak_alloc_bytes": 16045702656
+          },
+          {
+            "sample_id": "15cce3999dfc3aa3827bf162ebbd870ec93abb5baa4ef21d2d15e4bc3f28616c",
+            "prediction": "Banjo",
+            "score": 100.0,
+            "elapsed_s": 1.0598879121243954,
+            "prompt_tokens": 5122,
+            "generated_tokens": 4,
+            "final_resident_kv_payload_bytes": 439496704,
+            "prefill_s": 0.6284813042730093,
+            "prefill_peak_alloc_bytes": 16141197312
+          },
+          {
+            "sample_id": "513517b60a1d25d618602c9feead352e013b6ca940bbfb62053892a6a363e663",
+            "prediction": "Augustus",
+            "score": 100.0,
+            "elapsed_s": 0.6319149695336819,
+            "prompt_tokens": 2011,
+            "generated_tokens": 4,
+            "final_resident_kv_payload_bytes": 267911168,
+            "prefill_s": 0.24004794843494892,
+            "prefill_peak_alloc_bytes": 15304401408
+          },
+          {
+            "sample_id": "7a1e31b5e7ed8770a9bad9b33c75f30fcc4c84bfa943f1bd7c1318eff50f1f4f",
+            "prediction": "1859",
+            "score": 0.0,
+            "elapsed_s": 1.1842559278011322,
+            "prompt_tokens": 5037,
+            "generated_tokens": 5,
+            "final_resident_kv_payload_bytes": 439533568,
+            "prefill_s": 0.6101017091423273,
+            "prefill_peak_alloc_bytes": 16117908480
+          }
+        ],
+        "cache_stats": {
+          "demoted": 31607,
+          "promoted": 30103,
+          "promotions_deferred": 18025,
+          "paid_writes": 5866,
+          "writes_saved": 25741,
+          "dropped": 0,
+          "write_savings_pct": 81.4,
+          "decode_steps": 47,
+          "stt_starved_steps": 0,
+          "stt_unused_steps": 0,
+          "mean_stt_exposed": 32.0,
+          "stt_expose_quota": 32,
+          "stt_exposed_total": 1664,
+          "stt_exposure_samples": 52,
+          "modeled_latency_us": 15574.4,
+          "modeled_energy_nj": 607473958.9
+        }
+      }
+    }
+  }
+}

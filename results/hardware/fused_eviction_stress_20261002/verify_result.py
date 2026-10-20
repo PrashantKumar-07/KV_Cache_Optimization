@@ -1,0 +1,125 @@
+"""Verify usual-budget generation, source/data identity and request isolation."""
+import ast
+import hashlib
+import json
+from pathlib import Path
+import sys
+import tarfile
+
+ROOT = Path(__file__).resolve().parents[3]
+BASE = Path(__file__).resolve().parent
+sys.path[:0] = [str(ROOT/'experiments'), str(ROOT/'src')]
+import longbench_eval as bench
+from provenance import read_jsonl
+from transformers import AutoTokenizer
+
+
+def sha(path):
+    return hashlib.sha256(path.read_bytes()).hexdigest()
+
+
+def main():
+    manifest = json.loads((BASE/'generation_manifest.json').read_text())
+    plan = json.loads((BASE/'plan.json').read_text())
+    generation = json.loads((BASE/'generation.json').read_text())
+    interleaved = json.loads((BASE/'interleaved.json').read_text())
+    frozen = json.loads((BASE/'source_manifest.json').read_text())['source_sha256']
+    assert manifest['hot']==1024 and manifest['cold']==2048
+    assert manifest['seeds']==[0] and generation['passed'] and interleaved['passed']
+    assert generation['manifest_sha256']==sha(BASE/'generation_manifest.json')
+    with tarfile.open(BASE/'source.tar.gz') as archive:
+        for raw in (generation,interleaved):
+            for name,digest in raw['source_sha256'].items():
+                assert digest==frozen[name]
+                assert hashlib.sha256(archive.extractfile(name).read()).hexdigest()==digest
+        driver = archive.extractfile('experiments/check_bounded_pool_generation.py').read().decode()
+    primary=json.loads((ROOT/'results/hardware/fused_eviction_model_20261002/verified_report.json').read_text())
+    primary_path=ROOT/plan['primary']
+    assert sha(primary_path)==plan['primary_sha256'] and primary['advance_to_mandatory_stress']
+    old_hashes=json.loads((ROOT/'results/hardware/fused_eviction_model_20261002/source_manifest.json').read_text())['source_sha256']
+    for name in ('experiments/fused_eviction_policy.py','experiments/fused_hot_compaction.py',
+        'experiments/native_hot_compact.cpp','experiments/native_hot_compact.cu','experiments/batched_eviction_policy.py',
+        'experiments/probe_batched_eviction_selection.py','experiments/probe_protected_mask_numpy.py',
+        'experiments/direct_shared_pool.py','experiments/cpu_batched_cache.py','experiments/cpu_slot_cache.py',
+        'experiments/batched_score_policy.py','src/tiered_kv_cache.py'):
+        assert frozen[name]==old_hashes[name]
+    assert generation['binary_sha256']==interleaved['binary_sha256']==primary['binary_sha256']
+    assert len(generation['native_checks'])==15 and all(r['exact'] for r in generation['native_checks'])
+    native=generation['native_checks']
+    assert len([r for r in native if r['case']=='all_bf16_bitpatterns_f32_signedzero_subnormal_nan'])==3
+    delayed=[r for r in native if r['case']=='delayed_gather_input_release_allocator_pressure']
+    assert [r['round'] for r in delayed]==list(range(12)) and {r['consumer'] for r in delayed}=={0,1}
+    for name,digest in interleaved['fused_source_sha256'].items(): assert digest==frozen[name]
+    tokenizer = AutoTokenizer.from_pretrained(str((ROOT/manifest['model']).resolve()))
+    pairs = []
+    for task,entry in manifest['tasks'].items():
+        source = ROOT/entry['source_file']
+        assert sha(source)==entry['source_sha256']
+        data = read_jsonl(source)
+        for index,sample in zip(entry['selected_zero_based_indices'],entry['selected_sample_ids']):
+            item = data[index]
+            assert hashlib.sha256(json.dumps(item,sort_keys=True).encode()).hexdigest()==sample
+            rows=[r for r in generation['rows'] if r['sample_id']==sample]
+            assert len(rows)==2 and {r['arm'] for r in rows}=={'direct','fused'}
+            pair = {r['arm']:r for r in rows}
+            for field in ('prediction','generated_token_ids','score','generation','max_gen','termination','prompt_sha256',
+                'state_sha256','trajectory_sha256','trajectory_frames','counters','prefill_query_shapes',
+                'explicit_h2d_payload_bytes','explicit_d2h_payload_bytes','occupied_host_tensor_bytes'):
+                assert pair['direct'][field]==pair['fused'][field],(task,sample,field)
+            prompt = bench.DATASET_TO_PROMPT[task].format(**item)
+            if task not in bench.NO_CHAT_TASKS:
+                prompt = f'[INST] {prompt} [/INST]'
+            prompt_ids=tokenizer(prompt,return_tensors='pt').input_ids
+            expected_tokens=min(prompt_ids.shape[1],31500)
+            for arm,row in pair.items():
+                assert row['task']==task and row['seed']==0
+                assert row['reserved_host_tensor_bytes']==402784256
+                assert row['prompt_sha256']==hashlib.sha256(prompt.encode()).hexdigest()
+                ids = row['generated_token_ids']
+                assert row['generation']['prompt_tokens']==expected_tokens
+                assert row['generation']['generated_tokens']==len(ids)
+                assert row['max_gen']==bench.DATASET_TO_MAXGEN[task]
+                assert 0<len(ids)<=row['max_gen'] and tokenizer.eos_token_id not in ids[:-1]
+                assert tokenizer.decode(ids,skip_special_tokens=True)==row['prediction']
+                assert row['termination']==('eos' if ids[-1]==tokenizer.eos_token_id else 'cap')
+                if row['termination']=='cap':
+                    assert len(ids)==row['max_gen']
+                score = 100*max(bench.DATASET_TO_METRIC[task](row['prediction'],answer,
+                    all_classes=item.get('all_classes',[])) for answer in item['answers'])
+                assert abs(score-row['score'])<1e-8
+                assert len(row['prefill_query_shapes'])==32
+                assert all(shape==[32,128,128] for shape in row['prefill_query_shapes'].values())
+            pairs.append(dict(task=task,sample_id=sample,generated_tokens=len(pair['direct']['generated_token_ids']),
+                              score=pair['direct']['score'],exact=True))
+    assert len(pairs)==12 and len(generation['rows'])==24
+    assert interleaved['hot']==1024 and interleaved['cold']==2048 and interleaved['fused_interleaved']
+    assert not interleaved['direct_interleaved'] and not interleaved['bounded_interleaved'] and len(interleaved['rows'])==9
+    prompt_path=ROOT/'results/remediation_v3/latency_prompt.txt'
+    assert sha(prompt_path)==interleaved['prompt_sha256']
+    ids=tokenizer(prompt_path.read_text(),return_tensors='pt').input_ids
+    inputs=dict(A=ids[:,:4096],B=ids[:,:8192],C=ids[:,8192:12288])
+    for name,frames in (('A',13),('B',25),('C',13)):
+        assert hashlib.sha256(inputs[name].numpy().tobytes()).hexdigest()==interleaved['input_sha256'][name]
+        rows=[r for r in interleaved['rows'] if r['request']==name]
+        assert len(rows)==3 and {r['mode'] for r in rows}=={'gpu','cpu','interleaved_cpu'}
+        for row in rows:
+            assert len(row['predicted_token_ids'])==len(row['every_boundary_sha256'])==frames
+            for field in ('predicted_token_ids','state_sha256','every_boundary_sha256','history_sha256','counters'):
+                assert row[field]==rows[0][field],(name,field)
+    result=dict(verified=True,generation_pairs=12,tasks=6,seeds=[0],interleaved_requests=3,
+        compared_modes=['gpu','cpu','interleaved_cpu'],boundary_frames_per_mode=51,
+        whole_eviction_ast_preservation_verified=primary['whole_original_eviction_except_compaction_ast_verified'],native_bit_and_stream_lifetime_checks=15,native_task_caps_and_eos_verified=True,
+        expected_root_bytes={'direct':402784256,'fused':402784256},pairs=pairs,
+        evidence_sha256={name:sha(BASE/name) for name in ('generation.json','interleaved.json',
+            'generation_manifest.json','source.tar.gz','source_manifest.json','plan.json')},
+        verifier_sha256=sha(Path(__file__)),
+        limitations='Reused development documents/one greedy seed; exact preservation, no independent quality superiority. Interleaving uses serialized Python/default model stream, fixed lengths/EOS ignored; delayednativegather uses explicit producer-event waits and allocatorpressure; no threaded/asynchronous modelserving, saturation, throughput, physicalSTT or new quality/host-memory claim.')
+    output=BASE/'verified_report.json'
+    if output.exists():
+        raise FileExistsError(output)
+    output.write_text(json.dumps(result,indent=2))
+    print(json.dumps({k:v for k,v in result.items() if k!='pairs'},indent=2))
+
+
+if __name__=='__main__':
+    main()

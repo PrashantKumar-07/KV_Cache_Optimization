@@ -1,0 +1,582 @@
+{
+  "config": {
+    "model": "../models/mistral-7b-instruct",
+    "data_dir": "results/baseline_fidelity/real_query_holdout_20260929/batch2/data",
+    "tasks": [
+      "qasper",
+      "narrativeqa",
+      "multifieldqa_en",
+      "hotpotqa",
+      "triviaqa",
+      "gov_report"
+    ],
+    "max_samples": 5,
+    "strategy": "lru",
+    "seed": 0,
+    "max_ctx": 31500,
+    "candidate_pages": 0,
+    "tiered_vram_budget": 992,
+    "tiered_stt_budget": 3104,
+    "recent": 128,
+    "stt_expose_quota": 32,
+    "real_query_prefill": false,
+    "query_score_mode": "chunked",
+    "query_chunk_size": 128,
+    "sttram_bifurcation_frac": 0.75,
+    "kv_dtype": "bfloat16",
+    "runtime": {
+      "git_revision": "be7e700d84d46b47e32ba5b9870c8b71783b9e53",
+      "source_sha256": "eea0cf48baa0804928f6f4a1c2674af3547dbac77cb2ea1b890805ba0473cd9e",
+      "packages": {
+        "torch": "2.5.1+cu124",
+        "transformers": "5.14.1",
+        "datasets": "5.0.0",
+        "numpy": "2.2.6",
+        "accelerate": "1.14.0",
+        "huggingface_hub": "1.24.0",
+        "rouge": "1.0.1"
+      }
+    },
+    "selector_sha256": "ecef20ea48be38f1ac9e5c9d0cce2fb89fa90c270dc968cf541a448d77b89876",
+    "page_index_sha256": null,
+    "page_candidates_sha256": null,
+    "dataset_sha256": {
+      "qasper": "f57718f8a24dff4d9cc9cedcbd57e18bf4d56e0fc44f0ed3cfb9029f166c6fa5",
+      "narrativeqa": "ab3753da8b69aa5a6df3a913e15b606b542cd6c16b20c15751f8daf9dc12779f",
+      "multifieldqa_en": "06b3d0ed2a7b9eaf99e778730944b8659a75246cc395f9b441987a230a9edff0",
+      "hotpotqa": "cf5b07ce35cf0046bc23ecf78889ec86e347f919e8eb86522888f3b6afd37c57",
+      "triviaqa": "338328badeb9f5713ca7d419843f80e89fd4ef2ee400d2b755aff2a13ab7414a",
+      "gov_report": "56bdc34704ddb4795624bff2a8d0312a41c4943ec4a0b5b6520ca6c694fcfb0e"
+    }
+  },
+  "results": {
+    "qasper": {
+      "tieredkv": {
+        "score": 18.7,
+        "n": 5,
+        "sample_scores": [
+          50.0,
+          12.5,
+          18.87,
+          12.12,
+          0.0
+        ],
+        "samples": [
+          {
+            "sample_id": "7895b01146c5fa150f6ae35f8353be48ee960026490cea40d1aed8ba1238d832",
+            "prediction": "The approach out-performs K-means, LEM, and DPEMM as baseline approaches.",
+            "score": 50.0,
+            "elapsed_s": 2.9443893283605576,
+            "prompt_tokens": 6300,
+            "generated_tokens": 23,
+            "final_resident_kv_payload_bytes": 442290176,
+            "prefill_s": 1.168490445241332,
+            "prefill_peak_alloc_bytes": 16342674944
+          },
+          {
+            "sample_id": "003131cf370675e37312c435024f025600b841b22683d9fa30b2dcd8774af190",
+            "prediction": "The off-the-shelf reward learning algorithm from RL that is adapted for joint data manipulation learning and model training is not explicitly stated in the article. However, it is mentioned that the objective of the algorithm is to optimize the data manipulation parameters based on the model performance on a validation set.",
+            "score": 12.5,
+            "elapsed_s": 5.840216040611267,
+            "prompt_tokens": 7652,
+            "generated_tokens": 65,
+            "final_resident_kv_payload_bytes": 448856064,
+            "prefill_s": 0.8530677426606417,
+            "prefill_peak_alloc_bytes": 16617509376
+          },
+          {
+            "sample_id": "ec4192e9de44612e6c81fde5f46e7fe191b170ea26d5cca359cb273e49399987",
+            "prediction": "The dataset models character's profiles using Human-Like Attributes (HLAs) collected from various TV shows and evaluated using a system called ALOHA. ALOHA recommends tailored responses based on specific characters' HLAs and demonstrates improved performance compared to baseline models.",
+            "score": 18.867924528301884,
+            "elapsed_s": 5.4774903897196054,
+            "prompt_tokens": 8024,
+            "generated_tokens": 59,
+            "final_resident_kv_payload_bytes": 447672320,
+            "prefill_s": 0.9140239302068949,
+            "prefill_peak_alloc_bytes": 16693129728
+          },
+          {
+            "sample_id": "4fc3ffc8cff45be4ca7e98fc90948d5b5e9e51e8ddaf767d5de20341f49de237",
+            "prediction": "The baseline methods are not explicitly named in the article, but they are mentioned as being compared to the proposed method in the experiments.",
+            "score": 12.121212121212121,
+            "elapsed_s": 2.893176607787609,
+            "prompt_tokens": 7611,
+            "generated_tokens": 27,
+            "final_resident_kv_payload_bytes": 442863616,
+            "prefill_s": 0.854910722002387,
+            "prefill_peak_alloc_bytes": 16609174528
+          },
+          {
+            "sample_id": "d310c384046982c71d6efc7cdc14b517ae53a1ade8b46d1230a99de09f96c9d5",
+            "prediction": "Yes. The article emphasizes the importance of interdisciplinary insights in analyzing text as social and cultural data.",
+            "score": 0.0,
+            "elapsed_s": 3.252636032178998,
+            "prompt_tokens": 11640,
+            "generated_tokens": 25,
+            "final_resident_kv_payload_bytes": 442777600,
+            "prefill_s": 1.3689671289175749,
+            "prefill_peak_alloc_bytes": 17428189696
+          }
+        ],
+        "cache_stats": {
+          "demoted": 102592,
+          "promoted": 96384,
+          "promotions_deferred": 102272,
+          "paid_writes": 11881,
+          "writes_saved": 90711,
+          "dropped": 0,
+          "write_savings_pct": 88.4,
+          "decode_steps": 194,
+          "stt_starved_steps": 0,
+          "stt_unused_steps": 0,
+          "mean_stt_exposed": 32.0,
+          "stt_expose_quota": 32,
+          "stt_exposed_total": 6368,
+          "stt_exposure_samples": 199,
+          "modeled_latency_us": 57771.2,
+          "modeled_energy_nj": 2486578053.1
+        }
+      }
+    },
+    "narrativeqa": {
+      "tieredkv": {
+        "score": 7.27,
+        "n": 5,
+        "sample_scores": [
+          0.0,
+          18.18,
+          0.0,
+          18.18,
+          0.0
+        ],
+        "samples": [
+          {
+            "sample_id": "f5451f0d46a7df1e530868319d57b53e2869764ab8376f5035faa649f71fce2a",
+            "prediction": "Mary is taught to struggle for resignation.",
+            "score": 0.0,
+            "elapsed_s": 5.261065158993006,
+            "prompt_tokens": 31500,
+            "generated_tokens": 10,
+            "final_resident_kv_payload_bytes": 440422400,
+            "prefill_s": 4.544088313356042,
+            "prefill_peak_alloc_bytes": 22379081728
+          },
+          {
+            "sample_id": "39954666764001f5104d1691c8df88a949676d26468f1f7d46a3f546a88b9b80",
+            "prediction": "A family dispute over money caused Mortimer Trefinnis to be estranged from his siblings.",
+            "score": 18.181818181818183,
+            "elapsed_s": 3.464214464649558,
+            "prompt_tokens": 14753,
+            "generated_tokens": 22,
+            "final_resident_kv_payload_bytes": 442126336,
+            "prefill_s": 1.8044486250728369,
+            "prefill_peak_alloc_bytes": 18185901056
+          },
+          {
+            "sample_id": "0ecc097ea5feb5b2948ca924a07eadbbd480b0ac379a0b75659396ad57a5923c",
+            "prediction": "Mrs. Hudson, Dr. Watson, and Inspector Lestrade fainted after seeing Brenda's dead body.",
+            "score": 0.0,
+            "elapsed_s": 3.7884245552122593,
+            "prompt_tokens": 14751,
+            "generated_tokens": 26,
+            "final_resident_kv_payload_bytes": 442712064,
+            "prefill_s": 1.807316379621625,
+            "prefill_peak_alloc_bytes": 18185400320
+          },
+          {
+            "sample_id": "fcc3b52b9bb9ddfdaa09d99d6d0703a2564ddd68f8213b6ce9fb6c86cb5d076f",
+            "prediction": "Reiko's husband dies.",
+            "score": 18.181818181818183,
+            "elapsed_s": 5.1789313443005085,
+            "prompt_tokens": 31500,
+            "generated_tokens": 8,
+            "final_resident_kv_payload_bytes": 440139776,
+            "prefill_s": 4.62160212919116,
+            "prefill_peak_alloc_bytes": 22379081728
+          },
+          {
+            "sample_id": "654df278801efe4dc3cdcced0cd4250654ab76ef4f5c5d3d23627e7fcaaacdcf",
+            "prediction": "Eatonville",
+            "score": 0.0,
+            "elapsed_s": 4.039190802723169,
+            "prompt_tokens": 26894,
+            "generated_tokens": 4,
+            "final_resident_kv_payload_bytes": 439627776,
+            "prefill_s": 3.794716889038682,
+            "prefill_peak_alloc_bytes": 21225812992
+          }
+        ],
+        "cache_stats": {
+          "demoted": 36960,
+          "promoted": 34880,
+          "promotions_deferred": 31680,
+          "paid_writes": 7137,
+          "writes_saved": 29823,
+          "dropped": 0,
+          "write_savings_pct": 80.7,
+          "decode_steps": 65,
+          "stt_starved_steps": 0,
+          "stt_unused_steps": 0,
+          "mean_stt_exposed": 32.0,
+          "stt_expose_quota": 32,
+          "stt_exposed_total": 2240,
+          "stt_exposure_samples": 70,
+          "modeled_latency_us": 20629.7,
+          "modeled_energy_nj": 836386816.0
+        }
+      }
+    },
+    "multifieldqa_en": {
+      "tieredkv": {
+        "score": 18.93,
+        "n": 5,
+        "sample_scores": [
+          0.0,
+          50.0,
+          4.44,
+          16.95,
+          23.26
+        ],
+        "samples": [
+          {
+            "sample_id": "343c3c9b76d7ec32f1d537f9e3df0702bcfe0fef7c5c27e5250d8e5a846bd1e9",
+            "prediction": "The score achieved by the authors for Track-2 is 85.6%.",
+            "score": 0.0,
+            "elapsed_s": 1.7204722836613655,
+            "prompt_tokens": 3505,
+            "generated_tokens": 18,
+            "final_resident_kv_payload_bytes": 442826752,
+            "prefill_s": 0.3823253083974123,
+            "prefill_peak_alloc_bytes": 15774507008
+          },
+          {
+            "sample_id": "4cf5f5060e0e0ec82fbee689cf70a6da1bdcb7f2c7ea3dc47e0237a7c0ac0954",
+            "prediction": "The NLMS (Normalized Least Mean Square) algorithm is engaged in the PLMS-PPIC (Parallel Least Mean Square Parallel Interference Cancellation) method.",
+            "score": 50.0,
+            "elapsed_s": 3.630694419145584,
+            "prompt_tokens": 6250,
+            "generated_tokens": 38,
+            "final_resident_kv_payload_bytes": 444952576,
+            "prefill_s": 0.6995300725102425,
+            "prefill_peak_alloc_bytes": 16332510720
+          },
+          {
+            "sample_id": "f4241a3f7ce673f511d2518520172f6be8c7efb52322c1b533c146bf3eb0d7e6",
+            "prediction": "Using binary variables in the SLAS formulation helps to reduce computational overload by converting integer variables into binary ones. This simplifies the optimization problem and makes it easier to solve. Additionally, binary variables can aid numerical computations by providing clearer and more straightforward constraints.",
+            "score": 4.444444444444445,
+            "elapsed_s": 5.334730660542846,
+            "prompt_tokens": 7718,
+            "generated_tokens": 57,
+            "final_resident_kv_payload_bytes": 446906368,
+            "prefill_s": 0.8861163109540939,
+            "prefill_peak_alloc_bytes": 16630925824
+          },
+          {
+            "sample_id": "ba009dbb84d0f1f66c44f497d63312afbe333d73cb8ac6bd130075227e9b533b",
+            "prediction": "Potential applications of ferromagnetic semiconductors include spintronics, magnetic sensors, magnetic data storage, and magnetic logic devices. They can also be used in magnetic field sensors, magnetic recording media, and magnetic memory devices. Additionally, they have potential applications in spin-based electronics and quantum computing.",
+            "score": 16.949152542372882,
+            "elapsed_s": 6.411068797111511,
+            "prompt_tokens": 12180,
+            "generated_tokens": 64,
+            "final_resident_kv_payload_bytes": 447668224,
+            "prefill_s": 1.447839692234993,
+            "prefill_peak_alloc_bytes": 17541662720
+          },
+          {
+            "sample_id": "a73b28faa75203051f4e920edfa3ce17b1edc322d08f11af470f68e5d0788046",
+            "prediction": "Yes, the denoiser can be applied to circuits with non-Clifford noise. The text specifically mentions that the denoiser was studied for circuits with non-Clifford noise, and the results showed that it was effective in mitigating the impact of non-Clifford errors",
+            "score": 23.25581395348837,
+            "elapsed_s": 5.909624179825187,
+            "prompt_tokens": 8203,
+            "generated_tokens": 64,
+            "final_resident_kv_payload_bytes": 448978944,
+            "prefill_s": 0.9531162232160568,
+            "prefill_peak_alloc_bytes": 16729517056
+          }
+        ],
+        "cache_stats": {
+          "demoted": 126752,
+          "promoted": 119200,
+          "promotions_deferred": 122464,
+          "paid_writes": 13559,
+          "writes_saved": 113193,
+          "dropped": 0,
+          "write_savings_pct": 89.3,
+          "decode_steps": 236,
+          "stt_starved_steps": 0,
+          "stt_unused_steps": 0,
+          "mean_stt_exposed": 32.0,
+          "stt_expose_quota": 32,
+          "stt_exposed_total": 7712,
+          "stt_exposure_samples": 241,
+          "modeled_latency_us": 70150.0,
+          "modeled_energy_nj": 3025217650.7
+        }
+      }
+    },
+    "hotpotqa": {
+      "tieredkv": {
+        "score": 0.0,
+        "n": 5,
+        "sample_scores": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "samples": [
+          {
+            "sample_id": "cfe8e61e305031ef7c5261338908e93526fad434b035d1980e5281c011663fc8",
+            "prediction": "Both Gevork Minaskanian and George Stambolian had a common pursuit in the field of literature and education. Gevork Minaskan",
+            "score": 0.0,
+            "elapsed_s": 2.9716571029275656,
+            "prompt_tokens": 4724,
+            "generated_tokens": 32,
+            "final_resident_kv_payload_bytes": 444157952,
+            "prefill_s": 0.529621122404933,
+            "prefill_peak_alloc_bytes": 16022305280
+          },
+          {
+            "sample_id": "2957b813abce61da3e6083254af21e25788e07587510506a9e8922add3301203",
+            "prediction": "The province where Be Quick '28 football club is located is Netherlands.",
+            "score": 0.0,
+            "elapsed_s": 1.9756634701043367,
+            "prompt_tokens": 6905,
+            "generated_tokens": 16,
+            "final_resident_kv_payload_bytes": 441839616,
+            "prefill_s": 0.793369933962822,
+            "prefill_peak_alloc_bytes": 16465658880
+          },
+          {
+            "sample_id": "161721842281e5d2fad24524144bc6d394b24eb37227b3c32b7680a507cbba32",
+            "prediction": "T. Freedman (Thomas Frederick Freedman, also known as T. J. Freedman or Tom Freedman) was a Canadian",
+            "score": 0.0,
+            "elapsed_s": 3.559693479910493,
+            "prompt_tokens": 9403,
+            "generated_tokens": 32,
+            "final_resident_kv_payload_bytes": 443805696,
+            "prefill_s": 1.1183647122234106,
+            "prefill_peak_alloc_bytes": 16973452288
+          },
+          {
+            "sample_id": "d43e30d09237ab3886ff2142fc68a6df8352ddee63baaf00577a9a96b1719b7d",
+            "prediction": "Ezequiel Lazaro was born in Buenos Aires.",
+            "score": 0.0,
+            "elapsed_s": 3.0145697444677353,
+            "prompt_tokens": 16206,
+            "generated_tokens": 13,
+            "final_resident_kv_payload_bytes": 440692736,
+            "prefill_s": 2.073066547513008,
+            "prefill_peak_alloc_bytes": 18549708800
+          },
+          {
+            "sample_id": "7df4a04cc24019169b8aed15c06c25eb9d1488e048b89dbac931b93a059b96f5",
+            "prediction": "The creolized forms of the English language are found in traditional African religions of Africa with some influence from Christianity.",
+            "score": 0.0,
+            "elapsed_s": 3.6629038266837597,
+            "prompt_tokens": 14216,
+            "generated_tokens": 25,
+            "final_resident_kv_payload_bytes": 442531840,
+            "prefill_s": 1.777493504807353,
+            "prefill_peak_alloc_bytes": 18051444736
+          }
+        ],
+        "cache_stats": {
+          "demoted": 61312,
+          "promoted": 57696,
+          "promotions_deferred": 58016,
+          "paid_writes": 9090,
+          "writes_saved": 52222,
+          "dropped": 0,
+          "write_savings_pct": 85.2,
+          "decode_steps": 113,
+          "stt_starved_steps": 0,
+          "stt_unused_steps": 0,
+          "mean_stt_exposed": 32.0,
+          "stt_expose_quota": 32,
+          "stt_exposed_total": 3776,
+          "stt_exposure_samples": 118,
+          "modeled_latency_us": 34506.2,
+          "modeled_energy_nj": 1450502783.0
+        }
+      }
+    },
+    "triviaqa": {
+      "tieredkv": {
+        "score": 93.33,
+        "n": 5,
+        "sample_scores": [
+          100.0,
+          66.67,
+          100.0,
+          100.0,
+          100.0
+        ],
+        "samples": [
+          {
+            "sample_id": "76dcf15b4db2a298b35a37c31e0c6c98eb881c8603d9f0b3f6190831aa196092",
+            "prediction": "Florence",
+            "score": 100.0,
+            "elapsed_s": 1.0446859747171402,
+            "prompt_tokens": 6982,
+            "generated_tokens": 4,
+            "final_resident_kv_payload_bytes": 439635968,
+            "prefill_s": 0.802302585914731,
+            "prefill_peak_alloc_bytes": 16481312256
+          },
+          {
+            "sample_id": "aadff40d7cd19a4706248a9009800952abf3b134b43c33fe915e480de0e0057c",
+            "prediction": "Rye whiskey",
+            "score": 66.66666666666666,
+            "elapsed_s": 0.8920305166393518,
+            "prompt_tokens": 5196,
+            "generated_tokens": 5,
+            "final_resident_kv_payload_bytes": 439697408,
+            "prefill_s": 0.5800877679139376,
+            "prefill_peak_alloc_bytes": 16118254080
+          },
+          {
+            "sample_id": "35bf9673e53f882b31a6a7bb5e697a60a187f22f9d4956ff8944892fed839308",
+            "prediction": "Russia",
+            "score": 100.0,
+            "elapsed_s": 1.4127139206975698,
+            "prompt_tokens": 10532,
+            "generated_tokens": 3,
+            "final_resident_kv_payload_bytes": 439484416,
+            "prefill_s": 1.2542427517473698,
+            "prefill_peak_alloc_bytes": 17202955776
+          },
+          {
+            "sample_id": "75ea9cc5f4373cf90061262a9c285e211b3f71d949c62f57cd2ee8d0ab18da5d",
+            "prediction": "Green Bay Packers",
+            "score": 100.0,
+            "elapsed_s": 2.781314617022872,
+            "prompt_tokens": 17864,
+            "generated_tokens": 5,
+            "final_resident_kv_payload_bytes": 439615488,
+            "prefill_s": 2.4668283611536026,
+            "prefill_peak_alloc_bytes": 18964845568
+          },
+          {
+            "sample_id": "583650b2d18f4eb3fdd5846ab1f47e34a937003d6d9cd2501420923af263e4b1",
+            "prediction": "Jackson Pollock",
+            "score": 100.0,
+            "elapsed_s": 2.6322435699403286,
+            "prompt_tokens": 18079,
+            "generated_tokens": 5,
+            "final_resident_kv_payload_bytes": 439619584,
+            "prefill_s": 2.319157002493739,
+            "prefill_peak_alloc_bytes": 19018678272
+          }
+        ],
+        "cache_stats": {
+          "demoted": 9632,
+          "promoted": 9088,
+          "promotions_deferred": 8320,
+          "paid_writes": 5434,
+          "writes_saved": 4198,
+          "dropped": 0,
+          "write_savings_pct": 43.6,
+          "decode_steps": 17,
+          "stt_starved_steps": 0,
+          "stt_unused_steps": 0,
+          "mean_stt_exposed": 32.0,
+          "stt_expose_quota": 32,
+          "stt_exposed_total": 704,
+          "stt_exposure_samples": 22,
+          "modeled_latency_us": 6578.3,
+          "modeled_energy_nj": 221069443.1
+        }
+      }
+    },
+    "gov_report": {
+      "tieredkv": {
+        "score": 24.27,
+        "n": 5,
+        "sample_scores": [
+          23.91,
+          23.18,
+          20.29,
+          31.63,
+          22.35
+        ],
+        "samples": [
+          {
+            "sample_id": "287d0bc79997bf3c35d89942cbcdb90b8f610cb92918e231048af461d25e30c1",
+            "prediction": "The Renewable Fuel Standard (RFS) is a US government policy mandating the use of renewable fuels, primarily biofuels, in transportation fuel. The report provides an overview of the RFS, its history, and current challenges. The RFS was introduced in 2005 and expanded in 2007, with the goal of reducing greenhouse gas emissions, increasing energy security, and promoting rural economic development. The RFS sets annual targets for the volume of renewable fuels to be blended into gasoline, diesel, and jet fuel.\n\nThe report highlights the challenges in meeting the RFS targets, particularly for advanced biofuels such as cellulosic ethanol. Production of these fuels has been slower than anticipated due to technical and economic challenges. The report also discusses the administrative challenges of implementing the RFS, including delays in setting annual targets and uncertainty around the use of waivers.\n\nSome stakeholders argue that the RFS is no longer necessary due to the growth of the conventional biofuels industry and the increasing availability of renewable fuels from other sources. Others argue that the RFS is essential to continue the development of the biofuels industry and to reduce greenhouse gas emissions from the transportation sector.\n\nThe report concludes by noting that the future of the RFS is uncertain and that ongoing debates in Congress center around whether to maintain, modify, or eliminate the policy. Some proposed alternatives include transitioning to an octane standard or focusing on other renewable fuels such as biodiesel and renewable natural gas. Ultimately, the report underscores the importance of continued dialogue and collaboration between stakeholders to ensure the long-term success of the RFS and the biofuels industry.",
+            "score": 23.913042999586494,
+            "elapsed_s": 30.20825226418674,
+            "prompt_tokens": 5323,
+            "generated_tokens": 371,
+            "final_resident_kv_payload_bytes": 491384832,
+            "prefill_s": 0.5931357741355896,
+            "prefill_peak_alloc_bytes": 16144070656
+          },
+          {
+            "sample_id": "017904c212223f9db7cc88eaf9aec2fcca7907708de2ab966be08832c8bb516f",
+            "prediction": "The report outlines the Army's plans to address the mobility and firepower limitations of Infantry Brigade Combat Teams (IBCTs) through the acquisition of three new systems: Ground Mobility Vehicles (GMVs), Light Reconnaissance Vehicles (LRVs), and Mobile Protected Firepower (MPF) systems. The Army aims to procure these systems as Non-Developmental Items (NDIs) to expedite the acquisition process.\n\nThe report provides details on the planned acquisition strategy for each system. For GMVs, the Army intends to purchase vehicles for Airborne IBCTs in two phases, with an estimated total requirement of 2,100 vehicles. The first phase involves procuring 1,600 vehicles for the Active Component and 500 vehicles for the National Guard. The second phase will focus on procuring additional vehicles for the National Guard.\n\nThe LRV program is currently using the Joint Light Tactical Vehicle (JLTV) as an interim solution, referred to as JLTV-RV. The Army plans to field LRVs in IBCTs' Infantry and Cavalry Squadrons. However, the future of this program is uncertain due to the absence of a budget request in the FY2020 budget.\n\nThe MPF program aims to provide protected mobility and firepower to IBCTs. The Army plans to procure 500 MPF systems, with the Engineering and Manufacturing Development (EMD) phase starting in FY2019 and production expected to begin in FY2022. Two companies, BAE Systems and General Dynamics Land Systems, have been selected as competitors for the MPF program.\n\nThe report also discusses the potential impact of expanding the Security Force Assistance Brigades (SFABs) into IBCTs, which could require additional vehicles. The report raises questions about the Army's overall fielding plan for these vehicles, including the order of acquisition for Active and National Guard components, the timeline for fielding, and the potential challenges associated with procuring and delivering three different vehicles with varying production and delivery schedules.",
+            "score": 23.18181770662191,
+            "elapsed_s": 38.605324406176805,
+            "prompt_tokens": 5425,
+            "generated_tokens": 474,
+            "final_resident_kv_payload_bytes": 505528320,
+            "prefill_s": 0.6068500783294439,
+            "prefill_peak_alloc_bytes": 16164804608
+          },
+          {
+            "sample_id": "ce2d2304a424a78d54c7285b945c8894df6e54db74f8e2ebdbc7acfde71f10ad",
+            "prediction": "The report outlines the progress of Positive Train Control (PTC) implementation by railroads in the United States. Nearly all railroads are expected to request an extension beyond the 2018 deadline for full implementation, which will require FRA approval. As of September 2018, no railroads had submitted extension requests. The report highlights concerns regarding FRA resources and review times, which may hinder the timely approval of extension requests and impact the overall implementation process. The report also mentions the challenges faced by railroads in testing and integrating PTC systems, as well as the uncertainty surrounding FRA's enforcement approach for non-compliant railroads. The report concludes by emphasizing the need for effective communication and coordination between railroads and the FRA to ensure a successful PTC implementation by the December 31, 2020 deadline.",
+            "score": 20.289854749002316,
+            "elapsed_s": 15.900643622502685,
+            "prompt_tokens": 5805,
+            "generated_tokens": 192,
+            "final_resident_kv_payload_bytes": 467357696,
+            "prefill_s": 0.6686040889471769,
+            "prefill_peak_alloc_bytes": 16242051072
+          },
+          {
+            "sample_id": "f63414fdfcd7f92f540f6748799c4d6af74701ddaec30d2ce6a90d2ac3ac3424",
+            "prediction": "The report analyzes data from the Federally Facilitated Marketplace (FFM) for the Patient Protection and Affordable Care Act (ACA) during the 2015 coverage year. The report focuses on three areas of analysis: applicants with inconsistencies, applicants with information that did not match Social Security Administration (SSA) records, and applicants who were reportedly deceased but received coverage and subsidies.\n\nThe report found that of the approximately 8.04 million applicants who received coverage and subsidies, about 1.1% had inconsistencies in their applications. These inconsistencies ranged from minor errors to potential fraud. The report also found that about 0.1% of applicants had information that did not match SSA records.\n\nRegarding deceased individuals, the report found that about 1,100 individuals were reportedly deceased but received coverage and subsidies. The report notes that CMS has implemented measures to prevent deceased individuals from receiving coverage and subsidies, but there is still a risk of error or fraud.\n\nThe report recommends that CMS continue to improve its enrollment and eligibility verification processes to prevent fraud and ensure that only eligible individuals receive coverage and subsidies. The report also recommends that CMS work with the Social Security Administration and other agencies to improve data sharing and verification processes.",
+            "score": 31.63265266431956,
+            "elapsed_s": 25.12313031218946,
+            "prompt_tokens": 11646,
+            "generated_tokens": 298,
+            "final_resident_kv_payload_bytes": 479993856,
+            "prefill_s": 1.4119096994400024,
+            "prefill_peak_alloc_bytes": 17429409280
+          },
+          {
+            "sample_id": "f52854b71e370b5631aa5d78ae60a6cdb5e165046bf67fb9d1a70bf4a29603a9",
+            "prediction": "The report discusses the potential impact of Artificial Intelligence (AI) on warfare and national security. The US military is currently investing in AI and autonomous systems to improve decision-making, enhance capabilities, and gain a strategic advantage. The report highlights the transformative potential of AI, which could lead to faster and more accurate decision-making, distancing humans from the frontlines, and contesting traditional warfighting principles. However, there are also risks associated with AI, such as the potential for strategic instability, loss of human control, and ethical concerns. The report emphasizes the importance of evaluating the implications of military AI developments and exercising oversight to ensure that advanced technologies are in line with US national security objectives and ethical norms. The report also discusses the challenges of assessing the true utility of AI in warfare and the need for continued research and development. The report concles that Congressional actions, such as funding, acquisitions, norms and standards, and international competition, have the potential to significantly shape the trajectory of AI development and are critical to ensuring the continued efficacy of the US military.",
+            "score": 22.346368305218324,
+            "elapsed_s": 20.567485006526113,
+            "prompt_tokens": 16144,
+            "generated_tokens": 234,
+            "final_resident_kv_payload_bytes": 471306240,
+            "prefill_s": 2.080867737531662,
+            "prefill_peak_alloc_bytes": 18534184960
+          }
+        ],
+        "cache_stats": {
+          "demoted": 827936,
+          "promoted": 777888,
+          "promotions_deferred": 823648,
+          "paid_writes": 58539,
+          "writes_saved": 769397,
+          "dropped": 0,
+          "write_savings_pct": 92.9,
+          "decode_steps": 1564,
+          "stt_starved_steps": 0,
+          "stt_unused_steps": 0,
+          "mean_stt_exposed": 32.0,
+          "stt_expose_quota": 32,
+          "stt_exposed_total": 50208,
+          "stt_exposure_samples": 1569,
+          "modeled_latency_us": 453436.2,
+          "modeled_energy_nj": 20022417031.2
+        }
+      }
+    }
+  }
+}

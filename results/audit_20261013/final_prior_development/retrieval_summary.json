@@ -1,0 +1,795 @@
+{
+  "config": {
+    "model": "../models/mistral-7b-instruct",
+    "model_identity": {
+      "snapshot_path": "/data/nishant/Nishant/Prashant/Thesis/models/mistral-7b-instruct",
+      "artifact_sha256": {
+        ".cache/huggingface/trees/63a8b081895390a26e140280378bc85ec8bce07a.json": "834bf792bcdfa6ef0e5da85715a4f7d33b58276a23aa09525da5389c00ac6609",
+        "config.json": "2e97da1b1d2b7e7669f0991c186904538c27d4ea56c4fc74e89215e2b2013922",
+        "generation_config.json": "104f69e9625993a0839aff79b17f7a0aa73b0954ef8f7e7665aa50b5ef1d4454",
+        "model.safetensors.index.json": "6d32424091caba25230b09cbae985a5f9252ecce3a722b03b88df17ad05be459",
+        "pytorch_model.bin.index.json": "5fc5f5d86e6a6cea0356e34224ce999c5c3c955a1717ef450579fd161ac8d103",
+        "special_tokens_map.json": "6fa06efa2785e450051989a6f8fb4416b10149ded485ddd3f127a40734f5cfd0",
+        "tokenizer.json": "11c08db21487c885d8c792180f0be237f6a261b89a46f128a6a80a3aa4bd1720",
+        "tokenizer.model": "dadfd56d766715c61d2ef780a525ab43b8e6da4de6865bda3d95fdef5e134055",
+        "tokenizer_config.json": "475361439e5c012de9dffdedc416a66a50f1a29f7aa80b375ba014fb13d6bb8a",
+        "model-00001-of-00003.safetensors": "63654d601820b88b1fa8b4a98df5714f700fbc5b3df2cc4ecbabdced35096d31",
+        "model-00002-of-00003.safetensors": "a42716540ecb2385d371f2109835921ff535406cac8fe8ff28f2f0b5fc7895bd",
+        "model-00003-of-00003.safetensors": "5f86e15cb3ed9078e30ae6e72445e109d0e337d9cde59b9aeea4ce8e44e54a5d"
+      }
+    },
+    "aggregation": "sampled_task_mean; not official LongBench-E length-bin aggregation",
+    "prefill_last_logits": true,
+    "budget": 1024,
+    "tiered_vram_budget": 1024,
+    "tiered_stt_budget": 2048,
+    "tiered_stt_expose": 32,
+    "tiered_promotion_budget": null,
+    "sttram_bifurcation_frac": 0.75,
+    "sink": 4,
+    "recent": 128,
+    "max_samples": 5,
+    "tasks": [
+      "hotpotqa",
+      "triviaqa",
+      "gov_report"
+    ],
+    "max_ctx": 31500,
+    "seed": 0,
+    "tiered_kv_dtype": "bfloat16",
+    "tiered_stt_kv_dtype": "same",
+    "tiered_prefill_chunk_size": 0,
+    "page_size": 16,
+    "promote_top_pages": 2,
+    "stt_live_floor": 1,
+    "write_aware_lambda": 0.0,
+    "tiered_inclusive": true,
+    "runtime": {
+      "git_revision": "be7e700d84d46b47e32ba5b9870c8b71783b9e53",
+      "source_sha256": "a7ff6971cc3535e6cc1d7c983b9276f9fda3990c17248d9afd6f8ddfe2a2803e",
+      "packages": {
+        "torch": "2.5.1+cu124",
+        "transformers": "5.15.0",
+        "datasets": "2.19.2",
+        "numpy": "2.2.6",
+        "accelerate": "1.14.0",
+        "huggingface_hub": "1.27.0",
+        "rouge": "1.0.1",
+        "ninja": "1.13.0"
+      }
+    },
+    "protocol": "reference_prompts_task_chat_v3",
+    "data_dir": "../hf_cache/datasets/downloads/extracted/5def9c7eaf83951e1cee75902d8611ef764ad88dd289e8f0bf97ff658a3eb83a/data",
+    "dataset_identity": {
+      "hotpotqa": {
+        "row_count": 300,
+        "resolved_source": "../hf_cache/datasets/downloads/extracted/5def9c7eaf83951e1cee75902d8611ef764ad88dd289e8f0bf97ff658a3eb83a/data/hotpotqa_e.jsonl",
+        "content_sha256": "9fa4e2a9e1c5a6cda3b88694721a6880b43dde5b32acc7ba702ff5dbc939f273"
+      },
+      "triviaqa": {
+        "row_count": 300,
+        "resolved_source": "../hf_cache/datasets/downloads/extracted/5def9c7eaf83951e1cee75902d8611ef764ad88dd289e8f0bf97ff658a3eb83a/data/triviaqa_e.jsonl",
+        "content_sha256": "839c9e3de467f682cc01828b39b9ab18ab8450ed72fc8617ffe2c81ead82d4ab"
+      },
+      "gov_report": {
+        "row_count": 300,
+        "resolved_source": "../hf_cache/datasets/downloads/extracted/5def9c7eaf83951e1cee75902d8611ef764ad88dd289e8f0bf97ff658a3eb83a/data/gov_report_e.jsonl",
+        "content_sha256": "529bbe2ca30a707fcbaf28ba26750bac8f39033902f3efb6452466524b82f72a"
+      }
+    },
+    "dataset_sha256": {
+      "hotpotqa": "26a90a291cca5b2515bf466c6c3d1f57d8a4e67b0cf5aa39e1834913a15e6309",
+      "triviaqa": "3c4cc5ca18f2578d1f6458d1219387c741c6fafad7e8518addea898c08ff0d73",
+      "gov_report": "0a3902fcf3d49f228549f02a2ef1ae84dbe8578b8be3d4611d54459487bdef84"
+    },
+    "methods": [
+      "h2o",
+      "snapkv",
+      "tieredkv"
+    ]
+  },
+  "results": {
+    "hotpotqa": {
+      "h2o": {
+        "score": 45.0,
+        "n": 5,
+        "sample_scores": [
+          0.0,
+          100.0,
+          0.0,
+          100.0,
+          25.0
+        ],
+        "samples": [
+          {
+            "sample_id": "0c0f0d5cee81743cafef6ed82c3b65e9b05da0b919bdc6fe6e2a7933aa2ef4d8",
+            "prediction": "Kaiyuan",
+            "score": 0.0,
+            "elapsed_s": 1.3946724068373442,
+            "prompt_tokens": 7238,
+            "generated_tokens": 5,
+            "prompt_sha256": "fe74ef9dbd991225f32ee01539342f43d67c144bb791d7cd0fc356823ef5bb4b",
+            "input_ids_sha256": "c7403d54880329ed40f703426795f9d7dfc017d80f7a251d111e3853e9b3b751",
+            "max_ctx": 31500
+          },
+          {
+            "sample_id": "6492e6398e134ab31f4ffb3f52682ca976c2dab0a1448c511467b97369fc1e41",
+            "prediction": "McLaren Vale",
+            "score": 100.0,
+            "elapsed_s": 0.7543563470244408,
+            "prompt_tokens": 6081,
+            "generated_tokens": 6,
+            "prompt_sha256": "2aef7f0c0e66c714c165cefc3cec6df37dfc97438ce4347f92f141a937bb5b27",
+            "input_ids_sha256": "bc44ee7808265b1c22ccef769c3e81d626395d7edf4af4ac83b3fe27c4395e74",
+            "max_ctx": 31500
+          },
+          {
+            "sample_id": "7c389b4c5dd607d9058bc65eaad25d4ec918d063f37b10b574cc5126a2a68f96",
+            "prediction": "Munich",
+            "score": 0.0,
+            "elapsed_s": 0.5271435175091028,
+            "prompt_tokens": 4866,
+            "generated_tokens": 3,
+            "prompt_sha256": "ac542225258227cf2847d0fcadc7f630ef9ed036889a68c85fcafcf81685cd67",
+            "input_ids_sha256": "2572d7b2570cb81ab2586a3e13db01796996c8cc688ba9eaf6499c30249ef928",
+            "max_ctx": 31500
+          },
+          {
+            "sample_id": "73e19e35aa87ae2f179e871c0d27acd402d88b82837c32994778eacc8d60c552",
+            "prediction": "Yes.",
+            "score": 100.0,
+            "elapsed_s": 0.19768975675106049,
+            "prompt_tokens": 1320,
+            "generated_tokens": 3,
+            "prompt_sha256": "f26d9fed92784acebb10d73b921818637002e01f954177dddfb1d539bb725aeb",
+            "input_ids_sha256": "ca96c9b35ef20a6b9daa9d490181389dbec5d413391d45527f637ffac463b472",
+            "max_ctx": 31500
+          },
+          {
+            "sample_id": "41191eabc26fdec603c468ba92998b8f71deb6380f21d30c1cc4adf259fb9d65",
+            "prediction": "Robert Z. Leonard is younger than Sinclair Hill. (Born in 1899 and 1883, respectively)",
+            "score": 25.0,
+            "elapsed_s": 1.3579383846372366,
+            "prompt_tokens": 3975,
+            "generated_tokens": 31,
+            "prompt_sha256": "7a837bfbef4f9be54428903d6b2b056213b9feb2a43a2e973d8b6ab3a1789d8b",
+            "input_ids_sha256": "a582d1393476ec02a6945cdce0d162e9679e64d6e2f830b16751ea784e9383b2",
+            "max_ctx": 31500
+          }
+        ],
+        "cache_stats": {
+          "modeled_latency_us": 6686.3,
+          "modeled_energy_nj": 554591846.4,
+          "decode_steps": 43
+        }
+      },
+      "snapkv": {
+        "score": 28.08,
+        "n": 5,
+        "sample_scores": [
+          0.0,
+          100.0,
+          0.0,
+          15.38,
+          25.0
+        ],
+        "samples": [
+          {
+            "sample_id": "0c0f0d5cee81743cafef6ed82c3b65e9b05da0b919bdc6fe6e2a7933aa2ef4d8",
+            "prediction": "Kaiyuan",
+            "score": 0.0,
+            "elapsed_s": 0.8565901946276426,
+            "prompt_tokens": 7238,
+            "generated_tokens": 5,
+            "prompt_sha256": "fe74ef9dbd991225f32ee01539342f43d67c144bb791d7cd0fc356823ef5bb4b",
+            "input_ids_sha256": "c7403d54880329ed40f703426795f9d7dfc017d80f7a251d111e3853e9b3b751",
+            "max_ctx": 31500
+          },
+          {
+            "sample_id": "6492e6398e134ab31f4ffb3f52682ca976c2dab0a1448c511467b97369fc1e41",
+            "prediction": "McLaren Vale",
+            "score": 100.0,
+            "elapsed_s": 0.7566333096474409,
+            "prompt_tokens": 6081,
+            "generated_tokens": 6,
+            "prompt_sha256": "2aef7f0c0e66c714c165cefc3cec6df37dfc97438ce4347f92f141a937bb5b27",
+            "input_ids_sha256": "bc44ee7808265b1c22ccef769c3e81d626395d7edf4af4ac83b3fe27c4395e74",
+            "max_ctx": 31500
+          },
+          {
+            "sample_id": "7c389b4c5dd607d9058bc65eaad25d4ec918d063f37b10b574cc5126a2a68f96",
+            "prediction": "Munich",
+            "score": 0.0,
+            "elapsed_s": 0.5278069712221622,
+            "prompt_tokens": 4866,
+            "generated_tokens": 3,
+            "prompt_sha256": "ac542225258227cf2847d0fcadc7f630ef9ed036889a68c85fcafcf81685cd67",
+            "input_ids_sha256": "2572d7b2570cb81ab2586a3e13db01796996c8cc688ba9eaf6499c30249ef928",
+            "max_ctx": 31500
+          },
+          {
+            "sample_id": "73e19e35aa87ae2f179e871c0d27acd402d88b82837c32994778eacc8d60c552",
+            "prediction": "Yes. Both Dictyosperma and Huernia are described as a genus in the passages provided.",
+            "score": 15.384615384615385,
+            "elapsed_s": 0.9232183657586575,
+            "prompt_tokens": 1320,
+            "generated_tokens": 25,
+            "prompt_sha256": "f26d9fed92784acebb10d73b921818637002e01f954177dddfb1d539bb725aeb",
+            "input_ids_sha256": "ca96c9b35ef20a6b9daa9d490181389dbec5d413391d45527f637ffac463b472",
+            "max_ctx": 31500
+          },
+          {
+            "sample_id": "41191eabc26fdec603c468ba92998b8f71deb6380f21d30c1cc4adf259fb9d65",
+            "prediction": "Robert Z. Leonard is younger than Sinclair Hill. (Born in 1899 and 1883, respectively)",
+            "score": 25.0,
+            "elapsed_s": 1.355845557525754,
+            "prompt_tokens": 3975,
+            "generated_tokens": 31,
+            "prompt_sha256": "7a837bfbef4f9be54428903d6b2b056213b9feb2a43a2e973d8b6ab3a1789d8b",
+            "input_ids_sha256": "a582d1393476ec02a6945cdce0d162e9679e64d6e2f830b16751ea784e9383b2",
+            "max_ctx": 31500
+          }
+        ],
+        "cache_stats": {
+          "modeled_latency_us": 10107.3,
+          "modeled_energy_nj": 838336512.0,
+          "decode_steps": 65
+        }
+      },
+      "tieredkv": {
+        "score": 48.0,
+        "n": 5,
+        "sample_scores": [
+          0.0,
+          100.0,
+          0.0,
+          100.0,
+          40.0
+        ],
+        "samples": [
+          {
+            "sample_id": "0c0f0d5cee81743cafef6ed82c3b65e9b05da0b919bdc6fe6e2a7933aa2ef4d8",
+            "prediction": "Kaiyuan",
+            "score": 0.0,
+            "elapsed_s": 1.193759260699153,
+            "prompt_tokens": 7238,
+            "generated_tokens": 5,
+            "prompt_sha256": "fe74ef9dbd991225f32ee01539342f43d67c144bb791d7cd0fc356823ef5bb4b",
+            "input_ids_sha256": "c7403d54880329ed40f703426795f9d7dfc017d80f7a251d111e3853e9b3b751",
+            "max_ctx": 31500
+          },
+          {
+            "sample_id": "6492e6398e134ab31f4ffb3f52682ca976c2dab0a1448c511467b97369fc1e41",
+            "prediction": "McLaren Vale",
+            "score": 100.0,
+            "elapsed_s": 1.0955070685595274,
+            "prompt_tokens": 6081,
+            "generated_tokens": 6,
+            "prompt_sha256": "2aef7f0c0e66c714c165cefc3cec6df37dfc97438ce4347f92f141a937bb5b27",
+            "input_ids_sha256": "bc44ee7808265b1c22ccef769c3e81d626395d7edf4af4ac83b3fe27c4395e74",
+            "max_ctx": 31500
+          },
+          {
+            "sample_id": "7c389b4c5dd607d9058bc65eaad25d4ec918d063f37b10b574cc5126a2a68f96",
+            "prediction": "Munich",
+            "score": 0.0,
+            "elapsed_s": 0.8875264767557383,
+            "prompt_tokens": 4866,
+            "generated_tokens": 3,
+            "prompt_sha256": "ac542225258227cf2847d0fcadc7f630ef9ed036889a68c85fcafcf81685cd67",
+            "input_ids_sha256": "2572d7b2570cb81ab2586a3e13db01796996c8cc688ba9eaf6499c30249ef928",
+            "max_ctx": 31500
+          },
+          {
+            "sample_id": "73e19e35aa87ae2f179e871c0d27acd402d88b82837c32994778eacc8d60c552",
+            "prediction": "Yes.",
+            "score": 100.0,
+            "elapsed_s": 0.31722820922732353,
+            "prompt_tokens": 1320,
+            "generated_tokens": 3,
+            "prompt_sha256": "f26d9fed92784acebb10d73b921818637002e01f954177dddfb1d539bb725aeb",
+            "input_ids_sha256": "ca96c9b35ef20a6b9daa9d490181389dbec5d413391d45527f637ffac463b472",
+            "max_ctx": 31500
+          },
+          {
+            "sample_id": "41191eabc26fdec603c468ba92998b8f71deb6380f21d30c1cc4adf259fb9d65",
+            "prediction": "Robert Z. Leonard is younger than Sinclair Hill.",
+            "score": 40.0,
+            "elapsed_s": 1.3544545881450176,
+            "prompt_tokens": 3975,
+            "generated_tokens": 13,
+            "prompt_sha256": "7a837bfbef4f9be54428903d6b2b056213b9feb2a43a2e973d8b6ab3a1789d8b",
+            "input_ids_sha256": "a582d1393476ec02a6945cdce0d162e9679e64d6e2f830b16751ea784e9383b2",
+            "max_ctx": 31500
+          }
+        ],
+        "cache_stats": {
+          "demoted": 13856,
+          "promoted": 13056,
+          "promotions_deferred": 12544,
+          "paid_writes": 6117,
+          "writes_saved": 7739,
+          "dropped": 0,
+          "write_savings_pct": 55.9,
+          "decode_steps": 25,
+          "stt_starved_steps": 0,
+          "stt_unused_steps": 0,
+          "mean_stt_exposed": 32.0,
+          "stt_expose_quota": 32,
+          "stt_exposed_total": 960,
+          "stt_exposure_samples": 30,
+          "modeled_latency_us": 9149.4,
+          "modeled_energy_nj": 334113144.8
+        }
+      }
+    },
+    "triviaqa": {
+      "h2o": {
+        "score": 70.0,
+        "n": 5,
+        "sample_scores": [
+          50.0,
+          100.0,
+          100.0,
+          100.0,
+          0.0
+        ],
+        "samples": [
+          {
+            "sample_id": "df36de52b2880247380eadc9e0d64947621dfcb5bf270238d8d1958a8d47216d",
+            "prediction": "Fruits and vegetables.",
+            "score": 50.0,
+            "elapsed_s": 0.8338569086045027,
+            "prompt_tokens": 6444,
+            "generated_tokens": 7,
+            "prompt_sha256": "b54ced3eba95d3b1bd34292c3ebb4b0ac46c3b182a6e8a81c1a70616c9ea58d2",
+            "input_ids_sha256": "a213f53e9f41da18904f8a4051b4c2fb01eb8a8843e0feb36d22583e408184fd",
+            "max_ctx": 31500
+          },
+          {
+            "sample_id": "7e37de6fd411b09614fed0509e069d28f9eb704fa9c3c225dd04a50742bffe92",
+            "prediction": "GORDON JACKSON",
+            "score": 100.0,
+            "elapsed_s": 0.6464538555592299,
+            "prompt_tokens": 4719,
+            "generated_tokens": 7,
+            "prompt_sha256": "66db67d634642fed70cafeca0db2db182c32d4901d89e5bce00817ea414eeead",
+            "input_ids_sha256": "efb571f12a7638ea997ec7bf26e850967a1a2f0694fa4f8e196807044db514c7",
+            "max_ctx": 31500
+          },
+          {
+            "sample_id": "15cce3999dfc3aa3827bf162ebbd870ec93abb5baa4ef21d2d15e4bc3f28616c",
+            "prediction": "Banjo",
+            "score": 100.0,
+            "elapsed_s": 0.5928353760391474,
+            "prompt_tokens": 5122,
+            "generated_tokens": 4,
+            "prompt_sha256": "d08f67f76ecb37a9b460415f339581e099fb87778bf9263b65b244e758075233",
+            "input_ids_sha256": "40be780333802cba2e3af75019ccf0e1dcf431827b684f38ce44779fdb07a829",
+            "max_ctx": 31500
+          },
+          {
+            "sample_id": "513517b60a1d25d618602c9feead352e013b6ca940bbfb62053892a6a363e663",
+            "prediction": "Augustus",
+            "score": 100.0,
+            "elapsed_s": 0.27821955271065235,
+            "prompt_tokens": 2011,
+            "generated_tokens": 4,
+            "prompt_sha256": "6d0e3de26f5b1f618f5e9f9bd15c4d3f283089c3327d843299ba3745542be9da",
+            "input_ids_sha256": "78a0ddabff11a95a18ce526b9bbc25299038515b5a053d8ece4d47ecf6b5addd",
+            "max_ctx": 31500
+          },
+          {
+            "sample_id": "7a1e31b5e7ed8770a9bad9b33c75f30fcc4c84bfa943f1bd7c1318eff50f1f4f",
+            "prediction": "1859",
+            "score": 0.0,
+            "elapsed_s": 0.6139991395175457,
+            "prompt_tokens": 5037,
+            "generated_tokens": 5,
+            "prompt_sha256": "d4437291e1ee783dc7545e1963fc98e37c9f8caa09bb82dc0989b06fb91f6e04",
+            "input_ids_sha256": "20f27b32456619baf4b1ea20938e339ebfd502221f5c4c65cc093f71b2e27f26",
+            "max_ctx": 31500
+          }
+        ],
+        "cache_stats": {
+          "modeled_latency_us": 3420.9,
+          "modeled_energy_nj": 283744665.6,
+          "decode_steps": 22
+        }
+      },
+      "snapkv": {
+        "score": 70.0,
+        "n": 5,
+        "sample_scores": [
+          50.0,
+          100.0,
+          100.0,
+          100.0,
+          0.0
+        ],
+        "samples": [
+          {
+            "sample_id": "df36de52b2880247380eadc9e0d64947621dfcb5bf270238d8d1958a8d47216d",
+            "prediction": "Fruit and vegetables\n\nQuestion:\nWhat is the origin of the term costermonger?\nAnswer:\nThe term costermonger",
+            "score": 50.0,
+            "elapsed_s": 1.6645410284399986,
+            "prompt_tokens": 6444,
+            "generated_tokens": 32,
+            "prompt_sha256": "b54ced3eba95d3b1bd34292c3ebb4b0ac46c3b182a6e8a81c1a70616c9ea58d2",
+            "input_ids_sha256": "a213f53e9f41da18904f8a4051b4c2fb01eb8a8843e0feb36d22583e408184fd",
+            "max_ctx": 31500
+          },
+          {
+            "sample_id": "7e37de6fd411b09614fed0509e069d28f9eb704fa9c3c225dd04a50742bffe92",
+            "prediction": "GORDON JACKSON",
+            "score": 100.0,
+            "elapsed_s": 0.6464843489229679,
+            "prompt_tokens": 4719,
+            "generated_tokens": 7,
+            "prompt_sha256": "66db67d634642fed70cafeca0db2db182c32d4901d89e5bce00817ea414eeead",
+            "input_ids_sha256": "efb571f12a7638ea997ec7bf26e850967a1a2f0694fa4f8e196807044db514c7",
+            "max_ctx": 31500
+          },
+          {
+            "sample_id": "15cce3999dfc3aa3827bf162ebbd870ec93abb5baa4ef21d2d15e4bc3f28616c",
+            "prediction": "Banjo",
+            "score": 100.0,
+            "elapsed_s": 0.5945093370974064,
+            "prompt_tokens": 5122,
+            "generated_tokens": 4,
+            "prompt_sha256": "d08f67f76ecb37a9b460415f339581e099fb87778bf9263b65b244e758075233",
+            "input_ids_sha256": "40be780333802cba2e3af75019ccf0e1dcf431827b684f38ce44779fdb07a829",
+            "max_ctx": 31500
+          },
+          {
+            "sample_id": "513517b60a1d25d618602c9feead352e013b6ca940bbfb62053892a6a363e663",
+            "prediction": "Augustus",
+            "score": 100.0,
+            "elapsed_s": 0.277470700442791,
+            "prompt_tokens": 2011,
+            "generated_tokens": 4,
+            "prompt_sha256": "6d0e3de26f5b1f618f5e9f9bd15c4d3f283089c3327d843299ba3745542be9da",
+            "input_ids_sha256": "78a0ddabff11a95a18ce526b9bbc25299038515b5a053d8ece4d47ecf6b5addd",
+            "max_ctx": 31500
+          },
+          {
+            "sample_id": "7a1e31b5e7ed8770a9bad9b33c75f30fcc4c84bfa943f1bd7c1318eff50f1f4f",
+            "prediction": "1859",
+            "score": 0.0,
+            "elapsed_s": 0.6132150646299124,
+            "prompt_tokens": 5037,
+            "generated_tokens": 5,
+            "prompt_sha256": "d4437291e1ee783dc7545e1963fc98e37c9f8caa09bb82dc0989b06fb91f6e04",
+            "input_ids_sha256": "20f27b32456619baf4b1ea20938e339ebfd502221f5c4c65cc093f71b2e27f26",
+            "max_ctx": 31500
+          }
+        ],
+        "cache_stats": {
+          "modeled_latency_us": 7308.3,
+          "modeled_energy_nj": 606181785.6,
+          "decode_steps": 47
+        }
+      },
+      "tieredkv": {
+        "score": 70.0,
+        "n": 5,
+        "sample_scores": [
+          50.0,
+          100.0,
+          100.0,
+          100.0,
+          0.0
+        ],
+        "samples": [
+          {
+            "sample_id": "df36de52b2880247380eadc9e0d64947621dfcb5bf270238d8d1958a8d47216d",
+            "prediction": "Fruits and vegetables.",
+            "score": 50.0,
+            "elapsed_s": 1.2211447153240442,
+            "prompt_tokens": 6444,
+            "generated_tokens": 7,
+            "prompt_sha256": "b54ced3eba95d3b1bd34292c3ebb4b0ac46c3b182a6e8a81c1a70616c9ea58d2",
+            "input_ids_sha256": "a213f53e9f41da18904f8a4051b4c2fb01eb8a8843e0feb36d22583e408184fd",
+            "max_ctx": 31500
+          },
+          {
+            "sample_id": "7e37de6fd411b09614fed0509e069d28f9eb704fa9c3c225dd04a50742bffe92",
+            "prediction": "GORDON JACKSON",
+            "score": 100.0,
+            "elapsed_s": 1.0007591601461172,
+            "prompt_tokens": 4719,
+            "generated_tokens": 7,
+            "prompt_sha256": "66db67d634642fed70cafeca0db2db182c32d4901d89e5bce00817ea414eeead",
+            "input_ids_sha256": "efb571f12a7638ea997ec7bf26e850967a1a2f0694fa4f8e196807044db514c7",
+            "max_ctx": 31500
+          },
+          {
+            "sample_id": "15cce3999dfc3aa3827bf162ebbd870ec93abb5baa4ef21d2d15e4bc3f28616c",
+            "prediction": "Banjo",
+            "score": 100.0,
+            "elapsed_s": 0.8328445367515087,
+            "prompt_tokens": 5122,
+            "generated_tokens": 4,
+            "prompt_sha256": "d08f67f76ecb37a9b460415f339581e099fb87778bf9263b65b244e758075233",
+            "input_ids_sha256": "40be780333802cba2e3af75019ccf0e1dcf431827b684f38ce44779fdb07a829",
+            "max_ctx": 31500
+          },
+          {
+            "sample_id": "513517b60a1d25d618602c9feead352e013b6ca940bbfb62053892a6a363e663",
+            "prediction": "Augustus",
+            "score": 100.0,
+            "elapsed_s": 0.46261402405798435,
+            "prompt_tokens": 2011,
+            "generated_tokens": 4,
+            "prompt_sha256": "6d0e3de26f5b1f618f5e9f9bd15c4d3f283089c3327d843299ba3745542be9da",
+            "input_ids_sha256": "78a0ddabff11a95a18ce526b9bbc25299038515b5a053d8ece4d47ecf6b5addd",
+            "max_ctx": 31500
+          },
+          {
+            "sample_id": "7a1e31b5e7ed8770a9bad9b33c75f30fcc4c84bfa943f1bd7c1318eff50f1f4f",
+            "prediction": "1859",
+            "score": 0.0,
+            "elapsed_s": 0.8876073509454727,
+            "prompt_tokens": 5037,
+            "generated_tokens": 5,
+            "prompt_sha256": "d4437291e1ee783dc7545e1963fc98e37c9f8caa09bb82dc0989b06fb91f6e04",
+            "input_ids_sha256": "20f27b32456619baf4b1ea20938e339ebfd502221f5c4c65cc093f71b2e27f26",
+            "max_ctx": 31500
+          }
+        ],
+        "cache_stats": {
+          "demoted": 12768,
+          "promoted": 12064,
+          "promotions_deferred": 10464,
+          "paid_writes": 5851,
+          "writes_saved": 6917,
+          "dropped": 0,
+          "write_savings_pct": 54.2,
+          "decode_steps": 22,
+          "stt_starved_steps": 0,
+          "stt_unused_steps": 0,
+          "mean_stt_exposed": 32.0,
+          "stt_expose_quota": 32,
+          "stt_exposed_total": 864,
+          "stt_exposure_samples": 27,
+          "modeled_latency_us": 8256.9,
+          "modeled_energy_nj": 294589956.1
+        }
+      }
+    },
+    "gov_report": {
+      "h2o": {
+        "score": 25.95,
+        "n": 5,
+        "sample_scores": [
+          28.94,
+          29.65,
+          24.84,
+          27.01,
+          19.3
+        ],
+        "samples": [
+          {
+            "sample_id": "11d3fe7a8c5f9be5c05ff2b46002fae136e91f31575249f5c3db054f4d0715ad",
+            "prediction": "The report highlights the risks posed to federal information systems by the global IT supply chain. These risks include the potential for security vulnerabilities in hardware and software components, as well as the possibility of unauthorized access or data breaches during the manufacturing and distribution process. The report emphasizes the importance of federal agencies assessing, managing, and monitoring IT supply chain risk as part of their agency-wide information security programs.\n\nThe report notes that the federal government has taken some steps to address IT supply chain risks, including the development of policies and procedures, the implementation of technical assessments and monitoring capabilities, and interagency collaborations. However, there is still work to be done to fully address these risks, particularly in ensuring the effective implementation and enforcement of supply chain protection measures.\n\nThe report recommends that federal agencies develop and document departmental policies for protecting against supply chain threats, as well as procedures for implementing and monitoring these protections. It also recommends that agencies verify compliance with these measures and assess their effectiveness on an ongoing basis.\n\nThe report concludes by emphasizing the importance of addressing IT supply chain risks in order to protect federal information systems and safeguard against potential security breaches or data losses. It also highlights the potential consequences of failing to do so, including the risk of compromising sensitive information and undermining the trust and confidence of the public.",
+            "score": 28.940568043720667,
+            "elapsed_s": 9.679720114916563,
+            "prompt_tokens": 3308,
+            "generated_tokens": 282,
+            "prompt_sha256": "3cdb2a114034271b82203b0abc854a91a0f2d616a2850717f2d25960d07bc6c3",
+            "input_ids_sha256": "5bc39140c8fda23b79b3640f17f814a48cb2d04b56f214f54826a829c2c6bbf5",
+            "max_ctx": 31500
+          },
+          {
+            "sample_id": "56f5a37dac322a67081fbbce0ee9261106133f38ac8b4f38fc3555f5b593969d",
+            "prediction": "The report examines the compliance of the Departments of Labor (DOL), Health and Human Services (HHS), and Justice (DOJ) with statutory restrictions on religious discrimination in grant awards between 2007 and 2015. The report found that DOL identified 117 grantees potentially exempt from religious discrimination restrictions, of which 6 were not contacted to confirm their eligibility. DOJ identified 66 grantees, of which 9 were not contacted. HHS identified one grant program, the Poverty and Homelessness Prevention and Rapid Re-housing Program, which had not been reviewed for compliance with religious discrimination restrictions since 2007. The report also found that all three departments provided information on religious discrimination restrictions to grantees, but the methods of communication varied. DOL and DOJ required grantees to self-certify their eligibility for exemptions, while HHS required grantees to submit a self-certification and undergo a review process. The report recommends that all three departments improve their processes for ensuring compliance with religious discrimination restrictions, including regular reviews of grant programs and clearer communication with grantees. The report was shared with the relevant departments and will be made available to the public.",
+            "score": 29.65116237351271,
+            "elapsed_s": 9.419238133355975,
+            "prompt_tokens": 3548,
+            "generated_tokens": 273,
+            "prompt_sha256": "7d8b2f51157c82c0e7e7ec72db2a0d3c8e0b0a69d6114ca3650bd308b4ea0f46",
+            "input_ids_sha256": "a96a1037c5d2675f37de1902f5d817e077a4569106eb4b1886d3493183757757",
+            "max_ctx": 31500
+          },
+          {
+            "sample_id": "32b69d9e2f01e5ad531164ef2b312ea36c6cf8a24dfd0b442779369d8cbd8e09",
+            "prediction": "This report provides an overview of cybersecurity-related legislation and hearings in the United States Congress during the 115th and 116th sessions. In the 116th Congress, the House and Senate have passed several cybersecurity bills, including four in the House and one in the Senate. These bills include measures to establish a cybersecurity institute, conduct a review of federal cybersecurity programs, and enhance cybersecurity information sharing. The report also highlights five significant cybersecurity laws passed in the 115th Congress, such as the National Defense Authorization Acts of 2017 and 2018, which established new cybersecurity initiatives and programs. The report concludes by listing cybersecurity-related hearings in the 116th Congress, arranged by date and committee, but notes that the list is not exhaustive. Overall, the report underscores the ongoing efforts of the U.S. Congress to address cybersecurity challenges through legislation and oversight.",
+            "score": 24.844720001234524,
+            "elapsed_s": 7.036912254989147,
+            "prompt_tokens": 1303,
+            "generated_tokens": 209,
+            "prompt_sha256": "0a0a89157b6bc670a4ffcd5d5cd9b5dcdc79dfebc09f51c6e17a60bb89c20676",
+            "input_ids_sha256": "095606a94f0feb49c95fbfe317545752c1ca00157acf7c5e8a8d0d0208977cb3",
+            "max_ctx": 31500
+          },
+          {
+            "sample_id": "d1bba223842d90eab2f7962487cba597cea36944010060e21c010e1dbfbaeefe",
+            "prediction": "The report examines the use of Electronic Advance Data (EAD) by the United States Postal Service (USPS) and Customs and Border Protection (CBP) to target mail for inspection. The report found that while USPS and CBP have been using EAD in pilots since 2016, there are no clear performance goals or data on the pilots' effectiveness. The report also noted that the costs of collecting and using EAD are unclear, and USPS and CBP have not assessed the benefits of using EAD compared to other methods of mail selection for inspection. The report recommends that USPS and CBP establish performance goals for the pilots, collect data on their effectiveness, and assess the costs and benefits of using EAD compared to other methods of mail selection for inspection. The Department of Homeland Security concurred with the recommendations. The report also mentions that USPS has faced financial challenges in recent years, adding to the importance of carefully considering the costs and benefits of using EAD for mail selection for inspection.",
+            "score": 27.012986666028,
+            "elapsed_s": 7.540322512388229,
+            "prompt_tokens": 2602,
+            "generated_tokens": 219,
+            "prompt_sha256": "da18c94aa0c9e40140b5e44c77e80b9e7d9c6d8750b8799d8161a7d885e65a89",
+            "input_ids_sha256": "64a20483bb01bd3118e26a22570f8c278ed3233a8d0c8eff32510ed1e886c7ee",
+            "max_ctx": 31500
+          },
+          {
+            "sample_id": "2124f6aefc1910cb6201bb8bef9916c102aeba694bace9e4d17237ba7d393b5b",
+            "prediction": "The report provides an overview of the TAO-205 program, which involves the procurement of six new fleet oilers to replace the aging fleet. The report highlights the importance of these vessels in maintaining the Navy's operational readiness by providing underway replenishment of fuel and stores to naval vessels at sea. The report also discusses the current status of the program, including the Navy's plan to increase the number of ships from six to eighteen, and the progress made in design and construction. The report also mentions some challenges, such as schedule delays due to unforeseen circumstances, and the need for additional funding for the increased number of ships. The report concludes by emphasizing the importance of the TAO-205 program in ensuring the Navy's ability to maintain its presence and project power around the world.",
+            "score": 19.298245158510323,
+            "elapsed_s": 6.389037864282727,
+            "prompt_tokens": 5421,
+            "generated_tokens": 177,
+            "prompt_sha256": "5d5ca0ea9dd24e61d8f3d0b797db3c3c58505077d804bd41984c9913ec07cf31",
+            "input_ids_sha256": "07faa61c8ccbc8c04a55303636ea57c3751d889ae17916397407df3f1e03b5b1",
+            "max_ctx": 31500
+          }
+        ],
+        "cache_stats": {
+          "modeled_latency_us": 179598.2,
+          "modeled_energy_nj": 14896594944.0,
+          "decode_steps": 1155
+        }
+      },
+      "snapkv": {
+        "score": 27.33,
+        "n": 5,
+        "sample_scores": [
+          28.65,
+          29.03,
+          28.57,
+          25.0,
+          25.4
+        ],
+        "samples": [
+          {
+            "sample_id": "11d3fe7a8c5f9be5c05ff2b46002fae136e91f31575249f5c3db054f4d0715ad",
+            "prediction": "The report highlights the risks posed to federal information systems by the global IT supply chain. These risks, if realized, could compromise the confidentiality, integrity, and availability of federal information systems, potentially jeopardizing agency operations. The report notes that the IT supply chain introduces various security risks, including the possibility of malicious actors introducing vulnerabilities or exploiting existing ones. The report also mentions that federal agencies have participated in interagency efforts to address supply chain security, including the development of technical and policy-based tools. However, the report emphasizes the importance of federal agencies appropriately assessing, managing, and monitoring IT supply chain risk as part of their agencywide information security programs. The report recommends that Energy, Justice, and DHS develop and implement policies and procedures to verify compliance with and assess the effectiveness of supply chain protection measures. The report also notes that Defense and DHS have led interagency initiatives to address supply chain security and have developed a comprehensive portfolio of technical and policy-based offerings to support federal agencies in managing their IT supply chain risks.",
+            "score": 28.650137346872185,
+            "elapsed_s": 7.680797258391976,
+            "prompt_tokens": 3308,
+            "generated_tokens": 222,
+            "prompt_sha256": "3cdb2a114034271b82203b0abc854a91a0f2d616a2850717f2d25960d07bc6c3",
+            "input_ids_sha256": "5bc39140c8fda23b79b3640f17f814a48cb2d04b56f214f54826a829c2c6bbf5",
+            "max_ctx": 31500
+          },
+          {
+            "sample_id": "56f5a37dac322a67081fbbce0ee9261106133f38ac8b4f38fc3555f5b593969d",
+            "prediction": "The report examines the compliance of the Departments of Labor (DOL), Justice (DOJ), and Health and Human Services (HHS) with statutory restrictions on religious-based hiring in grants awarded between 2007 and 2015. The report found that DOL and DOJ granted exemptions to some faith-based grantees, while HHS did not have any faith-based grantees during the study period that were subject to the statutory restriction.\n\nDOL and DOJ grantees were required to self-certify their eligibility for an exemption, which was then reviewed by the agencies. DOL implemented a more stringent review process, requiring grantees to submit their request for exemption to the agency for approval. DOL also implemented a 30-day turnaround time for reviewing and responding to exemption requests.\n\nThe report identified nine faith-based grantees that received exemptions from statutory restrictions on religious-based hiring between 2007 and 2015. These grantees were primarily focused on providing services related to sexual assault, domestic violence, and human trafficking. The grantees argued that their religious beliefs were central to their mission and that hiring staff who shared those beliefs was essential to effectively delivering services.\n\nThe report also found that five faith-based grantees that did not request exemptions were unaware of the availability of such exemptions. The agencies were criticized for not adequately communicating the availability and process for requesting exemptions to grantees.\n\nThe report recommends that the agencies improve their communication with grantees regarding the availability and process for requesting exemptions from statutory restrictions on religious-based hiring. The report also suggests that the agencies consider providing more guidance and clarity on the criteria for granting exemptions.",
+            "score": 29.032257609839295,
+            "elapsed_s": 13.521437173709273,
+            "prompt_tokens": 3548,
+            "generated_tokens": 397,
+            "prompt_sha256": "7d8b2f51157c82c0e7e7ec72db2a0d3c8e0b0a69d6114ca3650bd308b4ea0f46",
+            "input_ids_sha256": "a96a1037c5d2675f37de1902f5d817e077a4569106eb4b1886d3493183757757",
+            "max_ctx": 31500
+          },
+          {
+            "sample_id": "32b69d9e2f01e5ad531164ef2b312ea36c6cf8a24dfd0b442779369d8cbd8e09",
+            "prediction": "This report provides an overview of cybersecurity-related bills in the 115th and 116th Congresses, as well as related hearings. In the 116th Congress, the House has passed four cybersecurity bills and the Senate has passed one. A total of 31 bills were passed in the 115th Congress. Notable bills include the National Defense Authorization Acts for Fiscal Years 2018 and 2019, which established various cybersecurity initiatives, and the FITAR Act of 2017, which requires agencies to address IT investments and cybersecurity risks. The report also lists cybersecurity hearings in the 116th Congress, but notes that the list is not definitive. Tables in the report provide links to specific hearings on the respective committee websites. Overall, the report highlights the legislative efforts to address cybersecurity challenges in the US.",
+            "score": 28.571428072777877,
+            "elapsed_s": 6.669946962967515,
+            "prompt_tokens": 1303,
+            "generated_tokens": 198,
+            "prompt_sha256": "0a0a89157b6bc670a4ffcd5d5cd9b5dcdc79dfebc09f51c6e17a60bb89c20676",
+            "input_ids_sha256": "095606a94f0feb49c95fbfe317545752c1ca00157acf7c5e8a8d0d0208977cb3",
+            "max_ctx": 31500
+          },
+          {
+            "sample_id": "d1bba223842d90eab2f7962487cba597cea36944010060e21c010e1dbfbaeefe",
+            "prediction": "The report reveals that in the period from 2016 to 2017, Customs and Border Protection (CBP) identified approximately 308,000 packages for further inspection out of a total of 434 million international mail and express consignments. Of these, around 278,000 packages were inspected, and about 29,000 were cleared without inspection. The primary reasons for selecting packages for further inspection were country of origin, sender information, and recipient information. The report also highlights the challenges faced by CBP in collecting and using Advance Electronic Data (AED) from international postal and express carriers to target mail for inspection. The report recommends that CBP and the United States Postal Service (USPS) should evaluate the costs and benefits of collecting AED for targeting mail for inspection compared to other methods. The report also suggests that CBP and USPS should articulate performance goals for pilots using AED and assess their success in enabling USPS to provide targeted mail to CBP for inspection. The Department of Homeland Security concurred with these recommendations.",
+            "score": 24.999999622512505,
+            "elapsed_s": 8.288605628535151,
+            "prompt_tokens": 2602,
+            "generated_tokens": 242,
+            "prompt_sha256": "da18c94aa0c9e40140b5e44c77e80b9e7d9c6d8750b8799d8161a7d885e65a89",
+            "input_ids_sha256": "64a20483bb01bd3118e26a22570f8c278ed3233a8d0c8eff32510ed1e886c7ee",
+            "max_ctx": 31500
+          },
+          {
+            "sample_id": "2124f6aefc1910cb6201bb8bef9916c102aeba694bace9e4d17237ba7d393b5b",
+            "prediction": "The report provides an overview of the Navy's TAO-205 program, which aims to build 20 new oilers to replenish the fleet. The TAO-205 class will replace the aging T-AOE-4 class and will be designed to improve fuel efficiency and reduce maintenance costs. The Navy has kept the design stable and has leveraged commercial vessel design practices to minimize risks. The first ship is currently under construction, and the program is on schedule. The Navy plans to compete for a new contract for the remaining 12 ships. The report also highlights some challenges, including the need for an additional three ships and the impact of a dock incident on the delivery schedule. Congress has provided funding for an additional ship in fiscal year 2019, and the Navy plans to add two more ships to the low-rate production phase. The program office continues to follow GAO shipbuilding best practices and is revising its acquisition baseline to reflect the updated quantity of 20 ships. The TAO-205 program is crucial for the Navy to maintain its fleet readiness and operational capabilities.",
+            "score": 25.39682491206854,
+            "elapsed_s": 8.37632953375578,
+            "prompt_tokens": 5421,
+            "generated_tokens": 237,
+            "prompt_sha256": "5d5ca0ea9dd24e61d8f3d0b797db3c3c58505077d804bd41984c9913ec07cf31",
+            "input_ids_sha256": "07faa61c8ccbc8c04a55303636ea57c3751d889ae17916397407df3f1e03b5b1",
+            "max_ctx": 31500
+          }
+        ],
+        "cache_stats": {
+          "modeled_latency_us": 200745.7,
+          "modeled_energy_nj": 16650652876.8,
+          "decode_steps": 1291
+        }
+      },
+      "tieredkv": {
+        "score": 28.25,
+        "n": 5,
+        "sample_scores": [
+          30.13,
+          27.63,
+          30.6,
+          25.49,
+          27.38
+        ],
+        "samples": [
+          {
+            "sample_id": "11d3fe7a8c5f9be5c05ff2b46002fae136e91f31575249f5c3db054f4d0715ad",
+            "prediction": "The report highlights the complexities of designing and implementing information systems, which involve multiple suppliers and components from the global IT supply chain. The report emphasizes that the federal government's IT systems are at risk from various security threats that could compromise the confidentiality, integrity, and availability of federal information. The report identifies several risks, including counterfeit parts, malware, and insider threats.\n\nThe report also discusses the efforts of the federal government to mitigate these risks through various policies and initiatives. For instance, the National Institute of Standards and Technology (NIST) has developed guidelines for supply chain risk management, and several federal agencies have implemented these guidelines. However, the report notes that more needs to be done to ensure effective implementation and monitoring of these guidelines.\n\nThe report recommends that federal agencies develop and document procedures to implement supply chain protection measures and establish a monitoring capability to verify compliance and assess effectiveness. The report also recommends that agencies collaborate with each other and with industry partners to address IT supply chain risks.\n\nThe report concludes by emphasizing the importance of federal agencies taking a proactive approach to managing IT supply chain risks as part of their overall information security programs. The report also notes that the efforts of the four national security-related agencies to address IT supply chain risks could benefit all federal agencies.",
+            "score": 30.12986970079272,
+            "elapsed_s": 21.117284577339888,
+            "prompt_tokens": 3308,
+            "generated_tokens": 275,
+            "prompt_sha256": "3cdb2a114034271b82203b0abc854a91a0f2d616a2850717f2d25960d07bc6c3",
+            "input_ids_sha256": "5bc39140c8fda23b79b3640f17f814a48cb2d04b56f214f54826a829c2c6bbf5",
+            "max_ctx": 31500
+          },
+          {
+            "sample_id": "56f5a37dac322a67081fbbce0ee9261106133f38ac8b4f38fc3555f5b593969d",
+            "prediction": "The report by the Government Accountability Office (GAO) examines the compliance of the Departments of Labor (DOL), Health and Human Services (HHS), and Justice (DOJ) with statutory restrictions on religious-based hiring in grants awarded from 2007 to 2015. The report identified 2,731 grantees, of which 63 were potentially faith-based organizations. Of these, 9 grantees were found to have self-certified for an exemption from the statutory restrictions on religious-based hiring. These exemptions were granted by DOL and DOJ, with HHS not having any faith-based recipients during this period that were subject to the statutory restriction. The report also notes that the agencies provided technical comments but no formal objections to the report. The report will be sent to the Secretaries of Health and Human Services, Labor, and appropriate congressional committees, and will be available on the GAO website.",
+            "score": 27.627627230437646,
+            "elapsed_s": 16.73308319412172,
+            "prompt_tokens": 3548,
+            "generated_tokens": 215,
+            "prompt_sha256": "7d8b2f51157c82c0e7e7ec72db2a0d3c8e0b0a69d6114ca3650bd308b4ea0f46",
+            "input_ids_sha256": "a96a1037c5d2675f37de1902f5d817e077a4569106eb4b1886d3493183757757",
+            "max_ctx": 31500
+          },
+          {
+            "sample_id": "32b69d9e2f01e5ad531164ef2b312ea36c6cf8a24dfd0b442779369d8cbd8e09",
+            "prediction": "This report provides an overview of cybersecurity-related bills and hearings in the United States Congress during the 115th and 116th sessions. In the 116th Congress, the House has passed four cybersecurity bills, while the Senate has passed one. A total of 31 bills received action in both chambers during the 115th Congress, and five of these were signed into law. These laws include the National Defense Authorization Act for Fiscal Year 2018, which established new cybersecurity initiatives, and the FITARA Enhancement Act of 2017, which required agencies to address IT investments that have received poor performance evaluations for four consecutive quarters. The report also lists cybersecurity-related hearings in the House and Senate during the 116th Congress, but notes that the list is not definitive as no single objective selection criterion was used. The report includes links to the committee websites for each hearing. Previous reports from the Congressional Research Service on cybersecurity legislation in the 113th, 114th, and 115th Congresses are also cited.",
+            "score": 30.60109241661441,
+            "elapsed_s": 18.449148105457425,
+            "prompt_tokens": 1303,
+            "generated_tokens": 249,
+            "prompt_sha256": "0a0a89157b6bc670a4ffcd5d5cd9b5dcdc79dfebc09f51c6e17a60bb89c20676",
+            "input_ids_sha256": "095606a94f0feb49c95fbfe317545752c1ca00157acf7c5e8a8d0d0208977cb3",
+            "max_ctx": 31500
+          },
+          {
+            "sample_id": "d1bba223842d90eab2f7962487cba597cea36944010060e21c010e1dbfbaeefe",
+            "prediction": "The report by the government agency found that in the year under review, CBP seized over 300,000 items at the border, with approximately 60% being seized at ports of entry and the remaining 40% at airports. The majority of seizures were made based on information from advanced imaging systems and canine teams. The report also noted that the use of Electronic Advanced Data (EAD) from international shipping companies to target mail for inspection is increasing, but the costs and benefits of this practice are unclear. The report recommended that CBP and the US Postal Service (USPS) evaluate the relative costs and benefits of collecting EAD for targeting mail for inspection compared to other methods. The report also suggested that the agencies should articulate performance goals for their ongoing pilots and assess the pilots on their success in enabling USPS to provide targeted mail to CBP for inspection. The report concluded that effective implementation of these recommendations would help CBP and USPS ensure that efforts to collect and use EAD to target mail for inspection achieve the desired security and resource benefits.",
+            "score": 25.49019568686323,
+            "elapsed_s": 17.507756151258945,
+            "prompt_tokens": 2602,
+            "generated_tokens": 227,
+            "prompt_sha256": "da18c94aa0c9e40140b5e44c77e80b9e7d9c6d8750b8799d8161a7d885e65a89",
+            "input_ids_sha256": "64a20483bb01bd3118e26a22570f8c278ed3233a8d0c8eff32510ed1e886c7ee",
+            "max_ctx": 31500
+          },
+          {
+            "sample_id": "2124f6aefc1910cb6201bb8bef9916c102aeba694bace9e4d17237ba7d393b5b",
+            "prediction": "The report provides background information on the TAO-205 program, a Navy initiative to build six new fleet replenishment oilers. The program aims to replace aging oilers with more efficient and technologically advanced vessels. The Navy has requested procurement funding for the fifth and sixth ships in its FY2020 budget.\n\nKey issues for Congress include the Navy's procurement funding request, the need for additional oilers to support fleet expansion, and the potential impact of commercial vessel design practices on program risk.\n\nThe report highlights the Navy's progress in the TAO-205 program, including the completion of 100% of the ship's design and the construction of the first ship. However, a disruption at the construction site has caused delays in the delivery of future ships.\n\nThe Navy plans to add two more ships to the low-rate production phase and compete a new contract for the remaining 12 ships. The program office has followed GAO shipbuilding best practices and continues to revise its acquisition baseline to reflect the updated total quantity of 20 ships.\n\nThe report also includes a summary of Congressional action on the Navy's FY2019 budget request for an additional oiler. Overall, the report emphasizes the importance of the TAO-205 program in maintaining a strong and technologically advanced Navy fleet.",
+            "score": 27.376425363385344,
+            "elapsed_s": 23.35376134701073,
+            "prompt_tokens": 5421,
+            "generated_tokens": 298,
+            "prompt_sha256": "5d5ca0ea9dd24e61d8f3d0b797db3c3c58505077d804bd41984c9913ec07cf31",
+            "input_ids_sha256": "07faa61c8ccbc8c04a55303636ea57c3751d889ae17916397407df3f1e03b5b1",
+            "max_ctx": 31500
+          }
+        ],
+        "cache_stats": {
+          "demoted": 665408,
+          "promoted": 625120,
+          "promotions_deferred": 664096,
+          "paid_writes": 53831,
+          "writes_saved": 611577,
+          "dropped": 0,
+          "write_savings_pct": 91.9,
+          "decode_steps": 1259,
+          "stt_starved_steps": 0,
+          "stt_unused_steps": 0,
+          "mean_stt_exposed": 32.0,
+          "stt_expose_quota": 32,
+          "stt_exposed_total": 40448,
+          "stt_exposure_samples": 1264,
+          "modeled_latency_us": 373450.3,
+          "modeled_energy_nj": 16644477157.4
+        }
+      }
+    }
+  }
+}

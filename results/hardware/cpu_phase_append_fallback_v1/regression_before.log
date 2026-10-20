@@ -1,0 +1,108 @@
+FF                                                                       [100%]
+=================================== FAILURES ===================================
+__________ test_multi_token_attention_uses_ordinary_score_fallback[2] __________
+
+queries = 2
+
+    @pytest.mark.parametrize('queries',[2,32])
+    def test_multi_token_attention_uses_ordinary_score_fallback(queries):
+     generator=torch.Generator().manual_seed(7)
+     weights=[torch.rand(1,2,queries,40+2+queries,generator=generator) for _ in range(4)]
+     initial=torch.rand(4,40,generator=generator)
+     ordinary,batched=(fixture(weights,initial,2) for _ in range(2))
+     TieredKVPolicy.update_scores(ordinary,[(None,None)]*4,weights)
+>    batched_update(batched,[(None,None)]*4,weights)
+
+tests/test_batched_score_multitoken.py:17: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+policy = <longbench_eval.TieredKVPolicy object at 0x777e659bb520>
+past = [(None, None), (None, None), (None, None), (None, None)]
+weights = [tensor([[[[0.5349, 0.1988, 0.6592, 0.6569, 0.2328, 0.4251, 0.2071, 0.6297,
+           0.3653, 0.8513, 0.8549, 0.5509,...        0.9635, 0.8055, 0.7877, 0.7096, 0.8370, 0.3718, 0.5773, 0.7018,
+           0.6056, 0.4569, 0.2372, 0.1443]]]])]
+
+    def batched_update(policy, past, weights):
+        if weights is None:
+            return
+        layers = list(range(len(past)))
+        # Restrict the prototype to complete ordered hot visibility and equal geometry.
+        if not layers or len(weights) != len(layers):
+            return TieredKVPolicy.update_scores(policy, past, weights)
+        shape = None
+        hot = cold = None
+        for layer in layers:
+            cache = policy.layer_caches.get(layer)
+            keep = (policy._vis_sram_keep or {}).get(layer)
+            positions = (policy._vis_stt_pos or {}).get(layer)
+            weight = weights[layer]
+            if cache is None or keep is None or positions is None or weight is None:
+                return TieredKVPolicy.update_scores(policy, past, weights)
+            if keep != list(range(len(cache.sram_cum))) or not keep:
+                return TieredKVPolicy.update_scores(policy, past, weights)
+            if shape is None:
+                shape, hot, cold = weight.shape, len(keep), len(positions)
+            if weight.shape != shape or len(keep) != hot or len(positions) != cold or weight.shape[-1] < hot + cold:
+                return TieredKVPolicy.update_scores(policy, past, weights)
+        packed = torch.stack([weights[layer][0].to(torch.float32).squeeze(1) for layer in layers])
+        folded = packed.mean(dim=1)
+>       torch._foreach_add_([policy.layer_caches[layer].sram_cum for layer in layers],
+                            list(folded[:, :hot].unbind()))
+E       RuntimeError: The size of tensor a (40) must match the size of tensor b (44) at non-singleton dimension 1
+
+experiments/batched_score_policy.py:32: RuntimeError
+_________ test_multi_token_attention_uses_ordinary_score_fallback[32] __________
+
+queries = 32
+
+    @pytest.mark.parametrize('queries',[2,32])
+    def test_multi_token_attention_uses_ordinary_score_fallback(queries):
+     generator=torch.Generator().manual_seed(7)
+     weights=[torch.rand(1,2,queries,40+2+queries,generator=generator) for _ in range(4)]
+     initial=torch.rand(4,40,generator=generator)
+     ordinary,batched=(fixture(weights,initial,2) for _ in range(2))
+     TieredKVPolicy.update_scores(ordinary,[(None,None)]*4,weights)
+>    batched_update(batched,[(None,None)]*4,weights)
+
+tests/test_batched_score_multitoken.py:17: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+policy = <longbench_eval.TieredKVPolicy object at 0x777e6588b370>
+past = [(None, None), (None, None), (None, None), (None, None)]
+weights = [tensor([[[[0.5349, 0.1988, 0.6592,  ..., 0.3055, 0.7738, 0.2259],
+          [0.3826, 0.9717, 0.5921,  ..., 0.1494, 0....7, 0.0422, 0.8935,  ..., 0.1936, 0.0509, 0.7065],
+          [0.6660, 0.8026, 0.5365,  ..., 0.0789, 0.9891, 0.1656]]]])]
+
+    def batched_update(policy, past, weights):
+        if weights is None:
+            return
+        layers = list(range(len(past)))
+        # Restrict the prototype to complete ordered hot visibility and equal geometry.
+        if not layers or len(weights) != len(layers):
+            return TieredKVPolicy.update_scores(policy, past, weights)
+        shape = None
+        hot = cold = None
+        for layer in layers:
+            cache = policy.layer_caches.get(layer)
+            keep = (policy._vis_sram_keep or {}).get(layer)
+            positions = (policy._vis_stt_pos or {}).get(layer)
+            weight = weights[layer]
+            if cache is None or keep is None or positions is None or weight is None:
+                return TieredKVPolicy.update_scores(policy, past, weights)
+            if keep != list(range(len(cache.sram_cum))) or not keep:
+                return TieredKVPolicy.update_scores(policy, past, weights)
+            if shape is None:
+                shape, hot, cold = weight.shape, len(keep), len(positions)
+            if weight.shape != shape or len(keep) != hot or len(positions) != cold or weight.shape[-1] < hot + cold:
+                return TieredKVPolicy.update_scores(policy, past, weights)
+        packed = torch.stack([weights[layer][0].to(torch.float32).squeeze(1) for layer in layers])
+        folded = packed.mean(dim=1)
+>       torch._foreach_add_([policy.layer_caches[layer].sram_cum for layer in layers],
+                            list(folded[:, :hot].unbind()))
+E       RuntimeError: The size of tensor a (40) must match the size of tensor b (74) at non-singleton dimension 1
+
+experiments/batched_score_policy.py:32: RuntimeError
+=========================== short test summary info ============================
+FAILED tests/test_batched_score_multitoken.py::test_multi_token_attention_uses_ordinary_score_fallback[2]
+FAILED tests/test_batched_score_multitoken.py::test_multi_token_attention_uses_ordinary_score_fallback[32]
+2 failed in 2.76s

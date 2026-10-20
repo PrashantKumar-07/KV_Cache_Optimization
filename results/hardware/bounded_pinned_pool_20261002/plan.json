@@ -1,0 +1,23 @@
+{
+  "model": "../models/mistral-7b-instruct",
+  "seed": 0,
+  "mechanism": "Physical pinned-slot reserve cold+promotion_budget+max_decode_append instead of cold+hot+1. Unchanged logical capacities/placement/promotion/eviction. Guard append/budget/full-layer/steady-capacity before policy mutation.",
+  "max_decode_append": 32,
+  "settings": {
+    "hot": 991,
+    "cold": 1090,
+    "quota": 32,
+    "promotion_budget": 32,
+    "fill": 0.75
+  },
+  "old_slots": 2082,
+  "new_slots": 1154,
+  "old_request_bytes": 272891904,
+  "new_request_bytes": 151257088,
+  "old_source_inferred_root_capacity_bytes": 536870912,
+  "new_source_inferred_root_capacity_bytes": 268435456,
+  "primary": "At least25%lower explicit pinned-root peak/request; recorded fresh-process RSS and source-inferred rounding, not host telemetry or10%model GPU peak claim.",
+  "guards": "Exact canonical KV/positions/shadow/LRU/cum/ages/grace/floor/deferred/IDs/counters/payload. Synthetic inclusive/exclusive/fill/boundary/multiappend/saturation; reject append/budget/hot/cold bound violations before mutation. 4K/8K/16K/31500 full model parity before3ABBA16K50 guards p95<=2%,TTFT<=10%,prefillGPUpeak<=2%. Then freegeneration/interleaved if primary/guards pass.",
+  "quality": "Systems-only retention unchanged; no tuning inspected100doc holdout or quality superiority, no globaldefaultpromotion; NarrativeNI and broaderP0/P1/P2open.",
+  "stop": "Reject correctness fault, preserve all failures/source; never shrink logicalcoldcapacity to make physicalbudget pass."
+}

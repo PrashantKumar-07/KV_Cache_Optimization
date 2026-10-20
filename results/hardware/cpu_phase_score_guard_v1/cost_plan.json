@@ -1,0 +1,28 @@
+{
+  "timestamp_utc": "2026-10-03T12:26:10.746932+00:00",
+  "mechanism": "Native CPU phase controller with multi-query shared scorer fallback guard. Revalidate default single-token whole-loop after correctness repair; no policy/quality tuning.",
+  "settings": {
+    "hot": 991,
+    "cold": 1090,
+    "quota": 32,
+    "context": 16384,
+    "decode": 50,
+    "warmup": 1,
+    "seed": 0,
+    "prefill_last_logits": true
+  },
+  "prompt": "results/remediation_v3/latency_prompt.txt",
+  "teachers": "results/shadow_ablation_full/fixed_stream_20260929.json",
+  "control": "results/hardware/layerwise_prefill_placement_v1/control_shared.json",
+  "query": "results/hardware/cpu_phase_score_guard_v1/resource.json",
+  "correctness_proof_sha256": "804d467889d7bf205a60b03cb6aad14bd9e104f2d4fc2a80ee423a9c452f9618",
+  "resource_proof_sha256": "8ef9d172cd79e5b181bd30c39c7a3fa7700b26f0bd09c29360f473b4d4c249cb",
+  "primary": "Quiet 3ABBA: >=5% median wholeloop improvement AND >=4ms saved, p95 <=2% worse, TTFT <=10% worse. Exact frozen300 measured predictions/arm, finalstate/counters/native KV. Each measured candidate prepare50/compact200, pooled descriptors6457600B, arena417792B, scratch32536512B; fallback0. Hooks and leases released;25 quietGPU0 observations. CPU promote/append/demote50 each, evictions1600, CPU fallback0, CPU roots1116896B.",
+  "stop": "Failed primary stops CPU phase controller expansion/adoption; no favorable timing retry.",
+  "limits": "One model/seed/fixed teacher. Scoped active plus owned pinned and CPU array roots 433.333MiB. Native container/Python heap/allocator internals unmeasured. No quality, faithful baseline, physical STT or full process claim.",
+  "prompt_sha256": "18695714f26e35cb8d2b039ae9efb3b7e64291cbd7bcd91956efc07e16a732cd",
+  "teachers_sha256": "620ac3a383997c9afbc6a3f0b06acec9f261d5a2a5827bf5988e0bb5b69f12a2",
+  "control_sha256": "9449721be00001a6e4ada6e243be61e1d100dc4eb6508afa0122c4c8d8275ee0",
+  "query_sha256": "9f8eaa8e6900fca5b112a047dad34fbf0eccea910cfc953429f30048cd695221",
+  "reason": "Previous candidate speed gate passed. Fresh source has narrow scorer guard. Same frozen3ABBA gates, no favorable rerun of a failed primary."
+}

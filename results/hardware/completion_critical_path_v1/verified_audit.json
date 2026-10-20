@@ -1,0 +1,141 @@
+{
+  "timestamp_utc": "2026-10-03T06:21:35.819218+00:00",
+  "verified": true,
+  "full_goal_complete": false,
+  "requirements": [
+    {
+      "id": "P0-tier",
+      "state": "partial",
+      "requirement": "Implementable cold storage plus measured occupancy, transfers, synchronization and whole-loop cost.",
+      "evidence": "ordinary_resources",
+      "finding": "CPU DRAM backend exists and measures native transfers; physicalSTT is unmeasured. Backend existence does not prove the combined systems claim."
+    },
+    {
+      "id": "P0-memory-match",
+      "state": "failed",
+      "requirement": "Complete512MiB envelope plus actual comparable baseline bytes/attention geometry.",
+      "evidence": "ordinary_resources",
+      "finding": "Ordinary 541.0771MiB; Snap 528.7412MiB. Widths unequal on49/50steps.",
+      "next": "Prioritize ordinary backend ownership/structural allocation and comparison design. No broader fullquery variant until a distinct mechanism can address a main gate."
+    },
+    {
+      "id": "P0-latency",
+      "state": "failed",
+      "requirement": "Faithful-baseline whole-loop median/p95/prefill/resource gates.",
+      "evidence": "faithful_latency",
+      "finding": "Frozen earlier CPU 60.5628ms vs Snap 25.8345ms; ratio 2.3443. Not a current bulk paired result.",
+      "next": "Profile current ordinary bulk/lastlogits path with frozen prediction/state/payload replay. Select one structural bottleneck, not another fullscan derivative."
+    },
+    {
+      "id": "P0-quality",
+      "state": "failed",
+      "requirement": "Independent document-group quality at matched resources.",
+      "evidence": "independent_quality",
+      "finding": "Frozen older DirectCPU quality -2.5699, CI[-5.293844006422849, -0.507107896216452];33regressions/10large losses. Not a current bulk quality result.",
+      "next": "No tuning on finalholdout. After resource/architecture gate, freeze genuinely unused data and run joint comparison."
+    },
+    {
+      "id": "P1-physical",
+      "state": "external_dependency",
+      "requirement": "Physical controller read/write pages, amplification, energy/endurance.",
+      "finding": "No accessible STT controller/device measurements. GPU and pinnedCPU experiments cannot prove these requirements.",
+      "next": "Keep physical claims unproven; do not label logical write savings as endurance."
+    },
+    {
+      "id": "P1-generality-baselines",
+      "state": "incomplete",
+      "requirement": "Secondmodel/seeds/concurrency/longoutput, document-disjoint tasks, fair FlexiCache/IceCache.",
+      "finding": "Existing preservation and feasibility pilots do not cover the combined generality/fair-comparison scope.",
+      "next": "Reuse frozen pilots; expand only after mainresource/quality/latency gates. No new install/modeldownload without justified need."
+    },
+    {
+      "id": "P2-delivery",
+      "state": "incomplete",
+      "requirement": "Supported claim, independent headline rerun, complete hashes/figures/limitations/anonymized paper.",
+      "finding": "Current draft and archived figures do not establish a joint win; reproducible negative findings remain valid.",
+      "next": "Prepare remaining artifacts alongside maingate work; final paper must reflect actual outcomes."
+    }
+  ],
+  "estimate_withdrawn": true,
+  "fullcompletion_date_unproven": true,
+  "profile_frozen50replay_verified": true,
+  "owned_hooks_roots_released": true,
+  "all_owned_jobs_terminal": true,
+  "policy_function_calls": 967049,
+  "policy_instrumented_seconds": 1.919698783000001,
+  "profile_ranges": [
+    {
+      "file": "<deferred_production_eviction>",
+      "line": 1,
+      "function": "evict_and_demote",
+      "calls": 1600,
+      "cumulative_ms_per_decode": 11.48779728,
+      "self_ms_per_decode": 3.7163273000000006
+    },
+    {
+      "file": "/data/nishant/Nishant/Prashant/Project/kv_cache/experiments/batched_eviction_policy.py",
+      "line": 50,
+      "function": "_prepare_decode_reads",
+      "calls": 50,
+      "cumulative_ms_per_decode": 11.103219660000002,
+      "self_ms_per_decode": 0.7028792
+    },
+    {
+      "file": "/data/nishant/Nishant/Prashant/Project/kv_cache/experiments/reuse_visible_policy.py",
+      "line": 82,
+      "function": "_visible_tuple",
+      "calls": 50,
+      "cumulative_ms_per_decode": 9.94854944,
+      "self_ms_per_decode": 0.19497982
+    },
+    {
+      "file": "<reuse_production_visibility>",
+      "line": 1,
+      "function": "_visible_tuple",
+      "calls": 50,
+      "cumulative_ms_per_decode": 7.927889140000001,
+      "self_ms_per_decode": 0.6717698600000002
+    },
+    {
+      "file": "<bulk-original-CPU-prepare>",
+      "line": 1,
+      "function": "_prepare_decode_reads",
+      "calls": 50,
+      "cumulative_ms_per_decode": 3.9327038200000004,
+      "self_ms_per_decode": 0.014609340000000002
+    },
+    {
+      "file": "/data/nishant/Nishant/Prashant/Project/kv_cache/experiments/batched_score_policy.py",
+      "line": 8,
+      "function": "batched_update",
+      "calls": 50,
+      "cumulative_ms_per_decode": 3.19419726,
+      "self_ms_per_decode": 1.97763222
+    },
+    {
+      "file": "/data/nishant/Nishant/Prashant/Project/kv_cache/experiments/native_reuse_visible.py",
+      "line": 41,
+      "function": "gather_into",
+      "calls": 50,
+      "cumulative_ms_per_decode": 0.7639598599999999,
+      "self_ms_per_decode": 0.23328850000000004
+    }
+  ],
+  "next": "Preregister cross-layer eviction/demotion bookkeeping consolidation on ordinary bulk backend; preserve selection/state/bytes and then whole-loop/memory/faithfulbaseline gates. Fullquery derivative expansion stays stopped.",
+  "limits": "Policy cProfile is localization, includes implicitGPUwaits and instrumentation. Cumulative nestedranges overlap; cannot add as predicted savings. Researchoutcomes/physicalhardware still unresolved.",
+  "evidence_sha256": {
+    "audit.json": "c1480e273117fda0c672d4054b380737e65af2ddc736975c2c09bdbf09e3c540",
+    "profile_plan.json": "99beddfa93df974fe5a83079e0977dd104b3343ad27a0284aa077dd13ba329a5",
+    "profile_plan_v2.json": "d3da88e3df2bf87acd7ebeecc94a4300fbeb458997dd2ff4a0edaa8aaa7aae79",
+    "profile_source.json": "f2fc875be6a917e1e9a8b6e0fe89e840a89677c75bab9d60847ff6ad68d3823c",
+    "profile_source.tar.gz": "4b96b2024dc64661c81aceec518c1ebca8043cfa8016058efff12eba48921e40",
+    "profile.json": "52d57a363ba7a30a045689e7f3386fc97269133130b5cde3b29ed3857f2075b4",
+    "profile_job.json": "1d9a85deace6356dfdbb4d27d9378d85263993878c8f26760bcdb8139856d749",
+    "profile_v2.json": "fbc92fddfd0ea517f22f131766f0c775beef40b81b3c7068fd064155735ff8d4",
+    "profile_v2_job.json": "912e2e737e1ea047f39e1db7f81db96886cef9a44b5ca273c17a42e007d861a2",
+    "profile_ordinary.py": "63f38d9f27cde9bc81f6adcdc8a688688d64e30f0a6e9b29cf7bdad729d058fe",
+    "profile_ordinary_v2.py": "e1f11ab1e2bee3dfc69be3d73dcd75382cf1534a41c032df19da133144b1956f",
+    "policy_v2.prof": "e7e3b171d23302c95cf12de820052721feb6e814e2a971c090a27833422e0fc9",
+    "policy_v2.prof.txt": "ad8b126d1240cf6b8fc9f78bbd706ca61307e2ed44c14785b1f45e17ab8bdfec"
+  }
+}

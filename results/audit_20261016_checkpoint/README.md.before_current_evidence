@@ -1,0 +1,684 @@
+> **15 October figure correction:** Original five-method comparisons and chart questions are preserved. Figure3 now shows only paid versus avoided writes; the budget-sweep panel is removed. Development experiments are separate. The [new architecture diagram](figures/tieredkv_architecture_paper.pdf) shows concrete buffers and data/control paths. Figure footnotes distinguish archived results from current evidence; see [figure status and provenance](figures_final/README.md).
+
+> **13 October audit notice:** code and prompt protocols have changed after reproduced correctness failures. Historical tables and `figures_final/` are not current validated headline results. TriviaQA context-only document grouping counted few-shot demonstrations instead of target passages; prior independent-document claims need qualification. See [AUDIT_20261013.md](AUDIT_20261013.md) and [START_HERE.md](START_HERE.md). STT costs are simulated; measured CPU DRAM experiments are a separate implementation. Paper preparation is paused until validation completes.
+
+# TieredKV: Tiered KV-Cache Memory Hierarchy for LLM Inference
+
+Archived 3 October engineering gate: **518 tests passed at that source epoch**. The opt-in native cold-boundary controller preserves tiny full logits/cache and full-model4K/12,16K/50 predictions/state/native transfers. Scoped memory is**424.15MiB**; GPU decode, reservation and prefill are unchanged versus the previous bulk controller. Late-H2D failure cleanup releases all owned pinned storage and hooks. [Current status](PROJECT_STATUS.md), [resource proof](results/hardware/cold_boundary_controller_v1/verified_resources.json).
+
+The native stationary cold-boundary stage saves4.87–6.49ms; **whole-model gain was then unmeasured**. Its original speed attempt stopped before model load because another user's GPU0 process was present. Zero measured rows; no performance outcome or adoption. That frozen gate subsequently completed on13 October: median49.1732→44.2350ms/token versus its own bulk controller; see the current audit for the verified scope. [Timing plan](results/hardware/cold_boundary_controller_v1/cost_plan.json). The previous bulk component improved10.52% and reproduced8.91% in a separate process; these are historical same-control results. Full research acceptance remains incomplete; no supported completion-day estimate.
+
+**Earlier stopped checkpoint — early shared prefill (3 October):** 501 tests pass. Tiny GPU full-logit/KV parity and partial-failure cleanup pass; full-model4K/12 and16K/50 preserve predictions, state, counters and native transfers with all32 early roots and no fallback. Whole-prefill peak falls11.22% to16.5376GB; strict decode GPU active falls5.47%, scoped active including owned pinned/CPU is378.60MiB. Faithful Snap prefill ratio0.9840 passes. [Resource proof](results/hardware/early_shared_cpu_phase_v1/verified_resources.json). Initial resident KV matches341MiB at hot649/cold1982; candidate remains341MiB while Snap grows341–366MiB. Full-trajectory equality remains unresolved. Faithful-baseline quiet3ABBA timing **fails**: CPU54.59 vs Snap25.25ms/token (2.162x), p95CPU59.94 vs Snap25.47ms. TTFT+7.73% and prefill guards pass; median and p95 fail. All300 measured forwards/arm reproduce frozen predictions/state; CPU counters/native transfers and25 quiet observations pass. [Timing proof](results/hardware/early_shared_cpu_phase_v1/verified_cost.json), [figures](results/hardware/early_shared_cpu_phase_v1/figures/manifest.json). Candidate expansion/adoption stops under the preregistered gate; no favorable retry or final-holdout tuning. All owned jobs are terminal. Physical controller measurements, independent quality, generality and final delivery remain open. Repeated10–20day estimate withdrawn; full goal incomplete.
+
+**Previous verified controller checkpoint (3 October):** its archived suite had498 passing tests.
+The research native CPU phase controller passes current-source correctness,
+scoped active memory (**433.33 MiB**, including owned pinned and CPU arrays),
+and ordinary-control speed (**58.76 to54.12 ms/token,7.89%,4.64 ms saved**).
+Real2/32-token append fallback preserves logits/KV/metadata and returns to
+native single-token mode. Production adoption and the full research goal remain
+unproved. [Current proof](results/hardware/cpu_phase_score_guard_v1/verified_status.json),
+[project status](PROJECT_STATUS.md), [figures](results/hardware/cpu_phase_score_guard_v1/figures/manifest.json).
+
+The completed comparison-design pilot used hot/cold649/1982 versus
+faithful SnapKV prompt682: algebra gives **341 MiB actual prompt-boundary KV
+storage** per arm, with no dummy allocations or baseline alteration. Full
+allocation/width trajectories and complete512MiB envelope are measured
+separately; equality at the initial boundary does not establish equality during
+decode. [Pilot result](results/hardware/prompt_boundary_comparison_v1/verified_pilot.json); the early-shared experiment above subsequently fixed its prefill guard.
+Independent quality, broader fair baselines and physical STT measurement remain
+open; the unsupported day estimate is withdrawn.
+
+## Archived checkpoints
+
+The entries below describe their recorded source revisions and are historical.
+Use the current proof and project-status links above for the current worktree.
+
+
+**Latest ownership decision:** forward-owner release preserves all four
+shared-budget pairs and 1,536 layer releases/restorations. Active decode
+envelopes fall **3.29–3.86%**, below the 10% gate, and remain **518–521 MiB**.
+The 4K diagnostic locates the peak during first pre-forward validation;
+release then removes about128 MiB of live GPU allocation. Reject advancement.
+Next investigate duplicate ownership at the compressed-prefill boundary.
+**Current suite:227 tests pass.** [Verified decision](results/hardware/forward_owner_release_v1/verified_report.json).
+
+**Latest memory decision:** the isolated raw-input-reuse prototype preserves
+all four shared-budget context pairs, but decode active envelopes stay about
+**539 MiB**; every 10% memory primary fails. A 4K phase audit confirms
+384 bindings/compactions and about128 MiB released after forward. The peak is
+already reached during forward (step2), so post-forward reuse is insufficient.
+Stop before usual-budget/timing/generation/CLI expansion. **Suite at that milestone:
+217 tests passed.** [Verified rejection](results/hardware/raw_input_reuse_screen_v1/verified_report.json).
+
+**Latest verified diagnosis:** 3,072 layer checks across 4K/8K/16K/31.5K
+and both capacities confirm the incoming raw KV already contains the exact hot
+prefix and has room for actual promotions plus new tokens. All 16 rows replay
+frozen outputs/state/counters/transfers; **206 tests passed at that milestone**. This supports an
+isolated buffer-reuse prototype, not a memory gain or safe in-place mutation
+claim. [Prefix/ownership proof](results/hardware/decode_prefix_audit_v1/verified_report.json).
+
+**Latest screen decision:** charged per-token CUDA cache release is rejected.
+It releases **104 MiB at the final boundary**, but lowers decode reserved
+**peak by 0%**. The observed reserved envelope stays **519.74 MiB**, above
+512 MiB. State, predictions, transfers and counters match; both host roots
+release; **206 tests passed at that milestone**. Stop before timing/generation/CLI advancement.
+[Verified decision](results/hardware/decode_reclaim_screen_v1/verified_report.json).
+
+**Latest resource audit:** six GPU 0 processes are finished and independently
+verified. Bulk/control outputs, cache state and fresh-process GPU peaks match.
+Current ordinary paths exceed the 512 MiB target: allocated decode envelopes
+are about **539 / 804 MiB** in the legacy caller and **1537 / 1800 MiB** in the
+fresh caller. Both reserved scopes exceed 6 GiB. The fresh caller retains
+1000 MiB of prefill logits through its first decode; model-only allocator slack
+is just 3.49 MiB. These callers differ, so their difference is not a causal
+saving. No new memory/default claim; [resource proof](results/hardware/bulk_resource_audit_v1/verified_report.json).
+
+**Latest verified opt-in:** `--cpu-bulk-promotion` preserves decisions/state
+and improves 16K decode **5.23% / 6.54%** against the same CPU backend at
+1024/2048 and 991/1090 capacities. All three ABBA blocks per geometry and
+p95/TTFT/GPU peak guards pass. Four-context parity, native lifetime, saturation,
+24 generation pairs, six recycled requests and ordinary CLI checks pass;
+**206 tests passed at that milestone**. Requires the existing native-reuse CPU chain; defaults
+unchanged. Full-resource, quality, faithful SnapKV speed and hardware gates
+remain open. See [current status and evidence](PROJECT_STATUS.md).
+
+**Latest experimental allocator:** exact pinned roots reduce measured host
+ranges 256→144.25 MiB / 512→264 MiB. Parity, timing, 24 generation pairs and
+request recycling pass; full suite **199 tests**. GPU peak is unchanged.
+Active decode envelopes are 427.40 / 556.25 MiB; usual active and both
+reserved scopes fail the 512 MiB target. Candidate stays research-only.
+See [current status and verified evidence](PROJECT_STATUS.md).
+
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+[![Python 3.10+](https://img.shields.io/badge/Python-3.10%2B-green.svg)](https://python.org)
+[![Hardware: NVIDIA L40S](https://img.shields.io/badge/Hardware-NVIDIA%20L40S-76b900.svg)](https://www.nvidia.com/en-us/data-center/l40s/)
+
+> **TieredKV** is a research simulator and model-integrated cache policy for a two-tier KV hierarchy (1024-token VRAM working set + 2048-token hypothetical STT-RAM victim cache). It studies whether retaining evicted tokens can recover accuracy. The STT-RAM tier and its bandwidth, latency, and energy are **analytical**: tensors still reside in GPU memory during real-model evaluation. Reported GPU allocation and measured latency therefore describe this Python/GPU prototype, not an STT-RAM device. Dropped tokens are discarded, not offloaded.
+
+**New to the project?** Read [`START_HERE.md`](START_HERE.md) first. Then read [`SIMPLE_NOTES.md`](SIMPLE_NOTES.md); it
+explains the words and one token's journey without assuming prior background.
+Then [`PROJECT_STATUS.md`](PROJECT_STATUS.md) gives the current done/remaining
+checklist and a short supervisor update. For exact implementation details,
+read [`explanation.md`](explanation.md); for the original review fixes, read
+[`REMEDIATION_CHECKLIST.md`](REMEDIATION_CHECKLIST.md).
+
+---
+
+## Key Idea
+
+Standard KV cache compression methods (H₂O, SnapKV, StreamingLLM) permanently evict tokens from VRAM when the budget fills: a token scored cold at prefill can never come back even if the evolving query needs it later, losing accuracy on long contexts. TieredKV instead **demotes** evicted tokens to a fast STT-RAM tier and **promotes (resurrects)** them back on demand:
+
+```
+┌─────────────────────────────────────────────────┐
+│   Tier 1 (VRAM)   →   Tier 2 (STT-RAM)          │
+│  Hot working set      Warm victim cache         │
+│    (GPU fast)         (read-fast/write-slow)    │
+│   1024 tokens,          2048 tokens,             │
+│   128 MiB bf16          256 MiB bf16             │
+└─────────────────────────────────────────────────┘
+```
+Anything past both budgets is dropped for good — same as the baselines.
+Capacities: Mistral-7B GQA holds 32 layers × 8 KV heads × 128 dim × 2 (K,V) × 2 B (bf16) = **128 KiB/token**, so VRAM = 1024 × 128 KiB = 128 MiB (134 MB) and STT-RAM = 2048 × 128 KiB = 256 MiB (268 MB) of logical KV capacity (see Fig 11). `sttram_bifurcation_frac` sets STT-RAM's prefill fill level (headline: 0.75 → 1536/2048 resident, 512 rows headroom).
+
+**Inclusive shadow cache:** When a token is promoted from STT-RAM → VRAM, the STT-RAM copy is kept as an immutable shadow backup. If the same token is later re-demoted, the backup is reactivated at **zero write cost**. Because KV tensors never change after prefill, the backup is always valid *whenever it hasn't been reclaimed first*.
+
+That "whenever" matters: this only pays off if STT-RAM has spare capacity to hold backups. If `initial_bifurcation` fills STT-RAM to capacity with cold prompt tokens (the default, `sttram_bifurcation_frac=1.0` — the common case for any document longer than the VRAM+STT budget), backups can be reclaimed under pressure before reuse. The corrected equal-logical-VRAM run at `sttram_bifurcation_frac=0.75` avoids 88.1% of potential decode-demotion writes across the six sampled tasks; this excludes initial prompt placement and is a simulated event ratio. The older headroom sweep (`results/e2_frac*_short.json`, `figures_final/fig8_frac_ablation.pdf`) reported 7.2% to 82.9% savings at −0.17 average F1, but predates the corrected evaluation and is retained as historical evidence only. See `src/tiered_kv_cache.py`'s `TieredConfig.sttram_bifurcation_frac` docstring for implementation detail.
+
+---
+
+## Architecture
+
+Each decode step runs four phases:
+
+| Phase | Operation |
+|-------|-----------|
+| **1. Score** | Rank live STT-RAM tokens by the attention the model *actually gave them* on the previous step (`update_scores`), then gate re-entry of tokens that were already VRAM-resident behind a repeated-candidacy streak |
+| **2. Promote** | Top-scored STT-RAM tokens migrate → VRAM so future reads hit the fast tier |
+| **3. Attention** | Exact attention over the VRAM working set **plus** up to `stt_expose_quota` live STT-RAM tokens, read at STT-RAM's own cost-modelled bandwidth |
+| **4. Evict/Demote** | Lowest attention-per-step VRAM tokens demote → STT-RAM (shadow backup reused if available) |
+
+Attention sinks (positions 0–3) and the recent sliding window are pinned and never evicted.
+
+> **On the Quest sketch.** `TieredKVCache.sketch_check()` implements Quest-style
+> page-level min/max scoring and is exercised by the CPU simulator and its unit
+> tests, but the LongBench harness does **not** call it: once the slow tier
+> became attendable, promotion could be driven by the model's real measured
+> attention instead of a K-as-Q upper bound. Attention is available only for
+> exposed slow-tier tokens, so this is a different selection policy rather
+> than a proven stronger signal. The sketch remains in the codebase for the simulator and as the
+> basis for a future real Quest baseline.
+
+---
+
+## Related methods and roles
+
+| Technique | Paper | Role in this repository |
+|-----------|-------|------------------|
+| **SnapKV** | Li et al., NeurIPS 2024 | Prompt bifurcation scoring to split tokens at prefill |
+| **StreamingLLM** | Xiao et al., ICLR 2024 | Sink + sliding window pinning |
+| **Quest** | Tang et al., ICML 2024 | Simulator-only sketch experiment; the real-model policy does not use it, and the Quest baseline is unimplemented |
+| **H₂O** | Zhang et al., NeurIPS 2023 | Cumulative-attention eviction policy |
+| **FlexGen** | Sheng et al., ICML 2023 | Places/moves KV across GPU, CPU DRAM, and disk; studies 4-bit KV and CPU-side attention; not implemented here |
+
+---
+
+## Results
+
+### Revalidated six-task accuracy (2026-09-24)
+
+The corrected Mistral-7B-Instruct run uses the reference task-specific chat
+handling, 31.5k maximum prompt length, bf16 KV, 25 samples on each of five
+short tasks and 10 GovReport samples. The six-task average gives each task
+equal weight; GovReport uses ROUGE-L and the others use F1 (all 0–100).
+Here "equal VRAM" means 1024 logical fast-tier KV slots for each compressed
+method; TieredKV also has 2048 simulated slow-tier slots, physically held on
+the GPU in this implementation.
+
+| Method | Full KV | StreamingLLM | H2O | SnapKV | TieredKV |
+|---|---:|---:|---:|---:|---:|
+| Mean task score | 44.50 | 36.50 | 37.13 | 37.80 | 38.38 |
+
+| Comparison | TieredKV fast + slow slots | Max attended | TieredKV score | SnapKV score | Paired difference (95% interval) |
+|---|---:|---:|---:|---:|---:|
+| Equal logical VRAM | 1024 + 2048 | 1056 | 38.38 | 37.80 | +0.58 (−0.47, +1.79) |
+| Matched attention | 992 + 2048 | 1024 | 37.20 | 37.80 | −0.61 (−2.39, +1.00) |
+| Equal total logical KV | 341 + 683 | 373 | 32.71 | 37.80 | −5.09 (−8.04, −2.52) |
+
+The intervals resample paired examples within the six fixed tasks and do not
+include variation across task selection, seeds, or models. Neither the
+equal-VRAM nor matched-attention comparison establishes an accuracy
+advantage. The equal-total setup is clearly worse in this sample, but it
+attends at most 373 cached tokens versus SnapKV's 1024, so the difference
+cannot isolate victim-cache overhead from attention width. All three merged
+results and the paired report are under `results/remediation_v3/`.
+
+An **experimental true-query selector** separately scored 42.73 across the
+same six tasks versus 38.38 for the frozen access-time TieredKV policy
+(paired conditional difference +4.35, interval [+2.12, +6.61]). It scores
+all live slow-tier keys against each layer's actual decode query before
+choosing the 32 visible rows. This remains a research candidate: paid writes
+per step rose 50%, and same-GPU 16k full-loop latency rose from 115.53 to
+158.91 ms/token. At matched maximum attended width (1024), it scored 41.53
+versus 37.80 for the source-matched **in-harness** SnapKV approximation
+(paired difference +3.73, conditional 95% interval [+1.85, +5.70]). This
+comparison still gives the query selector 2048 additional simulated cold
+slots. The upstream-selector adapter follow-up below is complete; held-out
+tasks/models and equal-byte baselines remain pending.
+At the matched-attention configuration, a same-GPU ABBA 16k/50-token check
+measured 156.16 versus 113.75 ms/token for query versus access-time selection.
+At equal total logical capacity (341 fast + 683 slow slots), query selection
+scored 36.31 versus 37.80 for in-harness SnapKV (paired −1.49, conditional
+95% interval [−3.73, +0.44]). This establishes neither superiority nor
+equivalence; attended widths differ (373 versus 1024). The paired report is
+`results/query_selection_equal_total/report.json`.
+See `results/query_selection_full/report.json`,
+`results/query_selection_matched/report.json`, and `RESEARCH_ROADMAP.md`.
+
+**Upstream-selector adapter follow-up (2026-09-27):** A six-task, 135-request
+run calling the vendored SnapKV selector with actual queries scored **43.07**.
+Query-aware TieredKV's 42.73 is a paired −0.34 points (conditional 95%
+interval [−2.13, +1.56]); no advantage is established. This adapter uses
+expanded-head KV storage, window 32, SDPA, and growing decode residency,
+so it is not an equal-byte comparison. See
+`results/snapkv_adapter_full/comparison.json` and the roadmap for limitations.
+
+The original table uses **in-harness policy-family baselines**, not independent upstream
+replications. This harness uses K-as-Q prefill scoring and one token ranking
+averaged across heads for H2O and SnapKV; upstream versions use real query
+or attention signals and per-head selection. The harness also adds sink
+pinning to SnapKV and uses H2O-style decode eviction for it. Baseline
+fidelity remains open in the review checklist; treat numeric comparisons as
+internal controls, not definitive paper-to-paper rankings.
+
+The inclusive-shadow policy avoided **2,510,023 of 2,849,120 potential
+decode-demotion writes (88.1%)** across these samples. This counter excludes
+initial prompt placement in the slow tier. It is a simulated event ratio,
+not a measured STT-RAM write rate or a paired no-shadow experiment: the
+"potential" count assumes the same promotion/eviction sequence without
+reusing an existing backup.
+Each count is one layer-token (4 KiB bf16 K/V), so the saved payload is
+**10.28 GB across 135 requests**, or 72.6 MiB/request. At the model's assumed
+12.5 GB/s write bandwidth, that is only **0.154 ms of ideal write-transfer
+time per generated token**; at its assumed 8 pJ/bit it is 0.658 J across the
+run, less than 1% of modeled decode dynamic energy. The same prompt lengths
+would initially place about 25.90 GB into the hypothetical slow tier, so the
+avoided fraction of *potential total slow-tier writes including prefill* is
+about 27.4%. These are derived counterfactuals, not hardware measurements.
+Likewise, the current analytical energy counters cover decode KV traffic;
+they omit prompt placement, model compute, and system power and are not
+whole-request energy measurements.
+
+A full paired no-shadow comparison on the same 135 input requests found
+**88.1% fewer paid decode-demotion writes per decode step** with inclusive
+backups (10.58 GB less aggregate bf16 layer-token payload). However,
+task-balanced quality was **−0.20 points** with shadows, paired conditional
+95% interval [−0.47, +0.07]; GovReport was 26.93 versus 28.36 ROUGE-L on
+10 samples. Both arms used the same source, samples, seed, and capacities;
+the inclusive arm reproduces the frozen v3 control exactly. A same-GPU,
+real-text 16k ABBA check measured 117.17 versus 135.82 ms/token full-loop
+prototype latency (inclusive versus no-shadow), with unchanged 18.59 GB
+prefill peak. See `results/shadow_ablation_full/report.json`. The write
+counters are simulated, and this speed difference is from the Python/GPU
+prototype—not measured STT hardware. The two arms generated different output
+lengths, so the per-step write rate is fairer than the aggregate count.
+
+### Validation and ablations (2026-09-24)
+
+The teacher-forced, token-by-token PPL smoke test uses two GovReport documents
+and a 256-token fast-tier budget. All five methods have PPL 6.935 at the
+256-token checkpoint, before eviction affects predictions. At 1024 tokens,
+Full KV is **5.247**, TieredKV **5.296**, and SnapKV **5.489**. These two
+documents validate the execution path but do not establish a general PPL
+result (`results/remediation_v3/ppl_validation_budget256.json`).
+
+On the five short tasks, the default 128-token recent window averages 40.67.
+A 32-token window averages **42.64** (paired difference +1.97, unadjusted
+95% interval +0.02 to +4.14) while its pooled decode-demotion write-savings
+ratio drops from 84.0% to 82.7%. This is exploratory across four tested
+window sizes and needs confirmation on new samples/seeds. Write-aware weights
+0.01 and 0.05 change the mean by only +0.02 and −0.03 points versus weight
+0, respectively; their paired intervals span zero. Full per-task records and
+conditional intervals are in `results/remediation_v3/ablation_report.json`.
+
+> ### Archived measurements (2026-09-21; superseded)
+>
+> All tables below are generated from `results/final_equal_vram_frac075.json`
+> (TieredKV at headline `frac=0.75`; baselines carried verbatim from
+> `results/final_equal_vram.json`, which they don't depend on — no baseline
+> policy reads `sttram_bifurcation_frac`) — one sample count (25/task,
+> 10 gov_report), fixed seed 0, `max_ctx=31500` (reference protocol), bf16
+> TieredKV residency. The 0.75 TieredKV entries come from the `e2_frac0_75`
+> + `frac075_gov` batches, proven bit-identical (scores, counters, modeled
+> columns) to final-code batches at matched config — see the file's
+> `provenance` block. The 2026-09-07 headline (+5.26 over SnapKV) is
+> withdrawn: it ran at 8k truncation, fp32 residency, and unbounded STT
+> exposure on a prior revision. See [`AUDIT_VERIFICATION.md`](AUDIT_VERIFICATION.md)
+> and git history for the full audit trail.
+>
+> The older per-method standard errors in `results/tables/ci_equal_vram.json`
+> cannot establish significance of paired differences. New runs retain sample
+> identities and compute paired bootstrap intervals with
+> `experiments/report_remediation.py`.
+>
+> Three fairness definitions are reported side by side because the conclusion
+> depends on the denominator — a reviewer will construct all three, so we do:
+> **equal-VRAM** (TieredKV 1024 VRAM + 2048 STT vs 1024-token baselines),
+> **equal-attended** (992 + 32 exposed = 1024 attended), **equal-total**
+> (341 + 683 = 1024 resident). The table below is retained for audit only;
+> the corrected comparison and paired intervals are above.
+
+### Archived comparison table (2026-09-15)
+
+TieredKV attends over its VRAM tier *and* up to `stt_expose_quota` live STT-RAM tokens every step (default quota 32), read at STT-RAM's own cost-modeled bandwidth (STT 50/12.5 GB/s nominal tentpole, VRAM 864 GB/s — see `src/cost_model.py` for assumed scenario inputs).
+
+All 6 LongBench tasks, 25 samples/task (10 gov_report), budget=1024. The
+current `figures_final/` accuracy plots are regenerated from the corrected
+results above and should not be read as visualizations of this old table.
+
+| Task | Full-KV | H2O@1024 | SnapKV@1024 | **TieredKV eq-VRAM** | **eq-attended** | **eq-total** |
+|------|:---:|:---:|:---:|:---:|:---:|:---:|
+| MultiFieldQA | 60.95 | 56.37 | 54.61 | **55.25** | **55.26** | 42.60 |
+| HotpotQA | 48.67 | 39.27 | 37.32 | **37.93** | 33.26 | 27.86 |
+| TriviaQA | 74.64 | 64.20 | 64.24 | **67.44** | **67.89** | 64.90 |
+| Qasper | 29.55 | 11.47 | 11.54 | **13.28** | **12.37** | 11.11 |
+| NarrativeQA | 17.30 | 15.40 | 18.98 | 18.63 | 16.79 | 17.78 |
+| GovReport | 32.23 | 27.07 | 28.49 | 26.93 | 27.22 | 22.51 |
+| **Average** | 43.89 | 35.63 | 35.86 | **36.58 (+0.72)** | **35.46 (−0.40)** | **31.13 (−4.73)** |
+
+Historical reading (eq-VRAM column @ headline `frac=0.75`): TieredKV beat SnapKV by +0.72 on average in the archived run. At matched attention (992+32), it trailed by −0.40 in that run; at equal total logical capacity (341+683), it trailed by −4.73. These are superseded by the revalidation above and below. The equal-total control attends at most 341+32=373 cached tokens versus the baseline's 1024, so its gap cannot isolate victim-cache overhead from attention-width effects. The old +5.26 headline ran at 8k truncation, fp32 residency, and unbounded slow-tier exposure and remains withdrawn.
+
+```latex
+\begin{tabular}{lccccc}
+\toprule
+Task & Full Cache & StreamingLLM & H$_2$O & SnapKV & \textbf{TieredKV (Ours)} \\
+\midrule
+MultiFieldQA & \textbf{61.0} & 48.4 & 56.4 & 54.6 & 55.2 \\
+HotpotQA & \textbf{48.7} & 34.4 & 39.3 & 37.3 & 37.9 \\
+TriviaQA & \textbf{74.6} & 64.6 & 64.2 & 64.2 & 67.4 \\
+Qasper & \textbf{29.6} & 12.8 & 11.5 & 11.5 & 13.3 \\
+NarrativeQA & 17.3 & 17.6 & 15.4 & \textbf{19.0} & 18.6 \\
+GovReport & \textbf{32.2} & 26.6 & 27.1 & 28.5 & 26.9 \\
+\midrule
+\textbf{Average} & \textbf{43.9} & 34.1 & 35.6 & 35.9 & 36.6 \\
+\bottomrule
+\end{tabular}
+```
+(Archived equal-VRAM LaTeX; the current generated table is rebuilt from `results/remediation_v3/equal_vram_merged.json`.)
+
+**Corrected latency and peak memory.** `results/latency_headline.json` timed the model forward pass but excluded cache-policy work, so its 25.1 ms/token figure is **not** an end-to-end inter-token latency. The corrected-control real-text, full-loop matrix measured **115.70 ms/token for TieredKV versus 34.42 ms/token for SnapKV at 16k prompt tokens** on L40S, with 50 fixed decode tokens and three measured trials (`results/remediation_v3/latency.json`). Moving small promotion-hysteresis metadata off GPU reduced TieredKV's earlier 149.93 ms/token measurement, but policy overhead remains substantial. All methods build the full prompt KV before compressing it, so their measured 16k-token peak PyTorch allocation is about **18.59 GB**; this implementation does not yet reduce peak prefill VRAM. STT energy and movement costs remain analytical estimates, not physical measurements.
+
+**Current faithful-baseline check (2026-09-29).** The current-source 135-example upstream-selector SnapKV comparison under a configured 512 MiB maximum final KV payload found TieredKV−SnapKV task-balanced quality of **−0.05 points** (conditional 95% bootstrap interval [−1.36,+1.36]). Under the final boolean-gather and boolean-hot-compaction source, all Tiered predictions, scores, final resident byte counts, and cache counters match the earlier control exactly. The interval does not establish quality superiority or equivalence. On one separate 16K prompt in three same-process ABBA blocks, complete-loop decode measured **82.76 versus 25.77 ms/token** (Tiered/Snap; 3.21× slower), with p95 86.34/26.03 ms and actual final KV payload 425/512 MiB. Tiered had a lower decode allocation peak (15.234/16.522 GB) but a higher prefill peak (18.796/17.958 GB). No joint quality/latency/memory win is established. See `results/baseline_fidelity/snap_exante_full_currenthot_report.json`, `bool_hot_compaction_parity.json`, and `snap_tier_loop_currenthot_report.json`; the latency loop is one prompt, not serving throughput.
+
+**Historical STT bandwidth sensitivity (2026-09-21, analytical replay from saved counters).** Varying the assumed STT bandwidth over 21/5.25, 50/12.5, and 100/25 GB/s moves only TieredKV's analytical bill; baselines never touch STT. The old modeled migration latency was **0.803 / 0.346 / 0.180 s** across those scenarios, while modeled energy was **70.63 J** because pJ/bit did not vary. These are *scenario inputs*, not measured bandwidths of a deployable STT-RAM tier. In particular, [Everspin reports 2.7 GB/s for both reads and writes per 1Gb STT-MRAM device](https://investor.everspin.com/news-releases/news-release-details/next-generation-ibm-flashcore-modules-feature-everspins-persyst); eight such interfaces give a theoretical 21.6 GB/s aggregate in each direction before controller, link, or workload losses. [Li et al.'s 26.7 GB/s](https://doi.org/10.1145/3650729) is an array-level read result for a different near-memory design, and [Melody](https://people.cs.vt.edu/~huaicheng/p/asplos25-melody.pdf) characterizes CXL memory rather than STT-MRAM. Neither establishes the current 50/12.5 GB/s pair or its 4× write asymmetry for this system. The older migration-only replay cannot predict full-loop serving latency; the measured benchmark above is unaffected by these assumed numbers. Per-step records were not exported in the older JSONs, so only the migration slice can be replayed exactly.
+
+**What changed to get here** — `TieredKVPolicy._visible_tuple()` builds the attended set from VRAM + quota-capped live STT-RAM (uniform length across layers for HF's shared causal mask). Promotion is driven by the model's real measured attention on STT-RAM tokens (not a K-as-Q sketch proxy), gated by `resolve_promotions()` hysteresis. A `stt_live_floor` (default 1) keeps one live STT row per layer on both the promote and evict paths so one drained layer can't veto exposure for all 32; unanimous-empty tiers (short docs) count as `stt_unused_steps`, not starvation. An attempt to inject *peeked* STT-RAM content directly into real attention was tried and rolled back: HF shares one causal mask across all 32 layers (rolled back after measuring ~20x promotion collapse). Prior harness bugs fixed along the way: cross-sample stats are accumulated (not last-sample-only), dropped tokens are invalidated without an invented payload read or DRAM migration, STT-RAM figures are cited tentpoles (not hand-picked), checkpoints are fingerprinted including sample counts.
+
+### STT-RAM budget ablation (clean)
+
+VRAM fixed at 1024, STT-RAM swept 512→3072, 5 short tasks × 25 samples, bf16, final code (`results/clean_sweep_stt/`; full numbers in `results/tables/table4_stt_ablation.tex` — view with `experiments/preview_tables.py`).
+
+| STT-RAM budget | 512 | 1024 | 2048 | 3072 |
+|---|:---:|:---:|:---:|:---:|
+| Avg F1 | 38.19 | 38.06 | 38.67 | 38.27 |
+
+Flat within noise (±0.6) — the old monotonic 35.77→44.98 curve does not survive clean measurement (3 tasks × 10 samples across mixed revisions). With VRAM fixed and exposure quota-bounded, extra slow-tier capacity beyond working-set needs adds retrievable pool the fixed window cannot surface; per-task directions split (triviaqa falls 70.1→66.6 with bigger STT, hotpotqa rises 37.4→38.9). Reported as measured: capacity without visibility. A newer five-task window-size ablation is summarized above; this older sweep is retained for audit.
+
+### Bifurcation-headroom operating point (new)
+
+Reserving 25% STT headroom (`sttram_bifurcation_frac=0.75`, fixed-sample sweep `results/e2_frac*_short.json`, `figures_final/fig8_frac_ablation.pdf`): write savings 7.2% → **82.9%** at −0.17 avg F1 (38.67→38.51, noise; cost concentrates on multifieldqa −1.9, others flat-or-better). Default `frac=1.0` pre-fills STT at prefill and structurally guarantees ~0% savings — the old 0% was a capacity artifact, proven by the infinite-STT oracle (`results/e1_oracle_short.json`: 77–88% savings, F1 flat). This is the paper's write-savings claim, with its trade-off stated.
+
+---
+
+## Repository Structure
+
+```
+Project/                          ← shared root (sibling of multimodal_document_rag/)
+├── kv_cache/                     ← THIS project (run all commands from here)
+│   ├── src/
+│   │   ├── attention.py            # Shared SDPA math + MAC counting
+│   │   ├── tiered_kv_cache.py      # Core 2-tier cache (TieredConfig, TieredKVCache)
+│   │   ├── baselines.py            # FullAttention, StreamingLLM, H₂O, SnapKV, Quest
+│   │   ├── cost_model.py           # Analytical latency/energy model (L40S-calibrated)
+│   │   └── metrics.py              # Per-step and aggregate metrics
+│   ├── experiments/
+│   │   ├── longbench_eval.py       # ★ Main: LongBench SOTA comparison, all policies
+│   │   ├── longbench_metrics.py    # F1, ROUGE-L, substring-match scorers
+│   │   └── plot_sota_comparison.py # Bar chart + radar chart from LongBench JSON
+│   ├── sota/
+│   │   ├── snapkv/                 # FasterDecoding/SnapKV (upstream)
+│   │   ├── streamingllm/           # mit-han-lab/streaming-llm (upstream)
+│   │   ├── h2o/                    # FMInference/H2O (upstream)
+│   │   └── quest/                  # mit-han-lab/Quest (upstream)
+│   ├── figures/                    # Generated publication figures (PNG/JPG)
+│   ├── results/                    # JSON result files (gitignored from build outputs)
+│   ├── tests/
+│   │   ├── test_tiered_cache.py    # 2-tier cache invariants
+│   │   ├── test_sketch_bound.py    # Quest bound property tests
+│   │   ├── test_baselines.py       # baseline budget/sink invariants
+│   │   ├── test_cost_model.py      # latency/energy unit conversions
+│   │   └── test_longbench_policies.py  # harness integration tests
+│   ├── TieredKV_Project_Explanation.md   # Historical write-up (see banner)
+│   ├── TieredKV_Project_Explanation.pdf  # Historical PDF with review notice
+│   └── requirements.txt
+├── venv_kvcache/                 ← this project's venv (prebuilt — use it)
+├── models/                       ← local model weights (mistral-7b-instruct)
+└── hf_cache/                     ← Hugging Face download cache
+```
+
+---
+
+## Environment Setup
+
+**Requirements:** Python 3.10+, CUDA GPU (tested on NVIDIA L40S, CUDA 12.4, 48 GB VRAM).
+
+> ⚠️ Use **this project's venv** (`Project/venv_kvcache`) — not `multimodal_document_rag/.venv`, which lacks torch/datasets and will fail with `ModuleNotFoundError`. All commands below assume your shell is in `Project/kv_cache/`.
+
+```bash
+# 1. Activate the prebuilt environment (from Project/kv_cache/)
+source ../venv_kvcache/bin/activate
+
+# ---- Only if you need to recreate it from scratch: ----
+# /usr/bin/python3 -m venv ../venv_kvcache
+# ../venv_kvcache/bin/pip install torch==2.5.1+cu124 --index-url https://download.pytorch.org/whl/cu124
+# ../venv_kvcache/bin/pip install -r requirements.lock.txt
+# (adjust cu124 to your CUDA version)
+
+# 2. Set Hugging Face cache directory (must have 20+ GB free)
+export HF_HOME=/path/to/your/hf_cache
+export PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True
+```
+
+`requirements.lock.txt` is the exact 90-package snapshot of the environment
+used for the September 2026 revalidation, including PyTorch's CUDA 12.4 build.
+`requirements.txt` lists the direct dependencies with minimum versions for
+development. CUDA wheels may require the PyTorch package index shown above.
+
+### Download Mistral-7B-Instruct-v0.2
+
+```bash
+hf download mistralai/Mistral-7B-Instruct-v0.2 \
+    --revision 63a8b081895390a26e140280378bc85ec8bce07a \
+    --local-dir ../models/mistral-7b-instruct \
+    --max-workers 8
+```
+
+The tested model revision and checksums for its config, tokenizer, and weight
+index are recorded in `results/remediation_v3/hardware.json`.
+
+> For Llama-3-8B: accept the license at [huggingface.co/meta-llama/Meta-Llama-3-8B](https://huggingface.co/meta-llama/Meta-Llama-3-8B), run `hf auth login`, then replace the model path.
+
+---
+
+## Quick Verification (No Model Required)
+
+```bash
+# Unit + integration tests (CPU + tiny-model harness).
+# Run from Project/kv_cache/ with Project/venv_kvcache active:
+python -m pytest tests/ -v
+```
+
+---
+
+## Reproducing the corrected evaluation
+
+Use the local Mistral weights and cached LongBench JSONL data. The driver runs
+matched VRAM, matched attention, matched total capacity, write-aware, window,
+real-text latency, and a two-document PPL smoke validation (budget 256, so
+eviction occurs before the 1024-token endpoint) on two GPUs. Results,
+checkpoints, logs, source hashes, and job status are stored under
+`results/remediation_v3/`; rerunning the same command resumes completed jobs.
+
+```bash
+source ../venv_kvcache/bin/activate
+python experiments/run_remediation.py \
+  --model ../models/mistral-7b-instruct \
+  --data-dir ../hf_cache/datasets/downloads/extracted/5def9c7eaf83951e1cee75902d8611ef764ad88dd289e8f0bf97ff658a3eb83a/data \
+  --outdir results/remediation_v3 --gpus 0 1
+python experiments/report_remediation.py --directory results/remediation_v3
+```
+
+For a single headline run, use `--tiered-kv-dtype bfloat16`,
+`--sttram-bifurcation-frac 0.75`, `--tiered-vram-budget 1024`,
+`--tiered-stt-budget 2048`, `--budget 1024`, `--max-ctx 31500`,
+`--seed 0`, and the explicit `--data-dir` above. Use 25 samples for the five
+short tasks and 10 for GovReport. Do not mix the older checkpoint files with
+this revision. Result JSONs include the effective policy settings, package
+versions, code hash, dataset hash, sample scores, and individual predictions.
+
+Generate corrected figures from the completed matrix:
+
+```bash
+python experiments/plot_figures_v2.py \
+  --equal-vram results/remediation_v3/equal_vram_merged.json \
+  --fair results/remediation_v3/equal_attended_merged.json \
+  --latency results/remediation_v3/latency.json \
+  --outdir figures_final --tex-outdir results/tables
+```
+
+`report_remediation.py` produces the merged files and paired comparison report.
+
+---
+
+## Hardware & Cost Model
+
+The GPU row uses the **NVIDIA L40S** specification; the STT row is an
+unvalidated analytical scenario, not a calibrated second tier:
+
+| Tier | Technology | Read BW | Write BW | Energy |
+|------|-----------|---------|---------|--------|
+| Tier 1 — VRAM | GDDR6 | 864 GB/s | 864 GB/s | 12 pJ/bit |
+| Tier 2 — STT-RAM | STT-MRAM (simulated scenario) | assumed 50 GB/s | assumed 12.5 GB/s | assumed 2 / 8 pJ/bit |
+
+The cost model assumes a 4× write/read bandwidth asymmetry; that ratio is
+not established for a GPU-accessible STT tier by the cited device data.
+Two 1Gb Everspin chips would supply the configured 256 MiB slow-tier raw
+capacity but only 5.4 GB/s theoretical aggregate bandwidth in each
+direction before controller and link losses. The assumed 50 GB/s read
+scenario would require at least 19 such independently usable chips and is
+not capacity matched. See the roadmap for the arithmetic and source links.
+An isolated pinned CPU-DRAM↔GPU0 probe measured the transfer component on
+this machine (L40S, PCIe Gen4×16, local NUMA): a 4 MiB exposed-KV payload
+took 9.38 ms in 1,024 separate 4 KiB copies, 0.299 ms in 32 layer-sized
+copies, and 0.171 ms packed. A contiguous 256 MiB H2D copy took 10.02 ms
+(26.8 GB/s). These are **not STT-MRAM measurements** or end-to-end TieredKV
+latencies; the controller, access pattern, device energy, and overlap remain
+unknown. The two-chip Everspin capacity match has a 0.777 ms ideal device
+read floor for that 4 MiB payload before link cost. The assumed 50 GB/s
+read also exceeds the L40S PCIe Gen4×16 nominal one-way ~32 GB/s limit;
+[NVIDIA specifies 64 GB/s bidirectional](https://www.nvidia.com/en-in/data-center/l40s/).
+See `results/hardware/host_transfer_report.json` for methods and raw links.
+`CostModel.with_stt_bw('commercial_2x1gb_ideal')` reproduces the ideal
+5.4/5.4 GB/s bandwidth anchor without changing the historical default;
+energy prices remain assumptions. A separate audit removed a phantom
+payload-read charge on cold-row drops. The equal-VRAM six-task control had
+zero drops, so its old modeled totals are unchanged. The equal-total
+GovReport control's 25,920 drops lower its historical aggregate modeled
+latency by 2.123 ms and energy by 0.001699 J; exact arithmetic is in
+`results/hardware/drop_cost_correction.json`. Measured scores and GPU time
+are unaffected.
+When a backup survives, re-demotion can reuse it without another write.
+The corrected `frac=0.75` run avoided 88.1% of potential decode-demotion
+writes; that simulated event ratio excludes initial prompt placement.
+
+---
+
+## Running Tests
+
+```bash
+# From Project/kv_cache/ with Project/venv_kvcache activated:
+source ../venv_kvcache/bin/activate
+python -m pytest tests/ -v
+```
+
+The regression suite covers: bifurcation and capacity invariants, the promote/demote cycle, inclusive write savings, the peek/promote hysteresis gate, the Quest page bound's upper-bound property, baseline budget accounting and sink survival, cost-model unit conversions (including the slow-tier-slower-than-fast-tier guard), live-floor starvation guards on both promote and evict paths, unused-vs-starved accounting, write-aware demotion ordering, reset() single-counting, zero-payload drop accounting, and `longbench_eval.py` integration (per-policy budget limits, visible-tuple length uniformity, bounded slow-tier exposure, true RoPE positions, and cross-sample stats accumulation) against a tiny randomly-initialised Mistral.
+
+---
+
+## Documentation
+
+Full project documentation including architecture, evaluation metrics, benchmark analysis, and figure explanations is available in:
+
+- [`TieredKV_Project_Explanation.md`](TieredKV_Project_Explanation.md) — Markdown version
+- [`TieredKV_Project_Explanation.pdf`](TieredKV_Project_Explanation.pdf) — PDF with embedded figures
+
+---
+
+## Citation
+
+If you use this code, please cite:
+
+```bibtex
+@misc{kumar2025tieredkv,
+  title   = {TieredKV: Exploiting STT-RAM Read/Write Asymmetry for
+             Near-Lossless KV Cache Compression in LLM Inference},
+  author  = {Kumar, Prashant},
+  year    = {2025},
+  url     = {https://github.com/PrashantKumar-07/KV_Cache_Optimization}
+}
+```
+
+---
+
+## License
+
+[MIT License](LICENSE) — © 2025 Prashant Kumar
+
+
+### Verified opt-in CPU compaction
+
+Add `--cpu-fused-compaction` to `experiments/evaluate_query_selection.py` with
+`--strategy lru --real-query-prefill --cpu-batched-scores --cpu-direct-shared`
+and the usual model/data/task/output arguments. Use a hot budget of at least
+132. Combine it with `--cpu-bounded-pool` to reduce requested pinned roots
+by 31.3% at 1024/2048 and 44.6% at 991/1090; both configurations now pass
+integrity and timing-regression gates. Defaults remain unchanged. The local verified CUDA binary loads
+without recompiling in Torch2.5.1+cu124/Python3.10; source/binary hashes are
+checked. First-build research environments still need CUDA and Ninja.
+
+At 1024/2048 budgets, a three-block fixed-stream 16K model/policy benchmark
+improves 75.47 → 66.44 ms/token (11.96%), with identical cache state/outputs and
+passing TTFT/p95/prefill-peak guards. Native bit/stream ownership, four model
+lengths, six-task free generation, interleaved recycling and CLI checks pass;
+168 tests pass. The frozen combined-path comparison still takes 60.56 versus
+25.83 ms/token for SnapKV (2.34× slower). Known transient KV reaches 528.25
+MiB despite 396 MiB boundary snapshots, so the 512 MiB transient ceiling
+fails. This is a CPU-backend improvement, not a new quality/SnapKV or
+physical STT claim. See [current status](PROJECT_STATUS.md) and
+[verified model report](results/hardware/fused_eviction_model_20261002/verified_report.json).
+
+
+## Experimental raw-buffer reuse (2 October 2026)
+
+**Implemented, research-only:** `reuse_visible_policy.py` replaces exactly the
+two hot/cold visibility concatenations after AST checks. Supported groups
+consume distinct contiguous BF16 raw decode buffers and write kept hot rows
+into their prefixes; cold rows fill the following quota, preserving head
+strides and BF16/F32 bits. Unsupported layout/aliases use the prior fused
+path; full cold overflow keeps the existing eager behavior. The new native
+writer uses the existing five-tensor pybind ABI, a six-pointer source/destination
+table, explicit widths and current CUDA stream; all inputs/destinations record
+that stream. The ordinary CLI now exposes `--cpu-reuse-visible` only alongside
+`--cpu-fused-compaction --cpu-bounded-pool --cpu-direct-shared
+--cpu-batched-scores --real-query-prefill --strategy lru`. Defaults are unchanged.
+
+**Observed:** same known policy KV peak528.26→406.25 MiB (−23.1%), boundary
+272.25 MiB, excluding other forward temporaries and allocator blocks. Four
+context lengths/both geometries match; three ABBA model regression guards
+pass with median +1.34%/+1.76%, while whole-request peak stays 18.6278 GB.
+Stage saving0.26–0.34ms fails4ms speed gate. Fifteen new native delayedstream/
+owner-release checks pass. Twenty-four free-generation pairs/six tasks,40saturation/boundary cases and
+three recycled requests/all51frames per mode/both geometries pass. Ordinary
+CLI sample parity and seven preload rejections pass; verified native binary
+loads without Ninja. Latest full suite187passes. No new speed,
+model-wide memory, retention-quality, physical-STT or SnapKV superiority claim.
+See [resource proof](results/hardware/reuse_visible_model_20261002/verified_parity_resource.json),
+[timing proof](results/hardware/reuse_visible_model_20261002/verified_timing.json),
+[native checks](results/hardware/reuse_visible_integrity_20261002/native.json).
+
+CLI evidence: [verified integration](results/hardware/reuse_visible_integrity_20261002/cli/verified_report.json).
+Actual allocator/process memory remains open; known live KV excludes cached
+blocks/workspaces, and the whole-request peak is unchanged.
+
+
+## Public pinned-memory audit (2 October 2026)
+
+**Observed:** CUDA's public `cuPointerGetAttribute` host allocation-range
+queries read256 MiB behind the 144.25 MiB shared root and512 MiB behind the 264 MiB
+usual root. Six live size/alias cases match an archived private HostBlock
+reader; active code now uses stdlib `ctypes` and the public CUDA driver,
+with no host-probe extension, Ninja or private layout. Four public-API fresh
+processes match eight prior runs for state, IDs, counters and GPU peaks.
+Final GPU allocation falls129.8/134.1 MB with reuse, but whole-request GPU
+allocation peak stays 18.627830784 GB, reserved peak 20.600324096 GB; sampled RSS
+shows no substantial gain. Adding the shared host range's111.75 MiB excess to
+the SAME prior weak-storage KV trace gives **518.0039 MiB**, already above
+512 MiB. This remains a lower bound excluding other cached blocks, OS page
+rounding, GPU workspaces and driver allocation; actual resource equality is
+not established.
+
+Two weak StorageImpl runs confirm a 1000 MiB BF16[1,16384,32000] prefill-logit
+storage survives through the first decode forward in the fresh-memory driver,
+then expires before the second. Observers keep no payload owners and preserve
+state/IDs/counters/peaks. The legacy timing profile scopes prefill output in a
+function, so its decode peak is not interchangeable with this harness's
+15.826/15.834 GB peak. No model argument or default changed.
+
+Next: test a root allocation with less excess capacity, then workspace/lifetime
+and broader research gates. A last-logit-only prefill option must prove exact
+outputs/state before any adoption; it is only a prospective experiment.
+Evidence: [public memory audit](results/hardware/actual_reuse_memory_20261002/public/verified_report.json),
+[weak logits audit](results/hardware/actual_reuse_memory_20261002/logits/verified_report.json).
+
+
+## Opt-in bulk CPU promotion planning
+
+Add `--cpu-bulk-promotion` to the native-reuse options above. The evaluator
+requires the complete CPU/batched/direct/fused/bounded/actual-query/LRU chain.
+The implementation uses CPU NumPy views and Float32 arrays for promotion
+metadata while preserving original ranking, floors and unsupported fallback.
+Configuration records the new flag and backend source hashes.
+
+At 16K, three ABBA blocks give 65.97→62.52 ms/token (5.23%) at 1024/2048
+and 63.31→59.17 ms/token (6.54%) at 991/1090. These are same-CPU-control
+comparisons. All integrity/ordinary CLI gates pass; defaults are unchanged.
+See [verified evidence](results/hardware/promotion_planning_screen_20261002/cli/verified_report.json).

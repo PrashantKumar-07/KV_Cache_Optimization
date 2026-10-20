@@ -1,0 +1,54 @@
+{
+  "verified": true,
+  "CPU_only": true,
+  "source_file_count": 5914,
+  "archive_equals_plan_equals_live_source": true,
+  "model_artifact_count": 12,
+  "all_model_artifacts_rehashed": true,
+  "runtime_identity_matches": true,
+  "paired_trace_points": 51,
+  "layers_each": 32,
+  "full_vocab_logit_arrays": 51,
+  "logits_shape": [
+    1,
+    1,
+    32000
+  ],
+  "finite_and_bytes_exact": true,
+  "predictions_recomputed_from_decode_logits": 50,
+  "candidate_native_cold_steps": 50,
+  "candidate_CPU_append_calls": 50,
+  "candidate_CPU_fallback_steps": 0,
+  "successful_run_hooks_closed": true,
+  "exact_live_roots_zero_after_reset": true,
+  "exact_allocation_events": {
+    "control": [],
+    "candidate": [
+      {
+        "kind": "allocate",
+        "token": 1,
+        "bytes": 276824064
+      },
+      {
+        "kind": "release",
+        "token": 1,
+        "bytes": 276824064
+      }
+    ]
+  },
+  "evidence_sha256": {
+    "results/audit_20261013/exact_controller/plan.json": "824a96f621126f8bf4f804a482c99d701206ba3b467ee797fcc48be9e147a33b",
+    "results/audit_20261013/exact_controller/run_parity.py": "04764a8d25ffcf20a6c370a00a8191bfc52730de098323359ee564619ff3a231",
+    "results/audit_20261013/exact_controller/parity.json": "e2ce1ad13da82d47e2966985a5c4866ce36ae43ee405eac718e9c69e966a1a6c",
+    "results/audit_20261013/exact_controller/control_logits.npz": "35c43190d8e31c45fc826aca588ac4a76e1cb0fd328364ff74fcb9846c347a4e",
+    "results/audit_20261013/exact_controller/candidate_logits.npz": "35c43190d8e31c45fc826aca588ac4a76e1cb0fd328364ff74fcb9846c347a4e",
+    "results/audit_20261013/exact_controller/source.tar.gz": "f137526003769aa2b5a6eed6175cbd21c6fefc473734f9be12ec74d72b5f4de8"
+  },
+  "limits": [
+    "one16K reused input and50 teacher-forced decode steps; not free generation/generalization",
+    "trace includes KV/positions/shadows but not score ages/cumulative state or hysteresis streak",
+    "full payload copies/synchronizations are diagnostic and invalidate timing/traffic counters; no latency is saved",
+    "CPU DRAM surrogate; not physical STT or SOTA/native payload-cost proof",
+    "ExitStack guards successful acquired resources; partial constructor failures are not exercised"
+  ]
+}

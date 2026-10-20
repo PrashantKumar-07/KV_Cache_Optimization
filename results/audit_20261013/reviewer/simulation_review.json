@@ -1,0 +1,111 @@
+{
+  "date": "2026-10-13",
+  "reviewer": "/root/fix_review",
+  "record_type": "agent_observed_cpu_execution_transcription_plus_read_only_analysis",
+  "no_gpu_rerun": true,
+  "probe_command": "../venv_kvcache/bin/python results/audit_20261013/reviewer/simulation_review_probes.py",
+  "source_sha256_at_record_time": {
+    "experiments/longbench_eval.py": "f03ab5ca7a01e2ce2d9737b0d7fbef6c291f16dfcf696cf17648ca0af178241c",
+    "src/cost_model.py": "a762d0fec5f0014be481d313a3d53ce3144f339df124e98414d8e95ab4ddd841",
+    "src/metrics.py": "0c4d89af1cfb468e86fbe3e8a000eb07306771e6d4e91e79909cefd6a0d77cca",
+    "src/tiered_kv_cache.py": "d83687a9fd24128cfd9ea5db95d431435058322c9c23116e6c0f390a427aa0bd",
+    "src/baselines.py": "45fb479d1836bd7a49dd87628d2bb3878ad29352ed22525ad92aa5260bf00aa8",
+    "experiments/ppl_eval.py": "2482a2884c292f2929b24b5e05163e5e76bb4e924813f656cc66972e0ee0ca9e",
+    "results/audit_20261013/reviewer/simulation_review_probes.py": "3719392c1a3a70e87e571fa2a79cdcbf36d41dc51e13602e80a42662d80e8297"
+  },
+  "ranked_findings": [
+    {
+      "rank": 1,
+      "priority": "P2",
+      "location": "experiments/longbench_eval.py:295-297",
+      "problem": "H2O proxy initialization overwrites real attention history when a short or incremental stream first exceeds budget.",
+      "observed_cpu_before": {
+        "budget": 4,
+        "sink": 1,
+        "recent": 1,
+        "real_scores_before": [
+          0,
+          2,
+          0,
+          0,
+          0
+        ],
+        "kept_token_identity": [
+          0,
+          2,
+          3,
+          4
+        ],
+        "scores_after": [
+          0.20000000298023224,
+          0.20000000298023224,
+          0.20000000298023224,
+          0.20000000298023224
+        ]
+      },
+      "impact": "Changes H2O decisions for every token-by-token PPL stream crossing its first capacity and short-prompt generation. The usual long-prefill six-task headline initializes before real decode feedback, so that specific path is unaffected. SnapKV internal H2O first decode also has real feedback before its first initialization.",
+      "minimal_fix": "Preserve real cumulative history; only create proxy initialization when no real score history exists.",
+      "disposition_at_record_time": "Sent to root; no reviewer implementation edits."
+    },
+    {
+      "rank": 2,
+      "priority": "P2",
+      "location": "experiments/longbench_eval.py:948 and 1210-1211",
+      "problem": "Tiered attention is billed from post-insertion/post-eviction hot residency, baseline from pre-forward past length. Both must describe the observed forward with the new causal row.",
+      "observed_cpu_before": {
+        "BF16_model": true,
+        "prompt_tokens": 20,
+        "generated_tokens": 3,
+        "layers": 2,
+        "no_drop": true,
+        "no_cold_rows": true,
+        "full_prediction": "102 2 78",
+        "tiered_prediction": "102 2 78",
+        "full_energy_nj": 251.9,
+        "tiered_energy_nj": 264.2
+      },
+      "impact": "Analytical attention bill differs for identical attended caches and is missing the current row at saturation. At normal 1024-row hot saturation this is a small per-step error; migration counts, quality and measured GPU timing are unaffected.",
+      "minimal_fix": "Use old exposed hot count plus current input count, old exposed cold count; price post-forward migrations separately. Baseline uses past length plus current input count.",
+      "disposition_at_record_time": "Root plans fix only after its in-flight frozen-source GPU jobs finish; their analytical fields need explicit invalidity while quality can remain separately usable."
+    },
+    {
+      "rank": 3,
+      "priority": "P2_low_impact",
+      "location": "src/metrics.py:156-157",
+      "problem": "RunMetrics.summary always uses two bytes per element for hot/cold resident footprints, independent of configured storage precision.",
+      "observed_cpu_before": {
+        "float32_actual_hot_bytes": 48,
+        "float32_reported_hot_KiB": 0.02,
+        "bfloat16_actual_hot_bytes": 24,
+        "bfloat16_reported_hot_KiB": 0.02
+      },
+      "impact": "FP32 bytes underreported by factor two before display rounding; FP8 cold bytes overreported by factor two. Current headline does not consume these summary fields; uses are parity/hash diagnostic drivers.",
+      "minimal_fix": "Carry hot and cold element sizes into RunMetrics and use them for each corresponding footprint.",
+      "disposition_at_record_time": "Sent to root; no reviewer implementation edits."
+    },
+    {
+      "rank": 4,
+      "priority": "P2_low_impact",
+      "location": "src/tiered_kv_cache.py:1017-1018",
+      "problem": "Standalone sketch is billed from post-eviction cold count with max(count,1), so it invents a page read when there were no cold rows or sketch operations.",
+      "observed_cpu_before": {
+        "cold_rows": 0,
+        "sketch_macs": 0,
+        "float32_billed_sketch_us": 0.00032,
+        "bfloat16_billed_sketch_us": 0.00016
+      },
+      "impact": "Standalone simulator only. LongBench harness has no sketch path, so its headline, quality and real GPU timing are unaffected. Post-step page count also misaligns nonempty sketch event billing.",
+      "minimal_fix": "Capture actual pre-sketch page count and allow zero.",
+      "disposition_at_record_time": "Sent to root; no reviewer implementation edits."
+    }
+  ],
+  "reviewed_boundaries": {
+    "cold_read_scope": "Rows exposed during the completed model forward are charged as cold even if they become shadows/promoted afterward. Newly restored shadow/live metadata does not add another attention read.",
+    "migration_scope": "Separate post-forward payload migration charges remain meaningful under the declared analytical event boundary; logical backup restores incur no payload rewrite.",
+    "mixed_precision": "One CostModel bytes_per_elem is insufficient for hot/cold mixed storage. Already explicitly documented experimental limitation; FP8 energy claims must remain invalid rather than be interpreted as physical.",
+    "cost_arithmetic": "Primitive GB/s to microsecond, pJ/bit to nJ, and promote/demote directions are mathematically consistent. Initial placement, interface/compute/system power and leakage are explicitly excluded or separate.",
+    "baseline_scope": "In-harness SnapKV and H2O remain adapted proxy-prefill baselines; faithful SnapKV selector is separate. No claim of upstream-faithful algorithm replication inferred.",
+    "historical_headlines": "Logical writes_saved/(writes_saved+paid_writes) counter aggregation remains correct within stated decode-demotion event scope; corrections above do not change that ratio."
+  },
+  "limitations": "Observed outputs were obtained with inline CPU commands prior to this saved reusable script. Script body reproduces their logic; no claim of a new saved-script execution is made. Findings are ranked by relevance to currently active outputs, not potential hypothetical future benchmarks."
+}

@@ -1,0 +1,76 @@
+{
+  "experiment": "SHADOW-FIXED-STREAM",
+  "raw_sha256": "620ac3a383997c9afbc6a3f0b06acec9f261d5a2a5827bf5988e0bb5b69f12a2",
+  "pairs": [
+    {
+      "inclusive_trial": "0:0",
+      "no_shadow_trial": "1:0",
+      "inclusive_paid_writes": 2690,
+      "no_shadow_paid_writes": 26432,
+      "reduction_pct": 89.82294188861985
+    },
+    {
+      "inclusive_trial": "0:1",
+      "no_shadow_trial": "1:1",
+      "inclusive_paid_writes": 2690,
+      "no_shadow_paid_writes": 26432,
+      "reduction_pct": 89.82294188861985
+    },
+    {
+      "inclusive_trial": "3:0",
+      "no_shadow_trial": "2:0",
+      "inclusive_paid_writes": 2690,
+      "no_shadow_paid_writes": 26432,
+      "reduction_pct": 89.82294188861985
+    },
+    {
+      "inclusive_trial": "3:1",
+      "no_shadow_trial": "2:1",
+      "inclusive_paid_writes": 2690,
+      "no_shadow_paid_writes": 26432,
+      "reduction_pct": 89.82294188861985
+    }
+  ],
+  "summary": {
+    "inclusive": {
+      "paid_writes_per_50_step_run": [
+        2690,
+        2690,
+        2690,
+        2690
+      ],
+      "writes_saved_per_50_step_run": [
+        23742,
+        23742,
+        23742,
+        23742
+      ],
+      "itl_median_ms": 82.58081134408712,
+      "itl_p95_ms": 92.7300563082099,
+      "ttft_median_ms": 1997.2421079874039,
+      "prefill_peak_max_gb": 18.594276864,
+      "decode_peak_max_gb": 15.11843328
+    },
+    "no_shadow": {
+      "paid_writes_per_50_step_run": [
+        26432,
+        26432,
+        26432,
+        26432
+      ],
+      "writes_saved_per_50_step_run": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "itl_median_ms": 100.99141113460064,
+      "itl_p95_ms": 125.46697482466698,
+      "ttft_median_ms": 1996.7099530622363,
+      "prefill_peak_max_gb": 18.594276864,
+      "decode_peak_max_gb": 15.11396864
+    }
+  },
+  "write_gate": "pass",
+  "limitations": "One real-text prompt, one Mistral model, teacher-forced 50-token stream and GPU-resident cold tier. Four ABBA arm runs with two measured trials each; this is a logical layer-token write comparison, not physical page traffic, measured energy, endurance or a general latency claim."
+}

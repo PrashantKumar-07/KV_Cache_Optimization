@@ -1,0 +1,71 @@
+{
+  "created_utc": "2026-10-20T17:40:49.404081+00:00",
+  "execution_complete": true,
+  "passed": true,
+  "environment": {
+    "python": "3.10.12",
+    "torch": "2.5.1+cpu",
+    "transformers": "5.15.0",
+    "isolated_venv": true,
+    "include_system_site_packages": false
+  },
+  "core_tests": {
+    "passed": 601,
+    "skipped": 1,
+    "seconds": 9.48,
+    "scope": "existing pytest.ini tests directory; CUDA-specific skip"
+  },
+  "gqa_tests": {
+    "passed": 14,
+    "seconds": 2.84,
+    "command": "CUDA_VISIBLE_DEVICES= OMP_NUM_THREADS=1 PYTHONPATH=experiments python -m pytest -q results/improvement_design_20261016/test_gqa_snap_adapter.py"
+  },
+  "known_failed_invocation": [
+    "gqa_tests.log preserves initial missing PYTHONPATH import error; documented corrected invocation passes unchanged tests",
+    "lock_check.log records unsupported --dry-run in bundled pip22; actual lock install in lock_install_check.log succeeds"
+  ],
+  "proofs": {
+    "pip_check": true,
+    "main_cli_help": true,
+    "model_helper_help": true,
+    "smoke_random_tensor_prefill_and_decode": 16,
+    "fresh_network_reference_clones": 2,
+    "offline_dataset_archive_checksum_and_six_file_hashes": true,
+    "reference_bootstrap_idempotent": true,
+    "dataset_helper_idempotent": true
+  },
+  "limits": [
+    "Executed against current working source; parent agent performs staged clean-clone proof.",
+    "No model-weight download or CUDA model evaluation executed by this setup review.",
+    "Optional IceCache/RocketKV environments not certified."
+  ],
+  "source_sha256": {
+    "requirements.txt": "c8d6b5c7411556e20d4591a22abb82a1d3ca4ed83508e2f358f065d0766ab26c",
+    "requirements.cpu.lock.txt": "dca0821bb9352ebb8be217160762c324ed8a464d4babb2dd4a1601dcc82474da",
+    "download_model.py": "8abb48d8f07ba2b97662ff2c13911ec34b326063d8c60902daca08a535fbdd29",
+    "scripts/bootstrap_references.py": "2b2a3e639c3bb9321cb4c33455be6a9c7b9d397183e06aabade7fe1f78a2fda9",
+    "scripts/smoke.py": "fd180e92251c1e5829cf95aa91bf18c8c960dff8c9b70fb16c80d490f274de8b",
+    "scripts/download_longbench.py": "da33d17b3974bfe5a53e0e3659343490bff75ab0da30ef0287458562a0d63a70",
+    "scripts/longbench_manifest.json": "6af674b19dde59f62a8998a80efcb2417b6fb7f963095dfb24b06b1731b16e32",
+    "REPRODUCING.md": "3d544b3613ce3206406768457557511a11358fa0b021e41e20c10878c903af99",
+    "THIRD_PARTY_NOTICES.md": "5b863d58611bba77c3f9f1392d40ea04086c4059bffe60321afa66037871d45b"
+  },
+  "logs_sha256": {
+    "install_torch.log": "4ff9811f958db4b8139954bdf2e20dab4a898949cd1ed58c302e7a2cdbd5dcc4",
+    "install_deps.log": "3f977deb0df770519bbd1c40a1085d8e6d4472ad12092c57d80b478628e511d5",
+    "install_requirements.log": "92a1c5c50816254f509156e4eaf6b5a03c1c7e654e8293e2949de4b46e1fb29a",
+    "pytest.log": "7e71b1934e45c88919aa1c4b6671c7fe0ec5e4f585c8f36c3f20c9347f9f47c0",
+    "pip_check.log": "9261363b733079a641c2e4cc9bc46ffa1d8336945a87f807b6cf68847dbc9b09",
+    "smoke.json": "705b6a7d4e7fca571972fb434804332188fc22e9a461e495e4c9173e813f17a4",
+    "longbench_help.log": "a2051e8a0bc89e677dada0925241d7715482d44d6f7dc66c138bbe57fa2a3d67",
+    "model_help.log": "ccde530548dc26a2c2ee5f9d833097d9f36a4a0bdcfd659fdd047b55bcccf1c4",
+    "bootstrap.log": "b51076dbff04aef1d7b39fc27fad40d608632c8e31aa9a8f39fcef9b94963d98",
+    "dataset.log": "ba032ca80b1f4c94093ab88b23c810d2beee2286109bea0724b427272094c661",
+    "gqa_tests.log": "8a15a577e4e3798a54b599b3a4ffb59e420cb09ec6e7456572e6e48d04741008",
+    "gqa_tests_with_path.log": "c1c66132c1c7c4d746e6553dfd90eaeb8c5becabaa233788acd5fbbb791a5d2c",
+    "lock_check.log": "273741e0823aa2562fbc1f2bf1a405a5d48ca31f566de2ca516d32f9b91dd7c4",
+    "lock_install_check.log": "7685f2c2e6d70b2973cb2641aaa2b0812b6eff1f2d823c91601fa96ab5ae58ce",
+    "bootstrap_idempotent.log": "2ccdab35203abe849ef8585663e079c6b402b5b187072a5efdea086dc97eefbc",
+    "dataset_idempotent.log": "ba032ca80b1f4c94093ab88b23c810d2beee2286109bea0724b427272094c661"
+  }
+}

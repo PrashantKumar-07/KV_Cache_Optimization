@@ -10,3 +10,55 @@ sota/
 results/tables/_preview.html
 .DS_Store
 .claude/
+
+# Local execution state and credentials; research evidence is kept below.
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+**/.running.lock
+**/.restore-*/
+**/.package-*/
+**/__pycache__/
+core
+core.[0-9]*
+
+# Rebuildable runtimes, downloaded upstream repositories and toolchains.
+**/venv_*/
+/results/proper_baselines_20261016/IceCache-bf16/
+/results/proper_baselines_20261016/M-DCI/
+/results/proper_baselines_20261016/RocketKV/
+/results/proper_baselines_20261016/rapids-cmake/
+/results/proper_baselines_20261016/local_gcc12/
+/results/proper_baselines_20261016/local_openblas/
+/results/proper_baselines_20261016/cpm_cache/
+/results/proper_baselines_20261016/rocketkv_official_wheels/
+/results/proper_baselines_20261016/tmp*/
+/results/improvement_design_20261016/KVCache-Factory/
+*.so
+*.o
+*.a
+*.whl
+*.deb
+
+# Public model/dataset downloads are obtained through the documented setup.
+/models/
+/hf_cache/
+/.cache/
+/.venv-*/
+
+# Failed and successful research logs are part of the evidence.
+!results/**/*.log
+
+/data/
+/.venv-cuda/
+/results/publication_20261020/before_*.md
+# Oversized raw records: restored byte-for-byte by scripts/restore_evidence.py
+/results/audit_20261013/compaction_handoff_parity/parity.json
+/results/audit_20261013/current_controller_parity/parity.json
+/results/audit_20261013/exact_controller/parity.json
+/results/audit_20261013/exact_stress_8192_cold256/parity.json
+/results/audit_20261013/exact_visibility_rejection_diagnostic/parity.json
+/results/audit_20261013/reusable_root_parity/parity.json
+/results/hardware/decode_kv_lifetimes_20261002/result.json

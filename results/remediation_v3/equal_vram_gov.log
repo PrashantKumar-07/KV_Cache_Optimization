@@ -1,0 +1,48 @@
+Loading model: ../models/mistral-7b-instruct
+[transformers] `torch_dtype` is deprecated! Use `dtype` instead!
+Loading weights:   0%|          | 0/291 [00:00<?, ?it/s]Loading weights:   3%|▎         | 9/291 [00:00<00:03, 89.70it/s]Loading weights:   8%|▊         | 23/291 [00:00<00:02, 108.31it/s]Loading weights:  12%|█▏        | 34/291 [00:00<00:02, 101.15it/s]Loading weights:  15%|█▌        | 45/291 [00:00<00:02, 102.94it/s]Loading weights:  19%|█▉        | 56/291 [00:00<00:02, 103.71it/s]Loading weights:  23%|██▎       | 67/291 [00:00<00:02, 98.83it/s] Loading weights:  26%|██▋       | 77/291 [00:00<00:02, 93.02it/s]Loading weights:  30%|██▉       | 87/291 [00:00<00:02, 89.42it/s]Loading weights:  34%|███▍      | 99/291 [00:01<00:01, 96.40it/s]Loading weights:  37%|███▋      | 109/291 [00:01<00:01, 95.82it/s]Loading weights:  41%|████      | 119/291 [00:01<00:01, 96.96it/s]Loading weights:  45%|████▍     | 130/291 [00:01<00:01, 94.27it/s]Loading weights:  48%|████▊     | 140/291 [00:01<00:01, 90.05it/s]Loading weights:  52%|█████▏    | 150/291 [00:01<00:01, 87.17it/s]Loading weights:  56%|█████▌    | 162/291 [00:01<00:01, 94.75it/s]Loading weights:  59%|█████▉    | 172/291 [00:01<00:01, 95.03it/s]Loading weights:  63%|██████▎   | 183/291 [00:01<00:01, 99.13it/s]Loading weights:  66%|██████▋   | 193/291 [00:02<00:01, 91.98it/s]Loading weights:  70%|██████▉   | 203/291 [00:02<00:01, 87.35it/s]Loading weights:  73%|███████▎  | 212/291 [00:02<00:00, 87.67it/s]Loading weights:  76%|███████▌  | 221/291 [00:02<00:00, 87.95it/s]Loading weights:  79%|███████▉  | 230/291 [00:02<00:00, 88.08it/s]Loading weights:  82%|████████▏ | 239/291 [00:02<00:00, 88.12it/s]Loading weights:  85%|████████▌ | 248/291 [00:02<00:00, 88.42it/s]Loading weights:  88%|████████▊ | 257/291 [00:02<00:00, 88.54it/s]Loading weights:  91%|█████████▏| 266/291 [00:02<00:00, 88.45it/s]Loading weights:  95%|█████████▍| 275/291 [00:02<00:00, 88.39it/s]Loading weights:  98%|█████████▊| 284/291 [00:03<00:00, 88.39it/s]Loading weights: 100%|██████████| 291/291 [00:03<00:00, 93.26it/s]
+
+============================================================
+Task: gov_report
+============================================================
+
+--- Full ---
+  [Full] gov_report 5/10  Score=33.37
+  [Full] gov_report 10/10  Score=32.23
+  Full → gov_report: 32.23
+  [checkpoint saved → results/remediation_v3/equal_vram_gov.json.ckpt]
+
+--- StreamingLLM ---
+  [StreamingLLM] gov_report 5/10  Score=26.37
+  [StreamingLLM] gov_report 10/10  Score=26.60
+  StreamingLLM → gov_report: 26.60
+  [checkpoint saved → results/remediation_v3/equal_vram_gov.json.ckpt]
+
+--- H2O ---
+  [H2O] gov_report 5/10  Score=25.95
+  [H2O] gov_report 10/10  Score=27.07
+  H2O → gov_report: 27.07
+  [checkpoint saved → results/remediation_v3/equal_vram_gov.json.ckpt]
+
+--- SnapKV ---
+  [SnapKV] gov_report 5/10  Score=29.28
+  [SnapKV] gov_report 10/10  Score=28.49
+  SnapKV → gov_report: 28.49
+  [checkpoint saved → results/remediation_v3/equal_vram_gov.json.ckpt]
+
+--- TieredKV ---
+  [TieredKV] gov_report 5/10  Score=28.25
+  [TieredKV] gov_report 10/10  Score=26.93
+  TieredKV → gov_report: 26.93
+  [checkpoint saved → results/remediation_v3/equal_vram_gov.json.ckpt]
+
+============================================================
+LONGBENCH RESULTS (F1 × 100)
+============================================================
+Task                            full  streamingllm           h2o        snapkv      tieredkv
+--------------------------------------------------------------------------------------------
+gov_report                     32.23         26.60         27.07         28.49         26.93
+--------------------------------------------------------------------------------------------
+Average                        32.23         26.60         27.07         28.49         26.93
+
+Saved → results/remediation_v3/equal_vram_gov.json

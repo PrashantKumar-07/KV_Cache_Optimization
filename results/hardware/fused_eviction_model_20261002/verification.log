@@ -1,0 +1,61 @@
+{
+  "verified": true,
+  "source_archive_sha256": "3daef76de114c3e8ae0ecf61ee557b527e86264928d321f11bf7a508659f7651",
+  "binary_sha256": "0bae116c4ef89525e4fe3cced69935409b87631c2627d3536592e911cebfa610",
+  "whole_original_eviction_except_compaction_ast_verified": true,
+  "synthetic_cases": 32,
+  "synthetic_fused_compactions": 442,
+  "synthetic_eager_compactions": 222,
+  "model_contexts": [
+    4096,
+    8192,
+    16384,
+    31500
+  ],
+  "boundary_frames_per_context_arm": 13,
+  "summary": {
+    "direct_scores": {
+      "median_ms": 75.46893507242203,
+      "p95_ms": 85.01555109396577,
+      "ttft_ms": 2281.771896407008,
+      "prefill_peak_gb": 18.627831296,
+      "decode_peak_gb": 14.914396672
+    },
+    "fused_scores": {
+      "median_ms": 66.44044257700443,
+      "p95_ms": 72.17147257179022,
+      "ttft_ms": 2292.290860787034,
+      "prefill_peak_gb": 18.627831296,
+      "decode_peak_gb": 14.911330304
+    }
+  },
+  "blocks": [
+    {
+      "direct_scores": 75.35897009074688,
+      "fused_scores": 65.60809258371592
+    },
+    {
+      "direct_scores": 75.40560234338045,
+      "fused_scores": 64.73775021731853
+    },
+    {
+      "direct_scores": 75.73106046766043,
+      "fused_scores": 66.44044257700443
+    }
+  ],
+  "median_improvement_pct": 11.96319053230791,
+  "latency_gate_passed": true,
+  "regression_guards": {
+    "ttft": true,
+    "prefill_peak": true
+  },
+  "advance_to_mandatory_stress": true,
+  "evidence_sha256": {
+    "plan.json": "5b4010db9249c2b4ae2c60720234e958d4c57b55a7cba4eb6686ddedae4927b5",
+    "synthetic.json": "0fda0358bc220861757d10be245fe7bc8d5a9fcfc89723c558b76862c9a6d787",
+    "parity.json": "ec7d7405c142c8faadf02a729d7d9216b657652939f229d2a379401e33a4e234",
+    "abba.json": "440f1a277af5c8a6012691d3bf881ca1818acf87f6573e9278cd8f1d711ba3f9"
+  },
+  "verifier_sha256": "0103349480daf25ced650b8bc7f380c785201de92a1f5bc88fe3295bf92be64e",
+  "limitations": "One model/seed/fixedteacherstream, same CPU-DRAM backend and unchanged logical/quality policy. Coordinator+fused compaction measured together; no attribution to kernel alone, SnapKV/quality/physicalSTT/resources/serving superiority, or ordinary CLI promotion without mandatory stress."
+}

@@ -1,0 +1,86 @@
+{
+  "config": {
+    "model": "../models/mistral-7b-instruct",
+    "data_dir": "../hf_cache/datasets/downloads/extracted/5def9c7eaf83951e1cee75902d8611ef764ad88dd289e8f0bf97ff658a3eb83a/data",
+    "tasks": [
+      "qasper"
+    ],
+    "max_samples": 2,
+    "strategy": "query",
+    "seed": 0,
+    "max_ctx": 31500,
+    "tiered_vram_budget": 896,
+    "tiered_stt_budget": 3200,
+    "recent": 128,
+    "stt_expose_quota": 128,
+    "sttram_bifurcation_frac": 0.75,
+    "kv_dtype": "bfloat16",
+    "runtime": {
+      "git_revision": "be7e700d84d46b47e32ba5b9870c8b71783b9e53",
+      "source_sha256": "8849a27f3c29d66599c538d51226d182e33037b569579cbc3b657bcd40681a0b",
+      "packages": {
+        "torch": "2.5.1+cu124",
+        "transformers": "5.14.1",
+        "datasets": "5.0.0",
+        "numpy": "2.2.6",
+        "accelerate": "1.14.0",
+        "huggingface_hub": "1.24.0",
+        "rouge": "1.0.1"
+      }
+    },
+    "selector_sha256": "e1a0b1e437ed90d6417253bde2efef0b790a59516783fbec1748e1a2628879fb",
+    "dataset_sha256": {
+      "qasper": "97d95c01221a17a2ce51f9180d65a671bf2998504a2ff0cccffe97e9b08444d8"
+    }
+  },
+  "results": {
+    "qasper": {
+      "tieredkv": {
+        "score": 10.82,
+        "n": 2,
+        "sample_scores": [
+          15.38,
+          6.25
+        ],
+        "samples": [
+          {
+            "sample_id": "3b91dce7ca41a9d16a1d0c61806c139db583a053ddb582bf79df3ff56f8e0344",
+            "prediction": "They selected different Facebook pages for the experiments, including Fox News, The Guardian, Disney, and others.",
+            "score": 15.384615384615383,
+            "elapsed_s": 4.454451521858573,
+            "prompt_tokens": 4895,
+            "generated_tokens": 23,
+            "final_resident_kv_payload_bytes": 445284352
+          },
+          {
+            "sample_id": "5f59f94cd91401a55bcd3b6b24b78cd2c4c78e8ee6e7663e0ac8b97306444f08",
+            "prediction": "The context used to predict instructor intervention is identified via different queries in the Any Post Attention (APA) model, and attention weights are obtained by normalizing the different queries.",
+            "score": 6.25,
+            "elapsed_s": 5.888456908985972,
+            "prompt_tokens": 5415,
+            "generated_tokens": 37,
+            "final_resident_kv_payload_bytes": 449044480
+          }
+        ],
+        "cache_stats": {
+          "demoted": 37140,
+          "promoted": 35284,
+          "promotions_deferred": 24108,
+          "paid_writes": 7398,
+          "writes_saved": 29742,
+          "dropped": 0,
+          "write_savings_pct": 80.1,
+          "decode_steps": 58,
+          "stt_starved_steps": 0,
+          "stt_unused_steps": 0,
+          "mean_stt_exposed": 128.0,
+          "stt_expose_quota": 128,
+          "stt_exposed_total": 7680,
+          "stt_exposure_samples": 60,
+          "modeled_latency_us": 32862.3,
+          "modeled_energy_nj": 690512986.1
+        }
+      }
+    }
+  }
+}

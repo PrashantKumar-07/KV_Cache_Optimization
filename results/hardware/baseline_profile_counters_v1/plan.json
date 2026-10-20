@@ -1,0 +1,7 @@
+{
+  "problem": "Fixed-teacher profiling assumes STT counter keys for one-tier baselines; KeyError paid_writes. Baseline modeled decode_steps remains zero in this profiler.",
+  "fix": "Emit STT deltas only when exported in both snapshots; decode_steps counts measured model forwards directly. Preserve Tiered deltas and all greedy behavior.",
+  "before_sha256": "465c6de56d121557b7081481d8e762dbfceb2544899ef9df78ce6e6c7edb7d60",
+  "checks": "Reproduce all4one-tier failures; CPU real-Mistral5policies2logitsettings withwarmup/repeats, token/position observations; fulltests; fullGPUmodel5policies fixedstream; archived/currentTiered profile counter/prediction parity.",
+  "scope": "Profiler reporting only. No policy, selection, precision, timing synchronization or teacher token change. No speed/quality/physicalSTT/fair-resource claim."
+}

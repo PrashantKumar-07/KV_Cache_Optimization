@@ -1,0 +1,96 @@
+{
+  "config": {
+    "model": "../models/mistral-7b-instruct",
+    "ctx_lens": [
+      16384
+    ],
+    "budget": 1024,
+    "tiered_vram_budget": 1024,
+    "tiered_stt_budget": 2048,
+    "sttram_bifurcation_frac": 0.75,
+    "n_decode": 16,
+    "n_repeat": 1,
+    "n_warmup": 1,
+    "methods": [
+      "tieredkv"
+    ],
+    "device": "cuda:0",
+    "prompt_file": "results/remediation_v3/latency_prompt.txt",
+    "seed": 0,
+    "runtime": {
+      "git_revision": "be7e700d84d46b47e32ba5b9870c8b71783b9e53",
+      "source_sha256": "13e039e68d3b16d546c176aad50f092d4e22c4dd74f88e0ce1e531744c056ca3",
+      "packages": {
+        "torch": "2.5.1+cu124",
+        "transformers": "5.15.0",
+        "datasets": "2.19.2",
+        "numpy": "2.2.6",
+        "accelerate": "1.14.0",
+        "huggingface_hub": "1.27.0",
+        "rouge": "1.0.1"
+      }
+    },
+    "timing_scope": "end_to_end_model_policy_token",
+    "prompt_kind": "real_text",
+    "prompt_sha256": "18695714f26e35cb8d2b039ae9efb3b7e64291cbd7bcd91956efc07e16a732cd",
+    "generation": "fixed_length_ignores_eos",
+    "schema_version": 2
+  },
+  "results": {
+    "tieredkv": {
+      "16384": {
+        "timing_scope": "end_to_end_model_policy_token",
+        "ttft_ms": 1955.632,
+        "itl_ms": 96.218,
+        "mean_itl_ms": 101.34305024985224,
+        "forward_ms": 25.17575863748789,
+        "peak_memory_gb": 15.134454784,
+        "prefill_peak_memory_gb": 18.594276352,
+        "trials": [
+          {
+            "ttft_ms": 1955.6322544813156,
+            "step_ms": [
+              102.29919292032719,
+              90.07049165666103,
+              114.54397067427635,
+              89.39256332814693,
+              114.28727023303509,
+              89.826550334692,
+              114.2119262367487,
+              89.90798890590668,
+              114.74587582051754,
+              89.98178318142891,
+              114.48966898024082,
+              90.1372842490673,
+              114.2008975148201,
+              89.64514546096325,
+              114.14974741637707,
+              89.59844708442688
+            ],
+            "forward_ms": [
+              25.222856551408768,
+              25.18271841108799,
+              25.187214836478233,
+              25.177989155054092,
+              25.185320526361465,
+              25.208087638020515,
+              25.169067084789276,
+              25.202488526701927,
+              25.173528119921684,
+              25.12143924832344,
+              25.13974905014038,
+              25.20531974732876,
+              25.16162022948265,
+              25.137467309832573,
+              25.152407586574554,
+              25.173407047986984
+            ],
+            "prefill_peak_memory_gb": 18.594276352,
+            "decode_peak_memory_gb": 15.134454784,
+            "prefill_forward_ms": 1793.0270452052355
+          }
+        ]
+      }
+    }
+  }
+}

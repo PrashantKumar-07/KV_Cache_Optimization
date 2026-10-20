@@ -1,0 +1,165 @@
+{
+  "method": "Descriptive pooled bootstrap over two sequentially collected, non-overlapping tranches; batch 2 is the preregistered distinct-row follow-up, not an independent-document replication",
+  "n_per_task": 10,
+  "task_balanced_mean_difference": 6.235070133364807,
+  "paired_bootstrap_95pct_interval_descriptive": [
+    1.4785405940166656,
+    11.479344823422279
+  ],
+  "per_task": {
+    "qasper": {
+      "n": 10,
+      "control_mean": 12.053459119496855,
+      "candidate_mean": 17.1777950758231,
+      "mean_difference": 5.1243359563262425,
+      "regressions": 1,
+      "over_10_point_losses": 1,
+      "prefill_s_median_control": 0.9179077073931694,
+      "prefill_s_median_candidate": 0.9970923084765673,
+      "prefill_peak_bytes_median_control": 16613341952,
+      "prefill_peak_bytes_median_candidate": 16720663040
+    },
+    "narrativeqa": {
+      "n": 10,
+      "control_mean": 17.344966694811895,
+      "candidate_mean": 17.992025518341308,
+      "mean_difference": 0.6470588235294116,
+      "regressions": 1,
+      "over_10_point_losses": 0,
+      "prefill_s_median_control": 3.0733934780582786,
+      "prefill_s_median_candidate": 3.3163454169407487,
+      "prefill_peak_bytes_median_control": 20143778816,
+      "prefill_peak_bytes_median_candidate": 20251401728
+    },
+    "multifieldqa_en": {
+      "n": 10,
+      "control_mean": 24.8447616130701,
+      "candidate_mean": 42.360027084941294,
+      "mean_difference": 17.515265471871192,
+      "regressions": 1,
+      "over_10_point_losses": 1,
+      "prefill_s_median_control": 0.9196162670850754,
+      "prefill_s_median_candidate": 0.9973764689639211,
+      "prefill_peak_bytes_median_control": 16680221440,
+      "prefill_peak_bytes_median_candidate": 16798410496
+    },
+    "hotpotqa": {
+      "n": 10,
+      "control_mean": 18.0812324929972,
+      "candidate_mean": 32.09313725490196,
+      "mean_difference": 14.011904761904763,
+      "regressions": 1,
+      "over_10_point_losses": 1,
+      "prefill_s_median_control": 1.4918086659163237,
+      "prefill_s_median_candidate": 1.6061074025928974,
+      "prefill_peak_bytes_median_control": 17574703616,
+      "prefill_peak_bytes_median_candidate": 17796828928
+    },
+    "triviaqa": {
+      "n": 10,
+      "control_mean": 96.66666666666666,
+      "candidate_mean": 96.66666666666666,
+      "mean_difference": 0.0,
+      "regressions": 0,
+      "over_10_point_losses": 0,
+      "prefill_s_median_control": 1.6947600962594151,
+      "prefill_s_median_candidate": 1.8341757133603096,
+      "prefill_peak_bytes_median_control": 17975984896,
+      "prefill_peak_bytes_median_candidate": 18170555648
+    },
+    "gov_report": {
+      "n": 10,
+      "control_mean": 22.71454134899883,
+      "candidate_mean": 22.82639713555606,
+      "mean_difference": 0.11185578655723098,
+      "regressions": 6,
+      "over_10_point_losses": 0,
+      "prefill_s_median_control": 1.0234687756747007,
+      "prefill_s_median_candidate": 1.0920165032148361,
+      "prefill_peak_bytes_median_control": 16824956672,
+      "prefill_peak_bytes_median_candidate": 16966664448
+    }
+  },
+  "regressions": {
+    "n": 10,
+    "over_10_points": 3
+  },
+  "stress_slices": {
+    "prompt_length_tokens": {
+      "<=4K": {
+        "n": 3,
+        "mean_sample_difference": 37.23196881091618,
+        "task_balanced_difference": 27.923976608187132,
+        "regressions": 0,
+        "over_10_point_losses": 0
+      },
+      "4K-16K": {
+        "n": 42,
+        "mean_sample_difference": 6.276146903665905,
+        "task_balanced_difference": 5.412918464096034,
+        "regressions": 8,
+        "over_10_point_losses": 3
+      },
+      ">16K": {
+        "n": 15,
+        "mean_sample_difference": -0.07932455898854655,
+        "task_balanced_difference": -0.1487335481035248,
+        "regressions": 2,
+        "over_10_point_losses": 0
+      }
+    },
+    "control_generated_length_tokens": {
+      "<=32": {
+        "n": 38,
+        "mean_sample_difference": 6.259701983994446,
+        "task_balanced_difference": 7.47662215999452,
+        "regressions": 2,
+        "over_10_point_losses": 1
+      },
+      "33-128": {
+        "n": 12,
+        "mean_sample_difference": 11.259747895377254,
+        "task_balanced_difference": 9.464837191142868,
+        "regressions": 2,
+        "over_10_point_losses": 2
+      },
+      ">128": {
+        "n": 10,
+        "mean_sample_difference": 0.11185578655723098,
+        "task_balanced_difference": 0.11185578655723098,
+        "regressions": 6,
+        "over_10_point_losses": 0
+      }
+    }
+  },
+  "paid_writes_per_decode_step": {
+    "control": 47.799034664326456,
+    "candidate": 47.275686673448625
+  },
+  "inputs": [
+    {
+      "manifest.json": "af1a8f7c1710765a1d0ad2f4986179502a53e1a1648a3fe2dd1c173e4ac87c8a",
+      "control.json": "d2c4c6ae484ab57193660c141b1084c120fdbe408794ec66f07953566055de71",
+      "candidate.json": "dd16f0d60dc90bcdf52f999ed7f6c6959da536f760a0a9a7593036f15582073e"
+    },
+    {
+      "manifest.json": "907f0c673aa0d82bdc76282e97421dee7af67137777d5b128bdc78c51639bf1c",
+      "control.json": "89d7a4725a97fc4d6831783dad7c10df16692b0943cff2433c1108695fe041ea",
+      "candidate.json": "95b29157a27d447ce94146a3403f8cf48e3acbe91c1972d9ee130fd81802aa50"
+    }
+  ],
+  "runtime": {
+    "git_revision": "be7e700d84d46b47e32ba5b9870c8b71783b9e53",
+    "source_sha256": "eea0cf48baa0804928f6f4a1c2674af3547dbac77cb2ea1b890805ba0473cd9e",
+    "packages": {
+      "torch": "2.5.1+cu124",
+      "transformers": "5.14.1",
+      "datasets": "5.0.0",
+      "numpy": "2.2.6",
+      "accelerate": "1.14.0",
+      "huggingface_hub": "1.24.0",
+      "rouge": "1.0.1"
+    }
+  },
+  "limitations": "Pooled interval is descriptive because tranche 2 was collected after tranche 1 failed to resolve the quality question. Batch 2 crossed its numerical row-bootstrap threshold, but context_overlap_audit.json finds shared documents; the interval does not account for document dependence and cannot establish calibrated independent replication. Same model/task family only; quality result does not establish an all-metric Pareto gain."
+}

@@ -1,0 +1,134 @@
+{
+  "config": {
+    "model": "../models/mistral-7b-instruct",
+    "prompt_file": "results/remediation_v3/latency_prompt.txt",
+    "stream_file": "results/shadow_ablation_full/fixed_stream_20260929.json",
+    "output": "results/hardware/cpu_gather_pilot_4k_20260929.json",
+    "ctx_len": 4096,
+    "decode": 5,
+    "warmup": 0,
+    "repeat": 1,
+    "order": [
+      "cpu",
+      "cpu_fast"
+    ],
+    "runtime": {
+      "git_revision": "be7e700d84d46b47e32ba5b9870c8b71783b9e53",
+      "source_sha256": "e887226ca112a706c84c8513657b449e921fd53a28241dcd00a126ad0b984558",
+      "packages": {
+        "torch": "2.5.1+cu124",
+        "transformers": "5.14.1",
+        "datasets": "5.0.0",
+        "numpy": "2.2.6",
+        "accelerate": "1.14.0",
+        "huggingface_hub": "1.24.0",
+        "rouge": "1.0.1"
+      }
+    },
+    "prompt_sha256": "18695714f26e35cb8d2b039ae9efb3b7e64291cbd7bcd91956efc07e16a732cd",
+    "stream_sha256": "bb85d5e5270735a2a1ff089c74f2d7eeb1a7ddd41b4361c97e190913d4f32f67",
+    "driver_sha256": "20c49bbeda06a1df0cb917db3029670922988c7fcbaaa899ba4e44bfedcd822e",
+    "profile_sha256": "0752b0aa00502ee1557ad019ecd6b2377091578295661abf17a4385f7ee3e9c7",
+    "tier": "CPU DRAM pageable synchronous; not STT-RAM",
+    "byte_scope": "explicit cold K/V GPU-CPU payload; excludes CPU compaction and allocator traffic"
+  },
+  "results": {
+    "0_cpu": {
+      "timing_scope": "end_to_end_model_policy_token",
+      "ttft_ms": 981.685,
+      "itl_ms": 122.191,
+      "mean_itl_ms": 123.36198203265667,
+      "forward_ms": 25.726530700922012,
+      "peak_memory_gb": 14.909041664,
+      "prefill_peak_memory_gb": 15.598697984,
+      "trials": [
+        {
+          "ttft_ms": 981.6850181668997,
+          "step_ms": [
+            207.97310397028923,
+            80.27669601142406,
+            125.9674970060587,
+            80.4020781069994,
+            122.19053506851196
+          ],
+          "forward_ms": [
+            63.624123111367226,
+            25.539612397551537,
+            27.132859453558922,
+            25.726530700922012,
+            25.532811880111694
+          ],
+          "prefill_peak_memory_gb": 15.598697984,
+          "decode_peak_memory_gb": 14.909041664,
+          "predicted_token_ids": [
+            1263,
+            18577,
+            28809,
+            592,
+            7616
+          ],
+          "prefill_forward_ms": 689.2666276544333,
+          "paid_writes": 1211,
+          "writes_saved": 1957,
+          "demoted": 3168,
+          "promoted": 3008,
+          "decode_steps": 5
+        }
+      ],
+      "final_gpu_allocated_gb": 14.627478528,
+      "cold_payload_bytes": 206286848,
+      "cold_payload_device": "cpu",
+      "explicit_h2d_payload_bytes": 37486592,
+      "explicit_d2h_payload_bytes": 206286848
+    },
+    "1_cpu_fast": {
+      "timing_scope": "end_to_end_model_policy_token",
+      "ttft_ms": 427.235,
+      "itl_ms": 111.563,
+      "mean_itl_ms": 100.16964599490166,
+      "forward_ms": 25.222934782505035,
+      "peak_memory_gb": 14.907730944,
+      "prefill_peak_memory_gb": 15.598501376,
+      "trials": [
+        {
+          "ttft_ms": 427.23487317562103,
+          "step_ms": [
+            127.08512879908085,
+            74.75369796156883,
+            112.8652635961771,
+            74.58139955997467,
+            111.56274005770683
+          ],
+          "forward_ms": [
+            25.222934782505035,
+            25.22117644548416,
+            25.23740381002426,
+            25.223776698112488,
+            25.214316323399544
+          ],
+          "prefill_peak_memory_gb": 15.598501376,
+          "decode_peak_memory_gb": 14.907730944,
+          "predicted_token_ids": [
+            1263,
+            18577,
+            28809,
+            592,
+            7616
+          ],
+          "prefill_forward_ms": 350.1270320266485,
+          "paid_writes": 1211,
+          "writes_saved": 1957,
+          "demoted": 3168,
+          "promoted": 3008,
+          "decode_steps": 5
+        }
+      ],
+      "final_gpu_allocated_gb": 14.627542016,
+      "cold_payload_bytes": 206286848,
+      "cold_payload_device": "cpu",
+      "explicit_h2d_payload_bytes": 37486592,
+      "explicit_d2h_payload_bytes": 206286848
+    }
+  },
+  "policy_parity_passed": true
+}

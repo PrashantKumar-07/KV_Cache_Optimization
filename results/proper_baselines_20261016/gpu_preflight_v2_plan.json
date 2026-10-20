@@ -1,0 +1,34 @@
+{
+  "created_utc": "2026-10-16T08:20:41.467744+00:00",
+  "sources_sha256": {
+    "IceCache-bf16/IceCache/source/icecache_cpp.cpython-310-x86_64-linux-gnu.so": "f3d9d356dded6636b9d4aa88622634fca798a9e9ed6e45d1336d52b2c6d2ff9c",
+    "IceCache-bf16/IceCache/source/icecache/__init__.py": "9c67f9e2004ed28cdb6fcb43742b4aaaf85b5828216cf7b016b720d0555e5d1b",
+    "IceCache-bf16/IceCache/source/icecache/infer_state.py": "c2a5330729ebb836abb9967caa1d2cdd5d35cde3004819f6176783d218ff4417",
+    "IceCache-bf16/IceCache/source/icecache/kv_cache.py": "e802e7ccc3d089ef0cf1ce29ccb136a8256e6a66272f9f1f242c33a171dc615a",
+    "IceCache-bf16/IceCache/source/icecache/utils.py": "82c550f5d7c5d5962adb8e08c3b0ef505b5e4ee78d45d0c52659a0cc6d3b0020",
+    "IceCache-bf16/IceCache/source/icecache/kernels.py": "b026734f71b14175598360ef1856976bb5d04980d43e8d78d9bc8646aba7f795",
+    "IceCache-bf16/IceCache/source/icecache/adapter/__init__.py": "24e796bf981c6da37a2a3dfc3b707d60af21b7f5479b06eb92b2884ecd96fc51",
+    "IceCache-bf16/IceCache/source/icecache/adapter/modeling.py": "f20da54ad50a87aedf15513812d146905b2844c31288a09d559ffe813963b9f0",
+    "IceCache-bf16/IceCache/source/icecache/adapter/generate.py": "5cc34dfae5cb182618137bd41d0a43b48a71b184ad1c3d7b274dc317cf0dd742",
+    "check_gpu_v2.py": "2d6195c2ba9dc4a74ffb02beb9309ac40bd543b2a14ca39502fde354c167680f"
+  },
+  "gpu": 1,
+  "dtype": "bfloat16",
+  "reference": "IndependenttorchFP32formulas; upstreamwholemodel nooffload vsunpatchedidenticalweights; full7B/DCIproofnotincluded",
+  "gates": {
+    "kernel_allclose_abs": 0.04,
+    "kernel_allclose_relative": 0.01,
+    "model_allclose_abs": 0.08,
+    "model_allclose_relative": 0.02,
+    "maximum_relative_L2_allcases": 0.01
+  },
+  "mutations": "None; no fakedprecision or expectedpredictions; failurepreservedbeforeanyrepair",
+  "run_after": "Complete current1474upstreamGQASnap evaluation anditsverifier; do notoverlapGPU1",
+  "prelaunch_revision": {
+    "original_script_sha256": "9b385e32676164e98b0cf879bb1cb7d3a04baed4ea3d49ac1723b6ad45a01264",
+    "original_plan_sha256": "6e8eaa1457dbffae400ee1c07d0fb634fce50996294f9db419e9efb1eb587e5b",
+    "changed": "Only non-offloaded model test prompt31 ->65 and new plan/output filenames; all kernel/model tolerances and upstream source unchanged.",
+    "reason": "Independent source review: upstream finite-budget path references absent proj_vec for q_len<=64. Preserve as unresolved short-input defect. No GPU preflight outcomes existed before this revision.65 and129 initialize projection and fit256-token budget, so remain valid non-offload bridge tests.",
+    "unresolved_edge_case": "Finite-budget short prompts <=64 need explicit upstream bug correction/validation before any harness supports them."
+  }
+}

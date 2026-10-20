@@ -1,0 +1,46 @@
+[
+  {
+    "name": "shared",
+    "status": "finished",
+    "exit_code": 0,
+    "argv": [
+      "../venv_kvcache/bin/python",
+      "experiments/audit_raw_input_reuse.py",
+      "--hot",
+      "991",
+      "--cold",
+      "1090",
+      "--decode",
+      "12",
+      "--output",
+      "results/hardware/raw_input_reuse_screen_v1/shared.json"
+    ],
+    "environment": {
+      "CUDA_VISIBLE_DEVICES": "0"
+    },
+    "gpu_lock": "/data/nishant/tieredkv_external/gpu0_model.lock"
+  },
+  {
+    "name": "phases",
+    "status": "finished",
+    "exit_code": 0,
+    "argv": [
+      "../venv_kvcache/bin/python",
+      "experiments/audit_raw_reuse_phases.py",
+      "--contexts",
+      "4096",
+      "--hot",
+      "991",
+      "--cold",
+      "1090",
+      "--decode",
+      "12",
+      "--output",
+      "results/hardware/raw_input_reuse_screen_v1/phases.json"
+    ],
+    "environment": {
+      "CUDA_VISIBLE_DEVICES": "0"
+    },
+    "gpu_lock": "/data/nishant/tieredkv_external/gpu0_model.lock"
+  }
+]

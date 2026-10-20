@@ -1,0 +1,15 @@
+{
+  "mechanism": "Pool received causal attention separately per actual query head, then use maximum pooledheadscore as single tokenimportance. Current control sumsreceived acrossheads thenpool. Same128querywindow/GQAchunk128/pool5/logical1024hot2048cold/.75fill/LRU/sink4/recent128.",
+  "model": "../models/mistral-7b-instruct",
+  "seed": 0,
+  "development_manifest": "results/hardware/batched_scores_boundary_retrieval_20261001/manifest.json",
+  "manifest_sha256": "870fc4ec457bb6dde9e4d2804f21691907e694d01221ef3d502c505cca1731c7",
+  "arms": [
+    "sum_heads",
+    "max_head"
+  ],
+  "pilot": "Six existing rare-answer/depth/repeateddecoy developmentprobes only; frozenmanifest64token cap and nativeEOS stopping. Alternatearmorder.",
+  "acceptance": "Atleast4of6correct answers, more complete12token answer-span retention, sameinitialgeometry/headcounts/payload. Unitreference verifies pooling-before-headmax/causality/chunking. Reproduceexistingactualquerycontrol byhash/IDs/state beforeinterpretation. Ifpilotfailsstop/reject; ifpasses broaderdevregression/chargedprefill before untouchedquality.",
+  "stop": "No modifieddefaults, no tuninginspected100documentqualityholdouts, no addwindow/kernel/budget knobs. Developmentonly/notindependentquality/Snap/resources/SOTA proof.",
+  "limitation": "Globaltoken layout stillsharedacrossKVheads; maximumheadranking is notperheadstorage. Differentimportance alsoinitializescum affectinglaterdecode; recordwithoutclaimprefillonlycausalqualityisolation."
+}

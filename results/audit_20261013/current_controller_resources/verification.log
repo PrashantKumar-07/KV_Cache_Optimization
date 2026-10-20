@@ -1,0 +1,87 @@
+{
+  "verified": true,
+  "recorded_utc": "2026-10-14T06:49:27.088761+00:00",
+  "model_artifacts_rehashed": 12,
+  "parity_prerequisite_sha256": "dbd881a493b83a03cf73ade84011bfeb5516f4644d7e954d026e802cf7f3153a",
+  "quiet_observations_passed": 25,
+  "all_predictions_match_parity_prerequisite": true,
+  "hooks_leases_closed": true,
+  "candidate_native_cold_CPU_append_steps_per_final_trial": 50,
+  "candidate_CPU_bulk_fallback_steps": 0,
+  "expected_prefill_cold_boundary_fallback_calls": 1,
+  "summary": {
+    "control": {
+      "measured_decode_forwards": 600,
+      "median_itl_ms": 79.49579786509275,
+      "p95_itl_ms": 85.6197340413928,
+      "median_ttft_ms": 2273.9255959168077,
+      "peak_decode_alloc_gb": 15.135259136,
+      "peak_prefill_alloc_gb": 18.627831296
+    },
+    "candidate": {
+      "measured_decode_forwards": 600,
+      "median_itl_ms": 50.709737464785576,
+      "p95_itl_ms": 54.793290421366684,
+      "median_ttft_ms": 2401.996006257832,
+      "peak_decode_alloc_gb": 14.671673344,
+      "peak_prefill_alloc_gb": 18.627831296
+    }
+  },
+  "ratios": {
+    "median_itl_ratio": 0.6378920499778094,
+    "p95_itl_ratio": 0.6399609977166818,
+    "median_ttft_ratio": 1.0563212844655054,
+    "peak_decode_alloc_ratio": 0.9693704754022126,
+    "peak_prefill_alloc_ratio": 1.0
+  },
+  "registered_guards": {
+    "median_itl_ratio_max": true,
+    "p95_itl_ratio_max": true,
+    "median_ttft_ratio_max": true,
+    "peak_decode_alloc_ratio_max": true,
+    "peak_prefill_alloc_ratio_max": true,
+    "scoped_cache_gpu_cpu_bytes_max": false
+  },
+  "ABBA_blocks": [
+    {
+      "block": 0,
+      "median_itl_ms": {
+        "control": 79.49579786509275,
+        "candidate": 51.715100184082985
+      },
+      "candidate_control_ratio": 0.6505387903879571
+    },
+    {
+      "block": 1,
+      "median_itl_ms": {
+        "control": 77.56547443568707,
+        "candidate": 48.11217915266752
+      },
+      "candidate_control_ratio": 0.6202782810612399
+    },
+    {
+      "block": 2,
+      "median_itl_ms": {
+        "control": 77.43774633854628,
+        "candidate": 51.05355754494667
+      },
+      "candidate_control_ratio": 0.659285167232891
+    }
+  ],
+  "max_scoped_cache_bytes": 777681280,
+  "max_scoped_cache_MiB": 741.6546630859375,
+  "registered_memory_ceiling_bytes": 536870912,
+  "resource_advancement_passed": false,
+  "decision": "reject registered resource advancement; preserve successful timing and failed memory guard separately",
+  "adopted": false,
+  "scope": "Internal serving-loop controller optimization, one fixed16K real-text teacherstream; real cold storageCPU DRAM surrogate, no measuredSTT/SOTA/newquality/defaultadoption. Allocator probe executes AFTER timing, not in measuredloops.",
+  "memory_scope_formula": "Max candidate decodeGPUpeak minus static model storage + observed pinned mainpool CUDA allocator block + canonicalCPUarray ownership + maxCPUstreak/address arrays + conservative2x totalbulk/cold descriptor bytes per final50-step trial. PeakGPU catches GPUmetadata/scratch. Mainpool is sole explicit pinned owner on this directshared path. Python/native container rounding, hidden cached host/driver allocations and totalRSS excluded; no entire-machine resource equality claim.",
+  "limitations": [
+    "One reused16K teacherforced input; no quality/generalization/SOTA claim",
+    "PyTorch GPUallocation includes model/workspaces; scoped GPUterm subtracts deduplicated staticmodelstorage",
+    "Observed CUDAhost allocator block, not requested pool storage, is included; Python/native container rounding, hidden cached host/driver blocks andRSS excluded",
+    "2x cumulative descriptor traffic is a preregistered conservative reservation, not observed simultaneous occupancy",
+    "Quiet checks bracket rows, not continuous GPU utilization; CPU DRAM is not physicalSTT",
+    "Native counts are finaltrial counts; warmup is excluded from600 measured forwards/arm"
+  ]
+}

@@ -59,15 +59,13 @@ def test_write_is_more_expensive_than_read_in_stt_ram():
           f"{ratio_eng:.0f}x energy")
 
 
-def test_drop_cost_bills_only_the_retiring_read():
-    """A dropped token is freed, not migrated: its bill is one STT read."""
+def test_drop_cost_does_not_invent_a_payload_read():
+    """Discarding a cold row does not fetch its K/V payload."""
     cm = CostModel(bytes_per_elem=2)
     n = 100_000 * 2 * 8 * 128
     d_lat, d_eng = cm.drop_cost(n)
-    # drop_cost must be exactly the STT-RAM read, nothing else
-    assert abs(d_lat - cm.read_latency_us("STT-RAM", n)) < 1e-9
-    assert abs(d_eng - cm.read_energy_nj("STT-RAM", n)) < 1e-9
-    print(f"  [ok] drop_cost {d_lat:.1f} us is exactly one STT-RAM read")
+    assert (d_lat, d_eng) == (0.0, 0.0)
+    print("  [ok] drop_cost invents no payload read")
 
 
 def test_promote_and_demote_price_the_right_directions():
@@ -120,13 +118,21 @@ def test_slow_tier_is_slower_than_fast_tier():
           f"VRAM {DEFAULT_TIERS['GPU_VRAM'].read_bw_gbps} GB/s")
 
 
+def test_capacity_matched_interface_anchor_is_symmetric():
+    cm = CostModel.with_stt_bw('commercial_2x1gb_ideal')
+    assert cm.tiers['STT-RAM'].read_bw_gbps == 5.4
+    assert cm.tiers['STT-RAM'].write_bw_gbps == 5.4
+    assert abs(cm.read_latency_us('STT-RAM', 2_097_152) - 776.72296296) < 1e-5
+
+
 if __name__ == "__main__":
     test_read_latency_matches_bandwidth_by_hand()
     test_energy_matches_pj_per_bit_by_hand()
     test_bytes_per_elem_scales_both_latency_and_energy()
     test_write_is_more_expensive_than_read_in_stt_ram()
-    test_drop_cost_bills_only_the_retiring_read()
+    test_drop_cost_does_not_invent_a_payload_read()
     test_promote_and_demote_price_the_right_directions()
     test_leakage_is_computed_and_favours_stt_ram()
     test_baseline_attention_cost_scales_with_attended_tokens()
+    test_capacity_matched_interface_anchor_is_symmetric()
     print("\nAll cost model tests passed.")

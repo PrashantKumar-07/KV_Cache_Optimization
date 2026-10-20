@@ -1,0 +1,26 @@
+**Pooled controller integration checkpoint (3 October):** **459 tests pass**.
+The research controller now uses fixed GPU metadata owners, fused age/tail
+preparation and bounded KV/F32 compaction. Recorded 4K/12 preserves all
+predictions, 13 visibility/state frames, counters and native KV traffic;
+12 pooled preparations and 48 compaction groups execute with no fallback.
+Fresh 16K/50 also matches frozen predictions/state/counters/native KV.
+Scoped active memory is **432.10 MiB** versus ordinary541.08 MiB (20.14% less);
+with conservative CPU array roots it is432.27 MiB, below512 MiB. The417792-byte
+GPU arena and descriptor work are charged by GPU peaks. Pooled descriptors
+upload6457600 logical bytes per50-step trial, separately from KV traffic and
+5555328 timestamp-rank descriptor bytes. Prefill peak is unchanged.
+
+[Correctness proof](results/hardware/pooled_controller_v1/verified_correctness.json),
+[resource proof](results/hardware/pooled_controller_v1/verified_resource.json).
+Quiet3ABBA is complete: median **58.06 to61.54 ms (6.00% slower,3.48 ms
+added)**. Both speed primaries fail; p95 +0.67% and TTFT +0.87% pass. All300
+measured forwards per arm replay frozen predictions/state/counters/native KV;
+all25 quietGPU0 observations pass. **Stop pooled controller expansion/adoption.**
+No favorable timing retry or wider quality/baseline expansion for this candidate.
+[Timing decision](results/hardware/pooled_controller_v1/verified_cost.json).
+All owned jobs are terminal and hooks/leases/pinned roots release. Production
+defaults are unchanged. Full P0/P1/P2 remains incomplete; day estimate is
+withdrawn. Primitive proof remains historical component evidence, not full
+model proof. Two failed startup attempts are retained, including the corrected
+generated-helper name collision; neither measured candidate timing.
+

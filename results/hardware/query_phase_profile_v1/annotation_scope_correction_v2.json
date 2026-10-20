@@ -1,0 +1,17 @@
+{
+  "timestamp_utc": "2026-10-03T04:45:13.910072+00:00",
+  "raw_report_sha256": "39042d1d776ca037c8bb4e814ec723f9dd107a9be44f5f866f59ea7ad98146de",
+  "raw_job_sha256": "a36f1b678c8b34ab849d08d4510909b95bb1961257369b0a0c92202d8d8d033d",
+  "original_driver_sha256": "8504b35ceab58691819e6504538527ddc2f464c8c2f75ee0c427e7686f0c94b9",
+  "reason": "Name-only filter aggregates 8 CPU annotation rows and 6 GPU span rows. Installed PyTorch key_averages groups by device_type; cpu_time_total is zero for non-CPU events. Existing raw data identifies the 8 positive CPU-duration rows, each count1600. No measured values are changed and no model rerun is needed.",
+  "cpu_filter": "cpu_elapsed_total_ms > 0; exactly one row per expected phase, each count1600",
+  "gpu_scope": "Zero-CPU rows are GPU annotation spans, including launch gaps/waiting. They are not kernel sums or additive to CPU elapsed. CPU-row attributed_device_total_ms reflects Torch-correlated kernels and does not completely account for custom native transfers.",
+  "trace_limitation": "Chrome export did not execute because the count assertion preceded it. Retained summary supports CPU-phase localization, not a complete kernel-level trace claim.",
+  "next": "Preregister visible-buffer reuse / cold-row-only composition, then ownership/parity/resource/component and ordinaryLRU gates. No standalone fullscan quality retry or adoption.",
+  "local_primary_source_sha256": {
+    "/data/nishant/Nishant/Prashant/Project/venv_kvcache/lib/python3.10/site-packages/torch/autograd/profiler_util.py": "4937e52662b293e7e90b741fa6bf598adfb25b1a83124cd460eeefeef34f3b3a",
+    "/data/nishant/Nishant/Prashant/Project/venv_kvcache/lib/python3.10/site-packages/torch/testing/_internal/distributed/distributed_test.py": "b729fbf4f5ef8344601f720c5086470f0500411dd2294121867dec58afadde60"
+  },
+  "supersedes_sha256": "bf4f3c8f2494751cffdf258e8478e5e0e8c14a360fa76e367852bc41d59983ef",
+  "count_correction": "Directly counted retained rows: 14 total = 8 positive-CPU ranges + 6 zero-CPU GPU spans. Initial correction/job prose said7; retained as historical reporting error."
+}

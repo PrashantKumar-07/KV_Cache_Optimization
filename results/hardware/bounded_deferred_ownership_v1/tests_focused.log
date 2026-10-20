@@ -1,0 +1,55 @@
+..........F....F                                                         [100%]
+=================================== FAILURES ===================================
+________ test_bad_contract_stops_before_native_or_owner_mutation[short] ________
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x706954f9bc10>
+fault = 'short'
+
+    @pytest.mark.parametrize('fault',['bounds','negative','dtype','metadata','key_alias','copied','offset','short','grad','ragged','duplicate','too_many'])
+    def test_bad_contract_stops_before_native_or_owner_mutation(monkeypatch,fault):
+        states=[state(),state(2000)];s=states[1]
+        if fault=='bounds':s.pending_keep[0]=14
+        elif fault=='negative':s.pending_keep[0]=-1
+        elif fault=='dtype':s.sram_k=s.sram_k.float()
+        elif fault=='metadata':s.sram_cum=s.sram_cum[:-1]
+        elif fault=='key_alias':s._hot_buffer=(s._hot_buffer[0],s._hot_buffer[0]);s.sram_v=s.sram_k
+        elif fault=='copied':s.sram_k=s.sram_k.clone()
+        elif fault=='offset':s._hot_buffer=tuple(t[:,:,:,1:] for t in s._hot_buffer)
+        elif fault=='short':s._hot_buffer=tuple(t[:,:,:10] for t in s._hot_buffer)
+        elif fault=='grad':s.sram_k.requires_grad_(True)
+        elif fault=='ragged':s.pending_keep=s.pending_keep[:-1]
+        elif fault=='duplicate':states=[states[0],states[0]]
+        elif fault=='too_many':states=[state(i*1000) for i in range(9)]
+        called=[];monkeypatch.setattr(module,'gather_into',lambda *args:called.append(True))
+>       with pytest.raises(ValueError):module.bounded_gather(states)
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_bounded_deferred_ownership.py:60: Failed
+_____________ test_cold_overflow_uses_original_immediate_fallback ______________
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x706954f99b10>
+
+    def test_cold_overflow_uses_original_immediate_fallback(monkeypatch):
+        s=state();s.stt_pos=list(range(11));s.cfg=SimpleNamespace(sttram_capacity=10);calls=[]
+        monkeypatch.setattr(module.SharedTransitionCache,'_compact_or_queue',lambda self,victims:calls.append(victims))
+>       module.DeferredOwnershipCache._compact_or_queue(s,[2]);assert calls==[[2]]
+
+tests/test_bounded_deferred_ownership.py:66: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = namespace(_hot_buffer=(tensor([[[[0.0000e+00, 9.1835e-41, 1.8367e-40, 2.7551e-40],
+          [3.6734e-40, 4.5918e-40, ...=int32), batched_deferred_compactions=0, stt_pos=[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10], cfg=namespace(sttram_capacity=10))
+victims = [2]
+
+    def _compact_or_queue(self,victims):
+        fields=(self.sram_k,self.sram_v,self.sram_cum,self.sram_age)
+        if (self._hot_buffer is None or len(self.stt_pos)>self.cfg.sttram_capacity
+                or self.sram_k.device.type!='cuda' or not self._supported_hot_layout(fields)):
+>           return super()._compact_or_queue(victims)
+E           TypeError: super(type, obj): obj must be an instance or subtype of type
+
+experiments/bounded_deferred_ownership.py:68: TypeError
+=========================== short test summary info ============================
+FAILED tests/test_bounded_deferred_ownership.py::test_bad_contract_stops_before_native_or_owner_mutation[short]
+FAILED tests/test_bounded_deferred_ownership.py::test_cold_overflow_uses_original_immediate_fallback
+2 failed, 14 passed in 2.72s

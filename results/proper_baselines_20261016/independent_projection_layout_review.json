@@ -1,0 +1,29 @@
+{
+  "independent_review": true,
+  "page_layout_proof_verified": true,
+  "sources_sha256": {
+    "IceCache-bf16/IceCache/source/icecache/adapter/modeling.py": "f20da54ad50a87aedf15513812d146905b2844c31288a09d559ffe813963b9f0",
+    "IceCache-bf16/IceCache/source/icecache/infer_state.py": "c2a5330729ebb836abb9967caa1d2cdd5d35cde3004819f6176783d218ff4417",
+    "IceCache-bf16/IceCache/source/icecache/kv_cache.py": "e802e7ccc3d089ef0cf1ce29ccb136a8256e6a66272f9f1f242c33a171dc615a",
+    "M-DCI/src/dci_wrapper.cpp": "59c0196d82e1cafb7780a1672f4333d7b97e94045b6502b8e3c828de693f8fb6",
+    "M-DCI/src/dci.c": "15c7a66712ea6881df5e2710410145a40b511e9534b350e61245ad3ce2cbd00b",
+    "projection_layout_correction.py": "0fb64dbda2f21a985b87f216bb9491b50297a57c127f77f83525d111307da5c0",
+    "check_dci_projection_contract.py": "f82c4a60f58553b545a185111545571755ee2d33ff2fed57b194e9fc129b30d3"
+  },
+  "proof_path": "independent_hnd_page_projection_proof.json",
+  "proof_sha256": "b07bc54de599641581d9f9a48339fe10251effcbf70957501b9c99c7197c7aaa",
+  "conclusion": "Transpose correction preserves intended per-head indexed-key/projection correspondence for upstream B=1, n_groups=1, HND offload.",
+  "compiled_index_test_review": "Exact-axis debug-serial native-vs-precomputed token/leaf/offset comparison soundly isolates layout, including original multi-head index disagreement; not GPU retrieval or numerical-generalization proof.",
+  "limitations": [
+    "Batch sizes above1 are not supported by this expression; upstream offload already asserts B=1 and n_groups=1. Enforce those limits in the benchmark harness.",
+    "Expression/layout tests do not execute a complete corrected prefill.",
+    "Exact-axis projection deliberately excludes ordinary BF16-vs-FP32 projection rounding."
+  ],
+  "remaining_gates": [
+    "Execute corrected function through actual GPU offload and compare projected rows with actual CPU indexed keys.",
+    "Validate DCI retrieval, returned page payloads and several decode steps, including non-page-aligned prompts.",
+    "Validate pretrained Mistral offload/model behavior before quality or performance comparisons."
+  ],
+  "baseline_accepted_for_comparison": false,
+  "SOTA_claim": false
+}

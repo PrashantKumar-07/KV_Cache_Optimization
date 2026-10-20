@@ -1,0 +1,57 @@
+{
+  "input_sha256": {
+    "results/snapkv_adapter_full/short.json": "10c88c8a16ba1084de1393df554ba1c6ed84f0c8c4c5e1d34af71b38527f9f27",
+    "results/snapkv_adapter_full/gov.json": "9432045f5d34aeb4d636f2db6b0f20559b5afbf9703f5414d5c9c6c3eecf76d1",
+    "results/remediation_v3/equal_vram_merged.json": "d2de6b8384e942a9a8075b171443ef5b5d32cb486523e6e039e7fb2cce07ef1b"
+  },
+  "report_script_sha256": "b46bd07fff9383f212417508eaeeffb0a26b48ef50499a34764bcb3ab6c0917f",
+  "snapkv_bytes_per_token": 524288,
+  "tiered_bytes_per_token": 131072,
+  "tiered_resident_row_ceiling": 3072,
+  "tiered_resident_payload_byte_ceiling": 402653184,
+  "tasks": {
+    "multifieldqa_en": {
+      "n": 25,
+      "mean_final_snapkv_kv_bytes": 548426219.52,
+      "min_final_snapkv_kv_bytes": 537919488,
+      "max_final_snapkv_kv_bytes": 569901056,
+      "fraction_exceeding_tiered_resident_byte_ceiling": 1.0
+    },
+    "qasper": {
+      "n": 25,
+      "mean_final_snapkv_kv_bytes": 555703336.96,
+      "min_final_snapkv_kv_bytes": 539492352,
+      "max_final_snapkv_kv_bytes": 603455488,
+      "fraction_exceeding_tiered_resident_byte_ceiling": 1.0
+    },
+    "narrativeqa": {
+      "n": 25,
+      "mean_final_snapkv_kv_bytes": 546161295.36,
+      "min_final_snapkv_kv_bytes": 538443776,
+      "max_final_snapkv_kv_bytes": 570949632,
+      "fraction_exceeding_tiered_resident_byte_ceiling": 1.0
+    },
+    "hotpotqa": {
+      "n": 25,
+      "mean_final_snapkv_kv_bytes": 526636810.24,
+      "min_final_snapkv_kv_bytes": 152043520,
+      "max_final_snapkv_kv_bytes": 553123840,
+      "fraction_exceeding_tiered_resident_byte_ceiling": 0.96
+    },
+    "triviaqa": {
+      "n": 25,
+      "mean_final_snapkv_kv_bytes": 546224209.92,
+      "min_final_snapkv_kv_bytes": 537919488,
+      "max_final_snapkv_kv_bytes": 553123840,
+      "fraction_exceeding_tiered_resident_byte_ceiling": 1.0
+    },
+    "gov_report": {
+      "n": 10,
+      "mean_final_snapkv_kv_bytes": 706687795.2,
+      "min_final_snapkv_kv_bytes": 620232704,
+      "max_final_snapkv_kv_bytes": 804782080,
+      "fraction_exceeding_tiered_resident_byte_ceiling": 1.0
+    }
+  },
+  "scope": "KV payload only; SnapKV final measured bytes versus TieredKV configured resident byte ceiling. Excludes model weights, temporary tensors, metadata, full prefill peak, and differing attended width. Not an equal-byte result."
+}

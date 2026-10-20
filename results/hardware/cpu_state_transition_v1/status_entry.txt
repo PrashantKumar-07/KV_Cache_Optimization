@@ -1,0 +1,26 @@
+**Native CPU state phase checkpoint (3 October):** **489 tests pass**, including
+30 focused phase checks. Fixed shared CPU owners hold hot/cold positions,
+grace, shadow/resident flags, streaks and logical/free slot order. Native batch
+operations perform promotion, hot append, complete demotion metadata updates
+and cold compaction/reclaim. All malformed batch inputs reject before any
+layer mutates; version and owner checks reject stale/foreign GPU commands.
+
+All **1600 recorded layer transitions** replay exactly in50 native batches,
+including2560 paid rows,23872 restored backups, F32 metadata commands and
+physical slot order. Five GPU handoff fixtures across20 layers match original
+cache payload/metadata bits, roots and padding: shadow-first reclaim, stable
+LRU overflow, live-floor cover, exclusive promotion and eight-layer compaction.
+Victim/cold-keep decisions are supplied; these fixtures do not independently
+prove retention selection. GPU slot tensors emulate storage, not native host
+transfers. Declared32-layer CPU owners are **1116896 bytes (1.065 MiB)**;
+container/output/Python workspace and whole-model peaks remain unmeasured.
+
+[Phase proof](results/hardware/cpu_state_transition_v1/verified_stage.json).
+**Decode-controller integration remains incomplete.** Next attach canonical
+CPU owners and consume these commands through promotion, demotion, native KV
+transfers, visibility and cold reclaim, preserving unsupported fallback; then
+run recorded model parity, actual resource and preregistered speed gates.
+No speed/quality/adoption claim is established. All owned jobs are terminal;
+production defaults and failed-candidate stops remain unchanged. Full P0/P1/P2
+remains incomplete; day estimate withdrawn.
+

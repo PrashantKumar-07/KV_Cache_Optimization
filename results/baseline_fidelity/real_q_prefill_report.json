@@ -1,0 +1,97 @@
+{
+  "inputs_sha256": {
+    "results/baseline_fidelity/real_q_prefill_control_qa5.json": "4595b80cfe22fbf6933549b59b8711911597160950e4f90b973952a5b8ccd5e4",
+    "results/baseline_fidelity/real_q_prefill_candidate_qa5.json": "5c789c7938431734d86bf5e785e918f30ad93dd6a2744f1296caaaccefaa47c7"
+  },
+  "report_script_sha256": "ab842a4dc012e478ae0abf0c0c76e567ea2942b6eef3a510cea20af29f677693",
+  "runtime": {
+    "git_revision": "be7e700d84d46b47e32ba5b9870c8b71783b9e53",
+    "source_sha256": "e8bf6bd3a3729bbbbd723062c06f9f73f3b29b3714c74e273b2cf4f2efbc3529",
+    "packages": {
+      "torch": "2.5.1+cu124",
+      "transformers": "5.14.1",
+      "datasets": "5.0.0",
+      "numpy": "2.2.6",
+      "accelerate": "1.14.0",
+      "huggingface_hub": "1.24.0",
+      "rouge": "1.0.1"
+    }
+  },
+  "quality": {
+    "baseline": "proxy",
+    "per_task": {
+      "qasper": {
+        "n": 5,
+        "mean_difference": 19.6535409035409,
+        "se": 12.356899077510242
+      },
+      "narrativeqa": {
+        "n": 5,
+        "mean_difference": 2.1421748186454073,
+        "se": 4.825215125791971
+      }
+    },
+    "scores": {
+      "qasper": {
+        "tieredkv": 27.13,
+        "proxy": 7.47
+      },
+      "narrativeqa": {
+        "tieredkv": 20.37,
+        "proxy": 18.23
+      }
+    },
+    "task_balanced_mean_difference": 10.897857861093154,
+    "paired_bootstrap_95pct_interval": [
+      0.8286553724053731,
+      23.635898333692452
+    ],
+    "bootstrap_draws": 10000,
+    "seed": 0
+  },
+  "measures": {
+    "qasper": {
+      "prefill_s_median": {
+        "proxy": 0.6056614648550749,
+        "actual_query": 0.6744220703840256
+      },
+      "prefill_peak_alloc_bytes_median": {
+        "proxy": 16132271616,
+        "actual_query": 16240737280
+      },
+      "final_resident_kv_bytes_median": {
+        "proxy": 451014656,
+        "actual_query": 442241024
+      },
+      "paired_score_differences": [
+        65.71428571428571,
+        15.972222222222221,
+        -3.418803418803418,
+        20.0,
+        0.0
+      ]
+    },
+    "narrativeqa": {
+      "prefill_s_median": {
+        "proxy": 4.726396391168237,
+        "actual_query": 5.069652754813433
+      },
+      "prefill_peak_alloc_bytes_median": {
+        "proxy": 22382604288,
+        "actual_query": 22888809472
+      },
+      "final_resident_kv_bytes_median": {
+        "proxy": 442163200,
+        "actual_query": 439808000
+      },
+      "paired_score_differences": [
+        19.004524886877824,
+        -11.11111111111111,
+        0.0,
+        1.4285714285714342,
+        1.3888888888888875
+      ]
+    }
+  },
+  "limitations": "Five selected samples per task, one model/seed, no held-out claim. Prefill time and peak are single-run descriptive measures; decode TPOT, throughput, energy and physical STT are not measured."
+}

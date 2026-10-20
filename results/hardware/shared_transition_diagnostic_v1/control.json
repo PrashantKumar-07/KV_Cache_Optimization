@@ -1,0 +1,539 @@
+{
+  "passed": true,
+  "runtime": {
+    "git_revision": "be7e700d84d46b47e32ba5b9870c8b71783b9e53",
+    "source_sha256": "e1ccad3334843e69ace24036ba60744787f8201731512f88a8ee7c6a7413681a",
+    "packages": {
+      "torch": "2.5.1+cu124",
+      "transformers": "5.15.0",
+      "datasets": "2.19.2",
+      "numpy": "2.2.6",
+      "accelerate": "1.14.0",
+      "huggingface_hub": "1.27.0",
+      "rouge": "1.0.1"
+    }
+  },
+  "plan_sha256": "23f3498fe6d1bdcf5146ab5b194d2189f10ba0cb55dbaa3d39682428489fbeae",
+  "quiet_observations": [
+    {
+      "gpu": "0, GPU-5ae5c9c4-c441-9622-9599-9f6d69aa81a8, 0, 16",
+      "compute_processes": [],
+      "quiet": true,
+      "unexpected_compute_processes": []
+    },
+    {
+      "gpu": "0, GPU-5ae5c9c4-c441-9622-9599-9f6d69aa81a8, 27, 19174",
+      "compute_processes": [
+        "GPU-5ae5c9c4-c441-9622-9599-9f6d69aa81a8, 864061, ../venv_kvcache/bin/python, 19154"
+      ],
+      "quiet": true,
+      "unexpected_compute_processes": []
+    }
+  ],
+  "frozen50predictions_state_counters_payload_calls_replayed": true,
+  "state_sha256": "1effc7a7aa491b2c233ec1205ab6eaa0f10d91c32daefb8cb9459303b319d39b",
+  "counters": {
+    "promoted": 24832,
+    "promotions_deferred": 26368,
+    "demoted": 26432,
+    "paid_writes": 2560,
+    "writes_saved": 23872,
+    "dropped": 0,
+    "decode_steps": 50,
+    "latency_us": 14714.179128888876,
+    "energy_nj": 639908184.0639995,
+    "stt_starved_steps": 0,
+    "stt_unused_steps": 0,
+    "stt_exposed_total": 1632,
+    "stt_exposure_samples": 51
+  },
+  "payload": {
+    "host_read_bytes": 315621376,
+    "host_write_bytes": 117571584
+  },
+  "native_h2d_calls": 76,
+  "native_d2h_calls": 57,
+  "profiled_timing_not_latency_gate": {
+    "timing_scope": "end_to_end_model_policy_token",
+    "ttft_ms": 2796.582,
+    "itl_ms": 63.42,
+    "mean_itl_ms": 64.34119187295437,
+    "forward_ms": 25.124753825366497,
+    "peak_memory_gb": 14.780228608,
+    "prefill_peak_memory_gb": 18.627831296,
+    "trials": [
+      {
+        "ttft_ms": 2796.5815644711256,
+        "step_ms": [
+          117.191968485713,
+          55.76973594725132,
+          70.12995891273022,
+          55.62851205468178,
+          70.35561464726925,
+          55.32449670135975,
+          70.40669582784176,
+          55.322667583823204,
+          70.43442316353321,
+          55.845627561211586,
+          70.4518761485815,
+          55.31683750450611,
+          75.93970000743866,
+          55.56284263730049,
+          70.39554417133331,
+          55.78386411070824,
+          70.528918877244,
+          55.35702221095562,
+          70.51866687834263,
+          55.37617579102516,
+          70.58843038976192,
+          55.94288744032383,
+          70.55463828146458,
+          55.34670501947403,
+          76.17410272359848,
+          55.94286881387234,
+          70.851044729352,
+          55.85981905460358,
+          70.80874405801296,
+          55.60615099966526,
+          70.72604261338711,
+          55.60542270541191,
+          70.9467064589262,
+          55.97271770238876,
+          70.71192190051079,
+          56.70964531600475,
+          71.02246768772602,
+          55.626031011343,
+          70.49156725406647,
+          56.14532344043255,
+          70.67115977406502,
+          55.51788955926895,
+          70.62119245529175,
+          55.5517990142107,
+          70.51009498536587,
+          56.108905002474785,
+          71.76504656672478,
+          56.49419315159321,
+          71.01614773273468,
+          55.528778582811356
+        ],
+        "forward_ms": [
+          48.72945696115494,
+          25.365322828292847,
+          25.07077157497406,
+          25.196067988872528,
+          25.097792968153954,
+          25.119245052337646,
+          25.04824660718441,
+          25.12860670685768,
+          25.0675231218338,
+          25.101954117417336,
+          25.07803589105606,
+          25.148985907435417,
+          25.07118508219719,
+          25.203686207532883,
+          25.079336017370224,
+          25.148555636405945,
+          25.116054341197014,
+          25.12921765446663,
+          25.09850449860096,
+          25.127194821834564,
+          25.091582909226418,
+          25.13069659471512,
+          25.095446035265923,
+          25.157146155834198,
+          25.098124518990517,
+          25.453511625528336,
+          25.101056322455406,
+          25.145316496491432,
+          25.117866694927216,
+          25.169437751173973,
+          25.097835808992386,
+          25.15021711587906,
+          25.12287348508835,
+          25.14105662703514,
+          25.114765390753746,
+          25.13042651116848,
+          25.332549586892128,
+          25.14032833278179,
+          25.08089505136013,
+          25.143975391983986,
+          25.096744298934937,
+          25.134824216365814,
+          25.113794952630997,
+          25.15355683863163,
+          25.097083300352097,
+          25.145767256617546,
+          25.0873863697052,
+          25.653766468167305,
+          25.093844160437584,
+          25.126634165644646
+        ],
+        "prefill_peak_memory_gb": 18.627831296,
+        "decode_peak_memory_gb": 14.780228608,
+        "predicted_token_ids": [
+          14343,
+          18577,
+          3857,
+          4241,
+          7616,
+          369,
+          460,
+          312,
+          2031,
+          286,
+          297,
+          10308,
+          833,
+          20983,
+          28723,
+          816,
+          1269,
+          4435,
+          298,
+          272,
+          2264,
+          2818,
+          356,
+          272,
+          7616,
+          478,
+          3874,
+          28723,
+          816,
+          460,
+          1269,
+          4870,
+          4435,
+          298,
+          4916,
+          272,
+          25312,
+          304,
+          1220,
+          2437,
+          302,
+          272,
+          2264,
+          28723,
+          816,
+          460,
+          10313,
+          12221,
+          302,
+          456
+        ],
+        "prefill_forward_ms": 2129.773212596774,
+        "paid_writes": 2560,
+        "writes_saved": 23872,
+        "demoted": 26432,
+        "promoted": 24832,
+        "decode_steps": 50
+      }
+    ]
+  },
+  "geometry": [
+    {
+      "step": 1,
+      "cold_min": 850,
+      "cold_max": 850,
+      "saturated_layers": 0
+    },
+    {
+      "step": 2,
+      "cold_min": 850,
+      "cold_max": 850,
+      "saturated_layers": 0
+    },
+    {
+      "step": 3,
+      "cold_min": 851,
+      "cold_max": 851,
+      "saturated_layers": 0
+    },
+    {
+      "step": 4,
+      "cold_min": 851,
+      "cold_max": 851,
+      "saturated_layers": 0
+    },
+    {
+      "step": 5,
+      "cold_min": 853,
+      "cold_max": 853,
+      "saturated_layers": 0
+    },
+    {
+      "step": 6,
+      "cold_min": 853,
+      "cold_max": 853,
+      "saturated_layers": 0
+    },
+    {
+      "step": 7,
+      "cold_min": 855,
+      "cold_max": 855,
+      "saturated_layers": 0
+    },
+    {
+      "step": 8,
+      "cold_min": 855,
+      "cold_max": 855,
+      "saturated_layers": 0
+    },
+    {
+      "step": 9,
+      "cold_min": 857,
+      "cold_max": 857,
+      "saturated_layers": 0
+    },
+    {
+      "step": 10,
+      "cold_min": 857,
+      "cold_max": 857,
+      "saturated_layers": 0
+    },
+    {
+      "step": 11,
+      "cold_min": 859,
+      "cold_max": 859,
+      "saturated_layers": 0
+    },
+    {
+      "step": 12,
+      "cold_min": 859,
+      "cold_max": 859,
+      "saturated_layers": 0
+    },
+    {
+      "step": 13,
+      "cold_min": 861,
+      "cold_max": 861,
+      "saturated_layers": 0
+    },
+    {
+      "step": 14,
+      "cold_min": 861,
+      "cold_max": 861,
+      "saturated_layers": 0
+    },
+    {
+      "step": 15,
+      "cold_min": 863,
+      "cold_max": 863,
+      "saturated_layers": 0
+    },
+    {
+      "step": 16,
+      "cold_min": 863,
+      "cold_max": 863,
+      "saturated_layers": 0
+    },
+    {
+      "step": 17,
+      "cold_min": 865,
+      "cold_max": 865,
+      "saturated_layers": 0
+    },
+    {
+      "step": 18,
+      "cold_min": 865,
+      "cold_max": 865,
+      "saturated_layers": 0
+    },
+    {
+      "step": 19,
+      "cold_min": 867,
+      "cold_max": 867,
+      "saturated_layers": 0
+    },
+    {
+      "step": 20,
+      "cold_min": 867,
+      "cold_max": 867,
+      "saturated_layers": 0
+    },
+    {
+      "step": 21,
+      "cold_min": 869,
+      "cold_max": 869,
+      "saturated_layers": 0
+    },
+    {
+      "step": 22,
+      "cold_min": 869,
+      "cold_max": 869,
+      "saturated_layers": 0
+    },
+    {
+      "step": 23,
+      "cold_min": 871,
+      "cold_max": 871,
+      "saturated_layers": 0
+    },
+    {
+      "step": 24,
+      "cold_min": 871,
+      "cold_max": 871,
+      "saturated_layers": 0
+    },
+    {
+      "step": 25,
+      "cold_min": 873,
+      "cold_max": 873,
+      "saturated_layers": 0
+    },
+    {
+      "step": 26,
+      "cold_min": 873,
+      "cold_max": 873,
+      "saturated_layers": 0
+    },
+    {
+      "step": 27,
+      "cold_min": 875,
+      "cold_max": 875,
+      "saturated_layers": 0
+    },
+    {
+      "step": 28,
+      "cold_min": 875,
+      "cold_max": 875,
+      "saturated_layers": 0
+    },
+    {
+      "step": 29,
+      "cold_min": 877,
+      "cold_max": 877,
+      "saturated_layers": 0
+    },
+    {
+      "step": 30,
+      "cold_min": 877,
+      "cold_max": 877,
+      "saturated_layers": 0
+    },
+    {
+      "step": 31,
+      "cold_min": 879,
+      "cold_max": 879,
+      "saturated_layers": 0
+    },
+    {
+      "step": 32,
+      "cold_min": 879,
+      "cold_max": 879,
+      "saturated_layers": 0
+    },
+    {
+      "step": 33,
+      "cold_min": 881,
+      "cold_max": 881,
+      "saturated_layers": 0
+    },
+    {
+      "step": 34,
+      "cold_min": 881,
+      "cold_max": 881,
+      "saturated_layers": 0
+    },
+    {
+      "step": 35,
+      "cold_min": 883,
+      "cold_max": 883,
+      "saturated_layers": 0
+    },
+    {
+      "step": 36,
+      "cold_min": 883,
+      "cold_max": 883,
+      "saturated_layers": 0
+    },
+    {
+      "step": 37,
+      "cold_min": 885,
+      "cold_max": 885,
+      "saturated_layers": 0
+    },
+    {
+      "step": 38,
+      "cold_min": 885,
+      "cold_max": 885,
+      "saturated_layers": 0
+    },
+    {
+      "step": 39,
+      "cold_min": 887,
+      "cold_max": 887,
+      "saturated_layers": 0
+    },
+    {
+      "step": 40,
+      "cold_min": 887,
+      "cold_max": 887,
+      "saturated_layers": 0
+    },
+    {
+      "step": 41,
+      "cold_min": 889,
+      "cold_max": 889,
+      "saturated_layers": 0
+    },
+    {
+      "step": 42,
+      "cold_min": 889,
+      "cold_max": 889,
+      "saturated_layers": 0
+    },
+    {
+      "step": 43,
+      "cold_min": 891,
+      "cold_max": 891,
+      "saturated_layers": 0
+    },
+    {
+      "step": 44,
+      "cold_min": 891,
+      "cold_max": 891,
+      "saturated_layers": 0
+    },
+    {
+      "step": 45,
+      "cold_min": 893,
+      "cold_max": 893,
+      "saturated_layers": 0
+    },
+    {
+      "step": 46,
+      "cold_min": 893,
+      "cold_max": 893,
+      "saturated_layers": 0
+    },
+    {
+      "step": 47,
+      "cold_min": 895,
+      "cold_max": 895,
+      "saturated_layers": 0
+    },
+    {
+      "step": 48,
+      "cold_min": 895,
+      "cold_max": 895,
+      "saturated_layers": 0
+    },
+    {
+      "step": 49,
+      "cold_min": 897,
+      "cold_max": 897,
+      "saturated_layers": 0
+    },
+    {
+      "step": 50,
+      "cold_min": 897,
+      "cold_max": 897,
+      "saturated_layers": 0
+    }
+  ],
+  "hooks_restored": true,
+  "owned_host_after_cleanup_bytes": 0,
+  "limits": "Profile times include implicit CUDA waits and instrumentation. Inclusive ranges overlap; cannot infer whole-loop savings or reverse the failed primary. Cold reclaim consumes compacted scores, not hot KV, after demotion."
+}

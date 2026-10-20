@@ -1,0 +1,209 @@
+{
+  "verified": true,
+  "recorded_utc": "2026-10-14T08:30:16.462884+00:00",
+  "source_attestation": {
+    "verified": true,
+    "recorded_utc": "2026-10-14T08:30:05.297427+00:00",
+    "source_count": 5917,
+    "archive_plan_live_runtime_match": true,
+    "runtime": {
+      "git_revision": "be7e700d84d46b47e32ba5b9870c8b71783b9e53",
+      "source_sha256": "bfea6f6ca14f845bf37581d39310e50d840ffc04bfbf94ae06aa88d7e1d8f053",
+      "packages": {
+        "torch": "2.5.1+cu124",
+        "transformers": "5.15.0",
+        "datasets": "2.19.2",
+        "numpy": "2.2.6",
+        "accelerate": "1.14.0",
+        "huggingface_hub": "1.27.0",
+        "rouge": "1.0.1",
+        "ninja": "1.13.0"
+      }
+    },
+    "plan_sha256": "3d7251d131cb57fcb618a6f4ccef1070ff32f21fab862f15cd5792e22f135830",
+    "runner_sha256": "7497dbe949347bc780beabc8b75bef5264b92cb35dd60f89475cf01e7df5f9c4"
+  },
+  "model_artifacts_rehashed": 12,
+  "quiet_observations_passed": 29,
+  "steady_summary": {
+    "control": {
+      "measured_decode_forwards": 600,
+      "median_itl_ms": 78.44656985253096,
+      "p95_itl_ms": 86.54762338846922,
+      "median_ttft_ms": 2295.208401978016,
+      "peak_decode_alloc_gb": 15.134493184,
+      "peak_prefill_alloc_gb": 18.627831296
+    },
+    "candidate": {
+      "measured_decode_forwards": 600,
+      "median_itl_ms": 50.222115591168404,
+      "p95_itl_ms": 52.9720858670771,
+      "median_ttft_ms": 2411.87811922282,
+      "peak_decode_alloc_gb": 14.671673344,
+      "peak_prefill_alloc_gb": 18.627831296
+    }
+  },
+  "steady_ratios": {
+    "median_itl_ratio": 0.6402079235023183,
+    "p95_itl_ratio": 0.6120570824840765,
+    "median_ttft_ratio": 1.0508318622153254,
+    "peak_decode_alloc_ratio": 0.969419534940933,
+    "peak_prefill_alloc_ratio": 1.0
+  },
+  "registered_steady_guards": {
+    "median_itl_ratio_max": true,
+    "p95_itl_ratio_max": true,
+    "median_ttft_ratio_max": true,
+    "peak_decode_alloc_ratio_max": true,
+    "peak_prefill_alloc_ratio_max": true,
+    "scoped_cache_gpu_cpu_bytes_max": true
+  },
+  "steady_resource_advancement_passed": true,
+  "decision": "advance internal steadyresource screen only",
+  "first_observed_requests_order_control_then_candidate": [
+    {
+      "arm": "control",
+      "ttft_ms": 2632.557652890682,
+      "median_itl_ms": 78.55548523366451,
+      "decode_forwards": 50,
+      "owner_provisioning_ms_observation": null
+    },
+    {
+      "arm": "candidate",
+      "ttft_ms": 2471.588931977749,
+      "median_itl_ms": 49.07589126378298,
+      "decode_forwards": 50,
+      "owner_provisioning_ms_observation": 184.903496876359
+    }
+  ],
+  "first_request_observations_are_not_causal_cold_improvement": true,
+  "first_requests_excluded_from_steady_guard_denominators": true,
+  "candidate_owner_leases": 19,
+  "one_allocation_final_release_pair": true,
+  "idle_persistent_pinned_bytes": 276824064,
+  "zero_live_roots_after_final_close": true,
+  "all_predictions_match_verified_16K_parity": true,
+  "closed_hooks_leases_and_native_path_counts_verified": true,
+  "ABBA_blocks": [
+    {
+      "block": 0,
+      "median_itl_ms": {
+        "control": 78.41351814568043,
+        "candidate": 50.222115591168404
+      },
+      "candidate_control_ratio": 0.640477774480968
+    },
+    {
+      "block": 1,
+      "median_itl_ms": {
+        "control": 78.16665805876255,
+        "candidate": 48.76704700291157
+      },
+      "candidate_control_ratio": 0.6238855314276128
+    },
+    {
+      "block": 2,
+      "median_itl_ms": {
+        "control": 78.46351806074381,
+        "candidate": 50.23408681154251
+      },
+      "candidate_control_ratio": 0.6402222083982135
+    }
+  ],
+  "candidate_memory_rows": [
+    {
+      "row_index": 1,
+      "terms_bytes": {
+        "decode_GPU_excluding_static_model": 188208640,
+        "observed_main_pinned_allocator_block": 276824064,
+        "canonical_CPU_arrays": 1800832,
+        "CPU_streak_array_peak": 206848,
+        "CPU_address_array_peak": 65536,
+        "registered_two_times_cumulative_descriptors": 50528512
+      },
+      "scoped_bytes": 517634432
+    },
+    {
+      "row_index": 2,
+      "terms_bytes": {
+        "decode_GPU_excluding_static_model": 188208640,
+        "observed_main_pinned_allocator_block": 276824064,
+        "canonical_CPU_arrays": 1800832,
+        "CPU_streak_array_peak": 206848,
+        "CPU_address_array_peak": 65536,
+        "registered_two_times_cumulative_descriptors": 50528512
+      },
+      "scoped_bytes": 517634432
+    },
+    {
+      "row_index": 5,
+      "terms_bytes": {
+        "decode_GPU_excluding_static_model": 188208640,
+        "observed_main_pinned_allocator_block": 276824064,
+        "canonical_CPU_arrays": 1800832,
+        "CPU_streak_array_peak": 206848,
+        "CPU_address_array_peak": 65536,
+        "registered_two_times_cumulative_descriptors": 50528512
+      },
+      "scoped_bytes": 517634432
+    },
+    {
+      "row_index": 6,
+      "terms_bytes": {
+        "decode_GPU_excluding_static_model": 188208640,
+        "observed_main_pinned_allocator_block": 276824064,
+        "canonical_CPU_arrays": 1800832,
+        "CPU_streak_array_peak": 206848,
+        "CPU_address_array_peak": 65536,
+        "registered_two_times_cumulative_descriptors": 50528512
+      },
+      "scoped_bytes": 517634432
+    },
+    {
+      "row_index": 9,
+      "terms_bytes": {
+        "decode_GPU_excluding_static_model": 188208640,
+        "observed_main_pinned_allocator_block": 276824064,
+        "canonical_CPU_arrays": 1800832,
+        "CPU_streak_array_peak": 206848,
+        "CPU_address_array_peak": 65536,
+        "registered_two_times_cumulative_descriptors": 50528512
+      },
+      "scoped_bytes": 517634432
+    },
+    {
+      "row_index": 10,
+      "terms_bytes": {
+        "decode_GPU_excluding_static_model": 188208640,
+        "observed_main_pinned_allocator_block": 276824064,
+        "canonical_CPU_arrays": 1800832,
+        "CPU_streak_array_peak": 206848,
+        "CPU_address_array_peak": 65536,
+        "registered_two_times_cumulative_descriptors": 50528512
+      },
+      "scoped_bytes": 517634432
+    }
+  ],
+  "max_scoped_cache_bytes": 517634432,
+  "max_scoped_cache_MiB": 493.6546630859375,
+  "registered_memory_ceiling_bytes": 536870912,
+  "deployment": "preloaded model; first observed request control thencandidate reported separately; same1warm+2measured/trial3ABBA steadyrequest protocol",
+  "scope": "Internal sameGPU0 servingcontroller steadyrequests; modelpreloaded, oneowned264MiB root stayschargedidle/active. Firstrequests inclprovisioning separatelyreported as unordered singleobservations withstartup/orderconfounding, no causal coldTTFT or priorcoldguardpass claim. CPU DRAM surrogate, no physicalSTT/SOTA/quality/defaultadoption.",
+  "memory_scope_formula": "Max candidate decodeGPUpeak minus static model storage + observed pinned mainpool CUDA allocator block + canonicalCPUarray ownership + maxCPUstreak/address arrays + conservative2x totalbulk/cold descriptor bytes per final50-step trial. PeakGPU catches GPUmetadata/scratch. Mainpool is sole explicit pinned owner on this directshared path. Python/native container rounding, hidden cached host/driver allocations and totalRSS excluded; no entire-machine resource equality claim.",
+  "adopted": false,
+  "limitations": [
+    "Ordered firstrequests have startup/kernelwarming/orderconfounding; not causal coldTTFT comparison or priorfreshallocatorguard pass",
+    "Persistent264MiBroot is countedidle andactive; firstrequest includes oneoffprovisioning; no hidden capacity amortization",
+    "One16K consumedtext/frozenteacherstream; no independentquality/SOTA/physicalSTT/defaultadoption",
+    "ScopedGPU/CPUowner formula excludes hiddenhost/driver/RSS/container rounding;2xdescriptors is a registered conservative reservation, not measured simultaneous occupancy",
+    "Quiet checks bracket rows, not continuousGPUutilization; creationthread/singlecontext serialrequests only"
+  ],
+  "evidence_sha256": {
+    "results/audit_20261013/reusable_root_resources/plan.json": "3d7251d131cb57fcb618a6f4ccef1070ff32f21fab862f15cd5792e22f135830",
+    "results/audit_20261013/reusable_root_resources/run_timing.py": "7497dbe949347bc780beabc8b75bef5264b92cb35dd60f89475cf01e7df5f9c4",
+    "results/audit_20261013/reusable_root_resources/timing.json": "215739120f18d025f206c5ef24a0203bf1cb739b9d1ee499f44e41dba95b15e4",
+    "results/audit_20261013/reusable_root_parity/source.tar.gz": "96941395185c461db5b720247fa37e452b498c8d33635568c34a5c6ae981403c",
+    "results/audit_20261013/reusable_root_parity/verified_parity.json": "1a21041c5883275f467affbe0060d51b8e259b3459ab2cc7af2556be5852c4d0",
+    "results/audit_20261013/reusable_root_resources/verify_resources.py": "68a6ea3b84d9061dff8969ecc5a6bcb9fd21982e8d465d9e9694953c385422d6"
+  }
+}

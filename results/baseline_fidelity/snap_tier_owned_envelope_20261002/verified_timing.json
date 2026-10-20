@@ -1,0 +1,51 @@
+{
+  "executed_source_and_resource_trajectory_and_repeatability_verified": true,
+  "summary": {
+    "snap": {
+      "median_decode_ms": 25.741695426404476,
+      "p95_decode_ms": 25.955228693783283,
+      "median_ttft_ms": 2074.8358219861984,
+      "maximum_prefill_peak_gpu_bytes": 16958268928,
+      "maximum_decode_peak_gpu_bytes": 15037793280,
+      "final_owned_kv_bytes": {
+        "cuda:0": 536870912
+      },
+      "block_median_ms": [
+        25.73694847524166,
+        25.747759267687798,
+        25.742411613464355
+      ]
+    },
+    "cpu_direct": {
+      "median_decode_ms": 71.20256125926971,
+      "p95_decode_ms": 78.60612384974957,
+      "median_ttft_ms": 2239.9855498224497,
+      "maximum_prefill_peak_gpu_bytes": 18627831296,
+      "maximum_decode_peak_gpu_bytes": 14901711360,
+      "final_owned_kv_bytes": {
+        "cuda:0": 263979008,
+        "cpu": 272891904
+      },
+      "block_median_ms": [
+        70.66568732261658,
+        71.34858053177595,
+        70.47938741743565
+      ]
+    }
+  },
+  "performance_gates": {
+    "median_gain_5pct": false,
+    "p95_regression_at_most_2pct": false,
+    "all_blocks_faster": false,
+    "ttft_regression_at_most_10pct": true
+  },
+  "all_performance_gates_passed": false,
+  "cpu_over_snap_decode_ratio": 2.7660400793272486,
+  "cpu_vs_snap_ttft_change_pct": 7.959652811380358,
+  "shared_resource_ceiling": true,
+  "actual_usage_equal": false,
+  "joint_quality_gate": false,
+  "timing_sha256": "c1960125fec9a89faac4c5ce2ed4a4df1d53d00bb3f94c71b3396b98aba375cc",
+  "source_bundle_sha256": "408e34cf108f30ce9ec00915dacc97b4e33d22bb71561715f1b27588a6dba7c6",
+  "limitations": "One fixed teacher trajectory/model/seed and equal resource ceilings; actual bytes, widths, cold retention, CPU vs GPU tier placement and required attention-weight work differ. No joint quality, physical STT, exact-resource equality, serving or research-completion claim."
+}

@@ -1,0 +1,1312 @@
+{
+  "config": {
+    "model": "../models/mistral-7b-instruct",
+    "data_dir": "../hf_cache/datasets/downloads/extracted/5def9c7eaf83951e1cee75902d8611ef764ad88dd289e8f0bf97ff658a3eb83a/data",
+    "tasks": [
+      "multifieldqa_en",
+      "qasper",
+      "narrativeqa",
+      "hotpotqa",
+      "triviaqa"
+    ],
+    "max_samples": 25,
+    "strategy": "query",
+    "seed": 0,
+    "max_ctx": 31500,
+    "tiered_vram_budget": 341,
+    "tiered_stt_budget": 683,
+    "recent": 128,
+    "stt_expose_quota": 32,
+    "sttram_bifurcation_frac": 0.75,
+    "kv_dtype": "bfloat16",
+    "runtime": {
+      "git_revision": "be7e700d84d46b47e32ba5b9870c8b71783b9e53",
+      "source_sha256": "bcc2b8520906db2db0a85494d441a4e688e571a356f1f6bc00c6c493d71dc548",
+      "packages": {
+        "torch": "2.5.1+cu124",
+        "transformers": "5.15.0",
+        "datasets": "2.19.2",
+        "numpy": "2.2.6",
+        "accelerate": "1.14.0",
+        "huggingface_hub": "1.27.0",
+        "rouge": "1.0.1"
+      }
+    },
+    "selector_sha256": "d6326141d0bdf7cf23f4acccba35f9589b045991f86d1c0bf928aee293e5ebf2",
+    "driver_sha256": "eff584abdc7da4dd0e1614dfb6607cae734c743debacfb754e89829e7f1d9922",
+    "dataset_sha256": {
+      "multifieldqa_en": "678a51335e3c90e0dd43bf1131045e4f2859cc693e7eded89cc6a1ee8d18faff",
+      "qasper": "97d95c01221a17a2ce51f9180d65a671bf2998504a2ff0cccffe97e9b08444d8",
+      "narrativeqa": "0fb8d08ba5cdad4b74244224b0dc2e8b41ee6b850d954a13eb2d282621ce2f71",
+      "hotpotqa": "26a90a291cca5b2515bf466c6c3d1f57d8a4e67b0cf5aa39e1834913a15e6309",
+      "triviaqa": "3c4cc5ca18f2578d1f6458d1219387c741c6fafad7e8518addea898c08ff0d73"
+    }
+  },
+  "results": {
+    "multifieldqa_en": {
+      "tieredkv": {
+        "score": 50.36,
+        "n": 25,
+        "sample_scores": [
+          48.48,
+          100.0,
+          0.0,
+          9.52,
+          51.43,
+          14.29,
+          91.67,
+          90.0,
+          66.67,
+          4.55,
+          16.67,
+          13.33,
+          35.9,
+          48.0,
+          23.73,
+          53.33,
+          100.0,
+          70.0,
+          80.0,
+          53.33,
+          76.19,
+          83.33,
+          100.0,
+          28.57,
+          0.0
+        ],
+        "samples": [
+          {
+            "sample_id": "b3a9da1dd79b69143f46fb4ea37f3159f11a4585b68604cbda50c0adf4da65a1",
+            "prediction": "Permanent damage or discoloration may occur to the VR headset lenses if they are exposed to sunlight or strong light.",
+            "score": 48.484848484848484,
+            "elapsed_s": 4.783636407926679,
+            "prompt_tokens": 6689,
+            "generated_tokens": 29
+          },
+          {
+            "sample_id": "66fbe72f15b70e8c8cc090467f3ac90f03c8fb6063e3346cd82d7778cd7b1cf9",
+            "prediction": "Vice admiral",
+            "score": 100.0,
+            "elapsed_s": 0.7354463767260313,
+            "prompt_tokens": 3463,
+            "generated_tokens": 4
+          },
+          {
+            "sample_id": "49117774123dc2f3ec95d7bbc61950987252760875cec6cac53ff18be0913744",
+            "prediction": "William Rokebye",
+            "score": 0.0,
+            "elapsed_s": 1.394603442400694,
+            "prompt_tokens": 8098,
+            "generated_tokens": 5
+          },
+          {
+            "sample_id": "816c7d4d2ca3f7843b2d0f795c0617530c81f992857280a719dc8801a10592cf",
+            "prediction": "South Bastia District, Yerevan, Armenia\n\nFC Banants is a professional football club based in Yerevan, the capital city of Armenia. The club was founded in 1992 and has a rich history in Armenian football. FC Banants has played in the Armenian Premier",
+            "score": 9.523809523809524,
+            "elapsed_s": 7.97695124335587,
+            "prompt_tokens": 1892,
+            "generated_tokens": 64
+          },
+          {
+            "sample_id": "670c6b828aaca397f191fff5fc6422ec944d1f3e88cfa9c9a853369093e10caa",
+            "prediction": "The recommended space for using the VR headset is an area of at least 2 meters by 2 meters that is clear of obstacles.",
+            "score": 51.42857142857144,
+            "elapsed_s": 4.418403003364801,
+            "prompt_tokens": 6683,
+            "generated_tokens": 31
+          },
+          {
+            "sample_id": "b5aa922e57ebd8e83979d6316ffa84c5fcee60fdaf902b636cfdae5c7337fa5e",
+            "prediction": "The correct expression for the derivative of the function is:\n\nf'(x) = \n\u23a3\u23a1\n\u239bx^2-1 (x-1)\n\u239c 2x-1\n\u239d x > 1\n\nwhere f(x)",
+            "score": 14.285714285714285,
+            "elapsed_s": 8.189958319067955,
+            "prompt_tokens": 3939,
+            "generated_tokens": 64
+          },
+          {
+            "sample_id": "1ef75e875cd535f724067bb2465c1a7be297dcaf9f772d8bfb11d15a80b0ecd0",
+            "prediction": "Brooksley Born received the John F. Kennedy Profile in Courage Award in 2009.",
+            "score": 91.66666666666666,
+            "elapsed_s": 3.051385063678026,
+            "prompt_tokens": 3200,
+            "generated_tokens": 23
+          },
+          {
+            "sample_id": "9e631666dcc5bd183c0033d49fb175661c8f715d1cc455f731ad8524778a9f58",
+            "prediction": "Margaret Way started self-publishing her books as e-books in 2008.",
+            "score": 90.0,
+            "elapsed_s": 2.785915732383728,
+            "prompt_tokens": 3027,
+            "generated_tokens": 21
+          },
+          {
+            "sample_id": "60792e15b02b6ff023ac91e40ae2c750eef4b481719c3449836e2c4ab399408b",
+            "prediction": "Long-Term Capital Management (LTCM)",
+            "score": 66.66666666666666,
+            "elapsed_s": 1.5730461440980434,
+            "prompt_tokens": 3271,
+            "generated_tokens": 11
+          },
+          {
+            "sample_id": "cafe9dcc25e422aa17c7622e59035325ad45cf446584407c4955ede2291d1f7d",
+            "prediction": "In the equilibrium lattice gas, the dynamical behavior of the anisotropic order parameter follows a scaling form given by equation (13) in the text. However, the order parameter behaves differently in the driven lattice gases (IDLG and RDLG). In these cases, the order parameter exhib",
+            "score": 4.545454545454546,
+            "elapsed_s": 7.936010966077447,
+            "prompt_tokens": 1440,
+            "generated_tokens": 64
+          },
+          {
+            "sample_id": "b430431aa6ae3b3a7724cd01365dfe1d3be5ef68c3544af7f0a2255da45af955",
+            "prediction": "June 1, 1999. (Note: The text states June 1, 1999, but the context of the text implies that it was actually June 1, 1998, based on the events described. However, the text itself is inconsistent on this point",
+            "score": 16.666666666666668,
+            "elapsed_s": 8.136833343654871,
+            "prompt_tokens": 3269,
+            "generated_tokens": 64
+          },
+          {
+            "sample_id": "d370ead831576861750a1dd06e5e00de7a562472241d778236013dcf8125b0de",
+            "prediction": "The 2017 general election was held on 23 September. However, the text mentions that the Prime Minister announced the election date on 1 February 2017 and it was held on 23 September.",
+            "score": 13.333333333333334,
+            "elapsed_s": 6.616009034216404,
+            "prompt_tokens": 5237,
+            "generated_tokens": 50
+          },
+          {
+            "sample_id": "94a6811ae3ea251bd9a42f8c11fd800ecc5015f2d1db94278294866d78c26607",
+            "prediction": "The maximum velocity of a blob or depletion follows the square root relationship with the amplitude, as given by Eq. (\ref{eq:sqrt}). The acceleration of a blob or depletion is proportional to the amplitude, as given by Eq. (\ref{eq:acceleration}).",
+            "score": 35.8974358974359,
+            "elapsed_s": 8.995037084445357,
+            "prompt_tokens": 6817,
+            "generated_tokens": 64
+          },
+          {
+            "sample_id": "0d5a2deb0638b139b39e6baeca8ba8d34b396ddfef035d44b3a26e3286949d69",
+            "prediction": "The NLMS (Normalized Least Mean Square) algorithm is engaged in the PLMS-PPIC (Parallel Least Mean Square Pilot Assisted Interference Cancellation) method.",
+            "score": 47.99999999999999,
+            "elapsed_s": 5.4981466848403215,
+            "prompt_tokens": 6250,
+            "generated_tokens": 40
+          },
+          {
+            "sample_id": "9244d184859cf7be0809e42b7144c0e6c0acef950b1049eb0ce4e9db7c6f48c0",
+            "prediction": "The interlayer Berry connection polarizability is a geometric quantity that describes the response of a system to an external electric field that couples to different layers. It plays a crucial role in the crossed nonlinear optical effects observed in twisted bilayer materials, such as twisted bilayer graphene and twisted bilayer transition metal",
+            "score": 23.728813559322035,
+            "elapsed_s": 8.347787827253342,
+            "prompt_tokens": 5336,
+            "generated_tokens": 64
+          },
+          {
+            "sample_id": "3bdd616bd5e74bb0151a3123784012ac275844f9ba97d020b5e9acdaae335e73",
+            "prediction": "Fuller's Ranch or Fuller's Fort, also known as Fuller's Settlement or Fort Fuller, was the first white settlement in McPherson County. It was established in 1867 by William Fuller and his family.",
+            "score": 53.333333333333336,
+            "elapsed_s": 7.261961551383138,
+            "prompt_tokens": 3648,
+            "generated_tokens": 57
+          },
+          {
+            "sample_id": "64723773121bedc91a6107f70824c5f60a2ed968ad495c3a0a72da70b9b8298f",
+            "prediction": "McPherson",
+            "score": 100.0,
+            "elapsed_s": 0.7481511197984219,
+            "prompt_tokens": 3654,
+            "generated_tokens": 4
+          },
+          {
+            "sample_id": "28e1f08b8ff7fcdc5b641c95b4fbf2b77cf8e6ac2ad55de27ebe93556f71ad80",
+            "prediction": "McPherson County is located in the central part of Kansas, United States.",
+            "score": 70.0,
+            "elapsed_s": 2.3562804516404867,
+            "prompt_tokens": 3641,
+            "generated_tokens": 17
+          },
+          {
+            "sample_id": "688c72ffb7d527872a3d20b835bf6562a0a1ae15ac070c1cb21487004132b1a2",
+            "prediction": "Jacob Landau",
+            "score": 80.0,
+            "elapsed_s": 0.7047255672514439,
+            "prompt_tokens": 3268,
+            "generated_tokens": 4
+          },
+          {
+            "sample_id": "096cd62bbdac3b74dcbc9b429fdd4a128c819ec673291d84f3c8e1e36813e855",
+            "prediction": "BERT, RoBERTa, and XLM-RoBERTa were used for dialect identification.",
+            "score": 53.333333333333336,
+            "elapsed_s": 3.088101476430893,
+            "prompt_tokens": 3500,
+            "generated_tokens": 23
+          },
+          {
+            "sample_id": "040d501d8278d9cf15b19a5ea085e8531de8524990549b7031071560c6288d4e",
+            "prediction": "The club's headquarters are located in the Malatia-Sebastia District of Yerevan.",
+            "score": 76.1904761904762,
+            "elapsed_s": 3.0489266328513622,
+            "prompt_tokens": 1844,
+            "generated_tokens": 24
+          },
+          {
+            "sample_id": "cef95ddb4741e166422f87da1ead0c5973b2b1c94fa00275c79b275a8d80b0d0",
+            "prediction": "Margaret Way was born in Australia and she died in Queensland, Australia.",
+            "score": 83.33333333333334,
+            "elapsed_s": 2.0409541558474302,
+            "prompt_tokens": 3022,
+            "generated_tokens": 15
+          },
+          {
+            "sample_id": "16a3ca3f07c8585a7c2f1d6ec5e58bf503b104b08d2f97aa1a22d1a73dd6cd83",
+            "prediction": "FC Banants",
+            "score": 100.0,
+            "elapsed_s": 0.5710639040917158,
+            "prompt_tokens": 1896,
+            "generated_tokens": 4
+          },
+          {
+            "sample_id": "35832afeafbedec5fb4f7502543bd820e85b6ca76f53652c422681ae237d5955",
+            "prediction": "The club won the Armenian Premier League for the first time in the 2013-14 season.",
+            "score": 28.571428571428577,
+            "elapsed_s": 3.1590252704918385,
+            "prompt_tokens": 1896,
+            "generated_tokens": 25
+          },
+          {
+            "sample_id": "abdcc0c0654b9136bcb9e86324603930bc892a4bc0d12520e11d564ffc8c9370",
+            "prediction": "The population of McPherson County according to the 2020 census was 29,512.",
+            "score": 0.0,
+            "elapsed_s": 3.470311012119055,
+            "prompt_tokens": 3662,
+            "generated_tokens": 26
+          }
+        ],
+        "cache_stats": {
+          "demoted": 397158,
+          "promoted": 372454,
+          "promotions_deferred": 418074,
+          "paid_writes": 46053,
+          "writes_saved": 351105,
+          "dropped": 0,
+          "write_savings_pct": 88.4,
+          "decode_steps": 772,
+          "stt_starved_steps": 0,
+          "stt_unused_steps": 0,
+          "mean_stt_exposed": 32.0,
+          "stt_expose_quota": 32,
+          "stt_exposed_total": 25504,
+          "stt_exposure_samples": 797,
+          "modeled_latency_us": 152282.5,
+          "modeled_energy_nj": 3565330104.3
+        }
+      }
+    },
+    "qasper": {
+      "tieredkv": {
+        "score": 12.12,
+        "n": 25,
+        "sample_scores": [
+          0.0,
+          20.51,
+          8.33,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          17.39,
+          8.89,
+          37.5,
+          10.26,
+          28.57,
+          21.05,
+          2.74,
+          6.74,
+          30.99,
+          13.33,
+          10.0,
+          21.62,
+          0.0,
+          0.0,
+          15.38,
+          31.58,
+          18.18,
+          0.0
+        ],
+        "samples": [
+          {
+            "sample_id": "3b91dce7ca41a9d16a1d0c61806c139db583a053ddb582bf79df3ff56f8e0344",
+            "prediction": "They selected Facebook pages based on intuition and availability, and further grouped them according to performance on development data and label distribution. Specific pages are not mentioned in the article.",
+            "score": 0.0,
+            "elapsed_s": 4.860072502866387,
+            "prompt_tokens": 4895,
+            "generated_tokens": 36
+          },
+          {
+            "sample_id": "5f59f94cd91401a55bcd3b6b24b78cd2c4c78e8ee6e7663e0ac8b97306444f08",
+            "prediction": "The context used to predict instructor intervention is not explicitly stated in the article, but it can be inferred that the models infer a context, which is defined as a contiguous sequence of posts, to improve intervention prediction.",
+            "score": 20.51282051282051,
+            "elapsed_s": 6.135037204250693,
+            "prompt_tokens": 5415,
+            "generated_tokens": 46
+          },
+          {
+            "sample_id": "9d37c5305ff63838fd6b7c96f13d10cfc388955672b1a629e5c0a8c2a89c520d",
+            "prediction": "In addition to F-scores, improvements in the system are demonstrated through the use of accuracy metrics such as F-scores and Kappa statistics in the article.",
+            "score": 8.333333333333334,
+            "elapsed_s": 4.7917698211967945,
+            "prompt_tokens": 5549,
+            "generated_tokens": 35
+          },
+          {
+            "sample_id": "5b60c062453de695f70d5f313a868a3c630068a85084fc9c456760f41e84d0f3",
+            "prediction": "The baselines were not explicitly stated in the provided information.",
+            "score": 0.0,
+            "elapsed_s": 2.0526531115174294,
+            "prompt_tokens": 5175,
+            "generated_tokens": 13
+          },
+          {
+            "sample_id": "a25d41e770a5f1816e04f39227fecd7dfcd9b83b25842e413d0f8fcb447b2092",
+            "prediction": "jiant specifically mentions compatibility with models from Python and Hugging Face Transformers. (Python is a programming language.)",
+            "score": 0.0,
+            "elapsed_s": 3.634027471765876,
+            "prompt_tokens": 3956,
+            "generated_tokens": 27
+          },
+          {
+            "sample_id": "d5ed435b1815f069194f3e19e61d870c7b48d67e9d650b6ba8be50d967dd5581",
+            "prediction": "The experts are not directly compared to real-world users in the given text.",
+            "score": 0.0,
+            "elapsed_s": 2.6380728986114264,
+            "prompt_tokens": 5872,
+            "generated_tokens": 17
+          },
+          {
+            "sample_id": "be5864ea2f4c289f12308f6d3d0cf2e0d2533f9529b5205609fa6c72300f5327",
+            "prediction": "The results show that the performance of mSynC and ELMo-transformer in sentiment classification are similar.",
+            "score": 0.0,
+            "elapsed_s": 3.287721125409007,
+            "prompt_tokens": 4175,
+            "generated_tokens": 24
+          },
+          {
+            "sample_id": "4f8ae7846231a40f3a31d34dd04152e32756a839cb9d875ef47bc15327f187b8",
+            "prediction": "Four datasets were used in evaluation, including English and multilingual corpora.",
+            "score": 17.391304347826086,
+            "elapsed_s": 2.40434361808002,
+            "prompt_tokens": 3952,
+            "generated_tokens": 17
+          },
+          {
+            "sample_id": "a3d2ed0612432b4eba548bb87d745cf55f028031f169bebd5603c9c91846682e",
+            "prediction": "The article reports an improvement of 12.11% in average AUC for a small-scale unbalanced dataset when sentence representation is enhanced with topic information using the proposed topic-attention model.",
+            "score": 8.88888888888889,
+            "elapsed_s": 5.810952356085181,
+            "prompt_tokens": 4548,
+            "generated_tokens": 44
+          },
+          {
+            "sample_id": "1722aae10d3db3ab3af36c1b865461e0bcc648334cf0492fd9a9a5cce298189a",
+            "prediction": "They use both datasets with transcribed text and determine text from the audio.",
+            "score": 37.5,
+            "elapsed_s": 2.385748438537121,
+            "prompt_tokens": 4882,
+            "generated_tokens": 16
+          },
+          {
+            "sample_id": "37296f0b8800e1b357e34e749943957293dd8afe11e494b9b54eb380a68f53ed",
+            "prediction": "The Carrot2 library's CarrotClustering algorithm was used for clustering, along with Carrot2's implementation of DBSCAN. (CarrotClustering is a wrapper for various clustering algorithms, and DBSCAN is one of the algorithms it supports.)",
+            "score": 10.256410256410257,
+            "elapsed_s": 7.787478057667613,
+            "prompt_tokens": 4824,
+            "generated_tokens": 60
+          },
+          {
+            "sample_id": "cc7dec49cb98b0c1716769b49d0c28b5fb5725340948df24d3b90e09440e775b",
+            "prediction": "BERT was used in the study.",
+            "score": 28.571428571428577,
+            "elapsed_s": 1.648336948826909,
+            "prompt_tokens": 5870,
+            "generated_tokens": 9
+          },
+          {
+            "sample_id": "78955fc72ff60c45a54a7cbba9d9271acd748d7381faf051914e2cd275539f31",
+            "prediction": "The pivot-based baselines are methods used for comparison in the article, which involve using a pivot language to facilitate translation between two other languages in a zero-shot setting.",
+            "score": 21.05263157894737,
+            "elapsed_s": 5.260943790897727,
+            "prompt_tokens": 6222,
+            "generated_tokens": 38
+          },
+          {
+            "sample_id": "38e8d6421b7fdae76fb96cca54869e127410e15bb740a9e3e79cad6684de39fd",
+            "prediction": "EmotionLines dataset was used.\n\nQuestion: what models were proposed?\nAnswer: FriendsBERT and ChatBERT were proposed.\n\nQuestion: what were the main improvements during the model training procedure?\nAnswer: The main improvements were the causal utterance modeling mechanism, specific model pre-training, and adapt weighted loss.\n\nQuestion: what is the effectiveness of the proposed methods demonstrated from?\nAnswer: The experiments demonstrated the effectiveness of the proposed methods.\n\nQuestion: what is the limitation of BERT input format?\nAnswer: The limitation is that it cannot handle ambig",
+            "score": 2.7397260273972606,
+            "elapsed_s": 16.18634508550167,
+            "prompt_tokens": 4999,
+            "generated_tokens": 128
+          },
+          {
+            "sample_id": "7c196ac8afee9239a2be303567c8e4f2e51288c2319b481c47f92c7e977d0fc0",
+            "prediction": "Several evaluation protocols are provided for each part of the database.",
+            "score": 6.7415730337078665,
+            "elapsed_s": 2.2400956079363823,
+            "prompt_tokens": 5722,
+            "generated_tokens": 14
+          },
+          {
+            "sample_id": "247afe5751624ccc33c5d9d66075d2d7e822252035759ef662a8f7b4044b04fd",
+            "prediction": "Gaussian-masked directional multi-head attention masks self-attention weights with a Gaussian function and applies multi-head attention to capture localness and directional information.",
+            "score": 30.985915492957744,
+            "elapsed_s": 4.960899332538247,
+            "prompt_tokens": 5773,
+            "generated_tokens": 36
+          },
+          {
+            "sample_id": "e08fa189d18d5f985605729d47958718e3cb23e811d501b52f9c162dad89756f",
+            "prediction": "The article mentions that for fine-tuning, the system uses non-English training data, but the exact amount is not specified. Therefore, the answer is unanswerable based on the given information.",
+            "score": 13.333333333333334,
+            "elapsed_s": 5.849646609276533,
+            "prompt_tokens": 5990,
+            "generated_tokens": 43
+          },
+          {
+            "sample_id": "cfef957d36bd8b0a5607f51af0bcc66e718f5a16a51142e9bb7f693157a4925f",
+            "prediction": "The article discusses cases where attention has different patterns from alignment, particularly for verbs.",
+            "score": 10.0,
+            "elapsed_s": 2.7701971139758825,
+            "prompt_tokens": 4971,
+            "generated_tokens": 19
+          },
+          {
+            "sample_id": "2f49a3fba9f0cf9c6ec677b5670a0df669695a25f0c8add07f3ac221f5942dac",
+            "prediction": "The model used for end-to-end speech recognition is a deep learning model, specifically a recurrent neural network (RNN) with long short-term memory (LSTM) units. The exact architecture and configuration of the model are not specified in the given article.",
+            "score": 21.621621621621625,
+            "elapsed_s": 7.316174708306789,
+            "prompt_tokens": 2651,
+            "generated_tokens": 56
+          },
+          {
+            "sample_id": "629288f57b3d104c530f997bd5998b5e8760f8079117740e3927cbac0209d1fd",
+            "prediction": "The baseline models are not explicitly mentioned in the article, so it is unanswerable without additional context.",
+            "score": 0.0,
+            "elapsed_s": 3.1264384500682354,
+            "prompt_tokens": 4861,
+            "generated_tokens": 22
+          },
+          {
+            "sample_id": "5078ad3072bcf06e901eba50669fd9da26301b4f683faef7d1572071d84c18ee",
+            "prediction": "The publication date is not mentioned in the article.\n\nQuestion: Does the paper propose a new model for text summarization?\nAnswer: Yes.\n\nQuestion: What is the name of the model proposed in the paper?\nAnswer: The model is a two-stage model based on sequence-to-sequence paradigm, utilizing BERT on both encoder and decoder sides, and introducing reinforce objective in learning process.\n\nQuestion: What are the two datasets used in the experiments?\nAnswer: The experiments are conducted on CNN/Daily Mail and New York Times datasets.\n\nQuestion",
+            "score": 0.0,
+            "elapsed_s": 16.55288858152926,
+            "prompt_tokens": 6423,
+            "generated_tokens": 128
+          },
+          {
+            "sample_id": "7be3b9f7a0457d784ffaf0ac2636cac2ef417879ecd62a53c6e4efd3c7a51948",
+            "prediction": "Around 500 people participated in their evaluation study of table-to-text models.",
+            "score": 15.384615384615385,
+            "elapsed_s": 2.997920051217079,
+            "prompt_tokens": 5795,
+            "generated_tokens": 20
+          },
+          {
+            "sample_id": "40c3a28a96154ad02979ccb377e41e050704d6187163a75710053e39d4c334d3",
+            "prediction": "The models used in the experiment are a CNN, a BiLSTM, and an SVM.",
+            "score": 31.57894736842105,
+            "elapsed_s": 2.846197670325637,
+            "prompt_tokens": 3564,
+            "generated_tokens": 21
+          },
+          {
+            "sample_id": "d8d18fe6cacc4f7491a8c425fad6cf6efa5c1e5d988ecb73027d211c576955ae",
+            "prediction": "They explore BiLSTM, BiLSTM-CNN(grapheme-level), and other models.",
+            "score": 18.181818181818183,
+            "elapsed_s": 3.4940956123173237,
+            "prompt_tokens": 4864,
+            "generated_tokens": 25
+          },
+          {
+            "sample_id": "bc3fede62814b457f9cd05caa51897a2a35085409d9fcfb7689dd1a230fd8b89",
+            "prediction": "The vocabulary of word-like units is automatically discovered using techniques like Universal Segmentation and clustering in tools like UTD (Unsupervised Training Data) and the vocabulary of phoneme-like units is automatically discovered using techniques like Acoustic Modeling and clustering in tools like AUD (Automatic Speech Recognition).",
+            "score": 0.0,
+            "elapsed_s": 9.582198103889823,
+            "prompt_tokens": 5454,
+            "generated_tokens": 74
+          }
+        ],
+        "cache_stats": {
+          "demoted": 470552,
+          "promoted": 440376,
+          "promotions_deferred": 525256,
+          "paid_writes": 49973,
+          "writes_saved": 420579,
+          "dropped": 0,
+          "write_savings_pct": 89.4,
+          "decode_steps": 943,
+          "stt_starved_steps": 0,
+          "stt_unused_steps": 0,
+          "mean_stt_exposed": 32.0,
+          "stt_expose_quota": 32,
+          "stt_exposed_total": 30976,
+          "stt_exposure_samples": 968,
+          "modeled_latency_us": 182662.2,
+          "modeled_energy_nj": 4344256266.2
+        }
+      }
+    },
+    "narrativeqa": {
+      "tieredkv": {
+        "score": 16.28,
+        "n": 25,
+        "sample_scores": [
+          31.58,
+          11.11,
+          33.33,
+          28.57,
+          0.0,
+          30.77,
+          0.0,
+          0.0,
+          57.14,
+          0.0,
+          0.0,
+          0.0,
+          13.33,
+          0.0,
+          22.22,
+          62.5,
+          10.53,
+          18.18,
+          0.0,
+          0.0,
+          21.05,
+          16.67,
+          0.0,
+          0.0,
+          50.0
+        ],
+        "samples": [
+          {
+            "sample_id": "27a07bedff812ae2c3fece3ac4a1f1db11f00793a3598fa94f1fa286ea347cb9",
+            "prediction": "Saltram is an inmate of the Kent family, living with them in their estate.",
+            "score": 31.57894736842105,
+            "elapsed_s": 7.103359276428819,
+            "prompt_tokens": 31500,
+            "generated_tokens": 20
+          },
+          {
+            "sample_id": "dfeb4058f4507fa2d2a6f80f6c230cc08e3c7eaa8221bead1ccee5ba90a57488",
+            "prediction": "Ann is unable to return Mary's feelings of affection.",
+            "score": 11.11111111111111,
+            "elapsed_s": 6.215286919847131,
+            "prompt_tokens": 31500,
+            "generated_tokens": 13
+          },
+          {
+            "sample_id": "b75b8f1d9f0027543e6f4d84ca94997765d41f9a6eda749df309b0070caee3d8",
+            "prediction": "The witch lives on Atlas.",
+            "score": 33.33333333333333,
+            "elapsed_s": 1.9946693200618029,
+            "prompt_tokens": 9674,
+            "generated_tokens": 8
+          },
+          {
+            "sample_id": "5f2d99ab2d103d5f04d78f3e7a3b76f633fabeab2eb86a785cf76ed7ac77249e",
+            "prediction": "Crito visited Socrates to persuade him to escape from prison.",
+            "score": 28.571428571428566,
+            "elapsed_s": 3.012983411550522,
+            "prompt_tokens": 9887,
+            "generated_tokens": 16
+          },
+          {
+            "sample_id": "254d602c75f8a37865dd7b4a2b7efbb25194b5064a29a07d7038b92d6add6c3d",
+            "prediction": "Baron Henry spared Otto's life.",
+            "score": 0.0,
+            "elapsed_s": 5.896757265552878,
+            "prompt_tokens": 31500,
+            "generated_tokens": 10
+          },
+          {
+            "sample_id": "d8782bf38d5391282449405b326c1962a2f2df420c180367dc72b2d00909ee93",
+            "prediction": "The doctor examined Mortimer Trefinnis' sister's body six hours after her death.",
+            "score": 30.76923076923077,
+            "elapsed_s": 4.3003159314394,
+            "prompt_tokens": 14757,
+            "generated_tokens": 21
+          },
+          {
+            "sample_id": "c11b2c646541b52aae74fa8d0dcd23b109f016600e7058c7189089e6989b7e7e",
+            "prediction": "The entertainers' manager has an affair with one of the entertainers.",
+            "score": 0.0,
+            "elapsed_s": 6.6334911826997995,
+            "prompt_tokens": 31500,
+            "generated_tokens": 16
+          },
+          {
+            "sample_id": "f56bc1a131b1d13c88d9ce97e3c39e61ad899f4b62ebabc5ff157d31a95a67c6",
+            "prediction": "Janos Szabo falls under Vigo's spell first.",
+            "score": 0.0,
+            "elapsed_s": 6.534377979114652,
+            "prompt_tokens": 31500,
+            "generated_tokens": 15
+          },
+          {
+            "sample_id": "8347f51a924ac31c849dbd7d6c8c072c3c8fbc683149667b1c93ffcf6abbe917",
+            "prediction": "Ruth Anvoy is an American.",
+            "score": 57.14285714285715,
+            "elapsed_s": 5.799676252529025,
+            "prompt_tokens": 31500,
+            "generated_tokens": 9
+          },
+          {
+            "sample_id": "d35e865a7b8c4998c844b6894e511f333a501ec5d923979b9f82ae2bb8899f0d",
+            "prediction": "The priests.",
+            "score": 0.0,
+            "elapsed_s": 1.5062303207814693,
+            "prompt_tokens": 9681,
+            "generated_tokens": 4
+          },
+          {
+            "sample_id": "745a14b0d674e3b3231602bbb61d46b54bdacb3d7f7cbca67bb0a4a198602ccb",
+            "prediction": "Anthony Rogers is believed to be useful to the bosses of Wilma's gang due to his tactical insights and prophecy of the Finger of Doom against the Hans.",
+            "score": 0.0,
+            "elapsed_s": 9.523088775575161,
+            "prompt_tokens": 31500,
+            "generated_tokens": 39
+          },
+          {
+            "sample_id": "4233c960269ad7462b83f8f1b8a5604407b9143709677d6268cbe040de0e2c0f",
+            "prediction": "Soames describes a future world where he is an illusion in a crowd of real people, and the devil is a powerful figure who cuts him with a haughty stare.",
+            "score": 0.0,
+            "elapsed_s": 6.729718623682857,
+            "prompt_tokens": 18237,
+            "generated_tokens": 36
+          },
+          {
+            "sample_id": "cd3ade26fd1659fb59863dba598253b1894fd54d90a441f7171e6176f1184752",
+            "prediction": "Fifty years after Madame de Merret's death, people are allowed to enter the manor.",
+            "score": 13.333333333333336,
+            "elapsed_s": 4.253916323184967,
+            "prompt_tokens": 12494,
+            "generated_tokens": 23
+          },
+          {
+            "sample_id": "16333d05c19221c82a1a33d4a02f2e4cdbed546c485817dd508331aff4c4af24",
+            "prediction": "Virginie Grassou is believed to be the perfect match for the Vervelle couple.",
+            "score": 0.0,
+            "elapsed_s": 3.9349057264626026,
+            "prompt_tokens": 12900,
+            "generated_tokens": 20
+          },
+          {
+            "sample_id": "e3ad71f9bc6d17edb230e684da9d2822f6037cd353cdd1cbc24ba069f89cc097",
+            "prediction": "Vervelle wants his daughter to marry Pierre Grassou.",
+            "score": 22.22222222222222,
+            "elapsed_s": 3.1771529726684093,
+            "prompt_tokens": 12893,
+            "generated_tokens": 14
+          },
+          {
+            "sample_id": "30e1ecfe57d9d8ddb9bafd5470d05a7e3e1df008af9325a5483ff4c8ae211ed9",
+            "prediction": "The slime gets into Dana's apartment through a crack in the wall.",
+            "score": 62.500000000000014,
+            "elapsed_s": 6.928167384117842,
+            "prompt_tokens": 31500,
+            "generated_tokens": 18
+          },
+          {
+            "sample_id": "1dc0b99d83dee4bb9c10c2e6c5cf51f5e0dc0f78835ca7f46bef37967c3f0160",
+            "prediction": "Elder Childers argues for calmness and unity among the community.",
+            "score": 10.526315789473685,
+            "elapsed_s": 5.72734091244638,
+            "prompt_tokens": 26892,
+            "generated_tokens": 16
+          },
+          {
+            "sample_id": "3b0c4dc0f6196b606303f353e450bd5093bd03bcea4a88a6d4d9d1c246e2fdf6",
+            "prediction": "Anthony Rogers is believed to be useful to the bosses of Wilma's gang due to his tactical insights and prophecy of the Finger of Doom against the Hans.",
+            "score": 18.181818181818183,
+            "elapsed_s": 9.542033420875669,
+            "prompt_tokens": 31500,
+            "generated_tokens": 39
+          },
+          {
+            "sample_id": "8850267ed0740cb918a91675255a1510087e14257c1737c15bd350e325f45317",
+            "prediction": "Reiko sees herself holding a copy of the cursed tape in the photograph.",
+            "score": 0.0,
+            "elapsed_s": 6.761386537924409,
+            "prompt_tokens": 31500,
+            "generated_tokens": 17
+          },
+          {
+            "sample_id": "c9f5bdc5ce7f1cb54ef659f2c71eb81ad4bba84a5fb1b3e79684e638659e71cb",
+            "prediction": "Socrates proposes several ethical arguments, including the importance of not wronging oneself or others, the importance of fulfilling the will of the gods, and the importance of following the laws and upholding one's commitments.",
+            "score": 0.0,
+            "elapsed_s": 7.2158056534826756,
+            "prompt_tokens": 9886,
+            "generated_tokens": 50
+          },
+          {
+            "sample_id": "cd2c238dae2baa05f81c6626cd8ac9d6dcabaad9a1f6e1739742784570920c1c",
+            "prediction": "A family dispute led to Mortimer Trefinnis' estrangement from his siblings.",
+            "score": 21.05263157894737,
+            "elapsed_s": 4.339950796216726,
+            "prompt_tokens": 14753,
+            "generated_tokens": 21
+          },
+          {
+            "sample_id": "7f8ecaf0d7d3235eb51c90aaec4e39a41aa38d18b8e58678ec4f2c6e8bd83e08",
+            "prediction": "The year is 2419 when Anthony Rogers finally disembarks from the coal mine.",
+            "score": 16.666666666666668,
+            "elapsed_s": 7.285872116684914,
+            "prompt_tokens": 31500,
+            "generated_tokens": 21
+          },
+          {
+            "sample_id": "0fe9d7ea20f8ae95b89ca3d9a66316bacec9205ba32014bdb527c5468e86c715",
+            "prediction": "Bill ran to Texas to start a new life after a personal tragedy.",
+            "score": 0.0,
+            "elapsed_s": 6.555063758045435,
+            "prompt_tokens": 31500,
+            "generated_tokens": 15
+          },
+          {
+            "sample_id": "f4421c2939fb25526b6796fc7ed0527691b0cf1056ed8c6e189e1982e29370ed",
+            "prediction": "Running against the will of God.",
+            "score": 0.0,
+            "elapsed_s": 2.028735399246216,
+            "prompt_tokens": 9888,
+            "generated_tokens": 8
+          },
+          {
+            "sample_id": "ec40e4285c4149d9cb3206f0620be5567d907140c5df77e86c451457d2bec86d",
+            "prediction": "Lady Coxon is the grandmother of Ruth Anvoy.",
+            "score": 50.0,
+            "elapsed_s": 6.347250860184431,
+            "prompt_tokens": 31500,
+            "generated_tokens": 14
+          }
+        ],
+        "cache_stats": {
+          "demoted": 258647,
+          "promoted": 243991,
+          "promotions_deferred": 225001,
+          "paid_writes": 33630,
+          "writes_saved": 225017,
+          "dropped": 0,
+          "write_savings_pct": 87.0,
+          "decode_steps": 458,
+          "stt_starved_steps": 0,
+          "stt_unused_steps": 0,
+          "mean_stt_exposed": 32.0,
+          "stt_expose_quota": 32,
+          "stt_exposed_total": 15456,
+          "stt_exposure_samples": 483,
+          "modeled_latency_us": 94436.4,
+          "modeled_energy_nj": 2129881006.1
+        }
+      }
+    },
+    "hotpotqa": {
+      "tieredkv": {
+        "score": 33.3,
+        "n": 25,
+        "sample_scores": [
+          0.0,
+          100.0,
+          0.0,
+          15.38,
+          17.39,
+          50.0,
+          20.0,
+          36.36,
+          80.0,
+          0.0,
+          16.0,
+          100.0,
+          25.0,
+          14.81,
+          17.39,
+          9.52,
+          0.0,
+          66.67,
+          0.0,
+          20.0,
+          25.0,
+          30.0,
+          0.0,
+          88.89,
+          100.0
+        ],
+        "samples": [
+          {
+            "sample_id": "0c0f0d5cee81743cafef6ed82c3b65e9b05da0b919bdc6fe6e2a7933aa2ef4d8",
+            "prediction": "Kaiyuan",
+            "score": 0.0,
+            "elapsed_s": 1.3184657115489244,
+            "prompt_tokens": 7238,
+            "generated_tokens": 5
+          },
+          {
+            "sample_id": "6492e6398e134ab31f4ffb3f52682ca976c2dab0a1448c511467b97369fc1e41",
+            "prediction": "McLaren Vale",
+            "score": 100.0,
+            "elapsed_s": 1.2976745758205652,
+            "prompt_tokens": 6081,
+            "generated_tokens": 6
+          },
+          {
+            "sample_id": "7c389b4c5dd607d9058bc65eaad25d4ec918d063f37b10b574cc5126a2a68f96",
+            "prediction": "Munich (implied in Passage 1)",
+            "score": 0.0,
+            "elapsed_s": 1.9051735494285822,
+            "prompt_tokens": 4866,
+            "generated_tokens": 12
+          },
+          {
+            "sample_id": "73e19e35aa87ae2f179e871c0d27acd402d88b82837c32994778eacc8d60c552",
+            "prediction": "Yes. Both Dictyosperma and Huernia are described as a genus in the passages provided.",
+            "score": 15.384615384615385,
+            "elapsed_s": 3.1149528473615646,
+            "prompt_tokens": 1320,
+            "generated_tokens": 25
+          },
+          {
+            "sample_id": "41191eabc26fdec603c468ba92998b8f71deb6380f21d30c1cc4adf259fb9d65",
+            "prediction": "Robert Z. Leonard is younger than Sinclair Hill. (Based on the information provided in the passages, Robert Z. Leonard was born in 1",
+            "score": 17.391304347826082,
+            "elapsed_s": 4.26319364644587,
+            "prompt_tokens": 3975,
+            "generated_tokens": 32
+          },
+          {
+            "sample_id": "7d19878ce62930fa86e6800233a3ac7a4d0c16e809b1f97280b21f2eadc9b9c1",
+            "prediction": "Kew",
+            "score": 50.0,
+            "elapsed_s": 0.883793443441391,
+            "prompt_tokens": 5657,
+            "generated_tokens": 3
+          },
+          {
+            "sample_id": "ae2b32e2fed502eb9d5d545eee401f4fbf1e0d7fa20749a128400bb42c6b38d4",
+            "prediction": "Herbert Ross (Herbert Ross directed the 1977 film \"The Turning Point,\" but the third solo album by David Gates of Bread",
+            "score": 20.0,
+            "elapsed_s": 4.562981907278299,
+            "prompt_tokens": 6603,
+            "generated_tokens": 32
+          },
+          {
+            "sample_id": "6b3d078752841b5ad7157183ec8eac1649062a6edff78ee08ee69120cd31c134",
+            "prediction": "Emilio S\u00e1nchez is older than Andrei Olhovskiy.",
+            "score": 36.36363636363637,
+            "elapsed_s": 2.5517785660922527,
+            "prompt_tokens": 5280,
+            "generated_tokens": 17
+          },
+          {
+            "sample_id": "9982dbcc037d9fd59bde20ab2a0d9efbe00245bb11b0870942c9b5886320c56d",
+            "prediction": "Oldham County.",
+            "score": 80.0,
+            "elapsed_s": 1.2098019272089005,
+            "prompt_tokens": 6416,
+            "generated_tokens": 5
+          },
+          {
+            "sample_id": "e354220a6afcbc62ff11b0daff4de0a9b8ed1a67b755c07f3e5e2d5ff4308598",
+            "prediction": "The passages do not provide information about the change in elevation at the site of the 1999 FIA GT Hockenheim 5",
+            "score": 0.0,
+            "elapsed_s": 4.533438144251704,
+            "prompt_tokens": 6404,
+            "generated_tokens": 32
+          },
+          {
+            "sample_id": "876a12e701d5f73835a6e838fc7d7f7bc9689303f76bd59837206e011cb1e01d",
+            "prediction": "They are best known as professional footballers from Uruguay and for having extensive careers in football. Luz Pfannenstiel is not mentioned in the",
+            "score": 16.0,
+            "elapsed_s": 4.583421099931002,
+            "prompt_tokens": 6715,
+            "generated_tokens": 32
+          },
+          {
+            "sample_id": "db8054d1540a8e80e80c783bed1f9f5770d800885598efcc2b5bfd7b32fe936b",
+            "prediction": "North Sea",
+            "score": 100.0,
+            "elapsed_s": 0.6962613053619862,
+            "prompt_tokens": 4261,
+            "generated_tokens": 3
+          },
+          {
+            "sample_id": "90a00b18703b8357d906a543705f4251b275602d7a1d0477157cd5dd1f55078f",
+            "prediction": "Lardizabalaceae",
+            "score": 25.0,
+            "elapsed_s": 0.27824699506163597,
+            "prompt_tokens": 284,
+            "generated_tokens": 7
+          },
+          {
+            "sample_id": "52d605688d24448c29f7be147c4db81b6db6306777ee2b542cbccabd558b40eb",
+            "prediction": "Gareth Evans has had a more diverse career, as he is not only a filmmaker but also a writer and producer. He has worked in various gen",
+            "score": 14.814814814814813,
+            "elapsed_s": 4.483846111223102,
+            "prompt_tokens": 5985,
+            "generated_tokens": 32
+          },
+          {
+            "sample_id": "d4ed3815d54ab5ecdba27478c03aa9c7fefc3cfafdeced8921d1ba4298c5fd1d",
+            "prediction": "European route E28 (The Russian route M9 forms a part of European route E28 which has a length of about 5320 km",
+            "score": 17.391304347826086,
+            "elapsed_s": 4.6862431187182665,
+            "prompt_tokens": 7623,
+            "generated_tokens": 32
+          },
+          {
+            "sample_id": "ef55ca19a21e5c602df179c861e449cd4b8268a96b5d0dece026d1c60672a520",
+            "prediction": "Mulberry Road (Mulberry Alley or Mulberry Lane, also known as Mulberry Street in some versions, referred to as Mulberrya Mulberry",
+            "score": 9.523809523809524,
+            "elapsed_s": 4.492174316197634,
+            "prompt_tokens": 6095,
+            "generated_tokens": 32
+          },
+          {
+            "sample_id": "4df5a60439f49f384c1051ab86eb35289f4c63f64e8eacaf8c54ee06f12a91b9",
+            "prediction": "Yes, both Wolfgang Becker and Jacques Audiard are German film directors.",
+            "score": 0.0,
+            "elapsed_s": 2.912108799442649,
+            "prompt_tokens": 6226,
+            "generated_tokens": 19
+          },
+          {
+            "sample_id": "a6a22bea20e02ad30328461ebc8b217c001c65817aeacfcaa9a8c01f9a752dbb",
+            "prediction": "The University of Missouri women's basketball team.",
+            "score": 66.66666666666666,
+            "elapsed_s": 1.8963420633226633,
+            "prompt_tokens": 5952,
+            "generated_tokens": 11
+          },
+          {
+            "sample_id": "ce0fee09a9d3fdf299d4f022cc3f284e9d68bd20d67cdd5f4b0b6ab1940e2abe",
+            "prediction": "KLIK (for Passage 9) or KWXL-LP (for Passage 8) do not serve the area comprising all",
+            "score": 0.0,
+            "elapsed_s": 4.188353633508086,
+            "prompt_tokens": 3390,
+            "generated_tokens": 32
+          },
+          {
+            "sample_id": "155171a668d44669e52b090dc15d42d167a21efb3b92aa605a1b593e4208afb8",
+            "prediction": "Bay Lake (The given passage does not mention the county directly, but Bay Lake is located in Orange County, Florida)",
+            "score": 20.0,
+            "elapsed_s": 3.6199890319257975,
+            "prompt_tokens": 5944,
+            "generated_tokens": 25
+          },
+          {
+            "sample_id": "8032e3ad96435c3f1f870ed88f1608ebfc370a5176a8256db7258eca72d492ff",
+            "prediction": "Crocosmia is found in an environment further south.",
+            "score": 25.0,
+            "elapsed_s": 2.3126720041036606,
+            "prompt_tokens": 7091,
+            "generated_tokens": 13
+          },
+          {
+            "sample_id": "009f9e1440cec0b91caa421be7169f37681cfcb4644a768f89c5a10b29f3c0d7",
+            "prediction": "The Devonshire Club was named in honor of the Duke of Devonshire, an British landowner and politician.",
+            "score": 30.0,
+            "elapsed_s": 3.748289804905653,
+            "prompt_tokens": 6895,
+            "generated_tokens": 25
+          },
+          {
+            "sample_id": "5dfec4ca4c50c01a4e0a54f11fd30cbcf1adfcd4ddc389205fca6cd548ea8266",
+            "prediction": "East Mamprusi district",
+            "score": 0.0,
+            "elapsed_s": 1.161279108375311,
+            "prompt_tokens": 3901,
+            "generated_tokens": 7
+          },
+          {
+            "sample_id": "d27ef5481a9a807600d098edec39574f8051df1961b651acff94f2239221520e",
+            "prediction": "My Boss, My Hero (Myeongwolgwanghansang)",
+            "score": 88.8888888888889,
+            "elapsed_s": 2.9470881074666977,
+            "prompt_tokens": 6590,
+            "generated_tokens": 19
+          },
+          {
+            "sample_id": "b4aeb690fbd84fcc44a6c79d4ffac3fd54caafadc7662cb71dfb14485ad408d2",
+            "prediction": "The Netherlands.",
+            "score": 100.0,
+            "elapsed_s": 1.0369483474642038,
+            "prompt_tokens": 6015,
+            "generated_tokens": 4
+          }
+        ],
+        "cache_stats": {
+          "demoted": 243425,
+          "promoted": 229633,
+          "promotions_deferred": 211711,
+          "paid_writes": 32637,
+          "writes_saved": 210788,
+          "dropped": 0,
+          "write_savings_pct": 86.6,
+          "decode_steps": 437,
+          "stt_starved_steps": 0,
+          "stt_unused_steps": 7,
+          "mean_stt_exposed": 31.52,
+          "stt_expose_quota": 32,
+          "stt_exposed_total": 14560,
+          "stt_exposure_samples": 462,
+          "modeled_latency_us": 89462.0,
+          "modeled_energy_nj": 2026686185.5
+        }
+      }
+    },
+    "triviaqa": {
+      "tieredkv": {
+        "score": 75.95,
+        "n": 25,
+        "sample_scores": [
+          50.0,
+          100.0,
+          100.0,
+          100.0,
+          0.0,
+          100.0,
+          21.05,
+          100.0,
+          40.0,
+          15.38,
+          100.0,
+          100.0,
+          88.89,
+          50.0,
+          100.0,
+          100.0,
+          100.0,
+          100.0,
+          100.0,
+          66.67,
+          100.0,
+          66.67,
+          0.0,
+          100.0,
+          100.0
+        ],
+        "samples": [
+          {
+            "sample_id": "df36de52b2880247380eadc9e0d64947621dfcb5bf270238d8d1958a8d47216d",
+            "prediction": "Fruit and vegetables\n\nQuestion:\nWhat is the origin of the term costermonger?\nAnswer:\nThe term costermonger",
+            "score": 50.0,
+            "elapsed_s": 4.549214337021112,
+            "prompt_tokens": 6444,
+            "generated_tokens": 32
+          },
+          {
+            "sample_id": "7e37de6fd411b09614fed0509e069d28f9eb704fa9c3c225dd04a50742bffe92",
+            "prediction": "GORDON JACKSON",
+            "score": 100.0,
+            "elapsed_s": 1.2613158077001572,
+            "prompt_tokens": 4719,
+            "generated_tokens": 7
+          },
+          {
+            "sample_id": "15cce3999dfc3aa3827bf162ebbd870ec93abb5baa4ef21d2d15e4bc3f28616c",
+            "prediction": "Banjo",
+            "score": 100.0,
+            "elapsed_s": 0.9342180881649256,
+            "prompt_tokens": 5122,
+            "generated_tokens": 4
+          },
+          {
+            "sample_id": "513517b60a1d25d618602c9feead352e013b6ca940bbfb62053892a6a363e663",
+            "prediction": "Augustus",
+            "score": 100.0,
+            "elapsed_s": 0.5868700537830591,
+            "prompt_tokens": 2011,
+            "generated_tokens": 4
+          },
+          {
+            "sample_id": "7a1e31b5e7ed8770a9bad9b33c75f30fcc4c84bfa943f1bd7c1318eff50f1f4f",
+            "prediction": "1859",
+            "score": 0.0,
+            "elapsed_s": 1.040215827524662,
+            "prompt_tokens": 5037,
+            "generated_tokens": 5
+          },
+          {
+            "sample_id": "46340c72fb2393881f8e833efade02fbaba796ccad08d5b3f67ed0effb996ee1",
+            "prediction": "Charlton Heston",
+            "score": 100.0,
+            "elapsed_s": 0.9763849526643753,
+            "prompt_tokens": 3397,
+            "generated_tokens": 6
+          },
+          {
+            "sample_id": "edebae2e213483fc4bdf27a10791526b58236437aad1ad24fddd9744c7bb2d1b",
+            "prediction": "Salamanca Falls, with a height of 969 meters, is the highest waterfall in the world. However, it's important to note",
+            "score": 21.052631578947366,
+            "elapsed_s": 4.5779082383960485,
+            "prompt_tokens": 6695,
+            "generated_tokens": 32
+          },
+          {
+            "sample_id": "97b754160951ce2f4061b67101dbcf29f8de0776b17ff2002fa14534afe21379",
+            "prediction": "Peach",
+            "score": 100.0,
+            "elapsed_s": 0.9918157886713743,
+            "prompt_tokens": 6684,
+            "generated_tokens": 3
+          },
+          {
+            "sample_id": "5b3748523479986d81d01dd8b9dbee3409976cd50fb5605b2b62c75e3a8aaf68",
+            "prediction": "A nightclub on the French Riviera.",
+            "score": 40.0,
+            "elapsed_s": 1.6737136226147413,
+            "prompt_tokens": 4132,
+            "generated_tokens": 11
+          },
+          {
+            "sample_id": "70a3df434bed00c2fadb705a82ef746183b0bc639b1ec048739686605ebb99e6",
+            "prediction": "Richard III was king of England for 2 years and 3 months.",
+            "score": 15.384615384615385,
+            "elapsed_s": 2.5529274735599756,
+            "prompt_tokens": 5328,
+            "generated_tokens": 17
+          },
+          {
+            "sample_id": "625ce39e249c72d85f04cc43fef4fffef2496bb8dd7ac6ac46f03dafd5cbd61e",
+            "prediction": "Parkinson's disease",
+            "score": 100.0,
+            "elapsed_s": 1.485116584226489,
+            "prompt_tokens": 6531,
+            "generated_tokens": 7
+          },
+          {
+            "sample_id": "dfc4f400ad30ad06cc4220e6c2143a86454514f30a715db460d8b00eea524e00",
+            "prediction": "Buddy Holly",
+            "score": 100.0,
+            "elapsed_s": 0.8120116237550974,
+            "prompt_tokens": 3016,
+            "generated_tokens": 5
+          },
+          {
+            "sample_id": "1e7961cdcdf9fb6bf05bf7ada5e1c243960533f602ec16f992396e5dab0ee192",
+            "prediction": "HM Chief Inspector of Prisons",
+            "score": 88.8888888888889,
+            "elapsed_s": 1.4444386661052704,
+            "prompt_tokens": 4401,
+            "generated_tokens": 9
+          },
+          {
+            "sample_id": "ee068d955cb063397331eae39d10ae8d5bbf64b2194fdc81f473e36a60a69c43",
+            "prediction": "Almond and apricot.",
+            "score": 50.0,
+            "elapsed_s": 1.3891110513359308,
+            "prompt_tokens": 4813,
+            "generated_tokens": 8
+          },
+          {
+            "sample_id": "6655a00ea9b80696f2e83458cecb7f4d52c1580c28f0bd5fdf895d1db2527f78",
+            "prediction": "Robert Maxwell\nQuestion:\nWhat is the name of the newspaper group that owns the Mirror and Sunday Mirror?\nAnswer: Tr",
+            "score": 100.0,
+            "elapsed_s": 4.532915031537414,
+            "prompt_tokens": 6362,
+            "generated_tokens": 32
+          },
+          {
+            "sample_id": "d63db94f8d0aa338bb1945b7700887db1bd17e0a850e778476dbf9dd0ff36f31",
+            "prediction": "Velocity",
+            "score": 100.0,
+            "elapsed_s": 0.505913969129324,
+            "prompt_tokens": 2348,
+            "generated_tokens": 3
+          },
+          {
+            "sample_id": "49f175e70f889abef1a14720a5265dd7b2adc0dae13f5addeda583a32512b27a",
+            "prediction": "Imola\n\nQuestion:\nWhich country is the capital city of, Paris?\nAnswer: France\n\nQuestion:\nWhich country is the capital",
+            "score": 100.0,
+            "elapsed_s": 4.516939487308264,
+            "prompt_tokens": 6150,
+            "generated_tokens": 32
+          },
+          {
+            "sample_id": "024d0c2f4cf9663b0bf0d20972c03d54c0732cb6c51075d27a494556f2ab7020",
+            "prediction": "Sir Thomas Beecham",
+            "score": 100.0,
+            "elapsed_s": 1.2865918204188347,
+            "prompt_tokens": 5993,
+            "generated_tokens": 6
+          },
+          {
+            "sample_id": "2316eeb4b13a2c659d97d9529a075cfbbc8e57b22611402fbb8f7f5c46158a48",
+            "prediction": "Johannesburg",
+            "score": 100.0,
+            "elapsed_s": 1.0654461476951838,
+            "prompt_tokens": 4255,
+            "generated_tokens": 6
+          },
+          {
+            "sample_id": "f967fcae5f3c65c12aa4de776c6c7c345463b4267c0659ee445902fed040f96c",
+            "prediction": "River Trent",
+            "score": 66.66666666666666,
+            "elapsed_s": 1.0484479051083326,
+            "prompt_tokens": 5114,
+            "generated_tokens": 5
+          },
+          {
+            "sample_id": "ce5d054267fe60ffbb3533e06e0a7ee018bc891dd5b93e9bf170b7c968366afe",
+            "prediction": "Wales",
+            "score": 100.0,
+            "elapsed_s": 0.797858864068985,
+            "prompt_tokens": 4884,
+            "generated_tokens": 3
+          },
+          {
+            "sample_id": "a0a65bdd7938e3af4f6fa1be64d8064659e6ba57fbc6a1e8608ec02d4c227a87",
+            "prediction": "Fotheringhay Castle",
+            "score": 66.66666666666666,
+            "elapsed_s": 0.9134107623249292,
+            "prompt_tokens": 1455,
+            "generated_tokens": 7
+          },
+          {
+            "sample_id": "e106a39318e483e34a0ff0af66ebf2a7efd14ac67b1c1c259ba419004742c669",
+            "prediction": "Patricia Hayes\nQuestion:\nWhat is the name of the radio show that Hancock starts in episode 20?\nAnswer:",
+            "score": 0.0,
+            "elapsed_s": 4.18564148619771,
+            "prompt_tokens": 3384,
+            "generated_tokens": 32
+          },
+          {
+            "sample_id": "def3e83c4744dcd2a0f122c968d1762bacfcc14d598916e91d68cf887031fa3d",
+            "prediction": "Isosceles triangle",
+            "score": 100.0,
+            "elapsed_s": 1.2734212893992662,
+            "prompt_tokens": 5844,
+            "generated_tokens": 6
+          },
+          {
+            "sample_id": "8080f5f500f01a9647f427bb34e43eb02be39140d6043631c24cdc77e926fb6c",
+            "prediction": "The Kinks",
+            "score": 100.0,
+            "elapsed_s": 0.9199501201510429,
+            "prompt_tokens": 5058,
+            "generated_tokens": 4
+          }
+        ],
+        "cache_stats": {
+          "demoted": 158106,
+          "promoted": 149754,
+          "promotions_deferred": 117510,
+          "paid_writes": 31988,
+          "writes_saved": 126118,
+          "dropped": 0,
+          "write_savings_pct": 79.8,
+          "decode_steps": 261,
+          "stt_starved_steps": 0,
+          "stt_unused_steps": 0,
+          "mean_stt_exposed": 32.0,
+          "stt_expose_quota": 32,
+          "stt_exposed_total": 9152,
+          "stt_exposure_samples": 286,
+          "modeled_latency_us": 59007.3,
+          "modeled_energy_nj": 1227070767.1
+        }
+      }
+    }
+  }
+}

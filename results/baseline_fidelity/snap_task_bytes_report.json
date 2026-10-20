@@ -1,0 +1,114 @@
+{
+  "input_sha256": {
+    "obs128_lru_15.json": "3b4ea7b2644a8717f7d1a9608377f653ea92e49cbabadec41f33e81828c7650e",
+    "snap832_qn10.json": "90f6f0c59d6185244306b9eb5df456dcb774cee10014c5bdfbd4956945d62f17",
+    "snap500_gov5.json": "22a991fc97643518093ad81a4a8546170cfe4370205a3d90dc0448b99765290e"
+  },
+  "quality": {
+    "baseline": "snapkv",
+    "per_task": {
+      "qasper": {
+        "n": 5,
+        "mean_difference": -4.644041173984802,
+        "se": 4.772393603217988
+      },
+      "narrativeqa": {
+        "n": 5,
+        "mean_difference": 3.575313575313578,
+        "se": 5.162615162615164
+      },
+      "gov_report": {
+        "n": 5,
+        "mean_difference": -0.9612247846863298,
+        "se": 1.2598798885741709
+      }
+    },
+    "scores": {
+      "qasper": {
+        "tieredkv": 15.65,
+        "snapkv": 20.3
+      },
+      "narrativeqa": {
+        "tieredkv": 20.03,
+        "snapkv": 16.45
+      },
+      "gov_report": {
+        "tieredkv": 28.17,
+        "snapkv": 29.13
+      }
+    },
+    "task_balanced_mean_difference": -0.676650794452518,
+    "paired_bootstrap_95pct_interval": [
+      -4.934666340943186,
+      3.3577899358086643
+    ],
+    "bootstrap_draws": 10000,
+    "seed": 0
+  },
+  "resources": {
+    "qasper": {
+      "snap_capacity": 832,
+      "tiered_mean_final_mib": 421.95234375,
+      "snap_mean_final_mib": 430.3,
+      "ratio_of_mean_final_bytes": 1.0197834100785226,
+      "per_request_snap_to_tiered_ratios": [
+        1.0189479140632955,
+        1.0100890207715134,
+        1.029655990510083,
+        1.0124925639500297,
+        1.0276444297301772
+      ],
+      "snap_attended_rows_final": [
+        860,
+        851,
+        868,
+        851,
+        873
+      ],
+      "tiered_attended_row_ceiling": 1024
+    },
+    "narrativeqa": {
+      "snap_capacity": 832,
+      "tiered_mean_final_mib": 420.45,
+      "snap_mean_final_mib": 424.9,
+      "ratio_of_mean_final_bytes": 1.010583898204305,
+      "per_request_snap_to_tiered_ratios": [
+        1.020746887966805,
+        1.0065515187611673,
+        1.013095238095238,
+        1.0059453032104637,
+        1.006543723973825
+      ],
+      "snap_attended_rows_final": [
+        861,
+        845,
+        851,
+        846,
+        846
+      ],
+      "tiered_attended_row_ceiling": 1024
+    },
+    "gov_report": {
+      "snap_capacity": 500,
+      "tiered_mean_final_mib": 383.8609375,
+      "snap_mean_final_mib": 389.2,
+      "ratio_of_mean_final_bytes": 1.0139088455698881,
+      "per_request_snap_to_tiered_ratios": [
+        0.8058105876294153,
+        0.9195134287159353,
+        1.8399984027791643,
+        1.1404227429133214,
+        0.8452576706433894
+      ],
+      "snap_attended_rows_final": [
+        709,
+        838,
+        720,
+        870,
+        755
+      ],
+      "tiered_attended_row_ceiling": 1024
+    }
+  },
+  "scope": "Selected first five per task, task-level capacities chosen using an earlier observed length regime. Mean final KV payload only; not ex-ante per-request equal bytes, equal attention width, or matched prefill peak. Tiered uses SDPA prefill/eager decode; Snap adapter uses SDPA throughout. No latency/SOTA claim."
+}

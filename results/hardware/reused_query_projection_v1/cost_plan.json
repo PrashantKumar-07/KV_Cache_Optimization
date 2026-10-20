@@ -1,0 +1,25 @@
+{
+  "settings": {
+    "hot": 991,
+    "cold": 1090,
+    "quota": 32,
+    "context": 16384,
+    "decode": 50,
+    "warmup": 1,
+    "prefill_last_logits": true,
+    "seed": 0
+  },
+  "prompt": "results/remediation_v3/latency_prompt.txt",
+  "prompt_sha256": "18695714f26e35cb8d2b039ae9efb3b7e64291cbd7bcd91956efc07e16a732cd",
+  "teachers": "results/shadow_ablation_full/fixed_stream_20260929.json",
+  "teachers_sha256": "620ac3a383997c9afbc6a3f0b06acec9f261d5a2a5827bf5988e0bb5b69f12a2",
+  "quiet": "Capture physicalGPU0 compute PID list before loading and before/after each row; only this own model PID allowed. OtherGPU1 workload untouched. Contamination stops and invalidates speed/adoption claim.",
+  "control": "results/hardware/layerwise_prefill_placement_v1/control_shared.json",
+  "control_sha256": "9449721be00001a6e4ada6e243be61e1d100dc4eb6508afa0122c4c8d8275ee0",
+  "timestamp_utc": "2026-10-03T03:43:18.242780+00:00",
+  "correctness_proof_sha256": "5aec1dc97c6fa15983dbdd043092b84a4bf5f9466e24071c4ab74555b3fd272a",
+  "mechanism": "Diagnostic3ABBA pairs original visible-only no-op query hook with reused-projection visible-only no-op hook. AllordinaryLRU state/transfers/predictions preserved; bothselect onlyalreadyvisible32coldrows. NativeMistralQusedbeforecacheupdate, identical ranking otherwise.",
+  "primary": "Exact ordinarycache/logicalcounters/nativeH2D/D2H/predictions, hooks/context cleanup, quietGPU0. Median decode improvement>=5%, p95<=2%worse, TTFT<=10%worse than original duplicate-Q visible-only hook. Report pairedhook savings separately from absolute ordinaryLRU budget.",
+  "stop": "Failure of primary stops expansion of standalone projection-reuse optimization. No retry for favorable metrics, no full-scan quality/timing/adoption or independent-quality claim.",
+  "limits": "Tests component cost on one model/seed16K50, with concat/sort included and zeroextra coldreads. Not a native retrieval implementation, actual-resource gate, universal cost bound or fullgoal proof."
+}

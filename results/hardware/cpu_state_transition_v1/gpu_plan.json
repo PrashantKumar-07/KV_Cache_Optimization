@@ -1,0 +1,20 @@
+{
+  "timestamp_utc": "2026-10-03T11:16:00.058854+00:00",
+  "purpose": "Consume native CPU state commands in fixed GPU owners and compare original TieredKVCache promotion/eviction/reclaim. Component proof, no macro retry.",
+  "cases": [
+    "inclusive shadow-first overflow",
+    "inclusive stable LRU overflow",
+    "inclusive live-floor cover edge",
+    "exclusive promotion/overflow",
+    "eight-layer bounded compaction"
+  ],
+  "requirements": [
+    "BF16 payload and F32 metadata bits exact versus original reference",
+    "CPU flags/positions and physical logical/free slots consistent with descriptor consumption",
+    "GPU metadata compacted before cold reclaim; original stable score/timestamp selection retained",
+    "CPU and GPU owner roots/padding preserved; commands consumed before reuse and stale commands rejected after reclaim"
+  ],
+  "limits": "Small synthetic GPU transitions, victim decisions explicitly supplied. Cold keep decisions come from original reference; independent retention-selection validation remains needed. Emulated physical KV slots are GPU tensors, not pinned CPU/native transfers or physical STT. No model, speed or whole-process memory claim.",
+  "replay_sha256": "3439bbb89d8e3c4d6e624cce9ab61840fa79a71b147057f49cc7ecb543bf0baf",
+  "plan_sha256": "a48e5fc4792e675a16e7d67e3b8b34b5c36b32484efd02792a9fde6bb814a0d1"
+}

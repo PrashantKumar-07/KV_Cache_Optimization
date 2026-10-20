@@ -1,0 +1,60 @@
+
+==================================== ERRORS ====================================
+______________ ERROR collecting tests/test_query_phase_profile.py ______________
+tests/test_query_phase_profile.py:13: in <module>
+    from profile_query_phases import ProfiledGpuQuerySelector
+experiments/profile_query_phases.py:90: in <module>
+    PHASE_HOOK, PHASE_AST = annotated_factory()
+experiments/profile_query_phases.py:77: in annotated_factory
+    restored = Unwrap().visit(ast.parse(ast.unparse(tree)))
+/usr/lib/python3.10/ast.py:1681: in unparse
+    return unparser.visit(ast_obj)
+/usr/lib/python3.10/ast.py:815: in visit
+    self.traverse(node)
+/usr/lib/python3.10/ast.py:806: in traverse
+    super().visit(node)
+/usr/lib/python3.10/ast.py:418: in visit
+    return visitor(node)
+/usr/lib/python3.10/ast.py:830: in visit_Module
+    self._write_docstring_and_traverse_body(node)
+/usr/lib/python3.10/ast.py:823: in _write_docstring_and_traverse_body
+    self.traverse(node.body)
+/usr/lib/python3.10/ast.py:804: in traverse
+    self.traverse(item)
+/usr/lib/python3.10/ast.py:806: in traverse
+    super().visit(node)
+/usr/lib/python3.10/ast.py:418: in visit
+    return visitor(node)
+/usr/lib/python3.10/ast.py:1012: in visit_FunctionDef
+    self._function_helper(node, "def")
+/usr/lib/python3.10/ast.py:1030: in _function_helper
+    self._write_docstring_and_traverse_body(node)
+/usr/lib/python3.10/ast.py:823: in _write_docstring_and_traverse_body
+    self.traverse(node.body)
+/usr/lib/python3.10/ast.py:804: in traverse
+    self.traverse(item)
+/usr/lib/python3.10/ast.py:806: in traverse
+    super().visit(node)
+/usr/lib/python3.10/ast.py:418: in visit
+    return visitor(node)
+/usr/lib/python3.10/ast.py:1012: in visit_FunctionDef
+    self._function_helper(node, "def")
+/usr/lib/python3.10/ast.py:1030: in _function_helper
+    self._write_docstring_and_traverse_body(node)
+/usr/lib/python3.10/ast.py:823: in _write_docstring_and_traverse_body
+    self.traverse(node.body)
+/usr/lib/python3.10/ast.py:804: in traverse
+    self.traverse(item)
+/usr/lib/python3.10/ast.py:806: in traverse
+    super().visit(node)
+/usr/lib/python3.10/ast.py:418: in visit
+    return visitor(node)
+/usr/lib/python3.10/ast.py:1081: in visit_With
+    with self.block(extra=self.get_type_comment(node)):
+/usr/lib/python3.10/ast.py:797: in get_type_comment
+    comment = self._type_ignores.get(node.lineno) or node.type_comment
+E   AttributeError: 'With' object has no attribute 'lineno'
+=========================== short test summary info ============================
+ERROR tests/test_query_phase_profile.py - AttributeError: 'With' object has n...
+!!!!!!!!!!!!!!!!!!!! Interrupted: 1 error during collection !!!!!!!!!!!!!!!!!!!!
+1 error in 4.02s

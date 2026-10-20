@@ -1,0 +1,40 @@
+FF................                                                       [100%]
+=================================== FAILURES ===================================
+_________________ test_preflight_rejection_calls_original_once _________________
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x778beba57610>
+
+>   ???
+
+/data/nishant/Nishant/Prashant/Project/kv_cache/tests/test_cold_boundary_policy.py:13: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <cold_boundary_policy.ColdBoundaryPolicy object at 0x778beba57580>
+past = <object object at 0x778a7dc47f70>
+
+    def _visible_tuple(self,past):
+>    if any(c.pending_keep is not None for c in self.layer_caches.values()):
+E    AttributeError: 'ColdBoundaryPolicy' object has no attribute 'layer_caches'
+
+experiments/cold_boundary_policy.py:11: AttributeError
+_________________ test_native_success_does_not_enter_original __________________
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x778a7cd82620>
+
+>   ???
+
+/data/nishant/Nishant/Prashant/Project/kv_cache/tests/test_cold_boundary_policy.py:20: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <cold_boundary_policy.ColdBoundaryPolicy object at 0x778a7cd828f0>
+past = <object object at 0x778a7dc475b0>
+
+    def _visible_tuple(self,past):
+>    if any(c.pending_keep is not None for c in self.layer_caches.values()):
+E    AttributeError: 'ColdBoundaryPolicy' object has no attribute 'layer_caches'
+
+experiments/cold_boundary_policy.py:11: AttributeError
+=========================== short test summary info ============================
+FAILED tests/test_cold_boundary_policy.py::test_preflight_rejection_calls_original_once
+FAILED tests/test_cold_boundary_policy.py::test_native_success_does_not_enter_original
+2 failed, 16 passed in 2.82s

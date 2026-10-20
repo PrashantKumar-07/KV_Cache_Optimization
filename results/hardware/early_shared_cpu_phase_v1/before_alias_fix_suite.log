@@ -1,0 +1,53 @@
+........................................................................ [ 14%]
+..............................................................FF........ [ 28%]
+........................................................................ [ 43%]
+........................................................................ [ 57%]
+........................................................................ [ 71%]
+........................................................................ [ 86%]
+.....................................................................    [100%]
+=================================== FAILURES ===================================
+____ test_current_attention_keeps_original_KV_while_future_hot_shares_owner ____
+
+    def test_current_attention_keeps_original_KV_while_future_hot_shares_owner():
+        p=Policy();c=EarlySharedCache(p)
+        key=torch.arange(40).reshape(1,2,10,2).to(torch.bfloat16);value=-key
+        before=[t.clone() for t in (key,value)];hot=p.cache.sram_k.clone()
+        result=c.update(key,value,0)
+        assert result[0] is key and result[1] is value
+        assert torch.equal(key,before[0]) and torch.equal(value,before[1])
+        raw=c.layers[0].keys
+>       assert raw.shape==(1,2,6,2) and capacity(raw)==7
+E       assert (torch.Size([1, 2, 6, 2]) == (1, 2, 6, 2)
+E         
+E         Use -v to get more diff and 6 == 7)
+E        +  where 6 = capacity(tensor([[[[ 0.0000e+00,  1.0000e+00],\n          [ 2.0000e+00,  3.0000e+00],\n          [ 4.0000e+00,  5.0000e+00],\n    ...+01,  1.5000e+01],\n          [ 4.9698e+14, -8.8662e-07],\n          [ 0.0000e+00,  0.0000e+00]]]], dtype=torch.bfloat16))
+
+tests/test_early_shared_cpu_phase.py:31: AssertionError
+____ test_global_handoff_fills_cold_tail_without_reallocating_visible_root _____
+
+    def test_global_handoff_fills_cold_tail_without_reallocating_visible_root():
+        p=Policy();c=EarlySharedCache(p);key=torch.zeros(1,2,10,2,dtype=torch.bfloat16)
+        c.update(key,key.clone(),0)
+        for raw,hot in [(c.layers[0].keys,p.cache.sram_k),(c.layers[0].values,p.cache.sram_v)]:
+            cold=torch.arange(8).reshape(2,2,2).to(torch.bfloat16)+30
+            expected=torch.cat((hot.clone(),cold),dim=1)
+            root=raw.untyped_storage()._cdata
+            visible=ReuseVisiblePolicy._compose_visible(hot,cold,raw)
+            assert torch.equal(visible,expected)
+>           assert visible.untyped_storage()._cdata==root and capacity(raw)==7
+E           assert (106634455663616 == 106634455900896)
+E            +  where 106634455663616 =  0\n 0\n 128\n 63\n 0\n 64\n 64\n 64\n 128\n 64\n 160\n 64\n 192\n 64\n 224\n 64\n 240\n 65\n 248\n 65\n 0\n 66\n 4\n 66\n 0\n 65\n 16\n 65\n 32\n ...5\n 64\n 65\n 80\n 65\n 96\n 65\n 112\n 65\n 8\n 66\n 12\n 66\n 16\n 66\n 20\n 66\n[torch.storage.UntypedStorage(device=cpu) of size 48]._cdata
+E            +    where  0\n 0\n 128\n 63\n 0\n 64\n 64\n 64\n 128\n 64\n 160\n 64\n 192\n 64\n 224\n 64\n 240\n 65\n 248\n 65\n 0\n 66\n 4\n 66\n 0\n 65\n 16\n 65\n 32\n ...5\n 64\n 65\n 80\n 65\n 96\n 65\n 112\n 65\n 8\n 66\n 12\n 66\n 16\n 66\n 20\n 66\n[torch.storage.UntypedStorage(device=cpu) of size 48] = <built-in method untyped_storage of Tensor object at 0x71c6441fdee0>()
+E            +      where <built-in method untyped_storage of Tensor object at 0x71c6441fdee0> = tensor([[[ 0.,  1.],\n         [ 2.,  3.],\n         [ 4.,  5.],\n         [ 6.,  7.],\n         [30., 31.],\n         [32....[10., 11.],\n         [12., 13.],\n         [14., 15.],\n         [34., 35.],\n         [36., 37.]]], dtype=torch.bfloat16).untyped_storage
+
+tests/test_early_shared_cpu_phase.py:44: AssertionError
+=============================== warnings summary ===============================
+tests/test_review_regressions.py::test_flexicache_checks_preserve_existing_evidence[check_flexicache_transfers]
+  /usr/lib/python3.10/distutils/command/build_ext.py:13: DeprecationWarning: The distutils.sysconfig module is deprecated, use sysconfig instead
+    from distutils.sysconfig import customize_compiler, get_python_version
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ============================
+FAILED tests/test_early_shared_cpu_phase.py::test_current_attention_keeps_original_KV_while_future_hot_shares_owner
+FAILED tests/test_early_shared_cpu_phase.py::test_global_handoff_fills_cold_tail_without_reallocating_visible_root
+2 failed, 499 passed, 1 warning in 9.96s

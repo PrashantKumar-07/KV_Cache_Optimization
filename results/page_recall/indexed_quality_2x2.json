@@ -1,0 +1,158 @@
+{
+  "config": {
+    "model": "../models/mistral-7b-instruct",
+    "data_dir": "../hf_cache/datasets/downloads/extracted/5def9c7eaf83951e1cee75902d8611ef764ad88dd289e8f0bf97ff658a3eb83a/data",
+    "tasks": [
+      "qasper",
+      "gov_report"
+    ],
+    "max_samples": 2,
+    "strategy": "indexed_centroid",
+    "seed": 0,
+    "max_ctx": 31500,
+    "candidate_pages": 32,
+    "tiered_vram_budget": 992,
+    "tiered_stt_budget": 3104,
+    "recent": 128,
+    "stt_expose_quota": 32,
+    "real_query_prefill": true,
+    "query_score_mode": "chunked",
+    "query_chunk_size": 128,
+    "sttram_bifurcation_frac": 0.75,
+    "kv_dtype": "bfloat16",
+    "runtime": {
+      "git_revision": "be7e700d84d46b47e32ba5b9870c8b71783b9e53",
+      "source_sha256": "58a54787c7895b59b476783403e18b8031cb6e3b6be934042c8dbc14b1939061",
+      "packages": {
+        "torch": "2.5.1+cu124",
+        "transformers": "5.14.1",
+        "datasets": "5.0.0",
+        "numpy": "2.2.6",
+        "accelerate": "1.14.0",
+        "huggingface_hub": "1.24.0",
+        "rouge": "1.0.1"
+      }
+    },
+    "selector_sha256": "ecef20ea48be38f1ac9e5c9d0cce2fb89fa90c270dc968cf541a448d77b89876",
+    "page_index_sha256": "dfb965ba656b514b7602801305ffe5d179616a6b3e7133202c4ebc7dfd335e60",
+    "page_candidates_sha256": "ff633441569a43855a6113ef25897db73e72147626fcc9a5bdd826fa847fa943",
+    "dataset_sha256": {
+      "qasper": "97d95c01221a17a2ce51f9180d65a671bf2998504a2ff0cccffe97e9b08444d8",
+      "gov_report": "0a3902fcf3d49f228549f02a2ef1ae84dbe8578b8be3d4611d54459487bdef84"
+    }
+  },
+  "results": {
+    "qasper": {
+      "tieredkv": {
+        "score": 53.97,
+        "n": 2,
+        "sample_scores": [
+          85.71,
+          22.22
+        ],
+        "samples": [
+          {
+            "sample_id": "3b91dce7ca41a9d16a1d0c61806c139db583a053ddb582bf79df3ff56f8e0344",
+            "prediction": "They selected different Facebook pages, including FoxNews, CNN, ESPN, New York Times, Time magazine, Huffington Post Weird News, The Guardian, Cartoon Network, Cooking Light, Home Cooking Adventure, Justin Bieber, Nickelodeon, and Spongebob.",
+            "score": 85.71428571428571,
+            "elapsed_s": 35.099554631859064,
+            "prompt_tokens": 4895,
+            "generated_tokens": 65,
+            "final_resident_kv_payload_bytes": 446681088,
+            "prefill_s": 1.132571741938591,
+            "prefill_peak_alloc_bytes": 16107857920,
+            "page_index_logical_bytes": 20266988,
+            "page_index_changed_key_bytes": 125419520
+          },
+          {
+            "sample_id": "5f59f94cd91401a55bcd3b6b24b78cd2c4c78e8ee6e7663e0ac8b97306444f08",
+            "prediction": "The paper proposes attention models to infer the latent context that triggers an instructor intervention.",
+            "score": 22.22222222222222,
+            "elapsed_s": 10.672948513180017,
+            "prompt_tokens": 5415,
+            "generated_tokens": 20,
+            "final_resident_kv_payload_bytes": 440573952,
+            "prefill_s": 0.6479018405079842,
+            "prefill_peak_alloc_bytes": 16222330880,
+            "page_index_logical_bytes": 19871144,
+            "page_index_changed_key_bytes": 53280768
+          }
+        ],
+        "cache_stats": {
+          "demoted": 44956,
+          "promoted": 42300,
+          "promotions_deferred": 42692,
+          "paid_writes": 4135,
+          "writes_saved": 40821,
+          "dropped": 0,
+          "write_savings_pct": 90.8,
+          "decode_steps": 83,
+          "stt_starved_steps": 0,
+          "stt_unused_steps": 0,
+          "mean_stt_exposed": 32.0,
+          "stt_expose_quota": 32,
+          "stt_exposed_total": 2720,
+          "stt_exposure_samples": 85,
+          "modeled_latency_us": 24493.5,
+          "modeled_energy_nj": 1063711801.3
+        }
+      }
+    },
+    "gov_report": {
+      "tieredkv": {
+        "score": 33.46,
+        "n": 2,
+        "sample_scores": [
+          35.01,
+          31.9
+        ],
+        "samples": [
+          {
+            "sample_id": "11d3fe7a8c5f9be5c05ff2b46002fae136e91f31575249f5c3db054f4d0715ad",
+            "prediction": "The report highlights the complexity of information systems and their supply chains, particularly in the context of federal procurement of IT equipment and software. The report notes that federal agencies may have limited visibility into the global supply chains of their IT providers, increasing the risk of security vulnerabilities and potential threats. The report emphasizes the importance of the Federal Information Security Modernization Act (FISMA) in addressing supply chain risks throughout the life cycle of federal information systems. NIST provides guidelines for managing supply chain risk, including conducting due diligence on suppliers, implementing acquisition policies, and implementing procedures to protect against supply chain threats. The report also mentions the risks posed by counterfeit hardware and software, malicious logic, disruptions in production or distribution, and unqualified service providers. The report recommends that federal agencies, specifically the Departments of Justice, Energy, and Homeland Security, develop and implement policies and procedures to address supply chain risks. The report also mentions the efforts of the four national security-related agencies to address supply chain security through interagency initiatives and technical and policy tools. Overall, the report emphasizes the importance of federal agencies managing IT supply chain risks to protect against potential threats to confidentiality, integrity, and availability of federal information systems.",
+            "score": 35.01326218182074,
+            "elapsed_s": 141.87390835024416,
+            "prompt_tokens": 3308,
+            "generated_tokens": 262,
+            "final_resident_kv_payload_bytes": 475115520,
+            "prefill_s": 0.3889775909483433,
+            "prefill_peak_alloc_bytes": 15763500544,
+            "page_index_logical_bytes": 22038956,
+            "page_index_changed_key_bytes": 450338816
+          },
+          {
+            "sample_id": "56f5a37dac322a67081fbbce0ee9261106133f38ac8b4f38fc3555f5b593969d",
+            "prediction": "The report by the Government Accountability Office (GAO) examines grant programs awarded by the Departments of Health and Human Services (HHS), Labor (DOL), and Justice (DOJ) from 2007 to 2015, focusing on those subject to statutory restrictions on religious-based hiring for which nonprofits were eligible to be primary recipients.\n\nHHS identified one grant program, Projects for Assistance in Transition from Homelessness (PATH), where no grants were awarded to nonprofit organizations and no Faith-Based Organizations (FBOs) were exempted from religious-based hiring restrictions.\n\nDOL identified 18 grant programs in its Employment and Training Administration (ETA), where 931 grantees were awarded grants, including 19 potential FBOs. No exemptions were reported by DOL grantees.\n\nDOJ identified at least 34 relevant grant programs, with 20 from the Office on Violence Against Women (OVW), 10 from various program offices within the Office of Justice Programs (OJP), and 4 from the Community Oriented Policing Services (COPS) program. Of the 117 potential FBOs identified across the three agencies, nine received exemptions from religious-based hiring restrictions, all of which were awarded DOJ grants.\n\nDOJ and DOL require grantees seeking exemptions to self-certify, but review and approval processes vary. HHS has only one grant program subject to religious-based hiring restrictions and no FBO recipients were identified during the study period.\n\nThe report concludes that while the number of relevant grant programs could be higher, the three agencies did not maintain comprehensive records to determine the exact number of grants awarded and potential FBOs. The report was shared with the Departments of Labor, Justice, and Health and Human Services, and will be made available to the public 30 days after the report date.",
+            "score": 31.898733702598946,
+            "elapsed_s": 237.7166873086244,
+            "prompt_tokens": 3548,
+            "generated_tokens": 427,
+            "final_resident_kv_payload_bytes": 497553408,
+            "prefill_s": 0.4186745211482048,
+            "prefill_peak_alloc_bytes": 15821152768,
+            "page_index_logical_bytes": 23501372,
+            "page_index_changed_key_bytes": 653389824
+          }
+        ],
+        "cache_stats": {
+          "demoted": 280457,
+          "promoted": 258473,
+          "promotions_deferred": 445015,
+          "paid_writes": 25372,
+          "writes_saved": 255085,
+          "dropped": 0,
+          "write_savings_pct": 91.0,
+          "decode_steps": 687,
+          "stt_starved_steps": 0,
+          "stt_unused_steps": 0,
+          "mean_stt_exposed": 32.0,
+          "stt_expose_quota": 32,
+          "stt_exposed_total": 22048,
+          "stt_exposure_samples": 689,
+          "modeled_latency_us": 191850.1,
+          "modeled_energy_nj": 8756611448.8
+        }
+      }
+    }
+  }
+}

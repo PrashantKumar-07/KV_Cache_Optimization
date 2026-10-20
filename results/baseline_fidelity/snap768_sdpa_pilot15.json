@@ -1,0 +1,222 @@
+{
+  "config": {
+    "model": "../models/mistral-7b-instruct",
+    "data_dir": "../hf_cache/datasets/downloads/extracted/5def9c7eaf83951e1cee75902d8611ef764ad88dd289e8f0bf97ff658a3eb83a/data",
+    "tasks": [
+      "qasper",
+      "narrativeqa",
+      "gov_report"
+    ],
+    "max_samples": 5,
+    "capacity": 768,
+    "window": 32,
+    "attn_implementation": "sdpa",
+    "runtime": {
+      "git_revision": "be7e700d84d46b47e32ba5b9870c8b71783b9e53",
+      "source_sha256": "58a54787c7895b59b476783403e18b8031cb6e3b6be934042c8dbc14b1939061",
+      "packages": {
+        "torch": "2.5.1+cu124",
+        "transformers": "5.14.1",
+        "datasets": "5.0.0",
+        "numpy": "2.2.6",
+        "accelerate": "1.14.0",
+        "huggingface_hub": "1.24.0",
+        "rouge": "1.0.1"
+      }
+    },
+    "seed": 0,
+    "max_ctx": 31500,
+    "source_files": {
+      "/data/nishant/Nishant/Prashant/Project/kv_cache/experiments/evaluate_snapkv_adapter.py": "5533e29960c876ac179d14fe4cdda4852e71e167d4d7358f02ad15c74dfdc574",
+      "/data/nishant/Nishant/Prashant/Project/kv_cache/experiments/snapkv_adapter.py": "8d44929bcd4440431332608eb14f4660008ca284ded84dcb824dca3dbad19eab",
+      "sota/snapkv/snapkv/monkeypatch/snapkv_utils.py": "d7eddeaf361d9d38be991be734752c831b09f9c95a6e777ac17e7262ca2b4cf5"
+    },
+    "dataset_sha256": {
+      "qasper": "97d95c01221a17a2ce51f9180d65a671bf2998504a2ff0cccffe97e9b08444d8",
+      "narrativeqa": "0fb8d08ba5cdad4b74244224b0dc2e8b41ee6b850d954a13eb2d282621ce2f71",
+      "gov_report": "0a3902fcf3d49f228549f02a2ef1ae84dbe8578b8be3d4611d54459487bdef84"
+    }
+  },
+  "results": {
+    "qasper": {
+      "snapkv_upstream_selector": {
+        "score": 14.89,
+        "n": 5,
+        "sample_scores": [
+          16.22,
+          22.22,
+          16.0,
+          20.0,
+          0.0
+        ],
+        "samples": [
+          {
+            "sample_id": "3b91dce7ca41a9d16a1d0c61806c139db583a053ddb582bf79df3ff56f8e0344",
+            "prediction": "They looked at different Facebook pages, including FoxNews, CNN, ESPN, and others.",
+            "score": 16.216216216216218,
+            "elapsed_s": 1.5084165278822184,
+            "prompt_tokens": 4895,
+            "generated_tokens": 20,
+            "final_kv_payload_bytes": 412614656
+          },
+          {
+            "sample_id": "5f59f94cd91401a55bcd3b6b24b78cd2c4c78e8ee6e7663e0ac8b97306444f08",
+            "prediction": "The paper proposes attention models to infer the latent context that triggers an instructor intervention.",
+            "score": 22.22222222222222,
+            "elapsed_s": 1.0512666422873735,
+            "prompt_tokens": 5415,
+            "generated_tokens": 20,
+            "final_kv_payload_bytes": 412614656
+          },
+          {
+            "sample_id": "9d37c5305ff63838fd6b7c96f13d10cfc388955672b1a629e5c0a8c2a89c520d",
+            "prediction": "In addition to F-score and Kappa difference, other evaluation metrics are considered in the article. However, the specific metrics are not mentioned in the given text.",
+            "score": 16.0,
+            "elapsed_s": 1.4170266650617123,
+            "prompt_tokens": 5549,
+            "generated_tokens": 34,
+            "final_kv_payload_bytes": 419954688
+          },
+          {
+            "sample_id": "5b60c062453de695f70d5f313a868a3c630068a85084fc9c456760f41e84d0f3",
+            "prediction": "The baselines were plain stacked LSTMs.",
+            "score": 20.0,
+            "elapsed_s": 0.8316898681223392,
+            "prompt_tokens": 5175,
+            "generated_tokens": 12,
+            "final_kv_payload_bytes": 408420352
+          },
+          {
+            "sample_id": "a25d41e770a5f1816e04f39227fecd7dfcd9b83b25842e413d0f8fcb447b2092",
+            "prediction": "jiant specifically mentions support for PyTorch (via HuggingFace's Transformers) and AllenNLP. Therefore, it is compatible with models implemented in those libraries, which are primarily Python-based.",
+            "score": 0.0,
+            "elapsed_s": 1.519510805606842,
+            "prompt_tokens": 3956,
+            "generated_tokens": 46,
+            "final_kv_payload_bytes": 426246144
+          }
+        ]
+      }
+    },
+    "narrativeqa": {
+      "snapkv_upstream_selector": {
+        "score": 14.23,
+        "n": 5,
+        "sample_scores": [
+          9.09,
+          0.0,
+          16.67,
+          30.0,
+          15.38
+        ],
+        "samples": [
+          {
+            "sample_id": "27a07bedff812ae2c3fece3ac4a1f1db11f00793a3598fa94f1fa286ea347cb9",
+            "prediction": "Saltram is an inmate at the Mulvaneys' house, who doesn't dress and is funded by their generosity.",
+            "score": 9.090909090909092,
+            "elapsed_s": 5.333115199580789,
+            "prompt_tokens": 31500,
+            "generated_tokens": 30,
+            "final_kv_payload_bytes": 417857536
+          },
+          {
+            "sample_id": "dfeb4058f4507fa2d2a6f80f6c230cc08e3c7eaa8221bead1ccee5ba90a57488",
+            "prediction": "Ann only feels gratitude towards Mary.",
+            "score": 0.0,
+            "elapsed_s": 4.848120395094156,
+            "prompt_tokens": 31500,
+            "generated_tokens": 8,
+            "final_kv_payload_bytes": 406323200
+          },
+          {
+            "sample_id": "b75b8f1d9f0027543e6f4d84ca94997765d41f9a6eda749df309b0070caee3d8",
+            "prediction": "The witch lives on Atlas' mountain in a cavern by a secret fountain.",
+            "score": 16.666666666666668,
+            "elapsed_s": 1.6336510591208935,
+            "prompt_tokens": 9674,
+            "generated_tokens": 20,
+            "final_kv_payload_bytes": 412614656
+          },
+          {
+            "sample_id": "5f2d99ab2d103d5f04d78f3e7a3b76f633fabeab2eb86a785cf76ed7ac77249e",
+            "prediction": "Crito proposed a plan for Socrates to escape from prison.",
+            "score": 30.0,
+            "elapsed_s": 1.543021174147725,
+            "prompt_tokens": 9887,
+            "generated_tokens": 15,
+            "final_kv_payload_bytes": 409993216
+          },
+          {
+            "sample_id": "254d602c75f8a37865dd7b4a2b7efbb25194b5064a29a07d7038b92d6add6c3d",
+            "prediction": "Baron Henry was afraid of Otto's father, Baron Conrad.",
+            "score": 15.384615384615383,
+            "elapsed_s": 5.0991928949952126,
+            "prompt_tokens": 31500,
+            "generated_tokens": 15,
+            "final_kv_payload_bytes": 409993216
+          }
+        ]
+      }
+    },
+    "gov_report": {
+      "snapkv_upstream_selector": {
+        "score": 29.96,
+        "n": 5,
+        "sample_scores": [
+          22.61,
+          36.51,
+          30.6,
+          26.05,
+          34.06
+        ],
+        "samples": [
+          {
+            "sample_id": "11d3fe7a8c5f9be5c05ff2b46002fae136e91f31575249f5c3db054f4d0715ad",
+            "prediction": "The report highlights the complexity of understanding the sources of information systems due to the intricate supply chains involved. Federal agencies often rely on commercial providers with global supply chains, making it challenging to identify the origins of IT equipment. The Federal Information Security Modernization Act of 2014 (FISMA) requires agencies to manage information security risks, including supply chain risks. NIST provides guidelines for managing supply chain risks, such as due diligence, risk assessment, and continuous monitoring. The report also mentions the risks associated with global supply chains, including the potential for malicious actors to introduce vulnerabilities or manipulate components. The report concludes by emphasizing the importance of federal agencies addressing supply chain risks as part of their overall information security programs.",
+            "score": 22.60869529594623,
+            "elapsed_s": 4.16912735812366,
+            "prompt_tokens": 3308,
+            "generated_tokens": 154,
+            "final_kv_payload_bytes": 482869248
+          },
+          {
+            "sample_id": "56f5a37dac322a67081fbbce0ee9261106133f38ac8b4f38fc3555f5b593969d",
+            "prediction": "The report by the Government Accountability Office (GAO) examines grant funding awarded by the Departments of Health and Human Services (HHS), Labor (DOL), and Justice (DOJ) to grantees with religious-based hiring restrictions from 2007 to 2015. The report identified 2,586 grantees receiving funding through at least 53 grant programs subject to such restrictions.\n\nHHS did not award any grants to faith-based organizations (FBOs) under the Projects for Assistance in Transition from Homelessness (PATH) program, which is subject to religious-based hiring restrictions. DOL identified 19 potential FBOs among the 931 grantees receiving funding from 18 programs, while DOJ identified at least 11 potential FBOs among the 1,454 grantees receiving funding from 34 programs.\n\nOf the 11 faith-based grantees identified by DOJ, nine certified that they were exempt from religious-based hiring restrictions. These nine grantees received approximately $3.2 million in funding, which is less than 1% of the total funding awarded during the study period. The agencies interviewed six of these grantees, who stated that hiring practices were critical to their mission and that the RFRA exemption was necessary for their operations.\n\nThe report also discusses the methods used by the agencies to provide information on religious-based hiring restrictions to grantees and the potential for more comprehensive data collection. The GAO plans to share this report with the Departments of Labor, Health and Human Services, and Justice, as well as appropriate congressional committees.",
+            "score": 36.507936047255114,
+            "elapsed_s": 9.555112920701504,
+            "prompt_tokens": 3548,
+            "generated_tokens": 366,
+            "final_kv_payload_bytes": 594018304
+          },
+          {
+            "sample_id": "32b69d9e2f01e5ad531164ef2b312ea36c6cf8a24dfd0b442779369d8cbd8e09",
+            "prediction": "This report provides an overview of cybersecurity-related bills and hearings in the U.S. Congress during the 115th and 116th sessions. In the 116th Congress, the House has passed four cybersecurity bills, while the Senate has passed one. A total of 31 bills received committee consideration or passed in the 115th Congress, and five of these bills were signed into law. These laws include the Department of Energy Research and Innovation Act (P.L. 115-246), which establishes a Department of Energy policy for science and energy research, including cybersecurity, and the National Defense Authorization Act for Fiscal Year 2018 (P.L. 115-232), which includes provisions related to cybersecurity and defense. The report also lists cybersecurity-related hearings in the House and Senate during the 116th Congress. The tables in the report provide links to the committee websites for each hearing. It is important to note that the list of hearings is not definitive, as no single objective selection criterion was used. Overall, the report highlights the ongoing efforts of the U.S. Congress to address cybersecurity issues through legislation and oversight.",
+            "score": 30.60109241661441,
+            "elapsed_s": 6.888718409463763,
+            "prompt_tokens": 1303,
+            "generated_tokens": 271,
+            "final_kv_payload_bytes": 544210944
+          },
+          {
+            "sample_id": "d1bba223842d90eab2f7962487cba597cea36944010060e21c010e1dbfbaeefe",
+            "prediction": "The report reveals that during fiscal years 2012-2016, Customs and Border Protection (CBP) conducted approximately 308,000 seizures of items deemed a threat to U.S. security, health, or ecology. About 70% of these seizures were from mail and 30% from express cargo. Drugs accounted for 47% of seizures, while merchandise made up the remaining 53%. The report also noted that there were zero fentanyl seizures between 2012 and 2015, but since the addition of a specific code for fentanyl in 2016, there have been 53 seizures. The report highlighted the increased focus on synthetic opioids, particularly fentanyl, due to the recent surge in related deaths. The report also discussed the challenges in targeting mail for inspection, as USPS does not provide advance data on inbound mail, unlike express cargo. The report recommended that CBP and USPS establish clear performance goals and measure progress towards achieving them. The report also suggested that the costs and benefits of using advanced data analytics to target mail for inspection should be evaluated. The report concluded by emphasizing the importance of effective collaboration between CBP and USPS to enhance border security while minimizing disruptions to international trade and travel.",
+            "score": 26.04651120422932,
+            "elapsed_s": 7.642059411853552,
+            "prompt_tokens": 2602,
+            "generated_tokens": 294,
+            "final_kv_payload_bytes": 556269568
+          },
+          {
+            "sample_id": "2124f6aefc1910cb6201bb8bef9916c102aeba694bace9e4d17237ba7d393b5b",
+            "prediction": "The report provides background information and issues for Congress regarding the John Lewis (TAO-205) class oiler shipbuilding program, which aims to build 20 new fleet oilers for the Navy. The Navy's proposed budget includes funding for the fifth and sixth ships in the program. Key issues for Congress include approving or modifying the Navy's funding request, the number of ships needed, and the inclusion of self-defense capabilities.\n\nFleet oilers are essential for the Navy as they transfer fuel and supplies to naval vessels at sea. The existing fleet of 11 TAO-195 oilers is aging, and the Navy plans to replace them with the TAO-205 class. The first three ships have been built, and the fourth is under construction.\n\nThe Navy's proposed budget requests $1.1 billion for the fifth and sixth ships, with an estimated total cost of $2.2 billion for the entire program. The Navy plans to build the remaining ships in annual quantities of 2-1-1-2-1.\n\nCongressional issues include whether to approve the Navy's funding request, the number of ships needed, and the inclusion of self-defense capabilities. The report suggests that Congress may consider the strategic and budgetary implications of the program, as well as the potential impact on the U.S. shipbuilding industry.\n\nThe report also discusses the importance of fleet oilers to the Navy's operations and the potential impact of not replacing the aging TAO-195 fleet. The report concludes by noting that decisions made by Congress regarding the TAO-205 program could have significant implications for Navy capabilities and industrial base.",
+            "score": 34.05797051711825,
+            "elapsed_s": 9.800334671512246,
+            "prompt_tokens": 5421,
+            "generated_tokens": 368,
+            "final_kv_payload_bytes": 595066880
+          }
+        ]
+      }
+    }
+  }
+}

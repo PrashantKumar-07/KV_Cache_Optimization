@@ -1,0 +1,116 @@
+[
+  {
+    "case": "missingdirect",
+    "command": [
+      "../venv_kvcache/bin/python",
+      "experiments/evaluate_query_selection.py",
+      "--data-dir",
+      "/unused",
+      "--tasks",
+      "qasper",
+      "--output",
+      "/unused",
+      "--cpu-fused-compaction",
+      "--cpu-bounded-pool",
+      "--strategy",
+      "lru",
+      "--real-query-prefill",
+      "--cpu-batched-scores"
+    ],
+    "exit_code": 2,
+    "preload_rejection_verified": true,
+    "stderr": "usage: evaluate_query_selection.py [-h] [--model MODEL] --data-dir DATA_DIR\n                                   --tasks TASKS [TASKS ...]\n                                   [--max-samples MAX_SAMPLES] --strategy\n                                   {lru,query,centroid,indexed_centroid}\n                                   [--candidate-pages CANDIDATE_PAGES]\n                                   [--tiered-vram-budget TIERED_VRAM_BUDGET]\n                                   [--tiered-stt-budget TIERED_STT_BUDGET]\n                                   [--stt-expose-quota STT_EXPOSE_QUOTA]\n                                   [--real-query-prefill]\n                                   [--cpu-batched-scores]\n                                   [--cpu-direct-shared] [--cpu-bounded-pool]\n                                   [--cpu-fused-compaction]\n                                   [--query-score-mode {chunked,expanded}]\n                                   [--query-chunk-size QUERY_CHUNK_SIZE]\n                                   --output OUTPUT\nevaluate_query_selection.py: error: --cpu-fused-compaction requires --cpu-direct-shared\n"
+  },
+  {
+    "case": "missingqueries",
+    "command": [
+      "../venv_kvcache/bin/python",
+      "experiments/evaluate_query_selection.py",
+      "--data-dir",
+      "/unused",
+      "--tasks",
+      "qasper",
+      "--output",
+      "/unused",
+      "--cpu-fused-compaction",
+      "--cpu-bounded-pool",
+      "--strategy",
+      "lru",
+      "--cpu-batched-scores",
+      "--cpu-direct-shared"
+    ],
+    "exit_code": 2,
+    "preload_rejection_verified": true,
+    "stderr": "usage: evaluate_query_selection.py [-h] [--model MODEL] --data-dir DATA_DIR\n                                   --tasks TASKS [TASKS ...]\n                                   [--max-samples MAX_SAMPLES] --strategy\n                                   {lru,query,centroid,indexed_centroid}\n                                   [--candidate-pages CANDIDATE_PAGES]\n                                   [--tiered-vram-budget TIERED_VRAM_BUDGET]\n                                   [--tiered-stt-budget TIERED_STT_BUDGET]\n                                   [--stt-expose-quota STT_EXPOSE_QUOTA]\n                                   [--real-query-prefill]\n                                   [--cpu-batched-scores]\n                                   [--cpu-direct-shared] [--cpu-bounded-pool]\n                                   [--cpu-fused-compaction]\n                                   [--query-score-mode {chunked,expanded}]\n                                   [--query-chunk-size QUERY_CHUNK_SIZE]\n                                   --output OUTPUT\nevaluate_query_selection.py: error: --cpu-fused-compaction requires --real-query-prefill\n"
+  },
+  {
+    "case": "missingbatch",
+    "command": [
+      "../venv_kvcache/bin/python",
+      "experiments/evaluate_query_selection.py",
+      "--data-dir",
+      "/unused",
+      "--tasks",
+      "qasper",
+      "--output",
+      "/unused",
+      "--cpu-fused-compaction",
+      "--cpu-bounded-pool",
+      "--strategy",
+      "lru",
+      "--real-query-prefill",
+      "--cpu-direct-shared"
+    ],
+    "exit_code": 2,
+    "preload_rejection_verified": true,
+    "stderr": "usage: evaluate_query_selection.py [-h] [--model MODEL] --data-dir DATA_DIR\n                                   --tasks TASKS [TASKS ...]\n                                   [--max-samples MAX_SAMPLES] --strategy\n                                   {lru,query,centroid,indexed_centroid}\n                                   [--candidate-pages CANDIDATE_PAGES]\n                                   [--tiered-vram-budget TIERED_VRAM_BUDGET]\n                                   [--tiered-stt-budget TIERED_STT_BUDGET]\n                                   [--stt-expose-quota STT_EXPOSE_QUOTA]\n                                   [--real-query-prefill]\n                                   [--cpu-batched-scores]\n                                   [--cpu-direct-shared] [--cpu-bounded-pool]\n                                   [--cpu-fused-compaction]\n                                   [--query-score-mode {chunked,expanded}]\n                                   [--query-chunk-size QUERY_CHUNK_SIZE]\n                                   --output OUTPUT\nevaluate_query_selection.py: error: --cpu-direct-shared requires --cpu-batched-scores\n"
+  },
+  {
+    "case": "wrongstrategy",
+    "command": [
+      "../venv_kvcache/bin/python",
+      "experiments/evaluate_query_selection.py",
+      "--data-dir",
+      "/unused",
+      "--tasks",
+      "qasper",
+      "--output",
+      "/unused",
+      "--cpu-fused-compaction",
+      "--cpu-bounded-pool",
+      "--strategy",
+      "query",
+      "--real-query-prefill",
+      "--cpu-batched-scores",
+      "--cpu-direct-shared"
+    ],
+    "exit_code": 2,
+    "preload_rejection_verified": true,
+    "stderr": "usage: evaluate_query_selection.py [-h] [--model MODEL] --data-dir DATA_DIR\n                                   --tasks TASKS [TASKS ...]\n                                   [--max-samples MAX_SAMPLES] --strategy\n                                   {lru,query,centroid,indexed_centroid}\n                                   [--candidate-pages CANDIDATE_PAGES]\n                                   [--tiered-vram-budget TIERED_VRAM_BUDGET]\n                                   [--tiered-stt-budget TIERED_STT_BUDGET]\n                                   [--stt-expose-quota STT_EXPOSE_QUOTA]\n                                   [--real-query-prefill]\n                                   [--cpu-batched-scores]\n                                   [--cpu-direct-shared] [--cpu-bounded-pool]\n                                   [--cpu-fused-compaction]\n                                   [--query-score-mode {chunked,expanded}]\n                                   [--query-chunk-size QUERY_CHUNK_SIZE]\n                                   --output OUTPUT\nevaluate_query_selection.py: error: --cpu-batched-scores requires --strategy lru\n"
+  },
+  {
+    "case": "hotbelowprotected",
+    "command": [
+      "../venv_kvcache/bin/python",
+      "experiments/evaluate_query_selection.py",
+      "--data-dir",
+      "/unused",
+      "--tasks",
+      "qasper",
+      "--output",
+      "/unused",
+      "--cpu-fused-compaction",
+      "--cpu-bounded-pool",
+      "--strategy",
+      "lru",
+      "--real-query-prefill",
+      "--cpu-batched-scores",
+      "--cpu-direct-shared",
+      "--tiered-vram-budget",
+      "131"
+    ],
+    "exit_code": 2,
+    "preload_rejection_verified": true,
+    "stderr": "usage: evaluate_query_selection.py [-h] [--model MODEL] --data-dir DATA_DIR\n                                   --tasks TASKS [TASKS ...]\n                                   [--max-samples MAX_SAMPLES] --strategy\n                                   {lru,query,centroid,indexed_centroid}\n                                   [--candidate-pages CANDIDATE_PAGES]\n                                   [--tiered-vram-budget TIERED_VRAM_BUDGET]\n                                   [--tiered-stt-budget TIERED_STT_BUDGET]\n                                   [--stt-expose-quota STT_EXPOSE_QUOTA]\n                                   [--real-query-prefill]\n                                   [--cpu-batched-scores]\n                                   [--cpu-direct-shared] [--cpu-bounded-pool]\n                                   [--cpu-fused-compaction]\n                                   [--query-score-mode {chunked,expanded}]\n                                   [--query-chunk-size QUERY_CHUNK_SIZE]\n                                   --output OUTPUT\nevaluate_query_selection.py: error: --cpu-fused-compaction requires a hot budget of at least132 for fixed sink/recent protection\n"
+  }
+]

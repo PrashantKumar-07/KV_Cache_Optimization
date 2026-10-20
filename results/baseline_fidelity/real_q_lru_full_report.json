@@ -1,0 +1,355 @@
+{
+  "input_sha256": {
+    "real_q_lru_control_125.json": "0a0aa7103da5a5f7971b7f1814c535558de6c04974616f5dace081ab319b218a",
+    "real_q_lru_candidate_125.json": "033b8a5bdb4932be6f70b79facef23740f2c4ec7a1b16e9dd53e0276138125d4",
+    "real_q_lru_control_gov10.json": "cf245eab31d73fad6d7421d6af9903a718a19454f4b524daa726cec5b92f9646",
+    "real_q_lru_candidate_gov10.json": "0c968bcb1f4d0f1156f620750f26e17d5b752145a1e5552bd09275fa07975f02"
+  },
+  "script_sha256": "5b3c5fd5a5dbbfe287277418abe95a27001924e18c0724f6d6823ad03c415918",
+  "runtime": {
+    "git_revision": "be7e700d84d46b47e32ba5b9870c8b71783b9e53",
+    "source_sha256": "f81473a52b3aabcd383594d67c7f0b271fcee0c547773f8a6f6663d7cdfb194a",
+    "packages": {
+      "torch": "2.5.1+cu124",
+      "transformers": "5.14.1",
+      "datasets": "5.0.0",
+      "numpy": "2.2.6",
+      "accelerate": "1.14.0",
+      "huggingface_hub": "1.24.0",
+      "rouge": "1.0.1"
+    }
+  },
+  "tasks": [
+    "qasper",
+    "narrativeqa",
+    "multifieldqa_en",
+    "hotpotqa",
+    "triviaqa",
+    "gov_report"
+  ],
+  "quality": {
+    "baseline": "proxy",
+    "per_task": {
+      "qasper": {
+        "n": 25,
+        "mean_difference": 8.96900150430108,
+        "se": 2.8635516861529413
+      },
+      "narrativeqa": {
+        "n": 25,
+        "mean_difference": 4.285503357235106,
+        "se": 1.9942533703054124
+      },
+      "multifieldqa_en": {
+        "n": 25,
+        "mean_difference": 6.33666572189968,
+        "se": 3.2549770964171145
+      },
+      "hotpotqa": {
+        "n": 25,
+        "mean_difference": 10.979069732010908,
+        "se": 4.112291997149178
+      },
+      "triviaqa": {
+        "n": 25,
+        "mean_difference": 1.9809523809523812,
+        "se": 4.093731727383013
+      },
+      "gov_report": {
+        "n": 10,
+        "mean_difference": -1.3502831908933648,
+        "se": 1.220730096698195
+      }
+    },
+    "scores": {
+      "qasper": {
+        "tieredkv": 19.68,
+        "proxy": 10.71
+      },
+      "narrativeqa": {
+        "tieredkv": 20.46,
+        "proxy": 16.18
+      },
+      "multifieldqa_en": {
+        "tieredkv": 63.02,
+        "proxy": 56.69
+      },
+      "hotpotqa": {
+        "tieredkv": 48.12,
+        "proxy": 37.14
+      },
+      "triviaqa": {
+        "tieredkv": 77.39,
+        "proxy": 75.41
+      },
+      "gov_report": {
+        "tieredkv": 27.0,
+        "proxy": 28.35
+      }
+    },
+    "task_balanced_mean_difference": 5.200151584250965,
+    "paired_bootstrap_95pct_interval": [
+      2.8439829314704532,
+      7.6919898943660705
+    ],
+    "bootstrap_draws": 10000,
+    "seed": 0
+  },
+  "measures": {
+    "qasper": {
+      "sample_count": 25,
+      "paired_score_differences": [
+        35.0,
+        6.507177033492821,
+        15.770609318996415,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        -8.149405772495754,
+        7.154471544715449,
+        5.357142857142847,
+        7.619047619047618,
+        9.615384615384615,
+        19.35483870967742,
+        -8.547008547008549,
+        -0.07490636704119957,
+        3.5526315789473664,
+        21.794871794871796,
+        -2.4372759856630815,
+        48.205128205128204,
+        0.0,
+        0.0,
+        2.797202797202795,
+        31.53846153846154,
+        29.16666666666666,
+        0.0
+      ],
+      "regressed_examples": 4,
+      "median_prefill_s": {
+        "proxy": 0.5814622361212969,
+        "actual_query": 0.6323319636285305
+      },
+      "median_prefill_peak_alloc_bytes": {
+        "proxy": 16089972224,
+        "actual_query": 16108456448
+      },
+      "paid_writes": {
+        "proxy": 67020,
+        "actual_query": 46072
+      }
+    },
+    "narrativeqa": {
+      "sample_count": 25,
+      "paired_score_differences": [
+        9.090909090909093,
+        -11.11111111111111,
+        -4.761904761904752,
+        0.0,
+        14.285714285714288,
+        2.5641025641025657,
+        33.33333333333333,
+        22.22222222222222,
+        0.0,
+        0.0,
+        0.41666666666666696,
+        9.523809523809524,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        -10.526315789473685,
+        1.564027370478982,
+        13.333333333333334,
+        0.0,
+        11.818181818181817,
+        -1.2820512820512828,
+        0.0,
+        0.0,
+        16.666666666666657
+      ],
+      "regressed_examples": 4,
+      "median_prefill_s": {
+        "proxy": 4.779405040666461,
+        "actual_query": 5.03559066914022
+      },
+      "median_prefill_peak_alloc_bytes": {
+        "proxy": 22381195264,
+        "actual_query": 22416158720
+      },
+      "paid_writes": {
+        "proxy": 38984,
+        "actual_query": 37132
+      }
+    },
+    "multifieldqa_en": {
+      "sample_count": 25,
+      "paired_score_differences": [
+        11.515151515151516,
+        0.0,
+        0.0,
+        49.999999999999986,
+        1.5126050420168013,
+        0.0,
+        8.333333333333343,
+        5.238095238095227,
+        33.33333333333334,
+        -15.0,
+        0.0,
+        27.096774193548388,
+        -7.897435897435901,
+        -19.230769230769234,
+        30.60428849902535,
+        -4.312668463611857,
+        0.0,
+        0.0,
+        20.0,
+        -12.72727272727273,
+        16.117216117216103,
+        -4.347826086956516,
+        0.0,
+        0.0,
+        18.181818181818183
+      ],
+      "regressed_examples": 6,
+      "median_prefill_s": {
+        "proxy": 0.3975683245807886,
+        "actual_query": 0.4186324570327997
+      },
+      "median_prefill_peak_alloc_bytes": {
+        "proxy": 15788932608,
+        "actual_query": 15791889920
+      },
+      "paid_writes": {
+        "proxy": 54873,
+        "actual_query": 43944
+      }
+    },
+    "hotpotqa": {
+      "sample_count": 25,
+      "paired_score_differences": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        15.0,
+        0.0,
+        42.85714285714285,
+        0.0,
+        0.0,
+        0.0,
+        18.62745098039216,
+        0.0,
+        0.0,
+        1.8518518518518512,
+        0.0,
+        51.28205128205127,
+        0.0,
+        0.0,
+        0.0,
+        20.779220779220793,
+        15.90909090909091,
+        36.66666666666666,
+        0.0,
+        -6.274509803921575,
+        77.77777777777777
+      ],
+      "regressed_examples": 1,
+      "median_prefill_s": {
+        "proxy": 0.6928506474941969,
+        "actual_query": 0.740523299202323
+      },
+      "median_prefill_peak_alloc_bytes": {
+        "proxy": 16300822528,
+        "actual_query": 16353913856
+      },
+      "paid_writes": {
+        "proxy": 39827,
+        "actual_query": 30883
+      }
+    },
+    "triviaqa": {
+      "sample_count": 25,
+      "paired_score_differences": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        38.0952380952381,
+        0.0,
+        -60.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        71.42857142857143,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "regressed_examples": 1,
+      "median_prefill_s": {
+        "proxy": 0.5711374916136265,
+        "actual_query": 0.6112399622797966
+      },
+      "median_prefill_peak_alloc_bytes": {
+        "proxy": 16099274240,
+        "actual_query": 16120204288
+      },
+      "paid_writes": {
+        "proxy": 39701,
+        "actual_query": 38075
+      }
+    },
+    "gov_report": {
+      "sample_count": 10,
+      "paired_score_differences": [
+        -2.7688883925075416,
+        3.457063696666694,
+        -0.6122851932177582,
+        0.0,
+        0.9889100900245076,
+        -1.7453135038051428,
+        -5.708970210981015,
+        -2.9729302756574896,
+        -8.328397690851538,
+        4.187979571395637
+      ],
+      "regressed_examples": 6,
+      "median_prefill_s": {
+        "proxy": 0.4926849966868758,
+        "actual_query": 0.5222590547055006
+      },
+      "median_prefill_peak_alloc_bytes": {
+        "proxy": 15855455232.0,
+        "actual_query": 15859867904.0
+      },
+      "paid_writes": {
+        "proxy": 119068,
+        "actual_query": 96890
+      }
+    }
+  },
+  "total_regressed_examples": 22,
+  "paid_demotion_writes": {
+    "proxy": 359473,
+    "actual_query": 292996,
+    "reduction_pct": 18.492904891327022
+  },
+  "scope": "Selected 135 examples, six tasks, one model/seed; per-task counts {'qasper': 25, 'narrativeqa': 25, 'multifieldqa_en': 25, 'hotpotqa': 25, 'triviaqa': 25, 'gov_report': 10}. Paired bootstrap conditions on these samples and is not a held-out result.",
+  "decision": "Descriptive quality and logical-write comparison only. Default promotion requires full-loop latency, stress and held-out gates.",
+  "model_manifest_sha256": "b7e07ab4236b866a9c0f401973027fc25e38695ee76926512c7ae54be17ad430",
+  "model_manifest_note": "Model files were hashed during the full run; their on-disk modification times predate all arms.",
+  "full_run_performance_comparison_valid": false,
+  "performance_note": "Sequential task runs are not a paired latency benchmark; use same-process ABBA for timing claims."
+}

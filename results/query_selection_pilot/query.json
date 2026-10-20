@@ -1,0 +1,261 @@
+{
+  "config": {
+    "model": "../models/mistral-7b-instruct",
+    "data_dir": "../hf_cache/datasets/downloads/extracted/5def9c7eaf83951e1cee75902d8611ef764ad88dd289e8f0bf97ff658a3eb83a/data",
+    "tasks": [
+      "qasper",
+      "narrativeqa",
+      "gov_report"
+    ],
+    "max_samples": 5,
+    "strategy": "query",
+    "seed": 0,
+    "max_ctx": 31500,
+    "tiered_vram_budget": 1024,
+    "tiered_stt_budget": 2048,
+    "recent": 128,
+    "stt_expose_quota": 32,
+    "sttram_bifurcation_frac": 0.75,
+    "kv_dtype": "bfloat16",
+    "runtime": {
+      "git_revision": "be7e700d84d46b47e32ba5b9870c8b71783b9e53",
+      "source_sha256": "bcc2b8520906db2db0a85494d441a4e688e571a356f1f6bc00c6c493d71dc548",
+      "packages": {
+        "torch": "2.5.1+cu124",
+        "transformers": "5.15.0",
+        "datasets": "2.19.2",
+        "numpy": "2.2.6",
+        "accelerate": "1.14.0",
+        "huggingface_hub": "1.27.0",
+        "rouge": "1.0.1"
+      }
+    },
+    "selector_sha256": "d6326141d0bdf7cf23f4acccba35f9589b045991f86d1c0bf928aee293e5ebf2",
+    "dataset_sha256": {
+      "qasper": "97d95c01221a17a2ce51f9180d65a671bf2998504a2ff0cccffe97e9b08444d8",
+      "narrativeqa": "0fb8d08ba5cdad4b74244224b0dc2e8b41ee6b850d954a13eb2d282621ce2f71",
+      "gov_report": "0a3902fcf3d49f228549f02a2ef1ae84dbe8578b8be3d4611d54459487bdef84"
+    }
+  },
+  "results": {
+    "qasper": {
+      "tieredkv": {
+        "score": 12.86,
+        "n": 5,
+        "sample_scores": [
+          15.79,
+          17.39,
+          11.11,
+          20.0,
+          0.0
+        ],
+        "samples": [
+          {
+            "sample_id": "3b91dce7ca41a9d16a1d0c61806c139db583a053ddb582bf79df3ff56f8e0344",
+            "prediction": "They selected a subset of Facebook pages for training, including Time, The Guardian, and Disney.",
+            "score": 15.789473684210526,
+            "elapsed_s": 4.337783282622695,
+            "prompt_tokens": 4895,
+            "generated_tokens": 21
+          },
+          {
+            "sample_id": "5f59f94cd91401a55bcd3b6b24b78cd2c4c78e8ee6e7663e0ac8b97306444f08",
+            "prediction": "The context that triggers instructor intervention is identified using attention models that selectively infer a context for the intervened post.",
+            "score": 17.39130434782609,
+            "elapsed_s": 4.46334557980299,
+            "prompt_tokens": 5415,
+            "generated_tokens": 25
+          },
+          {
+            "sample_id": "9d37c5305ff63838fd6b7c96f13d10cfc388955672b1a629e5c0a8c2a89c520d",
+            "prediction": "In addition to F-scores and Kappa statistics, other evaluation metrics are not explicitly mentioned in the article.",
+            "score": 11.11111111111111,
+            "elapsed_s": 4.266111500561237,
+            "prompt_tokens": 5549,
+            "generated_tokens": 24
+          },
+          {
+            "sample_id": "5b60c062453de695f70d5f313a868a3c630068a85084fc9c456760f41e84d0f3",
+            "prediction": "The baselines were plain stacked LSTMs.",
+            "score": 20.0,
+            "elapsed_s": 2.326055146753788,
+            "prompt_tokens": 5175,
+            "generated_tokens": 12
+          },
+          {
+            "sample_id": "a25d41e770a5f1816e04f39227fecd7dfcd9b83b25842e413d0f8fcb447b2092",
+            "prediction": "jiant specifically mentions support for models in AllenNLP, Huggingface's Transformers (PyTorch), and XLM-R (PyTorch and TensorFlow). Therefore, it is primarily designed for models implemented in Python.",
+            "score": 0.0,
+            "elapsed_s": 8.51504486426711,
+            "prompt_tokens": 3956,
+            "generated_tokens": 52
+          }
+        ],
+        "cache_stats": {
+          "demoted": 78084,
+          "promoted": 73956,
+          "promotions_deferred": 58140,
+          "paid_writes": 15144,
+          "writes_saved": 62940,
+          "dropped": 0,
+          "write_savings_pct": 80.6,
+          "decode_steps": 129,
+          "stt_starved_steps": 0,
+          "stt_unused_steps": 0,
+          "mean_stt_exposed": 32.0,
+          "stt_expose_quota": 32,
+          "stt_exposed_total": 4288,
+          "stt_exposure_samples": 134,
+          "modeled_latency_us": 42304.0,
+          "modeled_energy_nj": 1714661621.8
+        }
+      }
+    },
+    "narrativeqa": {
+      "tieredkv": {
+        "score": 18.77,
+        "n": 5,
+        "sample_scores": [
+          11.76,
+          11.11,
+          33.33,
+          28.57,
+          9.09
+        ],
+        "samples": [
+          {
+            "sample_id": "27a07bedff812ae2c3fece3ac4a1f1db11f00793a3598fa94f1fa286ea347cb9",
+            "prediction": "Saltram lives with the Mulvocks and is supported by The Coxon Fund.",
+            "score": 11.76470588235294,
+            "elapsed_s": 7.516016034409404,
+            "prompt_tokens": 31500,
+            "generated_tokens": 20
+          },
+          {
+            "sample_id": "dfeb4058f4507fa2d2a6f80f6c230cc08e3c7eaa8221bead1ccee5ba90a57488",
+            "prediction": "Ann is unable to reciprocate Mary's feelings of affection.",
+            "score": 11.11111111111111,
+            "elapsed_s": 6.744328474625945,
+            "prompt_tokens": 31500,
+            "generated_tokens": 15
+          },
+          {
+            "sample_id": "b75b8f1d9f0027543e6f4d84ca94997765d41f9a6eda749df309b0070caee3d8",
+            "prediction": "The witch lives on Atlas.",
+            "score": 33.33333333333333,
+            "elapsed_s": 2.2413186132907867,
+            "prompt_tokens": 9674,
+            "generated_tokens": 8
+          },
+          {
+            "sample_id": "5f2d99ab2d103d5f04d78f3e7a3b76f633fabeab2eb86a785cf76ed7ac77249e",
+            "prediction": "Crito visited Socrates to persuade him to escape from prison.",
+            "score": 28.571428571428566,
+            "elapsed_s": 3.55659756436944,
+            "prompt_tokens": 9887,
+            "generated_tokens": 16
+          },
+          {
+            "sample_id": "254d602c75f8a37865dd7b4a2b7efbb25194b5064a29a07d7038b92d6add6c3d",
+            "prediction": "Baron Henry didn't kill Otto because he wanted to keep him alive as a hostage or a warning to the Vuelphs.",
+            "score": 9.09090909090909,
+            "elapsed_s": 9.125330302864313,
+            "prompt_tokens": 31500,
+            "generated_tokens": 29
+          }
+        ],
+        "cache_stats": {
+          "demoted": 52656,
+          "promoted": 50000,
+          "promotions_deferred": 34992,
+          "paid_writes": 8634,
+          "writes_saved": 44022,
+          "dropped": 0,
+          "write_savings_pct": 83.6,
+          "decode_steps": 83,
+          "stt_starved_steps": 0,
+          "stt_unused_steps": 0,
+          "mean_stt_exposed": 32.0,
+          "stt_expose_quota": 32,
+          "stt_exposed_total": 2816,
+          "stt_exposure_samples": 88,
+          "modeled_latency_us": 27059.3,
+          "modeled_energy_nj": 1103612870.7
+        }
+      }
+    },
+    "gov_report": {
+      "tieredkv": {
+        "score": 34.25,
+        "n": 5,
+        "sample_scores": [
+          34.33,
+          35.39,
+          32.4,
+          40.17,
+          28.97
+        ],
+        "samples": [
+          {
+            "sample_id": "11d3fe7a8c5f9be5c05ff2b46002fae136e91f31575249f5c3db054f4d0715ad",
+            "prediction": "The report highlights the complexity and global nature of IT supply chains used by federal agencies, which can pose significant risks to the confidentiality, integrity, and availability of federal information systems. The report notes that federal agencies rely heavily on commercial providers for IT products and services, many of which are manufactured and sourced from overseas. The Federal Information Security Management Act (FISMA) requires federal agencies to develop and implement information security programs, including measures to manage supply chain risks. The report provides examples of potential supply chain risks, such as malicious or counterfeit hardware or software, and vulnerabilities in acquisition or security procedures. The report also discusses efforts by federal agencies to address supply chain risks, including policies, procedures, and monitoring capabilities. The report recommends that Energy, Justice, and DHS develop and implement departmental policies and procedures to protect against supply chain threats and establish monitoring capabilities to verify compliance and assess effectiveness. The report notes that the four national security-related agencies have participated in interagency efforts to address supply chain security.",
+            "score": 34.33242466675082,
+            "elapsed_s": 34.36290965229273,
+            "prompt_tokens": 3308,
+            "generated_tokens": 211
+          },
+          {
+            "sample_id": "56f5a37dac322a67081fbbce0ee9261106133f38ac8b4f38fc3555f5b593969d",
+            "prediction": "The report by the Government Accountability Office (GAO) examines grants awarded by the Departments of Health and Human Services (HHS), Labor (DOL), and Justice (DOJ) from 2007 to 2015, focusing on those subject to statutory restrictions on religious-based hiring. HHS identified one such program, the PATH program, but no faith-based recipients were identified during this period. DOL identified 18 programs with 931 grantees, including 74 potential faith-based organizations (FBOs). DOJ identified at least 34 relevant grant programs with 1,113 grantees, including 117 potential FBOs. Of the 117 potential FBOs, nine certified they were exempt from religious-based hiring restrictions and received grants totaling approximately $3.2 million. These grantees stated they could not recall seeing information about the exemption option or were not looking for it because they were not considering religion in their hiring decisions. The agencies provide information on statutory restrictions and exemption processes through grant announcements and various web pages. The report recommends that the agencies improve communication about exemption options to grantees.",
+            "score": 35.3932579916046,
+            "elapsed_s": 43.95986796915531,
+            "prompt_tokens": 3548,
+            "generated_tokens": 266
+          },
+          {
+            "sample_id": "32b69d9e2f01e5ad531164ef2b312ea36c6cf8a24dfd0b442779369d8cbd8e09",
+            "prediction": "This report provides an overview of cybersecurity-related bills and hearings in the U.S. Congress during the 115th and 116th sessions. In the 116th Congress, the House has passed four cybersecurity bills, and the Senate has considered four others, passing one. A total of 31 bills received committee consideration or passed one or both chambers in the 115th Congress, and five of these bills were signed into law. These laws include the Department of Energy Research and Innovation Act, which establishes a Department of Energy policy for science and energy research and development programs, and the John S. McCain National Defense Authorization Act for Fiscal Year 2019, which sets forth policies regarding Department of Defense military activities, including cybersecurity matters. The report also lists cybersecurity-related hearings in the 116th Congress, arranged by date and committee, but notes that the list should not be considered definitive. Overall, the report highlights the ongoing efforts of the U.S. Congress to address cybersecurity issues through legislation and hearings.",
+            "score": 32.402234153865365,
+            "elapsed_s": 34.42876274883747,
+            "prompt_tokens": 1303,
+            "generated_tokens": 235
+          },
+          {
+            "sample_id": "d1bba223842d90eab2f7962487cba597cea36944010060e21c010e1dbfbaeefe",
+            "prediction": "The report reveals that during fiscal years 2012-2016, Customs and Border Protection (CBP) conducted approximately 308,000 seizures of international items deemed a threat to U.S. security, health, or ecology. About 70% of these seizures were from the mail and 30% from express cargo. Drugs accounted for 47% of total seizures, while merchandise accounted for 53%. Fentanyl, a synthetic opioid responsible for an increase in drug-related deaths, was not included in seizure data before fiscal year 2016 due to the absence of a specific category code in the CBP's SEACATS system. In fiscal year 2016, there were 53 seizures of fentanyl via both mail and express cargo.\n\nThe report also highlights the challenges in using Advance Electronic Data (EAD) to target mail for inspection. While express consignment operators provide EAD to CBP prior to the items' arrival in the United States, USPS does not have the same requirement and relies on foreign postal operators to voluntarily or mutually agree to share EAD. In 2014 and 2015, USPS and CBP initiated pilot programs to test the effectiveness of placing holds on mail targeted for inspection based on EAD. However, USPS has been unable to provide some targeted mail for inspection due to the difficulty in locating it once it arrives at an International Service Center.\n\nThe report concludes that CBP and USPS lack clear performance goals for these pilots and recommends that they establish measurable performance targets and assess the pilots' success in achieving these goals. Additionally, the report suggests that the agencies evaluate the costs and benefits of collecting EAD for targeting mail for inspection compared to other methods. The Department of Homeland Security concurred with these recommendations and plans to implement them by February 28, 2018.",
+            "score": 40.16736354824846,
+            "elapsed_s": 71.68142515048385,
+            "prompt_tokens": 2602,
+            "generated_tokens": 432
+          },
+          {
+            "sample_id": "2124f6aefc1910cb6201bb8bef9916c102aeba694bace9e4d17237ba7d393b5b",
+            "prediction": "The report provides background information on the Navy's TAO-205 program, which aims to procure 20 new fleet oilers to replace aging vessels. The program's history, current status, and issues are discussed. The primary role of fleet oilers is to provide underway replenishment to naval vessels, enabling them to remain at sea for extended periods. The Navy's FY2020 budget request includes funding for the procurement of the 5th and 6th ships in the program, totaling $1,056.3 million.\n\nCongressional action on the Navy's request includes funding for the additional fiscal year 2019 ship, which required the Navy to add two more ships to the low-rate initial production phase. The report also highlights the importance of assessing the potential impact of the Navy's new operational concept, Distributed Maritime Operations, on the required number and type of combat logistics ships. Another issue is the need to consider equipping TAO-205s with more ship self-defense equipment to address potential threats in contested environments.\n\nThe report also mentions the progress made in the TAO-205 program, including the maturity of critical technologies and the stabilization of the ship's design. However, there have been schedule disruptions due to a flooding incident at a NASSCO graving dock, which has affected the delivery of future ships.\n\nIn conclusion, the report discusses the Navy's TAO-205 program, its current status, and the issues that Congress may need to consider when evaluating the Navy's FY2020 budget request for the program.",
+            "score": 28.965516741593344,
+            "elapsed_s": 60.89988332428038,
+            "prompt_tokens": 5421,
+            "generated_tokens": 369
+          }
+        ],
+        "cache_stats": {
+          "demoted": 607398,
+          "promoted": 559142,
+          "promotions_deferred": 985050,
+          "paid_writes": 97903,
+          "writes_saved": 509495,
+          "dropped": 0,
+          "write_savings_pct": 83.9,
+          "decode_steps": 1508,
+          "stt_starved_steps": 0,
+          "stt_unused_steps": 0,
+          "mean_stt_exposed": 32.0,
+          "stt_expose_quota": 32,
+          "stt_exposed_total": 48416,
+          "stt_exposure_samples": 1513,
+          "modeled_latency_us": 441760.5,
+          "modeled_energy_nj": 19852301434.9
+        }
+      }
+    }
+  }
+}

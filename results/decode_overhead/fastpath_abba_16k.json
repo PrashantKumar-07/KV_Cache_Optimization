@@ -1,0 +1,46 @@
+{
+  "scope": "same-process ABBA, fixed real-text 16k prompt and decode length",
+  "config": {
+    "model": "../models/mistral-7b-instruct",
+    "prompt_file": "results/remediation_v3/latency_prompt.txt",
+    "output": "results/decode_overhead/fastpath_abba_16k.json",
+    "ctx": 16384,
+    "decode": 16,
+    "device": "cuda:0"
+  },
+  "rows": [
+    {
+      "arm": "legacy",
+      "itl_ms": 118.979,
+      "mean_itl_ms": 120.17388071399182,
+      "forward_ms": 25.27402527630329,
+      "ttft_ms": 2395.662
+    },
+    {
+      "arm": "fast",
+      "itl_ms": 95.499,
+      "mean_itl_ms": 100.45166756026447,
+      "forward_ms": 25.24496056139469,
+      "ttft_ms": 1951.323
+    },
+    {
+      "arm": "fast",
+      "itl_ms": 96.652,
+      "mean_itl_ms": 100.99456168245524,
+      "forward_ms": 25.24678036570549,
+      "ttft_ms": 1953.296
+    },
+    {
+      "arm": "legacy",
+      "itl_ms": 111.208,
+      "mean_itl_ms": 115.77241157647222,
+      "forward_ms": 25.248730555176735,
+      "ttft_ms": 1965.29
+    }
+  ],
+  "median_itl_ms": {
+    "legacy": 115.0935,
+    "fast": 96.0755
+  },
+  "speedup_pct": 16.52395922529335
+}

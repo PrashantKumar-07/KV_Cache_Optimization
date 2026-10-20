@@ -1,0 +1,66 @@
+{
+  "scope": "One changed mechanism: exact cross-layer score bookkeeping on shared CPU backend",
+  "raw_sha256": "3a9c8f8a18bec7b84433db82e6ce08b7494fe937334b6cad7286e318cf3e7a87",
+  "source_bundle_sha256": "08d770020ec30727c372b10c6a97e1358270f9506aa160b5ddefbf599c4f0615",
+  "executed_source_hashes_verified": true,
+  "arms": 12,
+  "exact_state_selection_predictions_counters_payload_and_dispatches_match_frozen_prior_control": true,
+  "latency": {
+    "batched": {
+      "median_ms": 80.95598127692938,
+      "p95_ms": 89.49420228600502
+    },
+    "batched_scores": {
+      "median_ms": 75.56046638637781,
+      "p95_ms": 84.85567513853312
+    },
+    "latency_gate_passed": true,
+    "blocks": [
+      {
+        "batched": 81.13802876323462,
+        "batched_scores": 75.17740316689014
+      },
+      {
+        "batched": 80.5220389738679,
+        "batched_scores": 75.66211838275194
+      },
+      {
+        "batched": 80.39801847189665,
+        "batched_scores": 76.01188216358423
+      }
+    ]
+  },
+  "gain_percent": 6.664751393840696,
+  "resources": {
+    "batched": {
+      "median_ttft_ms": 2126.1125,
+      "max_prefill_peak_gpu_bytes": 18594276864,
+      "max_decode_peak_gpu_bytes": 14913245696,
+      "final_gpu_allocated_bytes": [
+        14626980864
+      ],
+      "occupied_host_tensor_bytes": [
+        212344832
+      ],
+      "reserved_host_tensor_bytes": [
+        402784256
+      ]
+    },
+    "batched_scores": {
+      "median_ttft_ms": 2144.161,
+      "max_prefill_peak_gpu_bytes": 18594276864,
+      "max_decode_peak_gpu_bytes": 14913245696,
+      "final_gpu_allocated_bytes": [
+        14626980864
+      ],
+      "occupied_host_tensor_bytes": [
+        212344832
+      ],
+      "reserved_host_tensor_bytes": [
+        402784256
+      ]
+    }
+  },
+  "decision": "retain opt-in; CPU-control latency gate passed, fresh GPU control/stress gates remain open",
+  "limitations": "One prompt/model/fixed stream; boundary-state tensor parity separately proven at 4K/8K/16K. Host tensor reservations exclude transient consolidation/allocator retention. No free-generation QA, SnapKV, resource-matched or physical STT claim."
+}

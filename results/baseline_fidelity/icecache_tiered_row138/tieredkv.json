@@ -1,0 +1,87 @@
+{
+  "config": {
+    "model": "/data/nishant/Nishant/Prashant/Project/models/mistral-7b-instruct",
+    "budget": 1024,
+    "tiered_vram_budget": 1024,
+    "tiered_stt_budget": 2048,
+    "tiered_stt_expose": null,
+    "tiered_promotion_budget": null,
+    "sttram_bifurcation_frac": 0.75,
+    "sink": 4,
+    "recent": 128,
+    "max_samples": 1,
+    "tasks": [
+      "multifieldqa_en"
+    ],
+    "max_ctx": 31500,
+    "seed": 0,
+    "tiered_kv_dtype": "bfloat16",
+    "tiered_stt_kv_dtype": "same",
+    "tiered_prefill_chunk_size": 0,
+    "page_size": 16,
+    "promote_top_pages": 2,
+    "stt_live_floor": 1,
+    "write_aware_lambda": 0.0,
+    "tiered_inclusive": true,
+    "runtime": {
+      "git_revision": "be7e700d84d46b47e32ba5b9870c8b71783b9e53",
+      "source_sha256": "e887226ca112a706c84c8513657b449e921fd53a28241dcd00a126ad0b984558",
+      "packages": {
+        "torch": "2.5.1+cu124",
+        "transformers": "5.15.0",
+        "datasets": "2.19.2",
+        "numpy": "2.2.6",
+        "accelerate": "1.14.0",
+        "huggingface_hub": "1.27.0",
+        "rouge": "1.0.1"
+      }
+    },
+    "protocol": "task_chat_exclusions_v2",
+    "data_dir": "results/baseline_fidelity/icecache_tiered_row138/data",
+    "dataset_sha256": {
+      "multifieldqa_en": "6a85e385803b115267b2cff4b234993790040619c0a14bd0f909d8f402b8cd76"
+    },
+    "methods": [
+      "tieredkv"
+    ]
+  },
+  "results": {
+    "multifieldqa_en": {
+      "tieredkv": {
+        "score": 50.0,
+        "n": 1,
+        "sample_scores": [
+          50.0
+        ],
+        "samples": [
+          {
+            "sample_id": "0854a09432eba6428764f7a9287eee5dc92450ccb3e61b6504b8831ccb56285d",
+            "prediction": "Mufti-e-Azam-e-Hind received Khilafat from the following orders: the Qadiri order, the Chishti order, and the Naqshbandi order.",
+            "score": 49.999999999999986,
+            "elapsed_s": 6.169224768877029,
+            "prompt_tokens": 15789,
+            "generated_tokens": 46
+          }
+        ],
+        "cache_stats": {
+          "demoted": 24288,
+          "promoted": 22848,
+          "promotions_deferred": 23232,
+          "paid_writes": 2541,
+          "writes_saved": 21747,
+          "dropped": 0,
+          "write_savings_pct": 89.5,
+          "decode_steps": 45,
+          "stt_starved_steps": 0,
+          "stt_unused_steps": 0,
+          "mean_stt_exposed": 32.0,
+          "stt_expose_quota": 32,
+          "stt_exposed_total": 1472,
+          "stt_exposure_samples": 46,
+          "modeled_latency_us": 13590.1,
+          "modeled_energy_nj": 594987319.3
+        }
+      }
+    }
+  }
+}

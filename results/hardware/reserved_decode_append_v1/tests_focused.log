@@ -1,0 +1,48 @@
+...........FF                                                            [100%]
+=================================== FAILURES ===================================
+___ test_forward_restores_class_methods_and_hooks_on_partial_failure[False] ____
+
+fail = False
+
+    @pytest.mark.parametrize('fail',[False,True])
+    def test_forward_restores_class_methods_and_hooks_on_partial_failure(fail):
+        policy=SimpleNamespace(initialized=True);model=Model(fail);past=DynamicCache()
+        layer,roots,new=fixture();past.layers=[layer]
+>       lease=AppendLease(model,policy)
+
+tests/test_reserved_decode_append.py:67: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <reserved_decode_append.AppendLease object at 0x7a5586070c70>
+model = Model(), policy = namespace(initialized=True)
+
+    def __init__(self,model,policy):
+>       self.policy=weakref.ref(policy);self.pending=[];self.fast_updates=self.fallback_updates=0
+E       TypeError: cannot create weak reference to 'types.SimpleNamespace' object
+
+experiments/reserved_decode_append.py:64: TypeError
+____ test_forward_restores_class_methods_and_hooks_on_partial_failure[True] ____
+
+fail = True
+
+    @pytest.mark.parametrize('fail',[False,True])
+    def test_forward_restores_class_methods_and_hooks_on_partial_failure(fail):
+        policy=SimpleNamespace(initialized=True);model=Model(fail);past=DynamicCache()
+        layer,roots,new=fixture();past.layers=[layer]
+>       lease=AppendLease(model,policy)
+
+tests/test_reserved_decode_append.py:67: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <reserved_decode_append.AppendLease object at 0x7a5417377430>
+model = Model(), policy = namespace(initialized=True)
+
+    def __init__(self,model,policy):
+>       self.policy=weakref.ref(policy);self.pending=[];self.fast_updates=self.fallback_updates=0
+E       TypeError: cannot create weak reference to 'types.SimpleNamespace' object
+
+experiments/reserved_decode_append.py:64: TypeError
+=========================== short test summary info ============================
+FAILED tests/test_reserved_decode_append.py::test_forward_restores_class_methods_and_hooks_on_partial_failure[False]
+FAILED tests/test_reserved_decode_append.py::test_forward_restores_class_methods_and_hooks_on_partial_failure[True]
+2 failed, 11 passed in 2.70s

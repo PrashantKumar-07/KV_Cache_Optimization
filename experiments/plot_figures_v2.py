@@ -4,12 +4,11 @@
 Rebuilds fig1/fig7 with fixed labeling (vertical bold value labels) and
 fig4 as measured decode-latency scaling curves; adds fig5/fig11/fig12/fig14
 + master metrics table.
-All numbers derive offline from committed JSONs + cost_model.py (nominal
-STT tentpole); nothing hand-typed. GPU-free.
+All numbers derive offline from selected run JSONs and cost_model.py
+(nominal STT tentpole). GPU-free.
 
-Inputs : results/final_*.json, results/tables/ci_equal_vram.json,
-         results/latency_headline.json, results/e2_frac*_short.json,
-         src/cost_model.py
+Inputs : --equal-vram, --fair, --latency (corrected measurements);
+         historical ablations remain labeled as such.
 Outputs: figures_final/fig{1,4,7,11,12,14}.pdf/.png,
          results/tables/table_master_metrics.tex
 """
@@ -201,21 +200,23 @@ def _grouped_accuracy_pro(data, stem, title, note):
                   "snapkv": "///", "tieredkv": ""}
     fig, ax = plt.subplots(figsize=(9.6, 4.2))
     for j, m in enumerate(METHODS):
-        hs = []
+        hs, es = [], []
         for t in tasks:
             e = data["results"][t][m]
             hs.append(e["score"])
+            es.append(se_of(e))
         xs = x + (j - (n_m - 1) / 2) * bw
         # Identical edge for EVERY bar (hatch colour follows edgecolor,
         # so SnapKV's hatch renders white-on-pale — clearly visible and
         # exactly as wide as every other bar).
         ax.bar(xs, hs, bar_w, label=MLABEL[m], color=FIG1_PALETTE[m],
                hatch=FIG1_HATCH[m], edgecolor="white", linewidth=0.7,
-               zorder=3)
-    ymax = max(e["score"] for t in tasks for e in
+               yerr=es, error_kw={"capsize": 2, "elinewidth": .7,
+                                  "ecolor": "#333333"}, zorder=3)
+    ymax = max(e["score"] + se_of(e) for t in tasks for e in
                [data["results"][t][m] for m in METHODS])
-    ax.set_ylim(0, ymax * 1.24)
-    top = ymax * 1.24
+    ax.set_ylim(0, ymax * 1.18)
+    top = ymax * 1.18
     # Professional value labels: vertical (90°), bold, ONE uniform offset
     # above every bar. Rotated text is only ~7pt wide while bars are ~12pt
     # apart, so neighbours can never overlap horizontally — no stagger or
@@ -227,8 +228,9 @@ def _grouped_accuracy_pro(data, stem, title, note):
         g = []
         for j, m in enumerate(METHODS):
             h = grp[j]
+            err = se_of(data["results"][tasks[ti]][m])
             xp = x[ti] + (j - (n_m - 1) / 2) * bw
-            t = ax.text(xp, h + y0, f"{h:.1f}", ha="center", va="bottom",
+            t = ax.text(xp, h + err + y0, f"{h:.1f}", ha="center", va="bottom",
                         rotation=90, fontsize=7, fontweight="bold",
                         color="#222222")
             g.append(t)
@@ -256,165 +258,66 @@ def _grouped_accuracy_pro(data, stem, title, note):
     savefig(fig, stem)
 
 
-def fig4_decode_scaling():
-    """Measured decode latency vs. context length (wall-clock, log-log).
-
-    Replaces the old 5-dot accuracy-vs-latency scatter: 4 of its 5 points
-    sat within 0.4 ms of each other, and its 10 numbers already live in
-    the master table. This figure instead uses the FULL latency JSON
-    (6 context lengths x 5 methods = 30 measured points) to show the
-    scaling story a table cannot: full attention's decode cost grows with
-    context while compressed caches stay flat. Every number is read from
-    results/latency_headline.json at runtime -- nothing is hardcoded, and
-    the 16k callouts below are computed from the loaded data."""
-    lat = load("results/latency_headline.json")["results"]
-    ctxs = ["512", "1024", "2048", "4096", "8192", "16384"]
-    xs = np.array([int(c) for c in ctxs], dtype=float)
-
-    itl = {}
-    for m in METHODS:
-        itl[m] = np.array([float(lat[m][c]["itl_ms"]) for c in ctxs])
-
-    # Headline ratio at 16k, computed from the data (not hand-typed).
-    r_full_vs_tkv = itl["full"][-1] / itl["tieredkv"][-1]
-    # H2O vs SnapKV gap at 16k (they visually coincide -- quantify it).
-    dh_sn_h2o = abs(itl["h2o"][-1] - itl["snapkv"][-1])
-
+def fig4_decode_scaling(latency):
+    """Render only correctly scoped end-to-end measurements."""
+    if latency["config"].get("timing_scope") != "end_to_end_model_policy_token":
+        raise ValueError("Latency input is not an end-to-end benchmark")
     fig, ax = plt.subplots(figsize=(9.5, 4.6))
-    markers = {"full": "o", "streamingllm": "s", "h2o": "^",
-               "snapkv": "v", "tieredkv": "D"}
-    for m in METHODS:
-        lw = 2.6 if m == "tieredkv" else 1.8
-        ms = 8 if m == "tieredkv" else 6
-        ax.plot(xs, itl[m], marker=markers[m], markersize=ms,
-                linewidth=lw, color=PALETTE[m], label=MLABEL[m], zorder=5,
-                markeredgecolor="#222222", markeredgewidth=0.6)
-    # Endpoint values at 16k for the two lines that matter (the four
-    # compressed methods sit within 2% of each other -- labeling all of
-    # them would collide; exact values are in the master table).
-    for m in ("full", "tieredkv"):
-        ax.text(xs[-1] * 1.04, itl[m][-1], f"{itl[m][-1]:.1f}",
-                fontsize=8.5, color=PALETTE[m], va="center", ha="left",
-                fontweight="bold" if m == "tieredkv" else "normal")
-    # Computed callouts (positions in axes fraction: stable under rescale).
-    ax.text(0.02, 0.96,
-            f"Full-KV {r_full_vs_tkv:.1f}x TieredKV at 16k ctx",
-            transform=ax.transAxes, fontsize=9, color="#333333", va="top",
-            ha="left",
-            bbox=dict(boxstyle="round,pad=0.3", fc="white", ec="#bbbbbb",
-                      alpha=0.92))
-    # Mark the zoomed strip (the compressed cluster) on the main axes.
-    ax.axhspan(24.0, 25.6, facecolor="#eeeeee", alpha=0.55, zorder=1,
-               edgecolor="#bbbbbb", linestyle="--", linewidth=0.8)
-    # Inset: the compressed cluster on a linear ms scale, where the four
-    # methods actually separate. H2O/SnapKV coincide to ~0.01 ms, so their
-    # endpoint labels are staggered (offsets below) to stay readable.
-    ax_in = ax.inset_axes([0.04, 0.50, 0.40, 0.33])
-    for m in METHODS:
-        if m == "full":
-            continue
-        lw = 2.4 if m == "tieredkv" else 1.8
-        ax_in.plot(xs, itl[m], marker=markers[m], markersize=6,
-                   linewidth=lw, color=PALETTE[m], label=MLABEL[m], zorder=5,
-                   markeredgecolor="#222222", markeredgewidth=0.6)
-    ax_in.set_xscale("log")
-    # Wide right margin so the TieredKV endpoint label clears the frame.
-    ax_in.set_xlim(xs[0] * 0.98, xs[-1] * 1.80)
-    ax_in.set_xticks([512, 4096, 16384])
-    ax_in.set_xticklabels(["512", "4096", "16384"], fontsize=7)
-    ax_in.set_ylim(24.0, 25.6)
-    ax_in.set_yticks([24.0, 24.5, 25.0, 25.5])
-    ax_in.tick_params(labelsize=7)
-    ax_in.grid(True, alpha=0.25, linewidth=0.5)
-    ax_in.set_title("Zoom: compressed methods (linear ms scale)",
-                    fontsize=8, pad=3)
-    # Inset endpoint labels: TieredKV is cleanly separated, so it gets its
-    # own bold label. StreamingLLM/H2O/SnapKV sit within 0.05 ms of each
-    # other -- three separate labels there can never be readable, so they
-    # share ONE joint label parked in the empty space below the lines.
-    # (Exact per-method values are in the master table.) Two labels, far
-    # apart: overlap is impossible by construction, nothing leaves the box.
-    ax_in.text(xs[-1] * 1.10, itl["tieredkv"][-1] + 0.02,
-               f"{itl['tieredkv'][-1]:.2f}",
-               fontsize=7, color=PALETTE["tieredkv"], va="center", ha="left",
-               fontweight="bold")
-    trio = (f"StreamingLLM = {itl['streamingllm'][-1]:.2f}  ·  "
-            f"H2O = {itl['h2o'][-1]:.2f}  ·  "
-            f"SnapKV = {itl['snapkv'][-1]:.2f}")
-    ax_in.text(3700, 24.22, trio, fontsize=7, color="#333333",
-               va="top", ha="center",
-               bbox=dict(fc="white", ec="none", alpha=0.9, pad=0.3))
+    for method, rows in latency["results"].items():
+        points = sorted((int(ctx), entry["itl_ms"]) for ctx, entry in rows.items()
+                        if entry.get("itl_ms") is not None)
+        if points:
+            xs, ys = zip(*points)
+            ax.plot(xs, ys, "o-", label=MLABEL.get(method, method),
+                    color=PALETTE.get(method))
     ax.set_xscale("log")
-    ax.set_yscale("log")
-    ax.set_xticks(xs)
-    ax.set_xticklabels(ctxs)
-    ax.set_xlim(xs[0] * 0.88, xs[-1] * 1.28)
-    ax.set_ylim(22, 70)
-    # Plain numbers on the y-axis (25, 30, 40 …), not 10¹-style powers.
-    ax.set_yticks([25, 30, 40, 50, 60])
-    ax.yaxis.set_major_formatter(mticker.ScalarFormatter())
-    ax.yaxis.set_minor_formatter(mticker.NullFormatter())
-    ax.set_xlabel("Context length (tokens, log scale)")
-    ax.set_ylabel("Decode latency, ITL (ms/token, log scale)")
-    ax.set_title("Measured Decode Latency vs. Context Length (wall-clock)",
-                 fontweight="bold")
-    ax.legend(ncol=5, loc="upper center", bbox_to_anchor=(0.5, -0.16),
-              frameon=False, fontsize=9)
-    fig.text(0.5, 0.005,
-             "Wall-clock decode ITL, Mistral-7B bf16 on CUDA "
-             "(median of 3 x 50-token runs; 16k ctx, budget=1024). "
-             "Synthetic repeated prompt: timing only -- uniform KV understates "
-             "TieredKV promotion churn on real text (see README). "
-             f"Inset: compressed cluster magnified; H2O/SnapKV coincide "
-             f"(\u0394={dh_sn_h2o:.3f} ms @16k).",
-             ha="center", fontsize=7, color="#555555", style="italic")
+    ax.set_xlabel("Context length (tokens)")
+    ax.set_ylabel("End-to-end decode latency (ms/token)")
+    ax.set_title("Decode latency including attention feedback and cache policy")
+    ax.legend()
+    fig.text(0.5, 0.015,
+             "Mistral-7B-Instruct on L40S; real GovReport prompt, 50 fixed decode tokens. "
+             "STT-RAM is simulated on GPU.",
+             ha="center", fontsize=8, color="#555555")
     despine(ax)
-    fig.tight_layout(rect=(0, 0.10, 1, 1))
+    fig.tight_layout(rect=(0, 0.04, 1, 1))
     savefig(fig, "fig4_decode_scaling")
 
 
-def fig11_footprint():
-    """Exact resident KV memory (formula, GQA-correct) + attended tokens."""
-    n_full = 31500
-    rows = [
-        ("Full-KV\n@31.5k ctx", n_full * BYTES_PER_TOKEN / 1e9, None),
-        ("H2O/SnapKV/\nStreamingLLM", 1024 * BYTES_PER_TOKEN / 1e9, 1024),
-        ("TieredKV\n1024+2048", 3072 * BYTES_PER_TOKEN / 1e9, 3072),
-        ("TieredKV\n992+32 exposed", 3072 * BYTES_PER_TOKEN / 1e9, 1024),
-        ("TieredKV\n341+683", 1024 * BYTES_PER_TOKEN / 1e9, 1024),
-    ]
-    labels = [r[0] for r in rows]
-    mbs = [r[1] * 1000 for r in rows]
+def footprint_rows(config):
+    budget = config["budget"]
+    vram = config["tiered_vram_budget"]
+    stt = config["tiered_stt_budget"]
+    expose = config.get("tiered_stt_expose")
+    expose = 32 if expose is None else expose
+    return [("Baseline compressed", budget, budget),
+            ("TieredKV equal VRAM", vram + stt, vram + min(expose, stt)),
+            ("TieredKV matched attention", budget - expose + stt, budget),
+            ("TieredKV equal total", budget, budget // 3 + min(expose, budget-budget//3))]
+
+
+def fig11_footprint(data):
+    rows = footprint_rows(data["config"])
     fig, ax = plt.subplots(figsize=(9.5, 4.4))
-    x = np.arange(len(rows))
-    cols = ["#666666", "#3b8bc0", "#c0392b", "#c0392b", "#c0392b"]
-    ax.bar(x, mbs, 0.6, color=cols, edgecolor="#222222", linewidth=0.8, zorder=3)
-    bar_labels(ax, x, mbs, fmt="{:.0f}", fs=8.5)
-    for i, r in enumerate(rows):
-        if r[2] is not None:
-            if mbs[i] < 300:
-                ax.text(i, mbs[i] + 90, f"attends {r[2]} tok", ha="center",
-                        va="bottom", fontsize=8, color="#333333")
-            else:
-                ax.text(i, mbs[i] * 0.5, f"attends\n{r[2]} tok", ha="center",
-                        va="center", fontsize=8, color="white", fontweight="bold")
-    ax.set_xticks(x)
-    ax.set_xticklabels(labels)
-    ax.set_ylabel("Resident KV memory (MB, bf16, exact formula)")
-    ax.set_title("What Each Method Actually Holds in Memory (Mistral-7B, GQA-correct)\n"
-                 "VRAM 1024 tok / 128 MiB; STT-RAM 2048 tok / 256 MiB bf16 (frac sets prefill fill)",
-                 fontweight="bold", pad=10)
-    despine(ax)
+    xs = np.arange(len(rows))
+    mbs = [r[1] * BYTES_PER_TOKEN / 1e6 for r in rows]
+    ax.bar(xs, mbs, color=["#3b8bc0", "#c0392b", "#c0392b", "#c0392b"])
+    for i, (_, _, attended) in enumerate(rows):
+        ax.text(i, mbs[i], f"{mbs[i]:.1f} MB\n≤{attended} cached tokens attended",
+                ha="center", va="bottom", fontsize=8)
+    ax.set_xticks(xs, [r[0] for r in rows])
+    ax.set_ylim(0, max(mbs)*1.25)
+    ax.set_ylabel("Logical KV capacity (MB, bf16, Mistral-7B GQA)")
+    ax.set_title("Configured capacity, not measured GPU allocation or actual occupancy")
     fig.tight_layout()
     savefig(fig, "fig11_footprint")
 
 
-def fig12_energy():
+def fig12_energy(data):
     """Offline energy split at the nominal STT tentpole (CostModel):
     promote/demote/drop from event counters; attention = residual."""
     cm = CostModel()
     ELEM = KV_HEADS * HEAD_DIM  # per-layer token elements (K+V billed x2 below)
-    data = load("results/final_equal_vram.json")
     comps, names = {}, []
     for m in METHODS:
         pe = de = dr = tot = 0.0
@@ -456,17 +359,19 @@ def fig12_energy():
                 va="bottom", fontsize=8)
     ax.set_xticks(x)
     ax.set_xticklabels([MLABEL[m] for m in names])
-    ax.set_ylabel("Decode energy, 6 tasks (Joules, nominal STT tentpole)")
-    ax.set_title("Where the Energy Goes: Analytical Split from Event Counters",
+    ax.set_ylabel("Modeled decode KV-traffic energy, 6 tasks (Joules)")
+    ax.set_title("Decode KV-Traffic Energy: Analytical Split from Event Counters",
                  fontweight="bold", pad=10)
     ax.legend(ncol=4, loc="upper center", bbox_to_anchor=(0.5, -0.15))
+    fig.text(0.5, 0.015,
+             "Assumed STT 2/8 pJ per bit; excludes prefill, compute, and system power. No STT device measured.",
+             ha="center", fontsize=8)
     despine(ax)
-    fig.tight_layout()
+    fig.tight_layout(rect=(0, 0.06, 1, 1))
     savefig(fig, "fig12_energy")
 
 
-def fig14_heatmap():
-    data = load("results/final_equal_vram.json")
+def fig14_heatmap(data):
     mat = np.array([[data["results"][t][m]["score"] for m in METHODS]
                     for t in TASKS])
     fig, ax = plt.subplots(figsize=(8.5, 4.6))
@@ -493,38 +398,46 @@ def fig14_heatmap():
     savefig(fig, "fig14_heatmap")
 
 
-def master_table():
-    data = load("results/final_equal_vram.json")
-    lat = load("results/latency_headline.json")["results"]
-    ci = load("results/tables/ci_equal_vram.json")["results"]
+def master_table(data, latency=None):
+    lat = latency["results"] if latency else {}
     cm = CostModel()
     ELEM = KV_HEADS * HEAD_DIM
     lines = [
         r"\begin{table*}[t]", r"\centering", r"\small",
         r"\setlength{\tabcolsep}{4pt}",
-        r"\caption{Master results: accuracy (mean $\pm$ SE, n=25/10), measured ITL@16k, "
-        r"resident KV, attended tokens, write savings, analytical energy. "
-        r"TieredKV at 1024 VRAM + 2048 STT, bf16.}",
+        r"\caption{Master results: task score (F1 or ROUGE-L; unweighted mean $\pm$ within-task SE), measured full-loop ITL@16k, "
+        r"configured logical KV capacity, maximum attended tokens, decode-demotion write savings, analytical decode KV-traffic energy. "
+        r"TieredKV uses bf16 KV.}",
         r"\label{tab:master}",
         r"\begin{tabular}{lcccccc}",
         r"\toprule",
-        r"\textbf{Method} & \textbf{Avg F1 $\pm$ SE} & \textbf{ITL@16k (ms)} & "
-        r"\textbf{Resident KV} & \textbf{Attended} & \textbf{Write sav.} & \textbf{Energy (J)} \\",
+        r"\textbf{Method} & \textbf{Avg score $\pm$ SE} & \textbf{ITL@16k (ms)} & "
+        r"\textbf{KV capacity} & \textbf{Attended} & \textbf{Write sav.} & \textbf{Decode energy (J)} \\",
         r"\midrule",
     ]
     avgs, itls = {}, {}
     for m in METHODS:
         ss = [data["results"][t][m]["score"] for t in TASKS]
         avgs[m] = float(np.mean(ss))
-        itls[m] = float(lat[m]["16384"]["itl_ms"])
+        itls[m] = lat.get(m, {}).get("16384", {}).get("itl_ms")
     se_pool = {}
     for m in METHODS:
-        vs = [ci[t][m]["se"] for t in TASKS]
+        vs = [se_of(data["results"][t][m]) for t in TASKS]
         se_pool[m] = float(np.sqrt(sum(v * v for v in vs))) / len(vs)
-    resident = {"full": "4.03 GB@31.5k", "streamingllm": "134 MB",
-                "h2o": "134 MB", "snapkv": "134 MB", "tieredkv": "403 MB"}
-    attended = {"full": "full ctx", "streamingllm": "1024", "h2o": "1024",
-                "snapkv": "1024", "tieredkv": "1024+32"}
+    cfg = data["config"]
+    capacity_mb = lambda tokens: f"{tokens * BYTES_PER_TOKEN / 1e6:.0f} MB"
+    budget = cfg["budget"]
+    vram = cfg["tiered_vram_budget"]
+    stt = cfg["tiered_stt_budget"]
+    expose = cfg.get("tiered_stt_expose")
+    expose = 32 if expose is None else expose
+    resident = {"full": capacity_mb(cfg["max_ctx"]),
+                "streamingllm": capacity_mb(budget),
+                "h2o": capacity_mb(budget), "snapkv": capacity_mb(budget),
+                "tieredkv": capacity_mb(vram + stt)}
+    attended = {"full": "full ctx", "streamingllm": str(budget),
+                "h2o": str(budget), "snapkv": str(budget),
+                "tieredkv": f"{vram}+{min(expose, stt)}"}
     for m in METHODS:
         tot_e = 0.0
         sav_pct = "--"
@@ -535,7 +448,7 @@ def master_table():
                 tot_e += cs.get("modeled_energy_nj", 0)
                 P += cs.get("paid_writes", 0)
                 W += cs.get("writes_saved", 0)
-            sav_pct = f"{100.0 * W / (P + W):.1f}"
+            sav_pct = f"{100.0 * W / (P + W):.1f}" if P + W else "--"
             tot_e = f"{tot_e / 1e9:.1f}"
         else:
             for t in TASKS:
@@ -544,7 +457,7 @@ def master_table():
             tot_e = f"{tot_e / 1e9:.1f}"
         name = r"\textbf{TieredKV (Ours)}" if m == "tieredkv" else MLABEL[m].replace("$", "")
         lines.append(f"{name} & {avgs[m]:.2f} $\\pm$ {se_pool[m]:.2f} & "
-                     f"{itls[m]:.1f} & {resident[m]} & {attended[m]} & "
+                     f"{format(itls[m], '.1f') if itls[m] is not None else '--'} & {resident[m]} & {attended[m]} & "
                      f"{sav_pct} & {tot_e} \\\\")
     lines += [r"\bottomrule", r"\end{tabular}", r"\end{table*}"]
     os.makedirs(TAB, exist_ok=True)
@@ -552,7 +465,7 @@ def master_table():
         f.write("\n".join(lines) + "\n")
     print("  saved table_master_metrics.tex")
     for m in METHODS:
-        print(f"  {m}: F1 {avgs[m]:.2f} SE {se_pool[m]:.2f}, ITL {itls[m]:.1f}ms")
+        print(f"  {m}: score {avgs[m]:.2f} SE {se_pool[m]:.2f}, ITL {format(itls[m], '.1f') if itls[m] is not None else '--'}ms")
 
 
 def fig5_clean():
@@ -603,24 +516,38 @@ def fig5_clean():
 
 
 def main():
-    # Headline files (TieredKV @ frac=0.75 in both; baselines frac-free).
-    data_ev = load("results/final_equal_vram_frac075.json")
-    # Headline fair file (TieredKV @ frac=0.75, 992 VRAM + 32 exposed).
-    data_fair = load("results/final_equal_attended_frac075.json")
-    grouped_accuracy(data_ev, "fig1_accuracy_equivram",
-                     "LongBench Accuracy \u2014 TieredKV vs. SOTA Baselines (Equal-VRAM)",
-                     "Equal-VRAM: TieredKV 1024 VRAM + 2048 STT-RAM (bf16); baselines at budget=1024. "
-                     "Scores averaged over samples (n=25, gov n=10).",
-                     style="pro")
-    grouped_accuracy(data_fair, "fig7_accuracy_fair",
-                     "LongBench Accuracy \u2014 Attention-Matched Comparison (992+32 = 1024)",
-                     "TieredKV attends 1024 tokens like every baseline. Error bars = SE (n=25, gov n=10).")
-    fig4_decode_scaling()
-    fig11_footprint()
-    fig12_energy()
-    fig14_heatmap()
-    master_table()
+    import argparse
+    global OUT, TAB
+    p = argparse.ArgumentParser(description=__doc__)
+    p.add_argument('--equal-vram', required=True)
+    p.add_argument('--fair', required=True)
+    p.add_argument('--latency', required=True, help='Corrected end-to-end latency JSON only')
+    p.add_argument('--outdir', default='figures_final')
+    p.add_argument('--tex-outdir', default='results/tables')
+    args = p.parse_args()
+    OUT, TAB = args.outdir, args.tex_outdir
+    data_ev, data_fair = load(args.equal_vram), load(args.fair)
+    latency = load(args.latency)
+    configs = [data_ev['config'], data_fair['config'], latency['config']]
+    hashes = [c.get('runtime', {}).get('source_sha256') for c in configs]
+    if not all(hashes) or len(set(hashes)) != 1:
+        raise ValueError('Figure inputs must share one recorded source fingerprint')
+    if data_ev['config'].get('dataset_sha256_by_task') != data_fair['config'].get('dataset_sha256_by_task'):
+        raise ValueError('Accuracy figure inputs use different dataset files')
+    fig4_decode_scaling(latency)
+    grouped_accuracy(data_ev, 'fig1_accuracy_equivram',
+        'LongBench accuracy: equal logical VRAM',
+        'Baseline adaptations; error bars = standard errors across samples.',
+        style='pro')
+    grouped_accuracy(data_fair, 'fig7_accuracy_fair',
+        'LongBench accuracy: matched attended cache budget',
+        'Adapted baselines; TieredKV: 992 fast + ≤32 slow; baselines: 1024 fast. Error bars = SE.',
+        style='pro')
+    fig11_footprint(data_ev)
+    fig12_energy(data_ev)
+    fig14_heatmap(data_ev)
+    master_table(data_ev, latency)
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     main()

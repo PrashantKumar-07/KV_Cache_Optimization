@@ -1,0 +1,164 @@
+{
+  "scope": "exact arithmetic correction for old nominal cost-model drop charge; no model inference rerun",
+  "current_runtime": {
+    "git_revision": "be7e700d84d46b47e32ba5b9870c8b71783b9e53",
+    "source_sha256": "8849a27f3c29d66599c538d51226d182e33037b569579cbc3b657bcd40681a0b",
+    "packages": {
+      "torch": "2.5.1+cu124",
+      "transformers": "5.14.1",
+      "datasets": "5.0.0",
+      "numpy": "2.2.6",
+      "accelerate": "1.14.0",
+      "huggingface_hub": "1.24.0",
+      "rouge": "1.0.1"
+    }
+  },
+  "formula": "subtract dropped layer-tokens * 4096 B / 50 GB/s from modeled latency and * 8 bits/B * 2 pJ/bit from modeled energy",
+  "rows": [
+    {
+      "artifact": "results/remediation_v3/equal_vram_merged.json",
+      "artifact_sha256": "d2de6b8384e942a9a8075b171443ef5b5d32cb486523e6e039e7fb2cce07ef1b",
+      "old_source_sha256": "c5db18225a65ab143ed3194d51c8d701606bdfca04b34665f3d87c824ecce727",
+      "task": "multifieldqa_en",
+      "dropped_layer_tokens": 0,
+      "removed_phantom_read_bytes": 0,
+      "old_modeled_latency_us": 222579.6,
+      "corrected_modeled_latency_us": 222579.6,
+      "old_modeled_energy_nj": 9530009976.8,
+      "corrected_modeled_energy_nj": 9530009976.8
+    },
+    {
+      "artifact": "results/remediation_v3/equal_vram_merged.json",
+      "artifact_sha256": "d2de6b8384e942a9a8075b171443ef5b5d32cb486523e6e039e7fb2cce07ef1b",
+      "old_source_sha256": "c5db18225a65ab143ed3194d51c8d701606bdfca04b34665f3d87c824ecce727",
+      "task": "qasper",
+      "dropped_layer_tokens": 0,
+      "removed_phantom_read_bytes": 0,
+      "old_modeled_latency_us": 262481.6,
+      "corrected_modeled_latency_us": 262481.6,
+      "old_modeled_energy_nj": 11375063203.8,
+      "corrected_modeled_energy_nj": 11375063203.8
+    },
+    {
+      "artifact": "results/remediation_v3/equal_vram_merged.json",
+      "artifact_sha256": "d2de6b8384e942a9a8075b171443ef5b5d32cb486523e6e039e7fb2cce07ef1b",
+      "old_source_sha256": "c5db18225a65ab143ed3194d51c8d701606bdfca04b34665f3d87c824ecce727",
+      "task": "narrativeqa",
+      "dropped_layer_tokens": 0,
+      "removed_phantom_read_bytes": 0,
+      "old_modeled_latency_us": 125936.8,
+      "corrected_modeled_latency_us": 125936.8,
+      "old_modeled_energy_nj": 5287014039.6,
+      "corrected_modeled_energy_nj": 5287014039.6
+    },
+    {
+      "artifact": "results/remediation_v3/equal_vram_merged.json",
+      "artifact_sha256": "d2de6b8384e942a9a8075b171443ef5b5d32cb486523e6e039e7fb2cce07ef1b",
+      "old_source_sha256": "c5db18225a65ab143ed3194d51c8d701606bdfca04b34665f3d87c824ecce727",
+      "task": "hotpotqa",
+      "dropped_layer_tokens": 0,
+      "removed_phantom_read_bytes": 0,
+      "old_modeled_latency_us": 120428.4,
+      "corrected_modeled_latency_us": 120428.4,
+      "old_modeled_energy_nj": 5019625062.4,
+      "corrected_modeled_energy_nj": 5019625062.4
+    },
+    {
+      "artifact": "results/remediation_v3/equal_vram_merged.json",
+      "artifact_sha256": "d2de6b8384e942a9a8075b171443ef5b5d32cb486523e6e039e7fb2cce07ef1b",
+      "old_source_sha256": "c5db18225a65ab143ed3194d51c8d701606bdfca04b34665f3d87c824ecce727",
+      "task": "triviaqa",
+      "dropped_layer_tokens": 0,
+      "removed_phantom_read_bytes": 0,
+      "old_modeled_latency_us": 98440.2,
+      "corrected_modeled_latency_us": 98440.2,
+      "old_modeled_energy_nj": 4008214659.1,
+      "corrected_modeled_energy_nj": 4008214659.1
+    },
+    {
+      "artifact": "results/remediation_v3/equal_vram_merged.json",
+      "artifact_sha256": "d2de6b8384e942a9a8075b171443ef5b5d32cb486523e6e039e7fb2cce07ef1b",
+      "old_source_sha256": "c5db18225a65ab143ed3194d51c8d701606bdfca04b34665f3d87c824ecce727",
+      "task": "gov_report",
+      "dropped_layer_tokens": 0,
+      "removed_phantom_read_bytes": 0,
+      "old_modeled_latency_us": 789161.1,
+      "corrected_modeled_latency_us": 789161.1,
+      "old_modeled_energy_nj": 35222334603.3,
+      "corrected_modeled_energy_nj": 35222334603.3
+    },
+    {
+      "artifact": "results/remediation_v3/equal_total_merged.json",
+      "artifact_sha256": "16fe5b2381da3068d4e17429c74a16f359176dc44aaba0b549804b0b838c3c8f",
+      "old_source_sha256": "c5db18225a65ab143ed3194d51c8d701606bdfca04b34665f3d87c824ecce727",
+      "task": "multifieldqa_en",
+      "dropped_layer_tokens": 0,
+      "removed_phantom_read_bytes": 0,
+      "old_modeled_latency_us": 149510.1,
+      "corrected_modeled_latency_us": 149510.1,
+      "old_modeled_energy_nj": 3434014834.7,
+      "corrected_modeled_energy_nj": 3434014834.7
+    },
+    {
+      "artifact": "results/remediation_v3/equal_total_merged.json",
+      "artifact_sha256": "16fe5b2381da3068d4e17429c74a16f359176dc44aaba0b549804b0b838c3c8f",
+      "old_source_sha256": "c5db18225a65ab143ed3194d51c8d701606bdfca04b34665f3d87c824ecce727",
+      "task": "qasper",
+      "dropped_layer_tokens": 0,
+      "removed_phantom_read_bytes": 0,
+      "old_modeled_latency_us": 207634.6,
+      "corrected_modeled_latency_us": 207634.6,
+      "old_modeled_energy_nj": 4848376610.8,
+      "corrected_modeled_energy_nj": 4848376610.8
+    },
+    {
+      "artifact": "results/remediation_v3/equal_total_merged.json",
+      "artifact_sha256": "16fe5b2381da3068d4e17429c74a16f359176dc44aaba0b549804b0b838c3c8f",
+      "old_source_sha256": "c5db18225a65ab143ed3194d51c8d701606bdfca04b34665f3d87c824ecce727",
+      "task": "narrativeqa",
+      "dropped_layer_tokens": 0,
+      "removed_phantom_read_bytes": 0,
+      "old_modeled_latency_us": 81555.4,
+      "corrected_modeled_latency_us": 81555.4,
+      "old_modeled_energy_nj": 1788607201.3,
+      "corrected_modeled_energy_nj": 1788607201.3
+    },
+    {
+      "artifact": "results/remediation_v3/equal_total_merged.json",
+      "artifact_sha256": "16fe5b2381da3068d4e17429c74a16f359176dc44aaba0b549804b0b838c3c8f",
+      "old_source_sha256": "c5db18225a65ab143ed3194d51c8d701606bdfca04b34665f3d87c824ecce727",
+      "task": "hotpotqa",
+      "dropped_layer_tokens": 0,
+      "removed_phantom_read_bytes": 0,
+      "old_modeled_latency_us": 90738.3,
+      "corrected_modeled_latency_us": 90738.3,
+      "old_modeled_energy_nj": 2034895552.5,
+      "corrected_modeled_energy_nj": 2034895552.5
+    },
+    {
+      "artifact": "results/remediation_v3/equal_total_merged.json",
+      "artifact_sha256": "16fe5b2381da3068d4e17429c74a16f359176dc44aaba0b549804b0b838c3c8f",
+      "old_source_sha256": "c5db18225a65ab143ed3194d51c8d701606bdfca04b34665f3d87c824ecce727",
+      "task": "triviaqa",
+      "dropped_layer_tokens": 0,
+      "removed_phantom_read_bytes": 0,
+      "old_modeled_latency_us": 53483.1,
+      "corrected_modeled_latency_us": 53483.1,
+      "old_modeled_energy_nj": 1106447040.5,
+      "corrected_modeled_energy_nj": 1106447040.5
+    },
+    {
+      "artifact": "results/remediation_v3/equal_total_merged.json",
+      "artifact_sha256": "16fe5b2381da3068d4e17429c74a16f359176dc44aaba0b549804b0b838c3c8f",
+      "old_source_sha256": "c5db18225a65ab143ed3194d51c8d701606bdfca04b34665f3d87c824ecce727",
+      "task": "gov_report",
+      "dropped_layer_tokens": 25920,
+      "removed_phantom_read_bytes": 106168320,
+      "old_modeled_latency_us": 629394.1,
+      "corrected_modeled_latency_us": 627270.7335999999,
+      "old_modeled_energy_nj": 11750477266.9,
+      "corrected_modeled_energy_nj": 11748778573.779999
+    }
+  ],
+  "limitations": "Only these two merged corrected-control reports audited; no physical STT data, no measured latency or quality change."
+}

@@ -1,0 +1,35 @@
+{
+  "seed": 0,
+  "model": "../models/mistral-7b-instruct",
+  "context": 16384,
+  "decode_steps": 50,
+  "arms": [
+    "snap",
+    "gpu",
+    "cpu_direct"
+  ],
+  "owned_kv_ceiling_bytes": 536870912,
+  "forward_attended_row_ceiling": 1024,
+  "settings": {
+    "snap": {
+      "prompt_rows": 974,
+      "window": 32,
+      "kernel": 5
+    },
+    "gpu": {
+      "hot": 991,
+      "cold": 2082,
+      "exposed": 32
+    },
+    "cpu_direct": {
+      "hot": 991,
+      "cold": 1090,
+      "exposed": 32
+    }
+  },
+  "mechanism": "Frozen algebraic reservation ceilings: grouped KV row128KiB/model, expanded Snap row512KiB/model. GPU991+2082+1023=4096; CPU(991+1090+1)+991+1023=4096.",
+  "acceptance": "All153stored boundaries total distinct owned KV <=512MiB and all4800layer-forward widths<=1024; report actual bytes and widths without equal-use claim.",
+  "stop": "Audit only; no tuning capacities on outputs. No quality/speed claim from resource diagnostics.",
+  "prompt_sha256": "18695714f26e35cb8d2b039ae9efb3b7e64291cbd7bcd91956efc07e16a732cd",
+  "teacher_sha256": "620ac3a383997c9afbc6a3f0b06acec9f261d5a2a5827bf5988e0bb5b69f12a2"
+}

@@ -1,0 +1,25 @@
+{
+  "timestamp_utc": "2026-10-03T05:02:33.181156+00:00",
+  "mechanism": "3ABBA same GPU-index native fullquery original concat vs selected-cold-suffix-only writes. Same Q/read/ranking/chosen IDs/causalwidth/policy/runtime. Component test only.",
+  "settings": {
+    "hot": 991,
+    "cold": 1090,
+    "quota": 32,
+    "context": 16384,
+    "decode": 50,
+    "warmup": 1,
+    "prefill_last_logits": true,
+    "seed": 0
+  },
+  "prompt": "results/remediation_v3/latency_prompt.txt",
+  "teachers": "results/shadow_ablation_full/fixed_stream_20260929.json",
+  "control": "results/hardware/gpu_query_read_indices_v1/resource.json",
+  "correctness_proof_sha256": "e4b1f23e31ab2ba03d4667d949a22e05d910da287201a8af4044d9ee15f94c51",
+  "resource_proof_sha256": "c3638bbbe0334b10978201e07b50fa094e46dfca251ebf64ddc75e4dcf8848cd",
+  "primary": ">=5% median end-to-end decode improvement vs concat and >=4ms saved, p95<=2%worse, TTFT<=10%worse; all frozenpred/state/counters/KVbytes/calls/indexmetadata replay, ownhooks/resetcleanup, quietGPU0 before/after all12rows.",
+  "stop": "Failed component gate stops standalone suffix expansion/adoption. Passing component requires preregistered ordinaryLRU guard before wider retrieval/adoption. No old failed fullscan quality retry, totalH2D saving or physicalSTT/full512MiB/independentquality claim.",
+  "limits": "One model/seed fixedteacher component comparison; no continuous utilization assurance. Same fullscanKVpayload and metadata.",
+  "prompt_sha256": "18695714f26e35cb8d2b039ae9efb3b7e64291cbd7bcd91956efc07e16a732cd",
+  "teachers_sha256": "620ac3a383997c9afbc6a3f0b06acec9f261d5a2a5827bf5988e0bb5b69f12a2",
+  "control_sha256": "35a84c690afee9510bcb5309595e5be88376403cbc8221fc5d427e471eb5a281"
+}

@@ -1,0 +1,33 @@
+{
+  "hypothesis": "Released full-prompt KV/logit buffers remain in Torch CUDA cache through decode. At the end of the already charged prefill function, release the unused output owner and call torch.cuda.empty_cache; preserve raw compressed cache/token owners and model/policy math.",
+  "control": "ExactPinnedPoolPolicy/RecordedExactPolicy in both arms, frozen last resource proof; only caller cleanup changes.",
+  "control_proof_sha256": "0fbeb1b2518e3f841978e1da9f97c93b8a507f8b62d0579d558e09f67582704b",
+  "control_source_sha256": "80355bfc0af6ac1e6eda87db609a4f22ccc437e2fc30718231756bc339aed658",
+  "model": "../models/mistral-7b-instruct",
+  "gpu": 0,
+  "precision": "BF16 KV / F32 metadata",
+  "contexts": [
+    16384
+  ],
+  "geometries": {
+    "shared": [
+      991,
+      1090
+    ],
+    "default": [
+      1024,
+      2048
+    ]
+  },
+  "seed": 0,
+  "pilot_decode": 5,
+  "primary": "At least 10% lower whole-decode GPU reserved peak; not a model-wide active allocation/speed headline.",
+  "guards": {
+    "state_ids_history_counters_transfers": "exact",
+    "ttft_pct": 10,
+    "prefill_allocated_peak_pct": 2,
+    "median_decode_pct": 2,
+    "p95_decode_pct": 2
+  },
+  "progression": "Cheap direction-only pair per geometry, then 50-step three-ABBA guards and mandatory integrity if primary passes. No CLI/default promotion from pilot. Full actual-resource scopes must remain explicit."
+}

@@ -1,0 +1,89 @@
+{
+  "model": "../models/mistral-7b-instruct",
+  "seeds": [
+    0
+  ],
+  "hot": 1024,
+  "cold": 2048,
+  "max_append": 32,
+  "max_ctx": 31500,
+  "tasks": {
+    "qasper": {
+      "source_file": "../hf_cache/datasets/downloads/extracted/5def9c7eaf83951e1cee75902d8611ef764ad88dd289e8f0bf97ff658a3eb83a/data/qasper_e.jsonl",
+      "source_sha256": "97d95c01221a17a2ce51f9180d65a671bf2998504a2ff0cccffe97e9b08444d8",
+      "selected_zero_based_indices": [
+        0,
+        1
+      ],
+      "selected_sample_ids": [
+        "3b91dce7ca41a9d16a1d0c61806c139db583a053ddb582bf79df3ff56f8e0344",
+        "5f59f94cd91401a55bcd3b6b24b78cd2c4c78e8ee6e7663e0ac8b97306444f08"
+      ]
+    },
+    "narrativeqa": {
+      "source_file": "../hf_cache/datasets/downloads/extracted/5def9c7eaf83951e1cee75902d8611ef764ad88dd289e8f0bf97ff658a3eb83a/data/narrativeqa.jsonl",
+      "source_sha256": "0fb8d08ba5cdad4b74244224b0dc2e8b41ee6b850d954a13eb2d282621ce2f71",
+      "selected_zero_based_indices": [
+        0,
+        1
+      ],
+      "selected_sample_ids": [
+        "27a07bedff812ae2c3fece3ac4a1f1db11f00793a3598fa94f1fa286ea347cb9",
+        "dfeb4058f4507fa2d2a6f80f6c230cc08e3c7eaa8221bead1ccee5ba90a57488"
+      ]
+    },
+    "multifieldqa_en": {
+      "source_file": "../hf_cache/datasets/downloads/extracted/5def9c7eaf83951e1cee75902d8611ef764ad88dd289e8f0bf97ff658a3eb83a/data/multifieldqa_en_e.jsonl",
+      "source_sha256": "678a51335e3c90e0dd43bf1131045e4f2859cc693e7eded89cc6a1ee8d18faff",
+      "selected_zero_based_indices": [
+        0,
+        1
+      ],
+      "selected_sample_ids": [
+        "b3a9da1dd79b69143f46fb4ea37f3159f11a4585b68604cbda50c0adf4da65a1",
+        "66fbe72f15b70e8c8cc090467f3ac90f03c8fb6063e3346cd82d7778cd7b1cf9"
+      ]
+    },
+    "hotpotqa": {
+      "source_file": "../hf_cache/datasets/downloads/extracted/5def9c7eaf83951e1cee75902d8611ef764ad88dd289e8f0bf97ff658a3eb83a/data/hotpotqa_e.jsonl",
+      "source_sha256": "26a90a291cca5b2515bf466c6c3d1f57d8a4e67b0cf5aa39e1834913a15e6309",
+      "selected_zero_based_indices": [
+        0,
+        1
+      ],
+      "selected_sample_ids": [
+        "0c0f0d5cee81743cafef6ed82c3b65e9b05da0b919bdc6fe6e2a7933aa2ef4d8",
+        "6492e6398e134ab31f4ffb3f52682ca976c2dab0a1448c511467b97369fc1e41"
+      ]
+    },
+    "triviaqa": {
+      "source_file": "../hf_cache/datasets/downloads/extracted/5def9c7eaf83951e1cee75902d8611ef764ad88dd289e8f0bf97ff658a3eb83a/data/triviaqa_e.jsonl",
+      "source_sha256": "3c4cc5ca18f2578d1f6458d1219387c741c6fafad7e8518addea898c08ff0d73",
+      "selected_zero_based_indices": [
+        0,
+        1
+      ],
+      "selected_sample_ids": [
+        "df36de52b2880247380eadc9e0d64947621dfcb5bf270238d8d1958a8d47216d",
+        "7e37de6fd411b09614fed0509e069d28f9eb704fa9c3c225dd04a50742bffe92"
+      ]
+    },
+    "gov_report": {
+      "source_file": "../hf_cache/datasets/downloads/extracted/5def9c7eaf83951e1cee75902d8611ef764ad88dd289e8f0bf97ff658a3eb83a/data/gov_report_e.jsonl",
+      "source_sha256": "0a3902fcf3d49f228549f02a2ef1ae84dbe8578b8be3d4611d54459487bdef84",
+      "selected_zero_based_indices": [
+        0,
+        1
+      ],
+      "selected_sample_ids": [
+        "11d3fe7a8c5f9be5c05ff2b46002fae136e91f31575249f5c3db054f4d0715ad",
+        "56f5a37dac322a67081fbbce0ee9261106133f38ac8b4f38fc3555f5b593969d"
+      ]
+    }
+  },
+  "selection": "Same 12 distinct reused development documents; one greedy seed/native task caps; storage preservation only.",
+  "arms": [
+    "direct",
+    "fused_bounded"
+  ]
+}

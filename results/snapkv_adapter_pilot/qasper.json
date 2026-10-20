@@ -1,0 +1,97 @@
+{
+  "config": {
+    "model": "../models/mistral-7b-instruct",
+    "data_dir": "../hf_cache/datasets/downloads/extracted/5def9c7eaf83951e1cee75902d8611ef764ad88dd289e8f0bf97ff658a3eb83a/data",
+    "tasks": [
+      "qasper"
+    ],
+    "max_samples": 5,
+    "capacity": 1024,
+    "window": 32,
+    "runtime": {
+      "git_revision": "be7e700d84d46b47e32ba5b9870c8b71783b9e53",
+      "source_sha256": "bcc2b8520906db2db0a85494d441a4e688e571a356f1f6bc00c6c493d71dc548",
+      "packages": {
+        "torch": "2.5.1+cu124",
+        "transformers": "5.15.0",
+        "datasets": "2.19.2",
+        "numpy": "2.2.6",
+        "accelerate": "1.14.0",
+        "huggingface_hub": "1.27.0",
+        "rouge": "1.0.1"
+      }
+    },
+    "seed": 0,
+    "max_ctx": 31500,
+    "source_files": {
+      "/data/nishant/Nishant/Prashant/Project/kv_cache/experiments/evaluate_snapkv_adapter.py": "3fcf3cced1ae7f89c2e9b183d8fd8cbaa00d92c00889135a97c740b61659cd46",
+      "/data/nishant/Nishant/Prashant/Project/kv_cache/experiments/snapkv_adapter.py": "8d44929bcd4440431332608eb14f4660008ca284ded84dcb824dca3dbad19eab",
+      "sota/snapkv/snapkv/monkeypatch/snapkv_utils.py": "d7eddeaf361d9d38be991be734752c831b09f9c95a6e777ac17e7262ca2b4cf5"
+    },
+    "dataset_sha256": {
+      "qasper": "97d95c01221a17a2ce51f9180d65a671bf2998504a2ff0cccffe97e9b08444d8"
+    }
+  },
+  "results": {
+    "qasper": {
+      "snapkv_upstream_selector": {
+        "score": 20.02,
+        "n": 5,
+        "sample_scores": [
+          39.02,
+          22.22,
+          16.0,
+          22.86,
+          0.0
+        ],
+        "samples": [
+          {
+            "sample_id": "3b91dce7ca41a9d16a1d0c61806c139db583a053ddb582bf79df3ff56f8e0344",
+            "prediction": "They looked at different Facebook pages, including FoxNews, CNN, ESPN, New York Times, and Huffington Post.",
+            "score": 39.02439024390244,
+            "elapsed_s": 3.7024550288915634,
+            "prompt_tokens": 4895,
+            "generated_tokens": 27,
+            "final_kv_payload_bytes": 550502400
+          },
+          {
+            "sample_id": "5f59f94cd91401a55bcd3b6b24b78cd2c4c78e8ee6e7663e0ac8b97306444f08",
+            "prediction": "The paper proposes attention models to infer the latent context that triggers an instructor intervention.",
+            "score": 22.22222222222222,
+            "elapsed_s": 2.719022687524557,
+            "prompt_tokens": 5415,
+            "generated_tokens": 20,
+            "final_kv_payload_bytes": 546832384
+          },
+          {
+            "sample_id": "9d37c5305ff63838fd6b7c96f13d10cfc388955672b1a629e5c0a8c2a89c520d",
+            "prediction": "In addition to F-score and Kappa difference, other evaluation metrics are considered in the article. However, the specific metrics are not mentioned in the given text.",
+            "score": 16.0,
+            "elapsed_s": 3.6834322717040777,
+            "prompt_tokens": 5549,
+            "generated_tokens": 34,
+            "final_kv_payload_bytes": 554172416
+          },
+          {
+            "sample_id": "5b60c062453de695f70d5f313a868a3c630068a85084fc9c456760f41e84d0f3",
+            "prediction": "The baselines were plain LSTMs and stacked LSTMs without the proposed modifications.",
+            "score": 22.857142857142858,
+            "elapsed_s": 2.6356107611209154,
+            "prompt_tokens": 5175,
+            "generated_tokens": 20,
+            "final_kv_payload_bytes": 546832384
+          },
+          {
+            "sample_id": "a25d41e770a5f1816e04f39227fecd7dfcd9b83b25842e413d0f8fcb447b2092",
+            "prediction": "jiant specifically mentions support for PyTorch (via HuggingFace's Transformers) and AllenNLP as its core dependencies. Therefore, it is primarily designed for models implemented in those libraries, which are both Python-based.",
+            "score": 0.0,
+            "elapsed_s": 4.290310669690371,
+            "prompt_tokens": 3956,
+            "generated_tokens": 51,
+            "final_kv_payload_bytes": 563085312
+          }
+        ]
+      }
+    }
+  }
+}

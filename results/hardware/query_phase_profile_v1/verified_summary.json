@@ -1,0 +1,127 @@
+{
+  "verified": true,
+  "classification": "Verified scoped CPU-phase diagnostic summary; original trace jobs failed reporting guards.",
+  "tests_passed": 287,
+  "focused_tests_passed": 4,
+  "expected_cpu_phases": 8,
+  "observations_per_phase": 1600,
+  "duplicate_zero_cpu_gpu_annotation_spans": 6,
+  "phase_costs": [
+    {
+      "phase": "live_index_lookup",
+      "observations": 1600,
+      "instrumented_cpu_elapsed_ms_per_decode": 3.225095500000082,
+      "instrumented_cpu_self_ms_per_decode": 2.8229133000005593,
+      "share_of_cpu_phase_ranges": 0.05625684198128698,
+      "incomplete_torch_correlated_gpu_ms_per_decode": 0.014635020000087097
+    },
+    {
+      "phase": "query_projection_rotary",
+      "observations": 1600,
+      "instrumented_cpu_elapsed_ms_per_decode": 7.248133619999494,
+      "instrumented_cpu_self_ms_per_decode": 2.6129960999982713,
+      "share_of_cpu_phase_ranges": 0.1264325684989963,
+      "incomplete_torch_correlated_gpu_ms_per_decode": 2.0020732000012695
+    },
+    {
+      "phase": "fast_key_materialization",
+      "observations": 1600,
+      "instrumented_cpu_elapsed_ms_per_decode": 7.629203200000115,
+      "instrumented_cpu_self_ms_per_decode": 5.291523000000157,
+      "share_of_cpu_phase_ranges": 0.1330797425581737,
+      "incomplete_torch_correlated_gpu_ms_per_decode": 0.37580404000019657
+    },
+    {
+      "phase": "native_cold_pair_read",
+      "observations": 1600,
+      "instrumented_cpu_elapsed_ms_per_decode": 8.779792100000522,
+      "instrumented_cpu_self_ms_per_decode": 5.913831840003403,
+      "share_of_cpu_phase_ranges": 0.15315000030177975,
+      "incomplete_torch_correlated_gpu_ms_per_decode": 0.20318598000008614
+    },
+    {
+      "phase": "attention_ranking",
+      "observations": 1600,
+      "instrumented_cpu_elapsed_ms_per_decode": 8.13451095999999,
+      "instrumented_cpu_self_ms_per_decode": 2.333210799999852,
+      "share_of_cpu_phase_ranges": 0.14189406101982246,
+      "incomplete_torch_correlated_gpu_ms_per_decode": 0.626284519999763
+    },
+    {
+      "phase": "topk_cpu_ids",
+      "observations": 1600,
+      "instrumented_cpu_elapsed_ms_per_decode": 5.714165299999854,
+      "instrumented_cpu_self_ms_per_decode": 1.323652660000287,
+      "share_of_cpu_phase_ranges": 0.09967484508196328,
+      "incomplete_torch_correlated_gpu_ms_per_decode": 0.4589381400006451
+    },
+    {
+      "phase": "gpu_visible_composition",
+      "observations": 1600,
+      "instrumented_cpu_elapsed_ms_per_decode": 15.886552199999839,
+      "instrumented_cpu_self_ms_per_decode": 9.363203900001999,
+      "share_of_cpu_phase_ranges": 0.27711652468673725,
+      "incomplete_torch_correlated_gpu_ms_per_decode": 0.9326571599990503
+    },
+    {
+      "phase": "cpu_visible_metadata",
+      "observations": 1600,
+      "instrumented_cpu_elapsed_ms_per_decode": 0.7106051200005878,
+      "instrumented_cpu_self_ms_per_decode": 0.7106051200005878,
+      "share_of_cpu_phase_ranges": 0.012395415871240253,
+      "incomplete_torch_correlated_gpu_ms_per_decode": 0.0
+    }
+  ],
+  "largest_cpu_elapsed_phase": {
+    "phase": "gpu_visible_composition",
+    "observations": 1600,
+    "instrumented_cpu_elapsed_ms_per_decode": 15.886552199999839,
+    "instrumented_cpu_self_ms_per_decode": 9.363203900001999,
+    "share_of_cpu_phase_ranges": 0.27711652468673725,
+    "incomplete_torch_correlated_gpu_ms_per_decode": 0.9326571599990503
+  },
+  "exact_50_step_frozen_query_state_counters_transfer_assertions_executed": true,
+  "fidelity_evidence": "Executed assertions and flag in immutable v4 driver/report, linked to frozen native-query reference; not a separately dumped new trajectory.",
+  "native_kv_h2d_bytes": 5825961984,
+  "native_kv_d2h_bytes": 115855360,
+  "candidate_index_metadata_h2d_bytes": 75333120,
+  "ordinary_source_cli_defaults_unchanged": true,
+  "quiet_compute_process_checks": 5,
+  "own_hooks_and_index_metadata_released": true,
+  "all_owned_jobs_terminal": true,
+  "original_failed_reports_and_counts_preserved": true,
+  "chrome_trace_exported": false,
+  "native_kernel_gpu_attribution_complete": false,
+  "speed_or_adoption_proof": false,
+  "next": "Preregister visible-buffer reuse / cold-row-only composition, then ownership/parity/resource/component and ordinaryLRU gates. No standalone fullscan quality retry or adoption.",
+  "ordinary_adoption": false,
+  "fullscan_quality_timing_expansion": false,
+  "full_goal_complete": false,
+  "limits": "One model/seed trajectory, one instrumented trace. CPU ranges include waiting and profiler overhead; attributed GPU durations are kernel sums, not end-to-end elapsed or formal lower bounds. Ordinary code/CLI/defaults unchanged. PhysicalSTT/quality/full512MiB/actualmatching remain open. Chrome trace not exported; custom-native-kernel attribution incomplete. GPU annotation spans are not kernel sums.",
+  "evidence_sha256": {
+    "plan.json": "e428d3264e95033d3423d09d2e31039e115fa64c033b569499899b56c12ec476",
+    "implementation.json": "6413c58d1a97772a8629cd759e155892d1dd5c0ef132fd9b276011360ddd3553",
+    "implementation_v2.json": "02d2d2683f475d95461164a7a977e67c0ef8a3af967f1c6598d20254292c7cc0",
+    "implementation_v3.json": "0b2f96b380d55f69d02ad0e079eea7114c74bf05d9ce62c7e6a4f60cfb21e685",
+    "implementation_v4.json": "cb92f7e5108cd7f2753d081c373936693b5a038e15ed2b052bd3e366701f09e1",
+    "implementation_source_v4.tar.gz": "52ebc7638c5efe7d4f3c65b5aa7699e9be213507543d66da1250f912b199c27f",
+    "profile.log": "2095056c5e738a50d4ce17d6b29b0917d551c89bafc10df61d45c2c4fe19d145",
+    "profile_v3.log": "365bc99979fc99d2bd2aa07f098fe287fdbda468ef3888cfda2ca2ce90d4cde0",
+    "profile_v4.log": "8fde4a915f4dedb61e55c11365dd28636aeac4cd73f14ae25b1a5a5656fba56b",
+    "profile_v3.json": "0d9dcae5e3ba45fdddc5e909487a890731557c6519571759b21843d4eee892cc",
+    "profile_v4.json": "39042d1d776ca037c8bb4e814ec723f9dd107a9be44f5f866f59ea7ad98146de",
+    "profile_job.json": "d5930c49802bc816c77979d7a29d70dcab467542316519cc8e7ef0643445afb0",
+    "profile_v3_job.json": "6cd6a9b385bde8bd96e5b2da54a954a77ee648e0a0b67f155fbcf5f9ff455c2e",
+    "profile_v4_job.json": "a36f1b678c8b34ab849d08d4510909b95bb1961257369b0a0c92202d8d8d033d",
+    "tests_job.json": "b7a08b99f1dd134713b90ac77240c609d506b52ab24120b5720c421883154b11",
+    "tests_full.log": "adafaaefa4e9b5fcb3711640efefd0223343b565490f7c9a187b0ec3a2bf0219",
+    "tests_focused.log": "2e8da1fbbcd04f675cfb0c128770a1aede5f8b839c96dbfd810da7abe84d18be",
+    "tests_focused_v2.log": "abf31bb562215a9bb8d634c9a1dadf9c06032686a8943d7195a0917343ce2029",
+    "isolation_correction.json": "b8e40ffea60755a40b348a4f637f96a67ca284b1f509f5683cbf5a37f2f714a2",
+    "report_retention_correction.json": "3cc1ac8f765b667716f75f2aec5e501fce96cace1933104b4a02a88b80783f19",
+    "annotation_scope_correction.json": "bf4f3c8f2494751cffdf258e8478e5e0e8c14a360fa76e367852bc41d59983ef",
+    "annotation_scope_correction_v2.json": "7932abcc185de99dd6453c86c930f137d498d95e60d71677c01e0f9f4a5a0115",
+    "verify_summary.py": "1e98dde6202074a7ee3737e9d55fa1e591adf2d68eb53656b0a2abef64b79af6",
+    "phase_costs.csv": "960d80e5c0dce610fca7823644c207d794c997550c53d125669224e02e51442a"
+  }
+}

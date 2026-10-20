@@ -1,0 +1,112 @@
+{
+  "cpu_only": true,
+  "torch": "2.5.1+cu124",
+  "seed": 71,
+  "threads": 1,
+  "all_checks_passed": true,
+  "six_dtype_zero_cold_cases": [
+    {
+      "hot": "torch.float32",
+      "cold": "torch.float8_e4m3fn",
+      "initial_cold_rows": 32,
+      "actual_bound_bytes": 128,
+      "billed": {
+        "elems": 32,
+        "kwargs": {
+          "tier": "STT-RAM",
+          "metadata_bytes_per_elem": 4
+        },
+        "latency_us": 0.00256,
+        "energy_nj": 2.048
+      }
+    },
+    {
+      "hot": "torch.float32",
+      "cold": "torch.bfloat16",
+      "initial_cold_rows": 32,
+      "actual_bound_bytes": 64,
+      "billed": {
+        "elems": 32,
+        "kwargs": {
+          "tier": "STT-RAM",
+          "metadata_bytes_per_elem": 2
+        },
+        "latency_us": 0.00128,
+        "energy_nj": 1.024
+      }
+    },
+    {
+      "hot": "torch.bfloat16",
+      "cold": "torch.float8_e4m3fn",
+      "initial_cold_rows": 32,
+      "actual_bound_bytes": 64,
+      "billed": {
+        "elems": 32,
+        "kwargs": {
+          "tier": "STT-RAM",
+          "metadata_bytes_per_elem": 2
+        },
+        "latency_us": 0.00128,
+        "energy_nj": 1.024
+      }
+    },
+    {
+      "hot": "torch.float32",
+      "cold": "torch.float32",
+      "initial_cold_rows": 32,
+      "actual_bound_bytes": 128,
+      "billed": {
+        "elems": 32,
+        "kwargs": {
+          "tier": "STT-RAM",
+          "metadata_bytes_per_elem": 4
+        },
+        "latency_us": 0.00256,
+        "energy_nj": 2.048
+      }
+    },
+    {
+      "hot": "torch.float32",
+      "cold": "torch.float8_e4m3fn",
+      "initial_cold_rows": 0,
+      "actual_bound_bytes": 0,
+      "billed": {
+        "elems": 0,
+        "kwargs": {
+          "tier": "STT-RAM",
+          "metadata_bytes_per_elem": 4
+        },
+        "latency_us": 0.0,
+        "energy_nj": 0.0
+      }
+    },
+    {
+      "hot": "torch.float32",
+      "cold": "torch.bfloat16",
+      "initial_cold_rows": 0,
+      "actual_bound_bytes": 0,
+      "billed": {
+        "elems": 0,
+        "kwargs": {
+          "tier": "STT-RAM",
+          "metadata_bytes_per_elem": 2
+        },
+        "latency_us": 0.0,
+        "energy_nj": 0.0
+      }
+    }
+  ],
+  "legacy_compatibility_default_widths": [
+    1,
+    2,
+    4,
+    8
+  ],
+  "one_MiB_one_second_STT_leakage_nj": 1000000.0,
+  "source_sha256": {
+    "src/cost_model.py": "e77909a57342da8fd70dc16de5d8a9999d183269de76bbfff05fc900e6078fca",
+    "src/tiered_kv_cache.py": "525ae02d75f2966216343e1f5034483e7c26095250e1397c86dc9fcd73995e89",
+    "experiments/evaluate_query_selection.py": "0cd65ac47ff3b46ddfd280d4504e5bfc213b839ed81c21312fd9e9cc6581beb3",
+    "experiments/compare_query_latency.py": "e335b506b7df5f8ae02f2d6fcce64b43e170b1c9fa092531722ac31674a2283e"
+  }
+}

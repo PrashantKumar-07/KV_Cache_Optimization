@@ -1,0 +1,19 @@
+Traceback (most recent call last):
+  File "/data/nishant/Nishant/Prashant/Project/kv_cache/results/hardware/cpu_phase_append_fallback_v1/check_gpu.py", line 36, in run
+    past=out.past_key_values;tup=to_tuple_kv(past);p.update_scores(tup,out.attentions);apply_tuple_kv_inplace(past,p(tup))
+  File "/data/nishant/Nishant/Prashant/Project/kv_cache/experiments/batched_score_policy.py", line 32, in batched_update
+    torch._foreach_add_([policy.layer_caches[layer].sram_cum for layer in layers],
+RuntimeError: The size of tensor a (191) must match the size of tensor b (225) at non-singleton dimension 1
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/data/nishant/Nishant/Prashant/Project/kv_cache/results/hardware/cpu_phase_append_fallback_v1/check_gpu.py", line 60, in <module>
+    if __name__=='__main__':main()
+  File "/data/nishant/Nishant/Prashant/Project/kv_cache/results/hardware/cpu_phase_append_fallback_v1/check_gpu.py", line 53, in main
+    r['control']=run(model,BulkPromotionPolicy);r['candidate']=run(model,CpuPhasePolicy)
+  File "/data/nishant/Nishant/Prashant/Project/venv_kvcache/lib/python3.10/site-packages/torch/utils/_contextlib.py", line 116, in decorate_context
+    return func(*args, **kwargs)
+  File "/data/nishant/Nishant/Prashant/Project/kv_cache/results/hardware/cpu_phase_append_fallback_v1/check_gpu.py", line 44, in run
+    assert before==[(len(m._forward_pre_hooks),len(m._forward_hooks)) for m in model.modules()]
+AssertionError

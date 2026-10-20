@@ -1,0 +1,29 @@
+{
+  "observed_utc": "2026-09-28T14:25:16.128244+00:00",
+  "nvidia_smi_query": "--query-compute-apps=pid,used_gpu_memory",
+  "processes": [
+    {
+      "pid": 1727086,
+      "used_gpu_memory": "11292 MiB",
+      "command": "ollama"
+    },
+    {
+      "pid": 1226853,
+      "used_gpu_memory": "40124 MiB",
+      "command": "VLLM::EngineCor"
+    },
+    {
+      "pid": 1727086,
+      "used_gpu_memory": "424 MiB",
+      "command": "ollama"
+    }
+  ],
+  "interpretation": "Other GPU0 workload appeared during real_q_full_candidate_qn25; do not compare its elapsed/peak measurements with control as isolated performance.",
+  "during_candidate_observation": {
+    "candidate_pid": 1726185,
+    "candidate_gpu_memory": "26054 MiB",
+    "external_ollama_pid": 1727086,
+    "external_ollama_gpu_memory": "11292 MiB",
+    "evidence": "Live nvidia-smi query and ps inspection during real_q_full_candidate_qn25; process finished before saved post-run snapshot."
+  }
+}

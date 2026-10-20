@@ -1,0 +1,27 @@
+{
+  "timestamp_utc": "2026-10-03T07:17:42.157798+00:00",
+  "mechanism": "Unified shared model append, promotion and immediate hot compaction; frozen ordinary Bulk paired quiet 3ABBA.",
+  "settings": {
+    "hot": 991,
+    "cold": 1090,
+    "quota": 32,
+    "context": 16384,
+    "decode": 50,
+    "warmup": 1,
+    "seed": 0,
+    "prefill_last_logits": true
+  },
+  "prompt": "results/remediation_v3/latency_prompt.txt",
+  "teachers": "results/shadow_ablation_full/fixed_stream_20260929.json",
+  "control": "results/hardware/layerwise_prefill_placement_v1/control_shared.json",
+  "query": "results/hardware/shared_decode_transition_v1/resource.json",
+  "correctness_proof_sha256": "797c815a917a7603686bad87705358b86a9a03a51730f9a7fba2a6d0c9d99370",
+  "resource_proof_sha256": "b4447c6e381d118bdd4379a07cd3b4bdea4ce15d609115f135407dfcd4102823",
+  "primary": ">=5% median whole-loop decode improvement AND >=4ms saved; p95 <=2% worse, TTFT <=10% worse. All 300 measured predictions per arm, final state, counters, native KV payload/calls exact. Candidate fast append 3200 including warmup, no fallback; measured shared transitions/compactions 1600. Owned leases/hooks released; 25 quiet GPU0 observations.",
+  "stop": "Failed primary stops unified-transition expansion/adoption; no favorable timing retry. Passing requires broader correctness, free generation, recycling and current faithful baseline/quality joint gates before production integration.",
+  "limits": "One Mistral/seed/fixed teacher; before/after PID observations, not continuous monitoring. Scoped active memory 415.163 MiB includes owned pinned allocator block; whole reserved envelope 5089.492 MiB. No full-process memory, independent quality, faithful baseline win or physical STT claim.",
+  "prompt_sha256": "18695714f26e35cb8d2b039ae9efb3b7e64291cbd7bcd91956efc07e16a732cd",
+  "teachers_sha256": "620ac3a383997c9afbc6a3f0b06acec9f261d5a2a5827bf5988e0bb5b69f12a2",
+  "control_sha256": "9449721be00001a6e4ada6e243be61e1d100dc4eb6508afa0122c4c8d8275ee0",
+  "query_sha256": "73ab1237a64be2c4f2ab5a97f4f00cecc30d15009045d7e69c666a76482043c6"
+}

@@ -1,0 +1,66 @@
+{
+  "scope": "Fresh same-policy GPU control for score-batched CPU variant",
+  "raw_sha256": "fc36497a238cf87e133a7d9a97d5a1bbf0ce53cbdd1bc1f859bf9fab0866938f",
+  "source_bundle_sha256": "08d770020ec30727c372b10c6a97e1358270f9506aa160b5ddefbf599c4f0615",
+  "source_hashes_verified": true,
+  "arms": 12,
+  "exact_state_history_predictions_and_logical_counters_match_prior_cpu_control": true,
+  "candidate_host_payload_and_dispatches_match_prior_cpu_control": true,
+  "latency": {
+    "gpu": {
+      "median_ms": 80.47469798475504,
+      "p95_ms": 88.88265462592244
+    },
+    "batched_scores": {
+      "median_ms": 75.64640790224075,
+      "p95_ms": 84.98196918517351
+    },
+    "latency_gate_passed": true,
+    "blocks": [
+      {
+        "gpu": 80.47469798475504,
+        "batched_scores": 75.64640790224075
+      },
+      {
+        "gpu": 80.17601724714041,
+        "batched_scores": 75.68928226828575
+      },
+      {
+        "gpu": 80.44212963432074,
+        "batched_scores": 75.77736955136061
+      }
+    ]
+  },
+  "gain_percent": 5.999761668479886,
+  "resources": {
+    "gpu": {
+      "median_ttft_ms": 2053.676,
+      "max_prefill_peak_gpu_bytes": 18594276864,
+      "max_decode_peak_gpu_bytes": 15137135104,
+      "median_final_gpu_allocated_bytes": 14856895488.0,
+      "occupied_host_tensor_bytes": [
+        0
+      ],
+      "reserved_host_tensor_bytes": [
+        0
+      ]
+    },
+    "batched_scores": {
+      "median_ttft_ms": 2140.4935,
+      "max_prefill_peak_gpu_bytes": 18594276864,
+      "max_decode_peak_gpu_bytes": 14913245696,
+      "median_final_gpu_allocated_bytes": 14626980864.0,
+      "occupied_host_tensor_bytes": [
+        212344832
+      ],
+      "reserved_host_tensor_bytes": [
+        402784256
+      ]
+    }
+  },
+  "final_gpu_allocation_saved_bytes": 229914624.0,
+  "final_gpu_allocation_saved_percent": 1.547528043026912,
+  "total_memory_gate_passed": false,
+  "decision": "GPU-control latency gate passes; remain opt-in pending mandatory stress",
+  "limitations": "One fixed prompt/model/teacher stream. Unequal host resources; no matched-total-resource or SnapKV claim. Final tensor reservations omit transient consolidation/allocator retention. Total GPU memory gain below 10%, prefill peak unchanged. Free-generation/concurrency/physical STT evidence incomplete."
+}

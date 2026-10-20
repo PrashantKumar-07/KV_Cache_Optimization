@@ -1,0 +1,48 @@
+[transformers] `torch_dtype` is deprecated! Use `dtype` instead!
+Loading model: /data/nishant/Nishant/Prashant/models/mistral-7b-instruct
+Loading weights:   0%|          | 0/291 [00:00<?, ?it/s]Loading weights:   2%|▏         | 6/291 [00:00<00:05, 56.75it/s]Loading weights:   8%|▊         | 22/291 [00:00<00:02, 112.12it/s]Loading weights:  12%|█▏        | 34/291 [00:00<00:02, 95.84it/s] Loading weights:  15%|█▌        | 45/291 [00:00<00:02, 99.69it/s]Loading weights:  19%|█▉        | 56/291 [00:00<00:02, 102.03it/s]Loading weights:  23%|██▎       | 67/291 [00:00<00:02, 98.46it/s] Loading weights:  26%|██▋       | 77/291 [00:00<00:02, 93.67it/s]Loading weights:  30%|██▉       | 87/291 [00:00<00:02, 91.06it/s]Loading weights:  34%|███▍      | 99/291 [00:01<00:01, 98.66it/s]Loading weights:  37%|███▋      | 109/291 [00:01<00:01, 98.42it/s]Loading weights:  42%|████▏     | 121/291 [00:01<00:01, 98.14it/s]Loading weights:  45%|████▌     | 131/291 [00:01<00:01, 93.31it/s]Loading weights:  48%|████▊     | 141/291 [00:01<00:01, 90.28it/s]Loading weights:  53%|█████▎    | 153/291 [00:01<00:01, 97.39it/s]Loading weights:  56%|█████▌    | 163/291 [00:01<00:01, 97.69it/s]Loading weights:  60%|██████    | 175/291 [00:01<00:01, 98.20it/s]Loading weights:  64%|██████▎   | 185/291 [00:01<00:01, 93.83it/s]Loading weights:  67%|██████▋   | 195/291 [00:02<00:01, 90.88it/s]Loading weights:  71%|███████   | 207/291 [00:02<00:00, 97.94it/s]Loading weights:  75%|███████▍  | 217/291 [00:02<00:00, 98.26it/s]Loading weights:  79%|███████▊  | 229/291 [00:02<00:00, 99.47it/s]Loading weights:  82%|████████▏ | 240/291 [00:02<00:00, 96.90it/s]Loading weights:  87%|████████▋ | 252/291 [00:02<00:00, 102.70it/s]Loading weights:  91%|█████████ | 265/291 [00:02<00:00, 109.96it/s]Loading weights:  95%|█████████▌| 277/291 [00:02<00:00, 103.13it/s]Loading weights: 100%|██████████| 291/291 [00:02<00:00, 99.46it/s] 
+
+============================================================
+Task: gov_report
+============================================================
+
+--- Full ---
+  [Full] gov_report 5/10  Score=20.15
+  [Full] gov_report 10/10  Score=18.63
+  Full → gov_report: 18.63
+  [checkpoint saved → results/full6/gov_report_only.json.ckpt]
+
+--- StreamingLLM ---
+  [StreamingLLM] gov_report 5/10  Score=14.83
+  [StreamingLLM] gov_report 10/10  Score=14.39
+  StreamingLLM → gov_report: 14.39
+  [checkpoint saved → results/full6/gov_report_only.json.ckpt]
+
+--- H2O ---
+  [H2O] gov_report 5/10  Score=15.47
+  [H2O] gov_report 10/10  Score=14.78
+  H2O → gov_report: 14.78
+  [checkpoint saved → results/full6/gov_report_only.json.ckpt]
+
+--- SnapKV ---
+  [SnapKV] gov_report 5/10  Score=17.75
+  [SnapKV] gov_report 10/10  Score=16.61
+  SnapKV → gov_report: 16.61
+  [checkpoint saved → results/full6/gov_report_only.json.ckpt]
+
+--- TieredKV ---
+  [TieredKV] gov_report 5/10  Score=14.82
+  [TieredKV] gov_report 10/10  Score=13.80
+  TieredKV → gov_report: 13.80
+  [checkpoint saved → results/full6/gov_report_only.json.ckpt]
+
+============================================================
+LONGBENCH RESULTS (F1 × 100)
+============================================================
+Task                            full  streamingllm           h2o        snapkv      tieredkv
+--------------------------------------------------------------------------------------------
+gov_report                     18.63         14.39         14.78         16.61         13.80
+--------------------------------------------------------------------------------------------
+Average                        18.63         14.39         14.78         16.61         13.80
+
+Saved → results/full6/gov_report_only.json

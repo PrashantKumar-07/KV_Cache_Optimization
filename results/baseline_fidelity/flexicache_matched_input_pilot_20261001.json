@@ -1,0 +1,58 @@
+{
+  "scope": "one identical-input feasibility request; not resource-matched",
+  "passed": false,
+  "upstream_commit": "ab0f495b10fc6509c1637af35779b29121fb7d3f",
+  "runner_sha256": "15602d2b2fa1aac2e211a75796a1862c1650bdf30267e9a2de15f95992fdcfa5",
+  "runtime": {
+    "git_revision": "be7e700d84d46b47e32ba5b9870c8b71783b9e53",
+    "source_sha256": "56ecd8b2cc023783d27862e034ba7e11163c915401139c1d75c8dc76e261f48e",
+    "packages": {
+      "torch": "2.6.0+cu124",
+      "transformers": "4.50.0",
+      "datasets": "3.6.0",
+      "numpy": "1.26.4",
+      "accelerate": "not installed",
+      "huggingface_hub": "0.36.2",
+      "rouge": "1.0.1"
+    }
+  },
+  "upstream_diff": "",
+  "pool_config_sha256": "8a6dddc6c9ee061a189038feea9abe0ecc63e20029ee0c44d4a411b7ed6f09c1",
+  "model_config_sha256": "2e97da1b1d2b7e7669f0991c186904538c27d4ea56c4fc74e89215e2b2013922",
+  "data_sha256": "678a51335e3c90e0dd43bf1131045e4f2859cc693e7eded89cc6a1ee8d18faff",
+  "task": "multifieldqa_en",
+  "index": 9,
+  "sample_id": "cafe9dcc25e422aa17c7622e59035325ad45cf446584407c4955ede2291d1f7d",
+  "prompt_sha256": "fee9a371653c616792e9ce5b22b0327beb6a16f166a62a28c3eeb9086c2de505",
+  "input_tokens": 1440,
+  "input_token_sha256": "54e41e6b9f3ef83377ff4985916145521fc1eb1ebe33a985cb503d275c10a890",
+  "engine_environment": {
+    "VLLM_USE_V1": "1",
+    "VLLM_ENABLE_V1_MULTIPROCESSING": "0",
+    "VLLM_ATTENTION_BACKEND": "TRITON_ATTN_VLLM_V1",
+    "CUDA_HOME": "/usr/local/cuda",
+    "CUDACXX": "/usr/local/cuda/bin/nvcc",
+    "TORCH_CUDA_ARCH_LIST": "8.9",
+    "MAX_JOBS": "8"
+  },
+  "engine_settings": {
+    "model": "mistralai/Mistral-7B-Instruct-v0.2",
+    "revision": "63a8b081895390a26e140280378bc85ec8bce07a",
+    "dtype": "bfloat16",
+    "seed": 0,
+    "enable_flexicache": true,
+    "enable_prefix_caching": false,
+    "disable_cascade_attn": true,
+    "gpu_memory_utilization": 0.95,
+    "max_num_seqs": 1,
+    "max_model_len": 31500,
+    "max_num_batched_tokens": 2048,
+    "num_unstable_heads": 64,
+    "rerank_frequency": 16,
+    "topK_budget": 64,
+    "unstable_heads_profile_task": "gov_report",
+    "enforce_eager": true
+  },
+  "vllm_version": "0.1.dev1+gab0f495b1",
+  "error": "AssertionError: Expected low stream priority 0 to be greater than high stream priority 0."
+}

@@ -1,0 +1,217 @@
+{
+  "config": {
+    "model": "../models/mistral-7b-instruct",
+    "data_dir": "../hf_cache/datasets/downloads/extracted/5def9c7eaf83951e1cee75902d8611ef764ad88dd289e8f0bf97ff658a3eb83a/data",
+    "tasks": [
+      "qasper",
+      "narrativeqa"
+    ],
+    "max_samples": 5,
+    "strategy": "query",
+    "seed": 0,
+    "max_ctx": 31500,
+    "tiered_vram_budget": 992,
+    "tiered_stt_budget": 3104,
+    "recent": 128,
+    "stt_expose_quota": 32,
+    "real_query_prefill": false,
+    "sttram_bifurcation_frac": 0.75,
+    "kv_dtype": "bfloat16",
+    "runtime": {
+      "git_revision": "be7e700d84d46b47e32ba5b9870c8b71783b9e53",
+      "source_sha256": "e8bf6bd3a3729bbbbd723062c06f9f73f3b29b3714c74e273b2cf4f2efbc3529",
+      "packages": {
+        "torch": "2.5.1+cu124",
+        "transformers": "5.14.1",
+        "datasets": "5.0.0",
+        "numpy": "2.2.6",
+        "accelerate": "1.14.0",
+        "huggingface_hub": "1.24.0",
+        "rouge": "1.0.1"
+      }
+    },
+    "selector_sha256": "c9e5a36768f9055169b244c11b2be45be8d4cafb56c7b248a07e1bb78eb7f695",
+    "dataset_sha256": {
+      "qasper": "97d95c01221a17a2ce51f9180d65a671bf2998504a2ff0cccffe97e9b08444d8",
+      "narrativeqa": "0fb8d08ba5cdad4b74244224b0dc2e8b41ee6b850d954a13eb2d282621ce2f71"
+    }
+  },
+  "results": {
+    "qasper": {
+      "tieredkv": {
+        "score": 7.47,
+        "n": 5,
+        "sample_scores": [
+          20.0,
+          6.25,
+          11.11,
+          0.0,
+          0.0
+        ],
+        "samples": [
+          {
+            "sample_id": "3b91dce7ca41a9d16a1d0c61806c139db583a053ddb582bf79df3ff56f8e0344",
+            "prediction": "They selected different Facebook pages for the experiments, including Fox News, CNN, The Guardian, Disney, and others.",
+            "score": 20.0,
+            "elapsed_s": 4.526770893484354,
+            "prompt_tokens": 4895,
+            "generated_tokens": 25,
+            "final_resident_kv_payload_bytes": 451014656,
+            "prefill_s": 1.0256072208285332,
+            "prefill_peak_alloc_bytes": 16072915968
+          },
+          {
+            "sample_id": "5f59f94cd91401a55bcd3b6b24b78cd2c4c78e8ee6e7663e0ac8b97306444f08",
+            "prediction": "The context used to predict instructor intervention is identified via different queries in the Any Post Attention (APA) model, and attention weights are obtained by normalizing the different queries.",
+            "score": 6.25,
+            "elapsed_s": 5.770051289349794,
+            "prompt_tokens": 5415,
+            "generated_tokens": 37,
+            "final_resident_kv_payload_bytes": 454348800,
+            "prefill_s": 0.6056614648550749,
+            "prefill_peak_alloc_bytes": 16171674624
+          },
+          {
+            "sample_id": "9d37c5305ff63838fd6b7c96f13d10cfc388955672b1a629e5c0a8c2a89c520d",
+            "prediction": "In addition to F-scores and Kappa statistics, other evaluation metrics are not explicitly mentioned in the article.",
+            "score": 11.11111111111111,
+            "elapsed_s": 3.9058612883090973,
+            "prompt_tokens": 5549,
+            "generated_tokens": 24,
+            "final_resident_kv_payload_bytes": 445464576,
+            "prefill_s": 0.6234485786408186,
+            "prefill_peak_alloc_bytes": 16202172416
+          },
+          {
+            "sample_id": "5b60c062453de695f70d5f313a868a3c630068a85084fc9c456760f41e84d0f3",
+            "prediction": "The baselines were not explicitly stated in the provided information.",
+            "score": 0.0,
+            "elapsed_s": 2.300106620416045,
+            "prompt_tokens": 5175,
+            "generated_tokens": 13,
+            "final_resident_kv_payload_bytes": 441466880,
+            "prefill_s": 0.5850235279649496,
+            "prefill_peak_alloc_bytes": 16132271616
+          },
+          {
+            "sample_id": "a25d41e770a5f1816e04f39227fecd7dfcd9b83b25842e413d0f8fcb447b2092",
+            "prediction": "jiant specifically mentions compatibility with PyTorch, AllenNLP, and HuggingFace's Transformers, which are all Python-based. Therefore, it is not unclear but rather a definitive \"no\" that jiant is compatible with models in any programming language other than Python.",
+            "score": 0.0,
+            "elapsed_s": 9.292233852669597,
+            "prompt_tokens": 3956,
+            "generated_tokens": 63,
+            "final_resident_kv_payload_bytes": 456409088,
+            "prefill_s": 0.43678008764982224,
+            "prefill_peak_alloc_bytes": 15884542464
+          }
+        ],
+        "cache_stats": {
+          "demoted": 95642,
+          "promoted": 90618,
+          "promotions_deferred": 70150,
+          "paid_writes": 17800,
+          "writes_saved": 77842,
+          "dropped": 0,
+          "write_savings_pct": 81.4,
+          "decode_steps": 157,
+          "stt_starved_steps": 0,
+          "stt_unused_steps": 0,
+          "mean_stt_exposed": 32.0,
+          "stt_expose_quota": 32,
+          "stt_exposed_total": 5184,
+          "stt_exposure_samples": 162,
+          "modeled_latency_us": 50567.2,
+          "modeled_energy_nj": 2023485734.9
+        }
+      }
+    },
+    "narrativeqa": {
+      "tieredkv": {
+        "score": 18.23,
+        "n": 5,
+        "sample_scores": [
+          11.76,
+          11.11,
+          28.57,
+          28.57,
+          11.11
+        ],
+        "samples": [
+          {
+            "sample_id": "27a07bedff812ae2c3fece3ac4a1f1db11f00793a3598fa94f1fa286ea347cb9",
+            "prediction": "Saltram lives with the Mulvocks and is supported by the Coxon Fund.",
+            "score": 11.76470588235294,
+            "elapsed_s": 7.470916407182813,
+            "prompt_tokens": 31500,
+            "generated_tokens": 20,
+            "final_resident_kv_payload_bytes": 442925056,
+            "prefill_s": 4.726396391168237,
+            "prefill_peak_alloc_bytes": 22383308800
+          },
+          {
+            "sample_id": "dfeb4058f4507fa2d2a6f80f6c230cc08e3c7eaa8221bead1ccee5ba90a57488",
+            "prediction": "Ann is unable to return Mary's feelings of affection.",
+            "score": 11.11111111111111,
+            "elapsed_s": 6.503399267792702,
+            "prompt_tokens": 31500,
+            "generated_tokens": 13,
+            "final_resident_kv_payload_bytes": 440770560,
+            "prefill_s": 4.7713318057358265,
+            "prefill_peak_alloc_bytes": 22382604288
+          },
+          {
+            "sample_id": "b75b8f1d9f0027543e6f4d84ca94997765d41f9a6eda749df309b0070caee3d8",
+            "prediction": "The witch lives on Atlas mountain.",
+            "score": 28.571428571428577,
+            "elapsed_s": 2.309230385348201,
+            "prompt_tokens": 9674,
+            "generated_tokens": 9,
+            "final_resident_kv_payload_bytes": 440250368,
+            "prefill_s": 1.158174529671669,
+            "prefill_peak_alloc_bytes": 17036815872
+          },
+          {
+            "sample_id": "5f2d99ab2d103d5f04d78f3e7a3b76f633fabeab2eb86a785cf76ed7ac77249e",
+            "prediction": "Crito visited Socrates to propose that he escape from prison.",
+            "score": 28.571428571428566,
+            "elapsed_s": 3.1972998920828104,
+            "prompt_tokens": 9887,
+            "generated_tokens": 15,
+            "final_resident_kv_payload_bytes": 442163200,
+            "prefill_s": 1.1825197227299213,
+            "prefill_peak_alloc_bytes": 17086821376
+          },
+          {
+            "sample_id": "254d602c75f8a37865dd7b4a2b7efbb25194b5064a29a07d7038b92d6add6c3d",
+            "prediction": "Baron Henry didn't kill Otto because he wanted to keep him alive as a hostage.",
+            "score": 11.111111111111112,
+            "elapsed_s": 7.507718611508608,
+            "prompt_tokens": 31500,
+            "generated_tokens": 20,
+            "final_resident_kv_payload_bytes": 443392000,
+            "prefill_s": 4.770818816497922,
+            "prefill_peak_alloc_bytes": 22382604288
+          }
+        ],
+        "cache_stats": {
+          "demoted": 48551,
+          "promoted": 46247,
+          "promotions_deferred": 27481,
+          "paid_writes": 8229,
+          "writes_saved": 40322,
+          "dropped": 0,
+          "write_savings_pct": 83.1,
+          "decode_steps": 72,
+          "stt_starved_steps": 0,
+          "stt_unused_steps": 0,
+          "mean_stt_exposed": 32.0,
+          "stt_expose_quota": 32,
+          "stt_exposed_total": 2464,
+          "stt_exposure_samples": 77,
+          "modeled_latency_us": 23618.4,
+          "modeled_energy_nj": 930162606.1
+        }
+      }
+    }
+  }
+}

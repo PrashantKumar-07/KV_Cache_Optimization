@@ -1,0 +1,54 @@
+{
+  "device": "cpu",
+  "checks": [
+    {
+      "check": "short_prompt_rejects_eventual_hot_overflow",
+      "passed": false,
+      "error_type": "AssertionError",
+      "error": "Invalid configuration accepted: {'prompt': 2, 'fraction': 1.0, 'window': 4, 'hot_rows': 2, 'cold_rows': 0}"
+    },
+    {
+      "check": "empty_prompt_rejects_eventual_hot_overflow",
+      "passed": false,
+      "error_type": "AssertionError",
+      "error": "Invalid configuration accepted: {'prompt': 0, 'fraction': 1.0, 'window': 4, 'hot_rows': 0, 'cold_rows': 0}"
+    },
+    {
+      "check": "fraction_above_one_rejected",
+      "passed": false,
+      "error_type": "AssertionError",
+      "error": "Invalid configuration accepted: {'prompt': 20, 'fraction': 1.5, 'window': 1, 'hot_rows': 4, 'cold_rows': 6}"
+    },
+    {
+      "check": "negative_fraction_rejected",
+      "passed": false,
+      "error_type": "AssertionError",
+      "error": "Invalid configuration accepted: {'prompt': 20, 'fraction': -0.5, 'window': 1, 'hot_rows': 4, 'cold_rows': 14}"
+    },
+    {
+      "check": "two_query_scores",
+      "passed": false,
+      "error_type": "AssertionError",
+      "error": "Tensor-likes are not equal!\n\nMismatched elements: 4 / 4 (100.0%)\nGreatest absolute difference: 0.011581577360630035 at index (3,)\nGreatest relative difference: 0.0987972542643547 at index (3,)"
+    },
+    {
+      "check": "eight_query_scores",
+      "passed": false,
+      "error_type": "RuntimeError",
+      "error": "source tensor shape must match self tensor shape, excluding the specified dimension. Got self.shape = [4] source.shape = [4, 14]"
+    },
+    {
+      "check": "ordinary_consecutive_hysteresis",
+      "passed": false,
+      "error_type": "AssertionError",
+      "error": "Empty step retained streak"
+    },
+    {
+      "check": "native_consecutive_hysteresis",
+      "passed": false,
+      "error_type": "AssertionError",
+      "error": "Native empty step retained streak"
+    }
+  ],
+  "passed": false
+}

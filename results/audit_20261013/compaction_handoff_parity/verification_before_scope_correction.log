@@ -1,0 +1,71 @@
+{
+  "verified": true,
+  "CPU_only": true,
+  "settings": {
+    "context": 8192,
+    "decode": 50,
+    "hot": 1024,
+    "cold": 256,
+    "fraction": 0.75,
+    "quota": 32,
+    "recent": 128,
+    "dtype": "BF16",
+    "last_logits": true,
+    "seed": 0
+  },
+  "source_file_count": 5915,
+  "archive_equals_plan_equals_live_source": true,
+  "model_artifact_count": 12,
+  "all_model_artifacts_rehashed": true,
+  "runtime_identity_matches": true,
+  "paired_trace_points": 51,
+  "layers_each": 32,
+  "full_vocab_logit_arrays": 51,
+  "logits_shape": [
+    1,
+    1,
+    32000
+  ],
+  "finite_and_bytes_exact": true,
+  "predictions_recomputed_from_decode_logits": 50,
+  "candidate_native_cold_steps": 50,
+  "candidate_cold_boundary_initializer_fallbacks": 1,
+  "candidate_bulk_payload_steps": 33,
+  "candidate_bulk_payload_fallback_steps": 17,
+  "five_metadata_fields_exact_all_trace_points": true,
+  "candidate_CPU_append_calls": 50,
+  "candidate_CPU_fallback_steps": 0,
+  "successful_run_hooks_closed": true,
+  "exact_live_roots_zero_after_reset": true,
+  "exact_allocation_events": {
+    "control": [],
+    "candidate": [
+      {
+        "kind": "allocate",
+        "token": 1,
+        "bytes": 41943040
+      },
+      {
+        "kind": "release",
+        "token": 1,
+        "bytes": 41943040
+      }
+    ]
+  },
+  "evidence_sha256": {
+    "results/audit_20261013/compaction_handoff_parity/plan.json": "6f9c192818acedfe2a8cf796e61fdf3c49ac44f9002451c7e4cefffb437f46a9",
+    "results/audit_20261013/compaction_handoff_parity/run_parity.py": "21ea76225d49dab0ed99a51137298b68d7f9551007fb4ccbf18f78af6a965d04",
+    "results/audit_20261013/compaction_handoff_parity/parity.json": "d8c54749b36bd16f78e87182b78238cd2e1163a0d474d728ff47dab5dbec55fe",
+    "results/audit_20261013/compaction_handoff_parity/control_logits.npz": "1c8215ede6cf7df3d5b5509b0385b3113613a1ef08404c66ff7849f10591e345",
+    "results/audit_20261013/compaction_handoff_parity/candidate_logits.npz": "1c8215ede6cf7df3d5b5509b0385b3113613a1ef08404c66ff7849f10591e345",
+    "results/audit_20261013/compaction_handoff_parity/source.tar.gz": "edaca0fb0f7cf4713f726bf8f3bc32b3022ab51dfdfa2a42e684c1f2971a767d",
+    "results/audit_20261013/compaction_handoff_parity/verify_parity.py": "7634355cb966b2b966d9b410809e7d86ad973205292247df071750f445efde2e"
+  },
+  "limits": [
+    "one8192 reused input, coldbudget256 and50 teacherforced decode steps; not freegeneration/generalization",
+    "trace includes KV/positions/shadows but not score ages/cumulative state or hysteresis streak",
+    "full payload copies/synchronizations are diagnostic and invalidate timing/traffic counters; no latency is saved",
+    "CPU DRAM surrogate; not physical STT or SOTA/native payload-cost proof",
+    "ExitStack guards successful acquired resources; partial constructor failures are not exercised"
+  ]
+}

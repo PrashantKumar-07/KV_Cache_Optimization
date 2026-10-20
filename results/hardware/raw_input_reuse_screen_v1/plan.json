@@ -1,0 +1,40 @@
+{
+  "timestamp": "2026-10-02T20:24:13.233488+00:00",
+  "hypothesis": "Use already-identical incoming hot prefix for promotion/append, then compact one layer through a temporary Torch gather and copy back. This removes simultaneously retained concatenated hot KV without a new CUDA kernel.",
+  "control": "Ordinary BulkPromotionPolicy, unchanged CPU host allocator, caller,model,teacher,caps. Candidate only changes hot payload backing/growth/compaction; original metadata and selection math retained through AST hooks.",
+  "prefix_proof_sha256": "7dd9b5bca69d7ac3b384f0118becfb5d6150faef8389e3ecc4e67be6e7e36762",
+  "control_cli_proof_sha256": "f8d03b1eb43f902bffd2eabb01f4d568a9afa69b26995d18218d7967668c2355",
+  "model": "../models/mistral-7b-instruct",
+  "seed": 0,
+  "precision": "BF16KV/F32meta",
+  "hardware": "GPU0 L40S/advisory lock; other workloads untouched",
+  "contexts": [
+    4096,
+    8192,
+    16384,
+    31500
+  ],
+  "decode": 12,
+  "geometries": {
+    "shared": [
+      991,
+      1090
+    ],
+    "default": [
+      1024,
+      2048
+    ]
+  },
+  "primary": "At least10% lower observed whole-decode Torch allocated peak minus constant model storage plus actual host range. Report whole-request/prefill and reserved scopes separately; do not substitute final boundaries for peak.",
+  "guards": {
+    "state_ids_history_counters_payload": "exact",
+    "median_decode_pct": 2,
+    "p95_decode_pct": 2,
+    "ttft_pct": 10,
+    "prefill_allocated_peak_pct": 2
+  },
+  "progression": "First CPU payload/metadata/fallback fixtures; then paired4context model parity and separate public resource pilot. Failed primary/correctness stops. Passing memory pilot needs3ABBA warm50-step model timing and saturation/native/lifetime/free-generation/recycled-request stress before adoption. No ordinary flags/defaults until all gates pass.",
+  "implementation": "StandardTorch functional per-layer scratch gather before writing overlapping prefix; no concurrent in-place scatter or new native kernel. Check all incoming hot prefix bits before binding. Nonmatching/unsupported/short/multiappend or aliasing extension falls back to ordinary path.",
+  "limits": "Decode memory target only; prefill full prompt unchanged. Actual host allocator still rounded256/512MiB, so complete512MiB equality may remain failed. No quality/SnapKV/physicalSTT claim or inspected-holdout tuning.",
+  "source_bundle_sha256": "bd369e235530452483bedcd06a332008c9651fb259726f75529c35b24ada5860"
+}

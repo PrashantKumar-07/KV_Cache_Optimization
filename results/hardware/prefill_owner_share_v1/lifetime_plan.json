@@ -1,0 +1,16 @@
+{
+  "timestamp": "2026-10-02T22:06:49.030963+00:00",
+  "prior_batch_sha256": "99f0bda2d13f4be255f802d38908156e4fb9cca205bf951ac759f37989c3ee42",
+  "scope": "14 untimed GPU checks:five overlapping/duplicate/empty/full BF16/F32 gathers on two consumers; normal and injected partial DynamicCache forwards on each consumer.",
+  "guards": "All65536 BF16 bit patterns, special F32 payloads, untouched buffer tails, old prefill-hot owner expiry, delayed recorded consumer and producer allocation pressure; balanced real Torch always_call hooks, exact restored prefixes, normal/partial old model-owner expiry and hook cleanup.",
+  "ownership": "Explicit ready events and caller-managed record_stream on every input. Consumers run serially; no automatic cross-stream/concurrent model support claim.",
+  "source_bundle_sha256": "ea9216e3caa67440c7282fa6097c5299029a7e74bd1d8cb1e5e91c2eaf1d0354",
+  "source_sha256": {
+    "results/hardware/prefill_owner_share_v1/check_lifetime.py": "cc1cdd9f192ca6116977d651deab1199e90b2f1693c21adb59bc2381a1c714f7",
+    "experiments/prefill_owner_share.py": "939b0293ebd8bf4d2138e8b4cf8ccad7d4b5f1b0aa0a0331ed0ecb11135b0e50",
+    "experiments/forward_owner_release.py": "4a07e33de813d3e25548953301b237cac557704a442b892dab93abe44274075d",
+    "experiments/raw_input_reuse.py": "42199dcddc1a1ad154360d9b6a95a7e9d4e696fda89d3b8b918f663d3cee193d",
+    "tests/test_forward_owner_release.py": "0c269ca17a2233b033b8d55a501f76e2566d5381595bc08c52ea42cfb67db46e"
+  },
+  "limits": "Toy two-layer DynamicCache model validates real hook and GPU storage behavior, not full Mistral exception compute. No timing/model-memory/quality/ordinary adoption or physical tier claim; original frozen prototype unchanged."
+}
