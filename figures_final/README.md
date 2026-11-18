@@ -1,17 +1,52 @@
-> **Paper-comparison restriction:** The main adapted-baseline figures document real functional-control results; they are not the paper’s SOTA comparison. The user has prioritized validated original algorithms and explicitly matched resource constraints. Current GQA-efficient upstream SnapKV proof and complete baseline evaluation are running first. Do not cite the adapted-method win as SOTA superiority.
+> **Paper-comparison restriction:** The main adapted-baseline figures document real functional-control results; they are not a SOTA comparison. The official GQA SnapKV (39.52) and upstream SnapKV (39.80) both score above TieredKV (38.50 / 38.81). Do not cite the adapted-method win as SOTA superiority.
 
-# Figure evidence status
+# Final figures (renumbered 18 November 2026)
 
-Figures1,2,3,6,7,11,12 and14 now use the complete current evaluation:10318 verified predictions over1474 examples. Original chart styles, five-method questions and each original task order are preserved. Sample error bars are SE, not95% confidence intervals. Adapted baselines are explicitly labeled. The full population includes development/previously consumed examples and is descriptive.
+All nine figures below come from verified runs. Numbers are contiguous and follow the order in which the presentation uses them.
 
-Figure4 now uses the verified fresh five-method context-scaling benchmark (4500 measured forwards,181 quiet checks). It preserves the measured Tiered latency loss. Figures8 and15 remain provisional; the headroom ablation is deferred while proper upstream comparisons take priority. Do not use their historical values as current paper results.
+| # | File | What it shows | Evidence |
+|---|------|---------------|----------|
+| 1 | `fig1_accuracy_equivram` | LongBench accuracy at the same hot budget (5 methods, 6 tasks) | full evaluation, 10,318 predictions |
+| 2 | `fig2_accuracy_fair` | Accuracy at the same attended rows (992 hot + 32 cold = 1,024) | full evaluation |
+| 3 | `fig3_write_savings` | Paid vs avoided logical cold-tier writes during decode | full evaluation |
+| 4 | `fig4_footprint` | Configured capacity and observed KV payload storage | full evaluation (endpoint snapshots) |
+| 5 | `fig5_decode_scaling` | Measured median decode latency vs context length | fresh timing benchmark (4,500 forwards) |
+| 6 | `fig6_modeled_traffic_time` | Summed **modeled** KV traffic time (not measured latency) | full evaluation counters × assumed prices |
+| 7 | `fig7_energy` | **Modeled** KV traffic energy at assumed per-bit prices | full evaluation counters × assumed prices |
+| 8 | `fig8_migration_profile` | TieredKV policy actions (promote / demote / reactivate / drop) per task | full evaluation |
+| 9 | `fig9_heatmap` | Per-task score heatmap: TieredKV (hot 1,024) vs full cache and 3 adapted baselines | full evaluation |
 
-The separate full-population faithful-Snap comparison is `supplemental/supplement_faithful_accuracy.png`/PDF. It shows both wins and losses. The frozen five-task recorded-unconsumed primary contrast is Tieredhot992−faithfulSnap1024−1.36577points,95%document-clusterCI[−3.73347,0.33088]; no superiority is established. FaithfulSnap uses expanded/growing cache geometry; the main adapted controls do not establish SOTA. A current GQA-efficient baseline is under validation.
+Supplemental: `supplemental/supplement_faithful_accuracy` compares against the faithful (expanded-cache) SnapKV and shows both wins and losses.
 
-Figure2 is summed modeled KV traffic time, not measured decode latency. Figure3 shows only paid versus avoided logical decoder writes; no fraction1 budget panel. Figure6 shows policy events, with deferred candidates distinguished from actual transfers. Figure11 distinguishes configured payload capacity from observed endpoint tensor/backing storage; these are not runtime memory peaks or whole-system memory. Figure12 models payload traffic energy at explicitly assumed prices; it is not measured GPU/device energy. Generated lengths differ between methods, so analytical totals do not by themselves establish efficiency per token or at equal quality.
+Architecture diagram: `../figures/tieredkv_architecture_v2.svg` (PDF/PNG beside it). It is drawn from the frozen evaluation code: hot tier 992 rows, cold tier 2,048 rows, ≤32 exposed cold rows per step, write-once victim rule.
 
-Figure3's matching hot992 whole-request accounting is independently checked in [whole_request_writes_hot992_independent_proof.json](../results/audit_20261016_current_figures/whole_request_writes_hot992_independent_proof.json). Including initial retained cold K/V placement gives40.6793% pooled logical payload-write avoidance,26.0881% equal-task macro, and16.7657% pooled across the five QA tasks. The decode-only pooled value is91.3811%; it must not be described as whole-request savings. These compare the same measured trace with versus without charging every demotion; they are not an executed exclusive-policy ablation or physical STT lifetime measurements. GovReport contributes77.389% of avoided rows, so the pooled result is workload-dependent. The separately labeled hot1024 companion must not be substituted for Figure3's hot992 configuration. Figure style and decode-only values remain unchanged.
+## Old → new numbers
 
-Raw evidence: `../results/full_evaluation_20261015/verified_results.json`. Current renderer, numeric contracts, request/task/endpoint CSVs and independent verifier: `../results/audit_20261016_current_figures/`. Current deployment: `deployment.json` there. All10318 raw hashes and20636 endpoint snapshots were checked; root reviewed the final contact sheet. Original figures and superseded deployments are archived with exact hashes. `figure_status.json` records which figures are current.
+The frozen audit records under `../results/audit_2026101*/` (renderers, deployment hashes, numeric contracts) still use the old file names. They are not edited, because they are evidence. The plotting scripts `experiments/plot_figures_v2.py` and `experiments/plot_publication_figures.py` are also hash-pinned by that provenance (and imported by the frozen renderer), so they keep the old output names too; `experiments/plot_frac_ablation.py` and `plot_frac_compare.py` produced the removed unverified figures. If you re-render, rename the outputs with this table:
 
-Editable architecture: `../figures/tieredkv_architecture_paper.svg`/PDF/PNG. It shows actual buffers and control/data movement. STT is simulated; analytical assumptions, functional GPU-quality evaluation and opt-in native CPU execution must remain distinguished.
+| Old file | New file |
+|----------|----------|
+| fig1_accuracy_equivram | fig1_accuracy_equivram |
+| fig7_accuracy_fair | fig2_accuracy_fair |
+| fig3_write_savings | fig3_write_savings |
+| fig11_footprint | fig4_footprint |
+| fig4_decode_scaling | fig5_decode_scaling |
+| fig2_latency_comparison | fig6_modeled_traffic_time |
+| fig12_energy | fig7_energy |
+| fig6_migration_profile | fig8_migration_profile |
+| fig14_heatmap | fig9_heatmap |
+| fig8_frac_ablation, fig15_frac_compare | removed (never backed by a verified run; in git history) |
+| development/ (fig1, fig7, fig14 on consumed development data) | removed (superseded by the full evaluation; in git history) |
+
+Image bytes were not changed by the renaming, so the SHA-256 values in the old deployment records still match the renamed files.
+
+## How to read the figures honestly
+
+- Figure 3 shows only paid versus avoided logical decode writes: 4,959,926 paid vs 52,587,210 avoided = 91.38% of decode writes avoided (hot992). Including the initial cold placement, the whole-request saving is 40.68% pooled and 26.09% equal-task macro ([independent proof](../results/audit_20261016_current_figures/whole_request_writes_hot992_independent_proof.json)). GovReport contributes 77.4% of the avoided rows, so the pooled number depends on the workload. These are logical counters, not physical STT-RAM lifetime measurements.
+- Figure 4 separates configured capacity from observed tensor/backing storage at the end of a request. It is not a runtime peak or whole-system memory measurement.
+- Figure 5 is measured wall-clock latency. TieredKV is slower (about 75–78 ms/token vs 23–34 ms/token for the others).
+- Figures 6 and 7 apply assumed STT-RAM/HBM prices to real event counters. They are not measured device time or energy. Generated lengths differ between methods, so totals alone do not prove per-token efficiency.
+- Figure 8 separates deferred candidates from actual transfers.
+- Sample error bars are standard errors, not 95% confidence intervals.
+
+Raw evidence: `../results/full_evaluation_20261015/verified_results.json`. Renderer, numeric contracts and independent verifier: `../results/audit_20261016_current_figures/` and `../results/audit_20261016_timing/`. Independent re-check scripts used for the presentation: `../docs/presentation/verification/`.

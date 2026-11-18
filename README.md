@@ -28,10 +28,12 @@ Full Mistral 7B evaluations require model access, downloaded weights/data and su
 
 - [Complete seven-configuration evaluation](results/full_evaluation_20261015/verified_results.json): 10,318 real predictions across 1,474 records, independently checked.
 - [Official current GQA SnapKV evaluation](results/gqa_baseline_20261016/verified_results.json): 1,474 independently rescored predictions; task macro 39.523. The existing Tiered hot1024 macro is 38.809. This is descriptive consumed-data evidence with different cache resources, not a fair-memory SOTA win.
-- [Figure status and provenance](figures_final/README.md): figures 1/2/3/4/6/7/11/12/14 use matching verified runs. Figures 8/15 remain provisional. Original chart questions/styles are preserved; adapted functional controls are explicitly distinguished from official baselines.
-- [Editable architecture](figures/tieredkv_architecture_paper.svg) and [implementation/methodology](docs/METHODOLOGY.md).
+- [Figure status and provenance](figures_final/README.md): figures 1–9 (renumbered 18 Nov 2026; old→new map inside) use matching verified runs. The unverified old Figures 8/15 were removed. Original chart questions/styles are preserved; adapted functional controls are explicitly distinguished from official baselines.
+- [Editable architecture](figures/tieredkv_architecture_v2.svg) and [implementation/methodology](docs/METHODOLOGY.md).
 
 Figure 3 counts avoided decode payload writes. Including initial cold placement yields 40.6793% pooled whole-request logical avoidance for its hot992 configuration, 26.0881% equal-task macro. This is fixed-trace accounting, not an executed exclusive-policy ablation or physical endurance measurement. Broader modeled traffic/energy must not be called measured device performance.
+
+Presentation (2-tier, verified numbers): [Thesis_presentation_2tier.pdf](Thesis_presentation_2tier.pdf); speaker summary and simple architecture explanation: [docs/presentation/QUICK_SUMMARY.md](docs/presentation/QUICK_SUMMARY.md).
 
 ## Continue the research
 
