@@ -22,7 +22,9 @@ Architecture diagram: `../figures/tieredkv_architecture_v2.svg` (PDF/PNG beside 
 
 ## Old → new numbers
 
-The frozen audit records under `../results/audit_2026101*/` (renderers, deployment hashes, numeric contracts) still use the old file names. They are not edited, because they are evidence. The plotting scripts `experiments/plot_figures_v2.py` and `experiments/plot_publication_figures.py` are also hash-pinned by that provenance (and imported by the frozen renderer), so they keep the old output names too; `experiments/plot_frac_ablation.py` and `plot_frac_compare.py` produced the removed unverified figures. If you re-render, rename the outputs with this table:
+**Current renderer:** `../results/figures_20261118_renumbered/` writes these exact file names. Run `render.py` and `render_timing.py`, then `verify_numeric.py`, `verify_timing.py` and `renumbering_proof.py` there (CPU only, about 15 s). The proof (`renumbering_proof.json`) shows every final figure is **byte-identical** to the October output it replaces, so the renumbering changed names only. Shared style helpers are in `../experiments/figure_style.py`; the legacy plotting scripts that wrote the old numbers were removed and stay byte-exact in `../results/full_evaluation_20261015/source.tar.gz`.
+
+The dated October audit folders (`../results/audit_2026101*/`) are kept unchanged as the historical record of how the figures were first checked; each figure folder has a `SUPERSEDED.md` pointing here. Old names in those records map as follows:
 
 | Old file | New file |
 |----------|----------|
@@ -49,4 +51,4 @@ Image bytes were not changed by the renaming, so the SHA-256 values in the old d
 - Figure 8 separates deferred candidates from actual transfers.
 - Sample error bars are standard errors, not 95% confidence intervals.
 
-Raw evidence: `../results/full_evaluation_20261015/verified_results.json`. Renderer, numeric contracts and independent verifier: `../results/audit_20261016_current_figures/` and `../results/audit_20261016_timing/`. Independent re-check scripts used for the presentation: `../docs/presentation/verification/`.
+Raw evidence: `../results/full_evaluation_20261015/verified_results.json`. Renderer, numeric contracts and independent verifiers: `../results/figures_20261118_renumbered/` (the October originals remain in `../results/audit_20261016_current_figures/` and `../results/audit_20261016_timing/`). Independent re-check scripts used for the presentation: `../docs/presentation/verification/`.

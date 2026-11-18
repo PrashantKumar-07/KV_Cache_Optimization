@@ -1,0 +1,311 @@
+{
+  "scope": "end-to-end forward+policy+feedback+host-visible argmax including same finite-logit check; preloaded model; ordinary GPU Tiered simulation, not native CPU deployment/SOTA timing",
+  "caption": "Mistral-7B / L40S; 3 blocks \u00d7 50 fixed-input steps per arm/context. Medians; no confidence intervals.\nSDPA: Full/Streaming. Eager feedback: adapted H2O/Snap/Tiered. SDPA prefill; common finite-check overhead included.\nTiered: GPU simulation, 1,024 hot + 2,048 cold, 32 quota; extra capacity/attention. Not native-CPU or equal-memory/SOTA timing.",
+  "contexts": [
+    512,
+    1024,
+    2048,
+    4096,
+    8192,
+    16384
+  ],
+  "arms": [
+    "full",
+    "streamingllm",
+    "h2o_adapted",
+    "snapkv_adapted",
+    "tiered_hot1024"
+  ],
+  "values": [
+    {
+      "arm": "full",
+      "context_tokens": 512,
+      "measured_steps": 150,
+      "median_itl_ms": 23.48258625715971
+    },
+    {
+      "arm": "full",
+      "context_tokens": 1024,
+      "measured_steps": 150,
+      "median_itl_ms": 23.74952659010887
+    },
+    {
+      "arm": "full",
+      "context_tokens": 2048,
+      "measured_steps": 150,
+      "median_itl_ms": 24.173683486878872
+    },
+    {
+      "arm": "full",
+      "context_tokens": 4096,
+      "measured_steps": 150,
+      "median_itl_ms": 25.18020197749138
+    },
+    {
+      "arm": "full",
+      "context_tokens": 8192,
+      "measured_steps": 150,
+      "median_itl_ms": 26.988998986780643
+    },
+    {
+      "arm": "full",
+      "context_tokens": 16384,
+      "measured_steps": 150,
+      "median_itl_ms": 30.76657559722662
+    },
+    {
+      "arm": "streamingllm",
+      "context_tokens": 512,
+      "measured_steps": 150,
+      "median_itl_ms": 23.47377873957157
+    },
+    {
+      "arm": "streamingllm",
+      "context_tokens": 1024,
+      "measured_steps": 150,
+      "median_itl_ms": 24.679756723344326
+    },
+    {
+      "arm": "streamingllm",
+      "context_tokens": 2048,
+      "measured_steps": 150,
+      "median_itl_ms": 24.688818491995335
+    },
+    {
+      "arm": "streamingllm",
+      "context_tokens": 4096,
+      "measured_steps": 150,
+      "median_itl_ms": 24.668973870575428
+    },
+    {
+      "arm": "streamingllm",
+      "context_tokens": 8192,
+      "measured_steps": 150,
+      "median_itl_ms": 24.66603834182024
+    },
+    {
+      "arm": "streamingllm",
+      "context_tokens": 16384,
+      "measured_steps": 150,
+      "median_itl_ms": 24.7548446059227
+    },
+    {
+      "arm": "h2o_adapted",
+      "context_tokens": 512,
+      "measured_steps": 150,
+      "median_itl_ms": 25.74208192527294
+    },
+    {
+      "arm": "h2o_adapted",
+      "context_tokens": 1024,
+      "measured_steps": 150,
+      "median_itl_ms": 34.28525757044554
+    },
+    {
+      "arm": "h2o_adapted",
+      "context_tokens": 2048,
+      "measured_steps": 150,
+      "median_itl_ms": 34.2775946483016
+    },
+    {
+      "arm": "h2o_adapted",
+      "context_tokens": 4096,
+      "measured_steps": 150,
+      "median_itl_ms": 34.27860792726278
+    },
+    {
+      "arm": "h2o_adapted",
+      "context_tokens": 8192,
+      "measured_steps": 150,
+      "median_itl_ms": 34.25886761397123
+    },
+    {
+      "arm": "h2o_adapted",
+      "context_tokens": 16384,
+      "measured_steps": 150,
+      "median_itl_ms": 34.23161990940571
+    },
+    {
+      "arm": "snapkv_adapted",
+      "context_tokens": 512,
+      "measured_steps": 150,
+      "median_itl_ms": 25.732336565852165
+    },
+    {
+      "arm": "snapkv_adapted",
+      "context_tokens": 1024,
+      "measured_steps": 150,
+      "median_itl_ms": 34.29035563021898
+    },
+    {
+      "arm": "snapkv_adapted",
+      "context_tokens": 2048,
+      "measured_steps": 150,
+      "median_itl_ms": 34.277322702109814
+    },
+    {
+      "arm": "snapkv_adapted",
+      "context_tokens": 4096,
+      "measured_steps": 150,
+      "median_itl_ms": 34.27755180746317
+    },
+    {
+      "arm": "snapkv_adapted",
+      "context_tokens": 8192,
+      "measured_steps": 150,
+      "median_itl_ms": 34.26212165504694
+    },
+    {
+      "arm": "snapkv_adapted",
+      "context_tokens": 16384,
+      "measured_steps": 150,
+      "median_itl_ms": 34.22384988516569
+    },
+    {
+      "arm": "tiered_hot1024",
+      "context_tokens": 512,
+      "measured_steps": 150,
+      "median_itl_ms": 32.8644122928381
+    },
+    {
+      "arm": "tiered_hot1024",
+      "context_tokens": 1024,
+      "measured_steps": 150,
+      "median_itl_ms": 74.53117240220308
+    },
+    {
+      "arm": "tiered_hot1024",
+      "context_tokens": 2048,
+      "measured_steps": 150,
+      "median_itl_ms": 74.99731052666903
+    },
+    {
+      "arm": "tiered_hot1024",
+      "context_tokens": 4096,
+      "measured_steps": 150,
+      "median_itl_ms": 76.51745900511742
+    },
+    {
+      "arm": "tiered_hot1024",
+      "context_tokens": 8192,
+      "measured_steps": 150,
+      "median_itl_ms": 76.47165562957525
+    },
+    {
+      "arm": "tiered_hot1024",
+      "context_tokens": 16384,
+      "measured_steps": 150,
+      "median_itl_ms": 77.75618974119425
+    }
+  ],
+  "artists": [
+    {
+      "arm": "full",
+      "x": [
+        512.0,
+        1024.0,
+        2048.0,
+        4096.0,
+        8192.0,
+        16384.0
+      ],
+      "y": [
+        23.48258625715971,
+        23.74952659010887,
+        24.173683486878872,
+        25.18020197749138,
+        26.988998986780643,
+        30.76657559722662
+      ]
+    },
+    {
+      "arm": "streamingllm",
+      "x": [
+        512.0,
+        1024.0,
+        2048.0,
+        4096.0,
+        8192.0,
+        16384.0
+      ],
+      "y": [
+        23.47377873957157,
+        24.679756723344326,
+        24.688818491995335,
+        24.668973870575428,
+        24.66603834182024,
+        24.7548446059227
+      ]
+    },
+    {
+      "arm": "h2o_adapted",
+      "x": [
+        512.0,
+        1024.0,
+        2048.0,
+        4096.0,
+        8192.0,
+        16384.0
+      ],
+      "y": [
+        25.74208192527294,
+        34.28525757044554,
+        34.2775946483016,
+        34.27860792726278,
+        34.25886761397123,
+        34.23161990940571
+      ]
+    },
+    {
+      "arm": "snapkv_adapted",
+      "x": [
+        512.0,
+        1024.0,
+        2048.0,
+        4096.0,
+        8192.0,
+        16384.0
+      ],
+      "y": [
+        25.732336565852165,
+        34.29035563021898,
+        34.277322702109814,
+        34.27755180746317,
+        34.26212165504694,
+        34.22384988516569
+      ]
+    },
+    {
+      "arm": "tiered_hot1024",
+      "x": [
+        512.0,
+        1024.0,
+        2048.0,
+        4096.0,
+        8192.0,
+        16384.0
+      ],
+      "y": [
+        32.8644122928381,
+        74.53117240220308,
+        74.99731052666903,
+        76.51745900511742,
+        76.47165562957525,
+        77.75618974119425
+      ]
+    }
+  ],
+  "backend_contract": {
+    "full": "sdpa",
+    "streamingllm": "sdpa",
+    "h2o_adapted": "eager",
+    "snapkv_adapted": "eager",
+    "tiered_hot1024": "eager",
+    "prefill_all": "sdpa"
+  },
+  "resource_scope": "1024hot +2048cold Tiered ordinaryGPU vs1024controls/fullunrestricted; not equal totalmemory",
+  "raw_sha256": "7e90cb8d460cea3bb0658ff5e2977f0f8ce3b47ab3e850b42dfa17188369b6f2",
+  "verified_proof_sha256": "ddc7e6ff4b756e14607c00ca6837376e12281b129286c0f21cb30883f25069e2",
+  "no_uncertainty_intervals": true,
+  "H2O_Snap_overlap": "Open H2O square distinguishes near-identical traces without moving values."
+}

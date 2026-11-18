@@ -57,7 +57,7 @@ for fname in proof['record_sha256']:
         agg[k][c] += r['cache_stats'].get(c, 0)
 
 print(f'records={sum(n.values())} rescore_mismatch(>1e-6)={mismatch_score} max_abs_diff={worst:.3g} decode_text_mismatch={mismatch_decode}')
-plotted = {(row['task'], row['arm']): row for row in csv.DictReader(open(ROOT / 'results/audit_20261016_current_figures/task_values.csv'))}
+plotted = {(row['task'], row['arm']): row for row in csv.DictReader(open(ROOT / 'results/figures_20261118_renumbered/task_values.csv'))}
 bad = 0
 for k in sorted(n):
     mean = agg[k]['score'] / n[k]
