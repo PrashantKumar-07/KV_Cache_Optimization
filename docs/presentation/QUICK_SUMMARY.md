@@ -21,11 +21,11 @@ When GPU memory runs out, there are two common answers:
 1. **Permanent eviction** (StreamingLLM, H2O, SnapKV). Keep only the tokens that look important and delete the rest. The flaw: a deleted token is gone forever. If a later question needs a fact that was deleted, the model cannot recover it.
 2. **Keep everything and fetch selectively** (Quest). Nothing is lost, but the full cache still has to sit in GPU memory, so no capacity is saved.
 
-Nobody keeps evicted tokens somewhere cheaper *and* designs for the cost of putting them there."
+What is missing is a cheaper tier that keeps evicted tokens *and* is designed around the cost of writing them there."
 
 ## 3. The key property and the memory we use (1.5 minutes, slides 11–12)
 
-"Here is the property nobody uses: **once a token's K and V are written, they never change.** So a copy stored anywhere is always valid. There is no coherence problem and no dirty data.
+"Here is the property we build on: **once a token's K and V are written, they never change.** So a copy stored anywhere is always valid. There is no coherence problem and no dirty data.
 
 That makes a token a perfect fit for **STT-RAM** (spin-transfer-torque magnetic RAM). STT-RAM is dense and non-volatile, uses very little standby power, and is cheap to read. Its weakness is writing: every write has to flip a magnetic layer with a current pulse, which is slower, costs more energy, and wears the cell. In our cost model we assume STT-RAM writes are 4× slower and 4× more energy per bit than its reads.
 
@@ -111,6 +111,7 @@ Next steps: a fair, equal-memory comparison with the official SnapKV and newer m
 - **"Isn't TieredKV getting more memory?"** Yes, more *total* storage (about 3×). The fair comparison is the hot-992 run, where every method attends to at most 1,024 rows per step.
 - **"Why is it slower?"** The policy is Python/PyTorch running after every layer and needs the attention weights (eager attention). It is an engineering cost, not a property of the design. A fused kernel is future work.
 - **"Is 91.4% the whole saving?"** It covers decode-time writes only. Including the initial prompt placement, it is 40.7%. Both numbers count logical writes, not physical device wear.
+- **"Isn't this the same as FlexiCache?"** FlexiCache (MLSys 2026) also uses immutability: it offloads each KV page once to host DRAM and keeps a full mirror there. Our setting differs: the cold tier is **bounded** (2,048 rows) and **write-expensive** (non-volatile), so shadows must be reclaimed on overflow and every write is counted. We do not claim the "write once" idea alone is new.
 - **"Could the results be hard-coded?"** Every number was re-scored from the raw predictions with independent code (0 mismatches). 18 runs were re-executed on the GPU and gave identical tokens, scores and write counts.
 
 ## What changed from the old (3-tier) Quick Summary
