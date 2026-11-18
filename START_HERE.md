@@ -2,6 +2,64 @@
 
 Read this file, then TASK_STATE.json and REPRODUCING.md. This is the current checkpoint. Older dated plans, logs, checkpoints and archived prose are historical evidence, not active instructions. No SOTA result or publication readiness is established; paper writing remains paused until the research gates finish.
 
+## Moving to a new server (added 18 November 2026)
+
+If this clone is on a new machine, set it up with the steps below before anything else. Storage location does not change results: no code path stores KV cache on disk (tiers live in GPU/host memory), so SSD vs HDD only affects model load time. Do not change code, configs, seeds or pinned versions to "fit" the new server.
+
+Reference runtime of the original server (match it): Linux x86_64, Python 3.10.12, torch 2.5.1+cu124 (CUDA 12.4), transformers 5.15.0, NVIDIA L40S 48 GB. Check the new GPU/driver with `nvidia-smi`; a different GPU type needs its own validation and must be recorded, not mixed silently with L40S timings.
+
+Storage layout (Server 2: fast shared NVMe `/home`, ~257 GB free; large HDD `/data`, ~6.9 TB free):
+- NVMe (`~`): the git clone and the Python venv (~10 GB total; small, read constantly).
+- HDD (`/data/<user>/kvcache_store`): model weights (~28 GB), Hugging Face cache, LongBench data, and optional official-baseline toolchains (IceCache/RocketKV, ~14 GB, only when rerunning those baselines). Linked into the repo with symlinks so all relative paths (`models/...`, `data/longbench`) keep working unchanged.
+
+```bash
+# 1. Clone to fast storage
+cd ~ && git clone https://github.com/PrashantKumar-07/KV_Cache_Optimization.git
+cd ~/KV_Cache_Optimization
+
+# 2. Large-storage dirs on HDD + symlinks (models/, data/ are gitignored)
+STORE=/data/$USER/kvcache_store
+mkdir -p $STORE/models $STORE/data $STORE/hf_cache
+ln -s $STORE/models models
+ln -s $STORE/data data
+echo "export HF_HOME=$STORE/hf_cache" >> ~/.bashrc && export HF_HOME=$STORE/hf_cache
+
+# 3. CUDA environment on fast storage (ignored by git as .venv-cuda/)
+python3.10 -m venv .venv-cuda && source .venv-cuda/bin/activate
+python -m pip install torch==2.5.1 --index-url https://download.pytorch.org/whl/cu124
+python -m pip install -r requirements.txt
+python -m pip check
+
+# 4. Restore evidence and pinned references
+python scripts/restore_evidence.py          # must end "Verified 7 original research records"
+python scripts/bootstrap_references.py      # add --all only when working on IceCache/RocketKV
+
+# 5. Model and data (pinned revision / verified hashes)
+python download_model.py --output models/mistral-7b-instruct
+python scripts/download_longbench.py --output data/longbench
+```
+
+Alternative to step 5: copy the already-downloaded files from the old server with `rsync -a --info=progress2` into `$STORE/models/mistral-7b-instruct` and `$STORE/hf_cache`, then still run `scripts/download_longbench.py` (it verifies the six JSONL hashes; use `--archive` to reuse a copied archive offline).
+
+Verify before any experiment (all must pass):
+```bash
+CUDA_VISIBLE_DEVICES='' OMP_NUM_THREADS=1 python -m pytest -q
+CUDA_VISIBLE_DEVICES='' OMP_NUM_THREADS=1 python scripts/smoke.py
+CUDA_VISIBLE_DEVICES='' OMP_NUM_THREADS=1 PYTHONPATH=experiments python -m pytest -q results/improvement_design_20261016/test_gqa_snap_adapter.py
+mkdir -p results/local_smoke_server2
+CUDA_VISIBLE_DEVICES=0 python experiments/longbench_eval.py \
+  --model models/mistral-7b-instruct --data-dir data/longbench \
+  --tasks multifieldqa_en --methods full tieredkv --budget 1024 \
+  --max-samples 1 --prefill-last-logits --tiered-kv-dtype bfloat16 \
+  --json results/local_smoke_server2/comparison.json
+```
+
+Notes for the new server:
+- Upstream method repos (H2O, SnapKV, StreamingLLM, Quest) under `sota/` are gitignored and were not migrated; the pinned references come from `bootstrap_references.py`. Re-clone upstream into `sota/` only if a task explicitly needs them.
+- Old historical `results/**/run.py` scripts contain original-server paths on purpose (provenance). Do not edit or resume them; use the portable CLI with a new output directory.
+- Write all new outputs to new, server-labelled directories (e.g. `..._server2`) so new hardware runs are never mixed with recorded L40S evidence. Timing/latency comparisons are only valid within one server.
+- The `/home` NVMe is shared with other users and nearly full; keep large outputs and checkpoints on `/data`.
+
 ## Recover the working project
 
 1. Follow the clean setup in README.md/REPRODUCING.md. Run `python scripts/restore_evidence.py` to restore oversized raw records and `python scripts/bootstrap_references.py` for pinned core selectors.
