@@ -1,0 +1,167 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 800" width="1400" height="800" font-family="Inter, 'Helvetica Neue', 'Liberation Sans', Arial, sans-serif">
+  <defs>
+    <pattern id="hatch" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+      <rect width="6" height="6" fill="#FFFFFF"/>
+      <line x1="0" y1="0" x2="0" y2="6" stroke="#23705F" stroke-width="2"/>
+    </pattern>
+    <marker id="aNavy" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#1B2333"/></marker>
+    <marker id="aBlue" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#2F5D9E"/></marker>
+    <marker id="aRed" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#B4442F"/></marker>
+    <marker id="aTeal" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#23705F"/></marker>
+    <marker id="aGrey" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#7A8496"/></marker>
+  </defs>
+
+  <rect width="1400" height="800" fill="#FFFFFF"/>
+
+  <!-- ================= (a) PREFILL ================= -->
+  <text x="20" y="34" font-size="17" font-weight="700" fill="#1B2333">(a) Prefill — one-time placement</text>
+  <rect x="20" y="50" width="360" height="730" rx="10" fill="#F6F8FB" stroke="#D3DAE5"/>
+
+  <rect x="40" y="70" width="320" height="105" rx="7" fill="#FFFFFF" stroke="#9AA4B5"/>
+  <text x="56" y="96" font-size="13" font-weight="700" letter-spacing="1.2" fill="#5A6578">PROMPT · SDPA PREFILL</text>
+  <g fill="#C7CED9">
+    <rect x="56" y="110" width="14" height="22" rx="2"/><rect x="74" y="110" width="14" height="22" rx="2"/><rect x="92" y="110" width="14" height="22" rx="2"/><rect x="110" y="110" width="14" height="22" rx="2"/><rect x="128" y="110" width="14" height="22" rx="2"/><rect x="146" y="110" width="14" height="22" rx="2"/><rect x="164" y="110" width="14" height="22" rx="2"/><rect x="182" y="110" width="14" height="22" rx="2"/><rect x="200" y="110" width="14" height="22" rx="2"/><rect x="218" y="110" width="14" height="22" rx="2"/><rect x="236" y="110" width="14" height="22" rx="2"/><rect x="254" y="110" width="14" height="22" rx="2"/><rect x="272" y="110" width="14" height="22" rx="2"/><rect x="290" y="110" width="14" height="22" rx="2"/><rect x="308" y="110" width="14" height="22" rx="2"/><rect x="326" y="110" width="14" height="22" rx="2"/>
+  </g>
+  <text x="56" y="160" font-size="15" fill="#1B2333">K, V for all <tspan font-style="italic">n</tspan> prompt tokens, 32 layers</text>
+
+  <line x1="200" y1="175" x2="200" y2="208" stroke="#1B2333" stroke-width="1.6" marker-end="url(#aNavy)"/>
+
+  <rect x="40" y="212" width="320" height="150" rx="7" fill="#FFFFFF" stroke="#9AA4B5"/>
+  <text x="56" y="238" font-size="13" font-weight="700" letter-spacing="1.2" fill="#5A6578">OBSERVATION-WINDOW RANKING</text>
+  <text x="56" y="266" font-size="15" fill="#1B2333">queries of the last 128 prompt tokens</text>
+  <text x="56" y="290" font-size="15" fill="#1B2333">attend to every prompt key</text>
+  <text x="56" y="314" font-size="15" fill="#1B2333">avg-pool (k = 5), per KV-head group</text>
+  <text x="56" y="342" font-size="15" font-weight="600" fill="#1B2333">→ one importance score per token</text>
+
+  <line x1="200" y1="362" x2="200" y2="412" stroke="#1B2333" stroke-width="1.6" marker-end="url(#aNavy)"/>
+  <text x="212" y="394" font-size="13.5" font-style="italic" fill="#5A6578">split by rank</text>
+
+  <rect x="40" y="418" width="320" height="100" rx="7" fill="#E7EEF8" stroke="#2F5D9E" stroke-width="1.4"/>
+  <text x="56" y="444" font-size="13" font-weight="700" letter-spacing="1.2" fill="#2F5D9E">→ HOT TIER</text>
+  <text x="56" y="470" font-size="15" fill="#1B2333">4 sinks + 128 most recent</text>
+  <text x="56" y="494" font-size="15" fill="#1B2333">+ top-ranked rows (992 total)</text>
+
+  <rect x="40" y="538" width="320" height="100" rx="7" fill="#E4F2EE" stroke="#23705F" stroke-width="1.4"/>
+  <text x="56" y="564" font-size="13" font-weight="700" letter-spacing="1.2" fill="#23705F">→ COLD TIER</text>
+  <text x="56" y="590" font-size="15" fill="#1B2333">next-ranked rows, ≤ 75 % of 2,048</text>
+  <text x="56" y="614" font-size="15" fill="#1B2333">rest left free for decode demotions</text>
+
+  <rect x="40" y="658" width="320" height="76" rx="7" fill="#EEF0F3" stroke="#7A8496" stroke-width="1.2" stroke-dasharray="5 4"/>
+  <text x="56" y="684" font-size="13" font-weight="700" letter-spacing="1.2" fill="#5A6578">→ DISCARDED</text>
+  <text x="56" y="710" font-size="15" fill="#1B2333">every remaining prompt row</text>
+  <text x="40" y="764" font-size="12.5" fill="#6B7586">Placement is per layer; budgets are the evaluated configuration.</text>
+
+  <!-- ================= (b) DECODE ================= -->
+  <text x="400" y="34" font-size="17" font-weight="700" fill="#1B2333">(b) Decode — every generated token, every layer</text>
+  <rect x="400" y="50" width="980" height="730" rx="10" fill="#FBFCFD" stroke="#D3DAE5"/>
+
+  <!-- connectors (a) -> (b) -->
+  <path d="M360,468 L394,468 L394,215 L426,215" fill="none" stroke="#2F5D9E" stroke-width="1.6" marker-end="url(#aBlue)"/>
+  <path d="M360,588 L390,588 L390,612 L426,612" fill="none" stroke="#23705F" stroke-width="1.6" marker-end="url(#aTeal)"/>
+
+  <!-- feedback loop over the top -->
+  <path d="M1155,100 L1155,78 L640,78 L640,96" fill="none" stroke="#1B2333" stroke-width="1.6" stroke-dasharray="6 4" marker-end="url(#aNavy)"/>
+  <text x="662" y="70" font-size="14" fill="#1B2333"><tspan font-weight="700">②</tspan> attention weights → update row scores and pick promotion candidates</text>
+
+  <!-- HOT TIER -->
+  <rect x="430" y="100" width="420" height="200" rx="8" fill="#FFFFFF" stroke="#2F5D9E" stroke-width="1.6"/>
+  <path d="M430,108 a8,8 0 0 1 8,-8 h404 a8,8 0 0 1 8,8 v26 h-420 z" fill="#2F5D9E"/>
+  <text x="446" y="123" font-size="13" font-weight="700" letter-spacing="1.3" fill="#FFFFFF">HOT TIER · GPU HBM</text>
+  <text x="834" y="123" font-size="13" text-anchor="end" fill="#FFFFFF">992 rows / layer</text>
+  <g>
+    <rect x="450" y="152" width="18" height="30" rx="2" fill="#1E3F73"/><rect x="472" y="152" width="18" height="30" rx="2" fill="#1E3F73"/><rect x="494" y="152" width="18" height="30" rx="2" fill="#1E3F73"/><rect x="516" y="152" width="18" height="30" rx="2" fill="#1E3F73"/>
+    <rect x="546" y="152" width="18" height="30" rx="2" fill="#4C7CC0"/><rect x="568" y="152" width="18" height="30" rx="2" fill="#4C7CC0"/><rect x="590" y="152" width="18" height="30" rx="2" fill="#4C7CC0"/><rect x="612" y="152" width="18" height="30" rx="2" fill="#4C7CC0"/><rect x="634" y="152" width="18" height="30" rx="2" fill="#4C7CC0"/><rect x="656" y="152" width="18" height="30" rx="2" fill="#4C7CC0"/><rect x="678" y="152" width="18" height="30" rx="2" fill="#4C7CC0"/><rect x="700" y="152" width="18" height="30" rx="2" fill="#4C7CC0"/>
+    <rect x="730" y="152" width="18" height="30" rx="2" fill="#A9C2E6"/><rect x="752" y="152" width="18" height="30" rx="2" fill="#A9C2E6"/><rect x="774" y="152" width="18" height="30" rx="2" fill="#A9C2E6"/><rect x="796" y="152" width="18" height="30" rx="2" fill="#A9C2E6"/>
+    <rect x="818" y="152" width="18" height="30" rx="2" fill="#FFFFFF" stroke="#2F5D9E" stroke-width="1.4" stroke-dasharray="3 2"/>
+  </g>
+  <g font-size="12.5" fill="#4A5568">
+    <path d="M450,190 v5 h84 v-5" fill="none" stroke="#9AA4B5"/><text x="492" y="210" text-anchor="middle">sinks</text>
+    <path d="M546,190 v5 h172 v-5" fill="none" stroke="#9AA4B5"/><text x="632" y="210" text-anchor="middle">retained (scored)</text>
+    <path d="M730,190 v5 h84 v-5" fill="none" stroke="#9AA4B5"/><text x="772" y="210" text-anchor="middle">recent</text>
+    <text x="827" y="210" text-anchor="middle">x<tspan font-size="9" dy="3">t</tspan></text>
+  </g>
+  <text x="450" y="246" font-size="15" fill="#1B2333">victim = lowest  cumulative attention ÷ age</text>
+  <text x="450" y="272" font-size="15" fill="#1B2333">sinks, recent window, just-promoted rows protected</text>
+
+  <!-- COLD TIER -->
+  <rect x="430" y="500" width="420" height="200" rx="8" fill="#FFFFFF" stroke="#23705F" stroke-width="1.6"/>
+  <path d="M430,508 a8,8 0 0 1 8,-8 h404 a8,8 0 0 1 8,8 v26 h-420 z" fill="#23705F"/>
+  <text x="446" y="523" font-size="13" font-weight="700" letter-spacing="1.3" fill="#FFFFFF">COLD TIER · STT-RAM (modeled)</text>
+  <text x="834" y="523" font-size="13" text-anchor="end" fill="#FFFFFF">2,048 rows / layer</text>
+  <g>
+    <rect x="450" y="552" width="18" height="30" rx="2" fill="#7FBFAF"/><rect x="472" y="552" width="18" height="30" rx="2" fill="#7FBFAF"/><rect x="494" y="552" width="18" height="30" rx="2" fill="#7FBFAF"/><rect x="516" y="552" width="18" height="30" rx="2" fill="#7FBFAF"/><rect x="538" y="552" width="18" height="30" rx="2" fill="#7FBFAF"/><rect x="560" y="552" width="18" height="30" rx="2" fill="#7FBFAF"/><rect x="582" y="552" width="18" height="30" rx="2" fill="#7FBFAF"/><rect x="604" y="552" width="18" height="30" rx="2" fill="#7FBFAF"/><rect x="626" y="552" width="18" height="30" rx="2" fill="#7FBFAF"/><rect x="648" y="552" width="18" height="30" rx="2" fill="#7FBFAF"/>
+    <rect x="680" y="552" width="18" height="30" rx="2" fill="url(#hatch)" stroke="#23705F"/><rect x="702" y="552" width="18" height="30" rx="2" fill="url(#hatch)" stroke="#23705F"/><rect x="724" y="552" width="18" height="30" rx="2" fill="url(#hatch)" stroke="#23705F"/><rect x="746" y="552" width="18" height="30" rx="2" fill="url(#hatch)" stroke="#23705F"/><rect x="768" y="552" width="18" height="30" rx="2" fill="url(#hatch)" stroke="#23705F"/>
+    <rect x="800" y="552" width="18" height="30" rx="2" fill="#FFFFFF" stroke="#C7CED9"/><rect x="822" y="552" width="18" height="30" rx="2" fill="#FFFFFF" stroke="#C7CED9"/>
+  </g>
+  <g font-size="12.5" fill="#4A5568">
+    <path d="M450,590 v5 h216 v-5" fill="none" stroke="#9AA4B5"/><text x="558" y="610" text-anchor="middle">live rows (only copy)</text>
+    <path d="M680,590 v5 h106 v-5" fill="none" stroke="#9AA4B5"/><text x="733" y="610" text-anchor="middle">shadows</text>
+    <text x="820" y="610" text-anchor="middle">free</text>
+  </g>
+  <text x="450" y="646" font-size="15" fill="#1B2333">shadow = clean backup of a row now in the hot tier</text>
+  <text x="450" y="672" font-size="13.5" fill="#5A6578">assumed: read 50 GB/s, 2 pJ/bit · write 12.5 GB/s, 8 pJ/bit</text>
+
+  <!-- vertical movement between tiers -->
+  <line x1="470" y1="496" x2="470" y2="304" stroke="#2F5D9E" stroke-width="2.2" marker-end="url(#aBlue)"/>
+  <text x="482" y="356" font-size="14.5" font-weight="700" fill="#2F5D9E">③ promote</text>
+  <text x="482" y="378" font-size="13.5" fill="#1B2333">≤ 32 most-attended</text>
+  <text x="482" y="397" font-size="13.5" fill="#1B2333">exposed rows / step</text>
+  <text x="482" y="416" font-size="13.5" fill="#1B2333">read only; cold copy</text>
+  <text x="482" y="435" font-size="13.5" fill="#1B2333">stays as a shadow</text>
+
+  <line x1="650" y1="304" x2="650" y2="496" stroke="#B4442F" stroke-width="2.2" marker-end="url(#aRed)"/>
+  <text x="662" y="356" font-size="14.5" font-weight="700" fill="#B4442F">④ demote</text>
+  <text x="662" y="378" font-size="13.5" fill="#1B2333">victim has no shadow</text>
+  <text x="662" y="397" font-size="13.5" fill="#1B2333">→ append to cold</text>
+  <text x="662" y="416" font-size="13.5" font-weight="700" fill="#B4442F">1 paid write</text>
+
+  <line x1="810" y1="304" x2="810" y2="496" stroke="#23705F" stroke-width="2.2" stroke-dasharray="7 5" marker-end="url(#aTeal)"/>
+  <text x="822" y="356" font-size="14.5" font-weight="700" fill="#23705F">④′ reactivate</text>
+  <text x="822" y="378" font-size="13.5" fill="#1B2333">victim has a</text>
+  <text x="822" y="397" font-size="13.5" fill="#1B2333">shadow → flip flag</text>
+  <text x="822" y="416" font-size="13.5" font-weight="700" fill="#23705F">0 payload writes</text>
+
+  <!-- hot -> attention -->
+  <line x1="850" y1="200" x2="956" y2="200" stroke="#1B2333" stroke-width="1.8" marker-end="url(#aNavy)"/>
+  <text x="903" y="190" font-size="14" font-weight="700" text-anchor="middle" fill="#1B2333">H</text>
+
+  <!-- cold -> attention (expose) -->
+  <path d="M850,540 L940,540 L940,262 L956,262" fill="none" stroke="#23705F" stroke-width="1.8" marker-end="url(#aTeal)"/>
+  <text x="958" y="388" font-size="14.5" font-weight="700" fill="#23705F">① expose E</text>
+  <text x="958" y="410" font-size="13.5" fill="#1B2333">≤ 32 live cold rows join attention</text>
+  <text x="958" y="429" font-size="13.5" fill="#1B2333">(most recently accessed first)</text>
+
+  <!-- ATTENTION -->
+  <rect x="960" y="100" width="390" height="200" rx="8" fill="#FFFFFF" stroke="#1B2333" stroke-width="1.6"/>
+  <path d="M960,108 a8,8 0 0 1 8,-8 h374 a8,8 0 0 1 8,8 v26 h-390 z" fill="#1B2333"/>
+  <text x="976" y="123" font-size="13" font-weight="700" letter-spacing="1.3" fill="#FFFFFF">EXACT ATTENTION · model kernel</text>
+  <text x="976" y="170" font-size="20" fill="#1B2333" font-style="italic">V = H ∪ E ∪ {x<tspan font-size="13" dy="4">t</tspan><tspan dy="-4">}</tspan></text>
+  <text x="976" y="204" font-size="14.5" fill="#1B2333"><tspan font-weight="700">H</tspan>  every hot row</text>
+  <text x="976" y="228" font-size="14.5" fill="#1B2333"><tspan font-weight="700">E</tspan>  ≤ 32 exposed live cold rows</text>
+  <text x="976" y="270" font-size="14.5" font-weight="600" fill="#1B2333">→ logits → next token (greedy)</text>
+
+  <!-- WRITE-ONCE RULE -->
+  <rect x="960" y="500" width="390" height="200" rx="8" fill="#FFFFFF" stroke="#B4442F" stroke-width="1.6"/>
+  <path d="M960,508 a8,8 0 0 1 8,-8 h374 a8,8 0 0 1 8,8 v26 h-390 z" fill="#B4442F"/>
+  <text x="976" y="523" font-size="13" font-weight="700" letter-spacing="1.3" fill="#FFFFFF">WRITE-ONCE VICTIM RULE</text>
+  <text x="976" y="562" font-size="14.5" fill="#1B2333">K, V never change after they are written,</text>
+  <text x="976" y="584" font-size="14.5" fill="#1B2333">so a shadow can never go stale:</text>
+  <text x="976" y="612" font-size="14.5" fill="#1B2333">a row is written to the cold tier once and</text>
+  <text x="976" y="634" font-size="14.5" fill="#1B2333">re-used on every later demotion — until</text>
+  <text x="976" y="656" font-size="14.5" fill="#1B2333">its shadow is reclaimed on overflow.</text>
+
+  <!-- overflow / drop -->
+  <line x1="520" y1="700" x2="520" y2="742" stroke="#7A8496" stroke-width="1.8" stroke-dasharray="5 4" marker-end="url(#aGrey)"/>
+  <circle cx="520" cy="756" r="11" fill="#FFFFFF" stroke="#7A8496" stroke-width="1.6"/>
+  <line x1="512" y1="764" x2="528" y2="748" stroke="#7A8496" stroke-width="1.6"/>
+  <text x="542" y="752" font-size="14" font-weight="700" fill="#5A6578">⑤ overflow</text>
+  <text x="542" y="771" font-size="13" fill="#1B2333">reclaim shadows first, then drop least-recently-used live rows (permanent)</text>
+
+  <!-- legend -->
+  <g font-size="12.5" fill="#4A5568">
+    <line x1="1090" y1="736" x2="1118" y2="736" stroke="#2F5D9E" stroke-width="2.2"/><text x="1124" y="740">read (cheap)</text>
+    <line x1="1220" y1="736" x2="1248" y2="736" stroke="#B4442F" stroke-width="2.2"/><text x="1254" y="740">paid write</text>
+    <line x1="1090" y1="758" x2="1118" y2="758" stroke="#23705F" stroke-width="2.2" stroke-dasharray="7 5"/><text x="1124" y="762">write-free</text>
+    <line x1="1220" y1="758" x2="1248" y2="758" stroke="#7A8496" stroke-width="1.8" stroke-dasharray="5 4"/><text x="1254" y="762">permanent drop</text>
+  </g>
+</svg>
