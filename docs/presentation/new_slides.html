@@ -65,7 +65,7 @@ ul.k li:before{ content:""; position:absolute; left:0; top:7px; width:6px; heigh
     <div class="kicker" style="font-size:12px; letter-spacing:3px">Indian Institute of Technology Jodhpur</div>
     <div style="font-size:12.5px; margin-top:8px; color:#3A4456">Department of Computer Science and Engineering</div>
     <img src="assets/iitj_logo.jpg" style="height:118px; margin:16px auto 0; display:block">
-    <div style="font-size:10.5px; letter-spacing:2.2px; color:var(--muted); margin-top:14px">M.TECH SUMMER THESIS PRESENTATION</div>
+    <div style="font-size:10.5px; letter-spacing:2.2px; color:var(--muted); margin-top:14px">M.TECH THESIS PRESENTATION</div>
     <div style="font-family:'Source Serif 4',Georgia,serif; font-weight:700; font-size:40px; line-height:1.18; margin:14px auto 0; max-width:980px">A Write-Aware 2-Tier KV-Cache Memory Hierarchy<br>for Long-Context LLM Inference</div>
     <div style="width:28px; height:1px; background:#8A94A6; margin:18px auto 14px"></div>
     <div style="font-family:'Source Serif 4',Georgia,serif; font-style:italic; font-size:17px; color:#3A4456">Exploiting KV immutability to cut non-volatile-memory write traffic</div>
@@ -138,7 +138,7 @@ ul.k li:before{ content:""; position:absolute; left:0; top:7px; width:6px; heigh
   <div class="bar"></div>
   <div class="sub">STT-RAM (spin-transfer-torque magnetic RAM) stores each bit in the magnetic orientation of a tiny junction. It is a natural home for KV rows that are read often and almost never changed — as long as we avoid writing to it.</div>
   <div class="grid" style="grid-template-columns:1fr 1fr 1fr; margin-top:18px">
-    <div class="card accent-teal"><div class="lbl teal">Strength</div><h3>Dense and non-volatile</h3><p>No refresh and very low standby power, so a large cold tier costs little to keep resident.</p></div>
+    <div class="card accent-teal"><div class="lbl teal">Strength</div><h3>Dense and non-volatile</h3><p>It doesn't need constant power to hold data, making it inexpensive to keep massive archives online and ready to use.</p></div>
     <div class="card accent-teal"><div class="lbl teal">Strength</div><h3>Reads are cheap</h3><p>A read only senses the junction's resistance, so it is fast and low-energy — ideal for rows we merely look at.</p></div>
     <div class="card accent-red"><div class="lbl red">Weakness</div><h3>Writes are slow and costly</h3><p>Every write must flip the magnetization with a current pulse: more time and more energy per bit than a read, and it wears the cell.</p></div>
   </div>
@@ -160,20 +160,19 @@ ul.k li:before{ content:""; position:absolute; left:0; top:7px; width:6px; heigh
   <div class="pageno">12</div>
 </section>
 
-<!-- ============ 13 WHAT CHANGED ============ -->
+<!-- ============ 13 WHAT CHANGED (plain-language version) ============ -->
 <section class="slide">
   <div class="kicker">06 · Proposed solution</div>
-  <h1>From 3 tiers to 2 — what changed since the last review</h1>
+  <h1>What changed since the last review: 3 tiers became 2</h1>
   <div class="bar"></div>
-  <div class="sub">The earlier design was evaluated only in simulation. Moving to a real model (Mistral-7B) exposed what each part actually contributed; the design was simplified and corrected accordingly.</div>
-  <table class="t" style="margin-top:16px">
-    <tr><th style="width:15%">Aspect</th><th style="width:26%">Earlier design (3-tier)</th><th style="width:28%">Current design (2-tier)</th><th>Why it changed</th></tr>
-    <tr><td><b>Tiers</b></td><td>VRAM → STT-RAM → host DRAM / drop</td><td>GPU hot tier → STT-RAM cold tier → <b>explicit drop</b></td><td>Tier 3 only aged tokens out before discarding them — it never served a read, so it is now a plain drop.</td></tr>
-    <tr><td><b>Cold tokens in attention</b></td><td>No — attention only over Tier 1</td><td>Yes — up to <b>32 live cold rows</b> join attention each step</td><td>The model can use cold content without first paying for a promotion.</td></tr>
-    <tr><td><b>Promotion signal</b></td><td>Quest-style page bound <code>Σ max(q·min, q·max)</code></td><td>The model's <b>own measured attention</b> on exposed cold rows</td><td>No query approximation left in the decode loop.</td></tr>
-    <tr><td><b>Prompt placement</b></td><td>Keys used as a proxy for queries</td><td>Real queries of the last 128 prompt tokens (observation window)</td><td>Ranks prompt tokens with the actual question-time queries.</td></tr>
-    <tr><td><b>Eviction score</b></td><td>Lowest cumulative attention</td><td>Lowest cumulative attention <b>÷ age</b>, 1-step grace after promotion</td><td>Raw sums favoured old rows and made every promoted row the next victim (thrashing).</td></tr>
-    <tr class="hl"><td><b>Evidence</b></td><td>Simulation: 150 decode steps, random tensors</td><td><b>Mistral-7B-Instruct-v0.2, 6 LongBench tasks, 10,318 real predictions</b></td><td>Accuracy, write counts and cost on a real model.</td></tr>
+  <div class="sub">Last time the design was tested only in a simulation. Running it on a real model showed which parts actually helped, so we kept those and removed the rest.</div>
+  <table class="t" style="margin-top:18px; font-size:14px">
+    <tr><th style="width:24%">Question</th><th style="width:22%">Before (3 tiers)</th><th style="width:24%">Now (2 tiers)</th><th>Why we changed it</th></tr>
+    <tr><td><b>How many memory levels?</b></td><td>3: GPU → STT-RAM → CPU memory</td><td><b>2: GPU → STT-RAM</b></td><td>The 3rd level was never read back. It only delayed deleting tokens, so we removed it.</td></tr>
+    <tr><td><b>Can the model use tokens in the slow tier?</b></td><td>No — only after moving them back to the GPU</td><td><b>Yes — 32 of them join every step</b></td><td>Old information can help the answer right away.</td></tr>
+    <tr><td><b>How do we choose what to bring back?</b></td><td>A rough estimate</td><td><b>The model's own attention</b></td><td>We use what the model actually looked at, not a guess.</td></tr>
+    <tr><td><b>Which token leaves the GPU?</b></td><td>The one with the least attention in total</td><td><b>The least attention for its age</b></td><td>Old tokens no longer look important just because they are old.</td></tr>
+    <tr class="hl"><td><b>How was it tested?</b></td><td>Simulation with random numbers</td><td><b>Real model (Mistral-7B), 6 tasks, 10,318 answers</b></td><td>Now the results come from real runs.</td></tr>
   </table>
   <div class="pageno">13</div>
 </section>
