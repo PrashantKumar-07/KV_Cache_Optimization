@@ -1,6 +1,6 @@
 {
   "schema": 2,
-  "updated_date": "2026-10-20",
+  "updated_date": "2026-11-20",
   "objective": "Complete research/engineering audit, correctness fixes, fair reproducible improvements and validated figures before writing four-page IEEE paper",
   "status": "audit_and_improvement_in_progress; paper_paused; no_SOTA_superiority_established",
   "resume_entrypoint": "START_HERE.md",
@@ -183,15 +183,19 @@
   "novelty_gate": {
     "state": "Open: FlexiCache alreadyoffloads stable-head pagesonce and retains hostcopies, MLSys2026section3.3; rootcheckedprimaryPDF. Need distinctbounded-capacity/write-quality contribution with evidence.",
     "primary_source": "https://proceedings.mlsys.org/paper_files/paper/2026/file/94bcb01789fccf15afe2764d8fe0f40e-Paper-Conference.pdf",
-    "rule": "No claimwriteoncebackupalone isnew or globalSOTA; original improvementgoal remains."
+    "rule": "No claimwriteoncebackupalone isnew or globalSOTA; original improvementgoal remains.",
+    "candidate_second_novelty": "Confidence-triggered, write-free cold retrieval for exposure selection (START_HERE step 2); untested, literature check pending (FLARE, MagicPIG, HashAttention, InfiniGen, Loki, Quest)."
   },
   "next_actions": [
-    "Read START_HERE.md and this state; bootstrap core references and restore checksummed evidence, then run documented clean setup verification.",
-    "Diagnose/fix IceCache GPU preflight harness input shape, preserve failure, preregister new outputs, then real offload/KVscatter/pretrained7B correctness before anycomparison.",
-    "Fix RocketKV CPU receipt metadata parsing without changing algorithms; prove original FlashAttention/realRoPE/modelpath and common-runtime controls.",
-    "Preregister actual GPU+CPU resource envelopes and strongest valid configs; complete fair paired upstream quality/latency/storage comparisons. Equal initialtokenbudget alone is notwholememory fairness.",
-    "Investigate genuinely distinct improvements using development data only. Preserve failed gates; do not tune on1474 consumedfinalrecords or resurrectfailedcandidates.",
-    "Complete broader audit, optional fresh headroom/fraction ablations (old unverified fig8/15 removed) and matchingverifiedoriginal-style plots; onlythen draft IEEEfourpage paper."
+    "Setup on the new server per START_HERE.md (restore evidence, bootstrap references, tests, smoke).",
+    "1. Sharpen novelty: bounded write-expensive NVM tier (write accounting, shadow reclamation, quality under write budget); compare directly with FlexiCache.",
+    "2. Exposure selection study on a fresh registered development set: oracle diagnostic + entropy logging first, then candidates A rotating exploration slots, B decayed-score exposure, C confidence-triggered write-free hashed retrieval (index in GPU memory, zero NVM writes). Do not repeat exact-query (+2.92, CI [-0.29,6.67], failed gate), min/max box bounds or centroid index. Adopt only the pre-registered winner.",
+    "3. Fair equal-memory comparison vs official SnapKV and RocketKV or IceCache at matched total GPU+CPU memory; first fix IceCache RMSnorm 2D/3D harness and RocketKV receipt parsing without algorithm changes; freeze resource envelopes.",
+    "4. Fix latency (75-78 vs 23-34 ms/token): fused GPU policy kernel and/or real CPU-memory cold tier with measured timing.",
+    "5. STT-RAM credibility: cite device papers or NVSim for cost-model values; sensitivity sweep.",
+    "6. Ablations: no shadows, no exposure, cold-tier sizes, exposure quotas 8/16/32/64, exposure selectors, cold-fill fraction.",
+    "7. Broader tests: Llama-3-8B (plus one more), 64K-128K context; reserved 800 rows used once for a final pre-registered test.",
+    "8. Only then write the four-page IEEE paper; no SOTA claim without a fair comparison."
   ],
   "historical_state": "results/publication_20261020/before_TASK_STATE.json",
   "reproduction": "REPRODUCING.md",
