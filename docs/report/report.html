@@ -1,0 +1,631 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>TieredKV Thesis Report</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;0,8..60,700;1,8..60,400&display=block" rel="stylesheet">
+<style>
+:root{
+  --ink:#1B2333; --muted:#5B6576; --blue:#2F6FEB; --blue-soft:#DCE7FB; --line:#DDE3EC;
+  --red:#B4442F; --red-soft:#FBE9E5; --teal:#23705F; --teal-soft:#E2F1EC; --navy:#1B2333; --paper:#FFFFFF;
+}
+@page{ size:A4; margin:22mm 21mm 22mm 21mm;
+  @bottom-center{ content:counter(page); font-family:"JetBrains Mono",monospace; font-size:8.5pt; color:#5B6576 }
+  @top-right{ content:"TieredKV — A Write-Aware 2-Tier KV-Cache Hierarchy"; font-family:Inter,Arial,sans-serif; font-size:7.5pt; letter-spacing:.6pt; color:#8A94A6 }
+}
+@page cover{ margin:0; @bottom-center{ content:none } @top-right{ content:none } }
+@page front{ @top-right{ content:none } }
+*{ box-sizing:border-box }
+html,body{ margin:0; padding:0; background:var(--paper) }
+body{ font-family:"Source Serif 4", Georgia, serif; color:var(--ink); font-size:10.6pt; line-height:1.58; -webkit-print-color-adjust:exact; print-color-adjust:exact; text-align:justify; hyphens:auto }
+p{ margin:0 0 7pt }
+b{ font-weight:600 }
+a{ color:var(--blue); text-decoration:none }
+code,.mono{ font-family:"JetBrains Mono",monospace; font-size:8.6pt }
+code{ background:#EAF0FB; color:#2B5BC4; padding:0 3px; border-radius:2px }
+
+/* ---------- cover (mirrors slide 1) ---------- */
+.cover{ page:cover; width:210mm; height:297mm; position:relative; overflow:hidden; background:#F3F6FA; break-after:page; font-family:Inter,Arial,sans-serif; text-align:center }
+.cover .wm{ position:absolute; right:-34mm; bottom:-62mm; font-family:"Source Serif 4",Georgia,serif; font-weight:700; font-size:330pt; color:#E8EDF4; letter-spacing:-12pt; line-height:1 }
+.cover .in{ position:relative; padding-top:30mm }
+.cover .kick{ font-size:11pt; font-weight:700; letter-spacing:3.2pt; color:var(--blue); text-transform:uppercase }
+.cover .dept{ font-size:11pt; margin-top:6pt; color:#3A4456 }
+.cover img{ height:44mm; margin:16mm auto 0; display:block }
+.cover .type{ font-size:9.5pt; letter-spacing:3pt; color:var(--muted); margin-top:14mm }
+.cover h1{ font-family:"Source Serif 4",Georgia,serif; font-weight:700; font-size:27pt; line-height:1.2; margin:9mm auto 0; max-width:165mm; color:var(--ink) }
+.cover .rule{ width:22pt; height:1px; background:#8A94A6; margin:9mm auto 7mm }
+.cover .tag{ font-family:"Source Serif 4",Georgia,serif; font-style:italic; font-size:13.5pt; color:#3A4456 }
+.cover .people{ display:flex; justify-content:center; gap:16mm; margin-top:22mm }
+.cover .people .lab{ font-size:8.5pt; letter-spacing:2.2pt; color:var(--muted) }
+.cover .people .nm{ font-weight:700; font-size:13pt; margin-top:6pt }
+.cover .people .sm{ font-size:9pt; color:var(--muted); margin-top:5pt }
+.cover .people .vr{ width:1px; background:#C9D1DD }
+.cover .date{ position:absolute; left:0; right:0; bottom:20mm; font-size:9.5pt; letter-spacing:2.4pt; color:var(--muted) }
+.cover .base{ position:absolute; left:0; right:0; bottom:0; height:5px; background:var(--navy) }
+
+/* ---------- front matter ---------- */
+.front{ page:front }
+.pb{ break-before:page }
+h1.ch{ font-family:"Source Serif 4",Georgia,serif; font-size:19pt; font-weight:700; margin:0 0 4pt; line-height:1.2; break-after:avoid }
+.chk{ font-family:Inter,Arial,sans-serif; font-size:8.5pt; font-weight:700; letter-spacing:2.4pt; color:var(--blue); text-transform:uppercase }
+.bar{ width:34px; height:2px; background:var(--blue); margin:8pt 0 12pt }
+h2{ font-family:"Source Serif 4",Georgia,serif; font-size:13pt; font-weight:700; margin:15pt 0 5pt; break-after:avoid }
+h3{ font-family:Inter,Arial,sans-serif; font-size:9.6pt; font-weight:700; letter-spacing:.3pt; margin:11pt 0 4pt; color:#2F5D9E; break-after:avoid }
+ul,ol{ margin:2pt 0 8pt 16pt; padding:0 } li{ margin:2pt 0 }
+.abstract{ font-size:10.6pt }
+.kw{ font-family:Inter,Arial,sans-serif; font-size:8.8pt; color:var(--muted); margin-top:10pt }
+.toc{ font-family:Inter,Arial,sans-serif; font-size:9.3pt; margin-top:2pt; line-height:1.3 }
+.toc .r{ display:flex; align-items:baseline; margin:1.5pt 0 }
+.toc .r.l1{ font-weight:600; margin-top:5.5pt }
+.toc .r.l2{ padding-left:16pt; color:#3A4456 }
+.toc .r .t{ white-space:nowrap }
+.toc .r .d{ flex:1; border-bottom:1px dotted #AAB3C2; margin:0 5pt; transform:translateY(-3pt) }
+.toc .r .p{ font-family:"JetBrains Mono",monospace; font-size:8.8pt }
+
+/* ---------- components ---------- */
+table.t{ width:100%; border-collapse:collapse; font-family:Inter,Arial,sans-serif; font-size:8.6pt; margin:6pt 0 4pt; break-inside:avoid; text-align:left }
+table.t th{ background:var(--navy); color:#fff; font-size:7.6pt; letter-spacing:1pt; text-transform:uppercase; font-weight:600; padding:5pt 7pt }
+table.t td{ padding:4.4pt 7pt; border-bottom:1px solid var(--line); vertical-align:top; line-height:1.42 }
+table.t tr.hl td{ background:var(--blue-soft) }
+table.t tr.sub td{ background:#F6F8FB; color:var(--muted) }
+table.t .r{ text-align:right; font-variant-numeric:tabular-nums }
+.cap{ font-family:Inter,Arial,sans-serif; font-size:8.3pt; color:var(--muted); line-height:1.45; margin:3pt 0 11pt; text-align:left }
+.cap b{ color:var(--ink) }
+figure{ margin:8pt 0 4pt; break-inside:avoid; text-align:center }
+figure img{ max-width:100%; border:1px solid var(--line); border-radius:4px }
+figure .cap{ text-align:left }
+.box{ border:1px solid #CFDCF5; background:#EEF3FC; border-radius:5px; padding:8pt 11pt; margin:8pt 0 10pt; font-size:10pt; break-inside:avoid; text-align:left }
+.box.red{ background:var(--red-soft); border-color:#F0CFC7 }
+.box.teal{ background:var(--teal-soft); border-color:#C5E3D9 }
+.box .lab{ font-family:Inter,Arial,sans-serif; font-size:7.8pt; font-weight:700; letter-spacing:1.8pt; text-transform:uppercase; color:var(--blue); margin-bottom:3pt }
+.box.red .lab{ color:var(--red) } .box.teal .lab{ color:var(--teal) }
+.eq{ font-family:"JetBrains Mono",monospace; font-size:9pt; text-align:center; margin:6pt 0 8pt; color:#2B3550 }
+.grid2{ display:grid; grid-template-columns:1fr 1fr; gap:10pt; break-inside:avoid }
+.stat{ border:1px solid var(--line); border-left:3px solid var(--blue); border-radius:4px; padding:7pt 10pt; font-family:Inter,Arial,sans-serif; text-align:left }
+.stat .v{ font-family:"Source Serif 4",Georgia,serif; font-size:19pt; font-weight:700; line-height:1.1 }
+.stat .k{ font-size:8.4pt; color:var(--muted); margin-top:2pt; line-height:1.4 }
+.stat.red{ border-left-color:var(--red) } .stat.teal{ border-left-color:var(--teal) }
+.refs{ font-size:9.4pt; text-align:left } .refs li{ margin:3pt 0 }
+.small{ font-size:9pt }
+.avoid{ break-inside:avoid }
+</style>
+</head>
+<body>
+
+<!-- ======================= COVER ======================= -->
+<section class="cover">
+  <div class="wm">KV</div>
+  <div class="in">
+    <div class="kick">Indian Institute of Technology Jodhpur</div>
+    <div class="dept">Department of Computer Science and Engineering</div>
+    <img src="../presentation/assets/iitj_logo.jpg" alt="IIT Jodhpur logo">
+    <div class="type">M.TECH THESIS REPORT</div>
+    <h1>A Write-Aware 2-Tier KV-Cache Memory Hierarchy<br>for Long-Context LLM Inference</h1>
+    <div class="rule"></div>
+    <div class="tag">Exploiting KV immutability to cut non-volatile-memory write traffic</div>
+    <div class="people">
+      <div><div class="lab">SUBMITTED BY</div><div class="nm">Prashant Kumar</div><div class="sm mono" style="letter-spacing:1.4pt">M25CSE023</div></div>
+      <div class="vr"></div>
+      <div><div class="lab">SUPERVISED BY</div><div class="nm">Dr. Palash Das</div><div class="sm">Department of CSE, IIT Jodhpur</div></div>
+    </div>
+  </div>
+  <div class="date">NOVEMBER 2026</div>
+  <div class="base"></div>
+</section>
+
+<!-- ======================= ABSTRACT ======================= -->
+<section class="front">
+  <div class="chk">Abstract</div>
+  <h1 class="ch">Abstract</h1>
+  <div class="bar"></div>
+  <div class="abstract">
+  <p>Large language models generate text one token at a time, and every step re-reads a <b>key–value (KV) cache</b> that holds the attention keys and values of all earlier tokens. For long inputs this cache grows to hundreds of megabytes per request, fills the GPU memory and makes decoding limited by memory traffic rather than computation. The usual remedy, <b>token eviction</b> (StreamingLLM, H2O, SnapKV), keeps only tokens that look important and deletes the rest permanently, so a fact that is needed later cannot be recovered. Sparse retrieval methods such as Quest avoid deletion but keep the entire cache resident, so they save bandwidth but not capacity.</p>
+  <p>This thesis proposes <b>TieredKV</b>, a write-aware two-tier KV-cache hierarchy. A small <b>hot tier</b> in GPU memory holds the most useful rows; a larger <b>cold tier</b>, modelled as spin-transfer-torque magnetic RAM (STT-RAM), receives evicted rows instead of deleting them. STT-RAM is dense, non-volatile and cheap to read, but its writes are slow and energy-hungry. The design therefore builds on one property of the KV cache: <b>once a token's key and value are written, they never change</b>. A cold copy can never become stale, so a row that is promoted back to the GPU keeps its cold copy as a <i>shadow</i>, and a later demotion of the same row needs no new write. This <b>write-once victim cache</b> is combined with attention-driven promotion: each decoding step, up to 32 cold rows join the model's own attention computation, and the real attention weights decide which rows return to the GPU.</p>
+  <p>TieredKV was evaluated on Mistral-7B-Instruct-v0.2 over every input of six LongBench tasks (1,474 inputs, seven configurations, <b>10,318 real predictions</b>). When every method attends to the same number of cached rows per step, TieredKV reaches a six-task average of <b>38.50</b>, compared with 32.12–33.80 for adapted StreamingLLM, H2O and SnapKV and 41.79 for the uncompressed cache. Shadows avoided <b>91.4 % of decode-time cold-tier writes</b> (40.7 % when the initial placement of the prompt is also counted). The design has clear costs: about <b>3× the configured KV storage</b> of a 1,024-row compressed cache and, in the current Python implementation, <b>≈75–78 ms per token</b> against 23–34 ms for the baselines. The official SnapKV implementation, whose cache grows during decoding, scores 0.7–1.0 points higher on average; no state-of-the-art claim is made. All reported numbers were re-checked from raw outputs with independent code.</p>
+  </div>
+  <div class="kw"><b>Keywords:</b> large language models, KV cache, memory hierarchy, non-volatile memory, STT-RAM, write reduction, long-context inference</div>
+</section>
+
+<!-- ======================= CONTENTS ======================= -->
+<section class="front pb">
+  <div class="chk">Contents</div>
+  <h1 class="ch">Table of Contents</h1>
+  <div class="bar"></div>
+  <div class="toc" id="toc"><!--TOC--></div>
+</section>
+
+<!-- ======================= 1 INTRODUCTION ======================= -->
+<section class="pb">
+<div class="chk">Chapter 1</div>
+<h1 class="ch" data-toc="1">Introduction</h1>
+<div class="bar"></div>
+
+<h2 data-toc="2">1.1 Motivation</h2>
+<p>Large language models (LLMs) are increasingly asked to work with long inputs: entire reports, books, code bases and multi-turn conversations. Generating an answer over such an input is dominated not by arithmetic but by memory. At each step the model must look back at every earlier token, and to avoid recomputing their internal representations it stores their attention keys and values in the <b>KV cache</b>. For Mistral-7B, one token occupies 128 KB of KV data across its 32 layers; a 30,000-token document therefore needs close to 4 GB, and every generated token re-reads that whole cache.</p>
+<p>When GPU memory runs short, current systems mostly choose between two imperfect options. They either <b>delete</b> tokens judged unimportant, which is cheap but irreversible, or they <b>keep everything</b> on the GPU and read selectively, which preserves quality but saves no capacity. What is missing is a third place for a token: one that is cheaper and denser than GPU memory, where a token that is "probably no longer needed, but maybe" can wait without being lost.</p>
+
+<h2 data-toc="2">1.2 Problem statement</h2>
+<p>Emerging non-volatile memories such as STT-RAM are natural candidates for such a tier: they are dense, retain data without power and read cheaply. Their weakness is writing, which is slower, costs more energy and wears the cell. A cache-management policy designed for symmetric memory would write to this tier on every eviction and quickly squander its advantages. This thesis therefore asks:</p>
+<div class="box"><div class="lab">Research question</div>Can a two-tier KV cache that keeps evicted tokens in a write-expensive non-volatile tier recover most of the accuracy lost by permanent eviction, <b>while keeping the number of writes to that tier small</b> — and what does it cost in memory and time?</div>
+
+<h2 data-toc="2">1.3 Contributions</h2>
+<ol>
+  <li><b>A write-aware two-tier KV hierarchy (TieredKV).</b> Evicted rows are demoted to a bounded STT-RAM cold tier instead of being deleted, and the policy treats the number of cold-tier writes as a first-class design quantity.</li>
+  <li><b>Attention-driven promotion.</b> Each step, up to 32 cold rows join the model's exact attention computation; the model's own attention weights decide which rows return to the GPU, replacing the bound-based estimate used in the earlier design.</li>
+  <li><b>A write-once victim cache with full write accounting.</b> Because KV rows are immutable, a promoted row keeps its cold copy as a shadow; demoting it again costs zero payload writes. Every paid and avoided write is counted per layer and per step.</li>
+  <li><b>A complete, independently verified evaluation.</b> 10,318 predictions on six LongBench tasks, comparisons with adapted and official baselines, measured latency, modelled traffic and energy, and an audit that re-scores every output with independent code and re-executes a sample of runs on the GPU.</li>
+</ol>
+<p>The thesis states its limitations as clearly as its results. In particular, the idea of writing an immutable KV page only once is shared with recent offloading work (FlexiCache, Section 3.4), STT-RAM is modelled rather than physically present, and the official SnapKV baseline is slightly more accurate.</p>
+
+<h2 data-toc="2">1.4 Organisation of the report</h2>
+<p>Chapter 2 explains how LLM inference uses the KV cache and introduces STT-RAM. Chapter 3 reviews eviction, retrieval and offloading methods and identifies the gap. Chapter 4 presents the immutability property and the design principles that follow from it. Chapter 5 describes TieredKV in detail. Chapter 6 gives the experimental methodology, Chapter 7 the results and Chapter 8 the verification of those results. Chapter 9 discusses limitations, Chapter 10 the planned future work, and Chapter 11 concludes.</p>
+</section>
+
+<!-- ======================= 2 BACKGROUND ======================= -->
+<section class="pb">
+<div class="chk">Chapter 2</div>
+<h1 class="ch" data-toc="1">Background</h1>
+<div class="bar"></div>
+
+<h2 data-toc="2">2.1 How an LLM generates text</h2>
+<p>A decoder-only transformer predicts the next token of a sequence. Given "The cat sat on the", it predicts "mat"; the prediction is appended to the input and the process repeats. This is <b>autoregressive generation</b>. The model is a stack of identical decoder blocks (32 in Mistral-7B). Each block contains a <b>self-attention</b> sub-layer, in which every token forms a query <i>q</i>, a key <i>k</i> and a value <i>v</i> and combines the values of all earlier tokens weighted by softmax(<i>q</i>·<i>k</i>), followed by a feed-forward network.</p>
+<p>Inference has two phases. In <b>prefill</b>, the whole prompt is processed in parallel; this is compute-bound and keeps the GPU busy. In <b>decode</b>, tokens are produced one at a time, and each new token must attend to all previous ones. Decode performs little arithmetic per byte read and is therefore <b>memory-bandwidth-bound</b>: the GPU spends most of its time waiting for data.</p>
+
+<h2 data-toc="2">2.2 The KV cache</h2>
+<p>Without caching, generating token <i>T</i> would require recomputing the keys and values of all <i>T</i>−1 earlier tokens, giving quadratic total work. The KV cache stores each token's keys and values once, at every layer, so each decode step computes only the new token's vectors and reads the rest. The cache turns a quadratic process into a linear one, but it grows linearly with the sequence length.</p>
+<table class="t">
+<tr><th>Quantity (Mistral-7B-Instruct-v0.2, bf16)</th><th class="r">Value</th></tr>
+<tr><td>Layers × KV heads × head dimension</td><td class="r">32 × 8 × 128</td></tr>
+<tr><td>One token, one layer (K and V)</td><td class="r">2 × 8 × 128 × 2 B = 4 KB</td></tr>
+<tr><td>One token, all layers</td><td class="r">4 KB × 32 = 128 KB</td></tr>
+<tr><td>1,024 retained tokens (typical compressed budget)</td><td class="r">134.2 MB</td></tr>
+<tr><td>31,500 tokens (longest input used here)</td><td class="r">≈ 4.1 GB</td></tr>
+</table>
+<div class="cap"><b>Table 2.1.</b> KV-cache size for the model used in this work. Mistral uses grouped-query attention (GQA): 32 query heads share 8 KV heads, so the cache is 4× smaller than with one KV head per query head.</div>
+<p>Two consequences follow. First, <b>capacity</b>: for long inputs or several concurrent requests the cache, not the roughly 14.5 GB of model weights, decides whether a workload fits on the GPU. Second, <b>traffic</b>: every generated token re-reads the entire cache, so the decode speed is set by how many bytes are moved. Both pressures motivate keeping fewer rows on the GPU.</p>
+
+<h2 data-toc="2">2.3 STT-RAM as a memory technology</h2>
+<p>Spin-transfer-torque magnetic RAM stores each bit in the magnetic orientation of a magnetic tunnel junction. Reading senses the junction's resistance, which is fast and needs little energy. Writing must flip the magnetisation with a current pulse, which takes longer, costs several times more energy per bit and gradually wears the cell. STT-RAM retains its contents without power, so it does not need the constant refresh or standby power of DRAM, and it is denser than SRAM. These properties make it attractive for data that is <b>read often and changed rarely</b> — provided writes are kept to a minimum.</p>
+<div class="box red"><div class="lab">Scope of this work</div>No STT-RAM hardware is used. In the evaluation the cold tier is a GPU tensor, and STT-RAM latency and energy are <b>modelled</b> by applying assumed per-bit prices (Table 4.2) to the real event counts recorded during decoding. Write counts are logical events, not physical device writes.</div>
+</section>
+
+<!-- ======================= 3 RELATED WORK ======================= -->
+<section class="pb">
+<div class="chk">Chapter 3</div>
+<h1 class="ch" data-toc="1">Related Work</h1>
+<div class="bar"></div>
+<p>Work on reducing the KV cache falls into three broad families: methods that permanently evict tokens, methods that keep all tokens but read selectively, and systems that offload part of the cache to another memory.</p>
+
+<h2 data-toc="2">3.1 Permanent eviction</h2>
+<p><b>StreamingLLM</b> (Xiao et al., ICLR 2024) observed that the first few tokens act as <i>attention sinks</i>: they absorb attention mass that has nowhere else to go, and removing them breaks generation. It keeps four sink tokens plus a sliding window of recent tokens and discards everything in between, which gives stable generation at constant memory.</p>
+<p><b>H2O</b> (Zhang et al., NeurIPS 2023) keeps the "heavy hitters" — tokens that have accumulated the most attention — together with recent tokens, and evicts the rest as decoding proceeds.</p>
+<p><b>SnapKV</b> (Li et al., NeurIPS 2024) scores prompt tokens once at the end of prefill. The queries of a trailing <i>observation window</i> attend to the whole prompt; the scores are pooled and the top-ranked positions per head are kept. It compresses the prompt cache by large factors with small accuracy loss on LongBench.</p>
+<p>All three share one failure mode: <b>eviction is permanent</b>. A token judged unimportant early may be exactly what a later question needs, and once deleted it cannot be recovered.</p>
+
+<h2 data-toc="2">3.2 Selective retrieval without deletion</h2>
+<p><b>Quest</b> (Tang et al., ICML 2024) keeps the full cache and groups tokens into pages. For each page it stores the per-dimension minimum and maximum of the keys; at each step these give an upper bound on the attention score of any token in the page, and exact attention is computed only over the highest-scoring pages. Nothing is lost, but the full cache must remain resident: Quest saves bandwidth, <b>not capacity</b>, and assumes a single flat memory.</p>
+
+<h2 data-toc="2">3.3 The gap</h2>
+<table class="t">
+<tr><th>Method</th><th>Family</th><th>Saves capacity?</th><th>Recovers evicted tokens?</th><th>Memory tiers</th></tr>
+<tr><td>StreamingLLM</td><td>Eviction (sinks + window)</td><td>Yes</td><td>No — permanent</td><td>GPU only</td></tr>
+<tr><td>H2O</td><td>Eviction (heavy hitters)</td><td>Yes</td><td>No — permanent</td><td>GPU only</td></tr>
+<tr><td>SnapKV</td><td>Eviction (prompt compression)</td><td>Yes</td><td>No — permanent</td><td>GPU only</td></tr>
+<tr><td>Quest</td><td>Sparse retrieval</td><td>No — full cache resident</td><td>Yes — nothing evicted</td><td>GPU only</td></tr>
+<tr class="hl"><td><b>TieredKV (this work)</b></td><td>Write-aware tiering</td><td>Yes (hot tier)</td><td>Yes, within the cold tier</td><td>GPU + STT-RAM (modelled)</td></tr>
+</table>
+<div class="cap"><b>Table 3.1.</b> Positioning of the main prior methods.</div>
+<p>Two gaps follow from this comparison. <b>Gap 1 — the missing middle tier:</b> the design space is binary, resident or deleted, with no cheap and reversible place for a token that is probably cold but might be needed. <b>Gap 2 — device asymmetry is invisible:</b> existing policies assume that writing a token costs the same as reading it. On a non-volatile tier this is false, so a policy tuned for symmetric memory is mistuned from the start.</p>
+
+<h2 data-toc="2">3.4 Offloading and the closest related system</h2>
+<p><b>FlexiCache</b> (Takbir et al., MLSys 2026) classifies KV heads as temporally stable or unstable. For stable heads it keeps only the top pages on the GPU and offloads the rest to host memory; its Section 3.3 states that each page of a stable head is offloaded exactly once and that host memory always holds the full cache for those heads. FlexiCache therefore already exploits the immutability of KV pages to write each page only once. <b>We do not claim the write-once idea by itself as new.</b> TieredKV differs in the setting it targets: the cold tier is <b>bounded</b> (2,048 rows per layer, not a full mirror) and <b>write-expensive</b> (non-volatile), so shadows must be reclaimed when the tier overflows, and every write is accounted for as a scarce resource. Making this difference into a measured, defensible contribution is part of the future work in Chapter 10.</p>
+</section>
+
+<!-- ======================= 4 KEY PROPERTY ======================= -->
+<section class="pb">
+<div class="chk">Chapter 4</div>
+<h1 class="ch" data-toc="1">The Key Property and Design Principles</h1>
+<div class="bar"></div>
+
+<h2 data-toc="2">4.1 KV rows are immutable</h2>
+<p>Once the model has computed a token's key and value at a layer, those vectors are never modified again: later tokens read them but do not change them. This sets the KV cache apart from other data in an inference system.</p>
+<table class="t">
+<tr><th>Data type</th><th>Life cycle</th><th>Consequence</th></tr>
+<tr><td>Model weights</td><td>Read-only, always resident</td><td>Normally cached; no write traffic</td></tr>
+<tr><td>Activations</td><td>Written, read once, discarded</td><td>Short-lived, no reuse</td></tr>
+<tr class="hl"><td><b>KV cache</b></td><td><b>Written once, read many times, never modified</b></td><td><b>A stored copy can never become stale</b></td></tr>
+</table>
+<div class="cap"><b>Table 4.1.</b> Access patterns of the main data types during inference.</div>
+<p>Three consequences shape the design:</p>
+<ol>
+  <li><b>Write-once, read-maybe.</b> A KV row's access pattern matches what a non-volatile memory is good at: the expensive operation (write) happens rarely, the cheap one (read) often.</li>
+  <li><b>A copy is permanently valid.</b> A backup of a row in the cold tier is bit-identical to the live copy for its whole lifetime. No coherence protocol, dirty bits or invalidation are needed.</li>
+  <li><b>"How many times must this row be written?" becomes a design variable</b> rather than a fixed cost. If a backup already exists, moving a row out of the GPU can cost zero writes.</li>
+</ol>
+
+<h2 data-toc="2">4.2 Cost model</h2>
+<p>To translate event counts into time and energy, the evaluation uses the prices in Table 4.2 (implemented in <code>src/cost_model.py</code>). The GPU bandwidth is the specification of the NVIDIA L40S used for the experiments; every other value, including the 4× STT-RAM write/read asymmetry, is an <b>assumed price</b> chosen to represent the technology, not a measurement.</p>
+<table class="t">
+<tr><th>Tier</th><th class="r">Read GB/s</th><th class="r">Write GB/s</th><th class="r">Read pJ/bit</th><th class="r">Write pJ/bit</th><th class="r">Standby mW/MB</th></tr>
+<tr><td>GPU VRAM (L40S GDDR6)</td><td class="r">864</td><td class="r">864</td><td class="r">12</td><td class="r">12</td><td class="r">8</td></tr>
+<tr class="hl"><td>STT-RAM (modelled)</td><td class="r">50</td><td class="r">12.5</td><td class="r">2</td><td class="r">8</td><td class="r">1</td></tr>
+</table>
+<div class="cap"><b>Table 4.2.</b> Prices used by the cost model. Replacing these assumptions with values from published device studies or a circuit-level simulator, and testing how sensitive the conclusions are to them, is listed as future work.</div>
+
+<h2 data-toc="2">4.3 Design principles</h2>
+<div class="grid2">
+  <div class="stat"><div class="v" style="font-size:13pt">Demote, don't delete</div><div class="k">A row leaving the GPU goes to the cold tier, where it can still be used and brought back.</div></div>
+  <div class="stat teal"><div class="v" style="font-size:13pt">Read freely, write rarely</div><div class="k">Cold-tier reads are cheap; every write is avoided where an existing copy can be re-used.</div></div>
+  <div class="stat"><div class="v" style="font-size:13pt">Let the model decide</div><div class="k">Promotion uses the model's real attention weights, not an estimate.</div></div>
+  <div class="stat red"><div class="v" style="font-size:13pt">Count everything</div><div class="k">Promotions, demotions, paid and avoided writes and drops are recorded per layer and step.</div></div>
+</div>
+</section>
+
+<!-- ======================= 5 TIEREDKV ======================= -->
+<section class="pb">
+<div class="chk">Chapter 5</div>
+<h1 class="ch" data-toc="1">Proposed Design: TieredKV</h1>
+<div class="bar"></div>
+
+<h2 data-toc="2">5.1 Overview</h2>
+<p>TieredKV maintains, independently in each of the model's 32 layers, two pools of KV rows:</p>
+<ul>
+  <li>a <b>hot tier</b> of 992 rows (or 1,024 in the second configuration) in GPU memory, which is always part of attention; and</li>
+  <li>a <b>cold tier</b> of 2,048 rows, modelled as STT-RAM, which holds rows evicted from the hot tier. Each cold row is either <i>live</i> (its only copy) or a <i>shadow</i> (a clean backup of a row that is currently also in the hot tier).</li>
+</ul>
+<p>Because the policy runs per layer, the same token can be hot in one layer and cold in another. Figure A shows the complete design.</p>
+<figure>
+  <img src="../../figures/tieredkv_architecture_v2.png" alt="TieredKV architecture">
+  <div class="cap"><b>Figure A.</b> TieredKV architecture. (a) Prefill: the prompt is ranked once and split into hot, cold and discarded rows. (b) Decode, for every generated token and every layer: ① expose up to 32 cold rows to attention, ② use the attention weights as feedback, ③ promote the most-attended exposed rows (a read; the cold copy stays as a shadow), ④ demote a victim (one paid write if it has no shadow) or ④′ reactivate its shadow (zero payload writes), ⑤ on overflow reclaim shadows first, then drop least-recently-used live rows.</div>
+</figure>
+
+<h2 data-toc="2">5.2 Prefill: one-time placement</h2>
+<p>The prompt is processed normally, producing keys and values for every prompt token in all 32 layers. TieredKV then ranks the tokens in the style of SnapKV: the queries of the last 128 prompt tokens (the <i>observation window</i>, which usually contains the question) attend to every earlier key; the attention is average-pooled with kernel size 5 within each KV-head group, giving one importance score per token. The tokens are then split by rank:</p>
+<ul>
+  <li><b>Hot tier:</b> the 4 sink tokens, the 128 most recent tokens and the highest-ranked remaining tokens, up to 992 rows.</li>
+  <li><b>Cold tier:</b> the next-ranked tokens, filling <b>at most 75 %</b> of the 2,048 cold rows, so that space is left for rows demoted during decoding.</li>
+  <li><b>Discarded:</b> all remaining prompt tokens.</li>
+</ul>
+
+<h2 data-toc="2">5.3 The decode loop</h2>
+<p>After each model call, five stages run in every layer.</p>
+<table class="t">
+<tr><th style="width:17%">Stage</th><th>What happens</th></tr>
+<tr><td><b>1 · Attend</b></td><td>The unmodified model computes exact attention over the visible set: all hot rows, the ≤ 32 exposed cold rows and the new token (at most 1,025 rows for hot 992). No approximation is applied inside attention.</td></tr>
+<tr><td><b>2 · Feedback</b></td><td>The attention weights update each hot row's cumulative score and age, and record how much attention each exposed cold row received.</td></tr>
+<tr><td><b>3 · Promote</b></td><td>Up to 32 of the most-attended exposed cold rows are copied to the hot tier. This is a cold-tier <i>read</i>. The cold copy is kept as a shadow. A re-entry gate defers promotion of rows that recently left, which prevents rows from bouncing back and forth.</td></tr>
+<tr><td><b>4 · Evict and demote</b></td><td>If the hot tier is over budget, the row with the lowest <b>cumulative attention ÷ age</b> leaves. Sinks, the recent window and just-promoted rows (one step of grace) are protected. If the victim has a shadow, the shadow is reactivated: <b>0 payload writes</b>. Otherwise the row is appended to the cold tier: <b>1 paid write</b>.</td></tr>
+<tr><td><b>5 · Expose</b></td><td>The ≤ 32 most recently accessed live cold rows are selected to join attention in the next step. If the cold tier is full, shadows are reclaimed first and only then are least-recently-used live rows dropped permanently.</td></tr>
+</table>
+<div class="cap"><b>Table 5.1.</b> The five stages of the decode loop, per generated token and per layer.</div>
+<p>Dividing cumulative attention by age matters: with cumulative attention alone, old rows look important simply because they have existed for longer. The ratio measures how useful a row is <i>per step</i>.</p>
+
+<h2 data-toc="2">5.4 The write-once victim cache</h2>
+<p>The central mechanism follows directly from immutability. A row is written to the cold tier the first time it is demoted. If it is later promoted, its cold copy is not deleted but kept as a shadow. When the same row is demoted again, the policy simply flips a flag that turns the shadow back into the live copy; no data is written. A row is therefore written to the cold tier <b>once</b> and re-used on every later demotion, until its shadow is reclaimed under overflow.</p>
+<table class="t">
+<tr><th>Event</th><th>Hot tier</th><th>Cold tier</th><th class="r">Payload writes</th></tr>
+<tr><td>First demotion of row <i>r</i></td><td><i>r</i> leaves</td><td><i>r</i> appended as live</td><td class="r">1 (paid)</td></tr>
+<tr><td>Promotion of <i>r</i></td><td><i>r</i> enters</td><td>copy kept as shadow</td><td class="r">0</td></tr>
+<tr><td>Second demotion of <i>r</i></td><td><i>r</i> leaves</td><td>shadow becomes live (flag flip)</td><td class="r">0 (avoided)</td></tr>
+<tr><td>Cold tier full</td><td>—</td><td>shadows reclaimed first, then LRU live rows dropped</td><td class="r">0</td></tr>
+</table>
+<div class="cap"><b>Table 5.2.</b> Life of one row under the write-once victim rule. One write unit is one token's K and V in one layer (4 KB).</div>
+<p>The mechanism trades memory for writes: shadows occupy cold-tier capacity that could otherwise hold additional live rows. Chapter 7 measures both sides of this trade-off.</p>
+
+<h2 data-toc="2">5.5 Evolution from the earlier three-tier design</h2>
+<p>An earlier version of this work, evaluated only in simulation, used three tiers and a bound-based promotion estimate. Running the design on a real model showed which parts contributed, and the design was simplified accordingly.</p>
+<table class="t">
+<tr><th>Question</th><th>Earlier design (3 tiers)</th><th>Current design (2 tiers)</th><th>Reason for the change</th></tr>
+<tr><td>Memory levels</td><td>GPU → STT-RAM → CPU memory</td><td>GPU → STT-RAM</td><td>The third level was never read back; it only delayed deletion.</td></tr>
+<tr><td>Use of slow-tier tokens</td><td>Only after promotion to the GPU</td><td>Up to 32 join attention every step</td><td>Old information can contribute to the answer immediately.</td></tr>
+<tr><td>Choice of what to promote</td><td>Min/max key bound (estimate)</td><td>Model's real attention weights</td><td>The bound was loose and caused promotion churn.</td></tr>
+<tr><td>Victim choice</td><td>Least total attention</td><td>Least attention per step of age</td><td>Old rows no longer look important merely for being old.</td></tr>
+<tr><td>Evaluation</td><td>Simulation with synthetic data</td><td>Mistral-7B, 6 tasks, 10,318 predictions</td><td>Results come from real model runs.</td></tr>
+</table>
+<div class="cap"><b>Table 5.3.</b> Changes from the earlier design.</div>
+</section>
+
+<!-- ======================= 6 METHODOLOGY ======================= -->
+<section class="pb">
+<div class="chk">Chapter 6</div>
+<h1 class="ch" data-toc="1">Experimental Methodology</h1>
+<div class="bar"></div>
+
+<h2 data-toc="2">6.1 Model, hardware and decoding</h2>
+<p>All experiments use <b>Mistral-7B-Instruct-v0.2</b> (32 layers, 32 query heads, 8 KV heads, head dimension 128) in bfloat16, on two NVIDIA L40S 48 GB GPUs with PyTorch 2.5.1 and Transformers 5.15. Decoding is greedy with batch size 1. Inputs longer than 31,500 tokens are truncated in the middle, as in LongBench's reference protocol. Every method receives the identical tokenised input, the same decoding settings and the same output-length limit; only the KV-cache policy differs.</p>
+
+<h2 data-toc="2">6.2 Benchmark</h2>
+<table class="t">
+<tr><th>Task</th><th>Type</th><th class="r">Inputs</th><th>Metric</th><th class="r">Max new tokens</th></tr>
+<tr><td>MultiFieldQA-en</td><td>Single-document QA</td><td class="r">150</td><td>F1</td><td class="r">64</td></tr>
+<tr><td>Qasper</td><td>Single-document QA</td><td class="r">224</td><td>F1</td><td class="r">128</td></tr>
+<tr><td>NarrativeQA</td><td>Single-document QA</td><td class="r">200</td><td>F1</td><td class="r">128</td></tr>
+<tr><td>HotpotQA</td><td>Multi-document QA</td><td class="r">300</td><td>F1</td><td class="r">32</td></tr>
+<tr><td>TriviaQA</td><td>Few-shot QA</td><td class="r">300</td><td>F1</td><td class="r">32</td></tr>
+<tr><td>GovReport</td><td>Summarisation</td><td class="r">300</td><td>ROUGE-L</td><td class="r">512</td></tr>
+<tr class="hl"><td><b>Total</b></td><td></td><td class="r"><b>1,474</b></td><td colspan="2">× 7 configurations = <b>10,318 predictions</b></td></tr>
+</table>
+<div class="cap"><b>Table 6.1.</b> LongBench tasks. Every input of each task is used (LongBench-E splits; NarrativeQA standard split). Scores are reported on a 0–100 scale; the six-task average weights each task equally.</div>
+
+<h2 data-toc="2">6.3 Methods compared</h2>
+<table class="t">
+<tr><th>Configuration</th><th>KV kept per layer</th><th>Notes</th></tr>
+<tr><td>Full cache</td><td>All tokens</td><td>Unrestricted reference (upper bound)</td></tr>
+<tr><td>StreamingLLM (adapted)</td><td>1,024 fixed</td><td>Sinks + recent window</td></tr>
+<tr><td>H2O (adapted)</td><td>1,024 fixed</td><td>Heavy hitters + recent window</td></tr>
+<tr><td>SnapKV (adapted)</td><td>1,024 fixed</td><td>Prompt compression with a fixed decode budget</td></tr>
+<tr><td>SnapKV, upstream selector</td><td>1,024 per query head + growing decode cache</td><td>Original selector; cache grows during decoding</td></tr>
+<tr><td>SnapKV, official GQA code</td><td>1,024 + growing decode cache</td><td>Added later as an additional check</td></tr>
+<tr class="hl"><td><b>TieredKV, hot 1,024</b></td><td>1,024 hot + 2,048 cold</td><td>Same hot budget as the baselines</td></tr>
+<tr class="hl"><td><b>TieredKV, hot 992</b></td><td>992 hot + 2,048 cold</td><td>Same attended rows: 992 + 32 = 1,024</td></tr>
+</table>
+<div class="cap"><b>Table 6.2.</b> Configurations. "Adapted" baselines are re-implemented in this code base with a fixed 1,024-row budget. Seven configurations form the main evaluation; the official GQA SnapKV run was executed separately on the same 1,474 inputs.</div>
+
+<h2 data-toc="2">6.4 What "fair" means in this comparison</h2>
+<p>Methods with different memory structures cannot be equal in every respect at once, so the comparison is made under explicitly stated budgets:</p>
+<ul>
+  <li><b>Equal hot budget</b> (TieredKV hot 1,024): every method keeps 1,024 rows on the GPU; TieredKV additionally keeps a cold tier.</li>
+  <li><b>Equal attended rows</b> (TieredKV hot 992): every method attends to at most 1,024 cached rows per step. This was verified from the actual tensor sizes passed to the model in all runs: TieredKV hot 992 never attended more than 1,025 rows including the new token, exactly like the 1,024-row baselines.</li>
+</ul>
+<p>Neither setting equalises <b>total memory</b>: TieredKV stores more rows than the fixed-budget baselines, while the SnapKV variants let their cache grow during decoding. An equal-total-memory comparison is the most important item of future work (Section 10.3).</p>
+
+<h2 data-toc="2">6.5 Measurements</h2>
+<ul>
+  <li><b>Accuracy:</b> task metric per input, averaged per task and then equally across tasks.</li>
+  <li><b>Writes:</b> paid and avoided cold-tier writes, promotions, demotions and drops, recorded by the policy per layer and per step.</li>
+  <li><b>Storage:</b> configured capacity and observed KV storage at the end of prefill and at the end of each request.</li>
+  <li><b>Latency:</b> measured median inter-token latency on the L40S in a separate timing benchmark (contexts of 512 to 16,384 tokens, 150 measured steps each).</li>
+  <li><b>Modelled traffic time and energy:</b> real event counts multiplied by the prices of Table 4.2.</li>
+</ul>
+</section>
+
+<!-- ======================= 7 RESULTS ======================= -->
+<section class="pb">
+<div class="chk">Chapter 7</div>
+<h1 class="ch" data-toc="1">Results</h1>
+<div class="bar"></div>
+<p>Figures in this chapter keep the numbers used in the presentation and in the repository (<code>figures_final/</code>, Figures 1–9).</p>
+
+<h2 data-toc="2">7.1 Accuracy</h2>
+<table class="t">
+<tr><th>Method</th><th class="r">MF-QA</th><th class="r">Qasper</th><th class="r">Narr.QA</th><th class="r">HotpotQA</th><th class="r">TriviaQA</th><th class="r">GovRep.</th><th class="r">Avg.</th></tr>
+<tr class="sub"><td>Full cache</td><td class="r">47.85</td><td class="r">27.86</td><td class="r">21.70</td><td class="r">33.86</td><td class="r">87.15</td><td class="r">32.32</td><td class="r"><b>41.79</b></td></tr>
+<tr class="sub"><td>SnapKV, upstream selector (growing)</td><td class="r">46.47</td><td class="r">26.10</td><td class="r">21.23</td><td class="r">30.93</td><td class="r">87.25</td><td class="r">26.85</td><td class="r">39.80</td></tr>
+<tr class="sub"><td>SnapKV, official GQA (growing)</td><td class="r">46.27</td><td class="r">25.71</td><td class="r">20.72</td><td class="r">30.96</td><td class="r">87.39</td><td class="r">26.09</td><td class="r">39.52</td></tr>
+<tr class="hl"><td><b>TieredKV, hot 1,024</b></td><td class="r">44.62</td><td class="r">24.28</td><td class="r">20.33</td><td class="r">31.14</td><td class="r">87.32</td><td class="r">25.17</td><td class="r"><b>38.81</b></td></tr>
+<tr class="hl"><td><b>TieredKV, hot 992</b></td><td class="r">43.80</td><td class="r">23.72</td><td class="r">20.28</td><td class="r">31.44</td><td class="r">86.85</td><td class="r">24.87</td><td class="r"><b>38.50</b></td></tr>
+<tr><td>SnapKV (adapted, 1,024)</td><td class="r">34.65</td><td class="r">16.52</td><td class="r">18.26</td><td class="r">24.31</td><td class="r">84.37</td><td class="r">24.66</td><td class="r">33.80</td></tr>
+<tr><td>H2O (adapted, 1,024)</td><td class="r">34.04</td><td class="r">16.10</td><td class="r">16.24</td><td class="r">24.17</td><td class="r">84.24</td><td class="r">23.42</td><td class="r">33.04</td></tr>
+<tr><td>StreamingLLM (adapted, 1,024)</td><td class="r">30.13</td><td class="r">14.67</td><td class="r">17.23</td><td class="r">22.34</td><td class="r">84.21</td><td class="r">24.14</td><td class="r">32.12</td></tr>
+</table>
+<div class="cap"><b>Table 7.1.</b> LongBench scores (0–100) over all 1,474 inputs. Grey rows use more or growing memory and are shown for reference. Values are recomputed from the raw outputs (<code>results/figures_20261118_renumbered/task_values.csv</code>; official GQA run: <code>results/gqa_baseline_20261016/</code>).</div>
+
+<figure>
+  <img src="../../figures_final/fig1_accuracy_equivram.png" alt="Figure 1" style="width:92%">
+  <div class="cap"><b>Figure 1.</b> Accuracy at the same hot budget: every compressed method keeps 1,024 rows on the GPU; TieredKV additionally keeps 2,048 cold rows, of which 32 join attention each step.</div>
+</figure>
+<p><b>Same hot budget.</b> TieredKV (hot 1,024) reaches a six-task average of 38.81, against 41.79 for the full cache and 32.12–33.80 for the adapted baselines. The adapted baselines lose 8.0–9.7 points relative to the full cache; TieredKV recovers 5.0–6.7 of them. On TriviaQA it matches the full cache (87.3 vs 87.2).</p>
+<figure>
+  <img src="../../figures_final/fig2_accuracy_fair.png" alt="Figure 2" style="width:92%">
+  <div class="cap"><b>Figure 2.</b> Accuracy at the same number of attended rows: TieredKV's hot tier is reduced to 992 so that hot rows plus 32 exposed cold rows equal the baselines' 1,024.</div>
+</figure>
+<p><b>Same attended rows.</b> Shrinking the hot tier to 992 costs only 0.31 points (38.50). TieredKV is still <b>4.7 to 6.4 points</b> above the adapted baselines on average, and it is the best of the fixed-budget compressed methods on <b>all six tasks</b>. The margin is largest on the single-document QA tasks (MultiFieldQA +9.2, Qasper +7.2 over adapted SnapKV) and very small on GovReport (+0.2). The explanation is the design's purpose: rows evicted from the hot tier are not lost, and the useful ones return through exposure and promotion.</p>
+<figure>
+  <img src="../../figures_final/fig9_heatmap.png" alt="Figure 9" style="width:78%">
+  <div class="cap"><b>Figure 9.</b> Per-task score heatmap for TieredKV (hot 1,024), the full cache and the three adapted baselines.</div>
+</figure>
+
+<h2 data-toc="2">7.2 Cold-tier write traffic</h2>
+<p>Over all 1,474 inputs with hot 992, decoding required 57.5 million demotions. One unit is one token's K and V in one layer (4 KB), summed over the 32 layers. Of these, <b>52.6 million re-used an existing shadow</b> and only <b>4.96 million paid a write</b>.</p>
+<table class="t">
+<tr><th style="width:17%">Hot 992</th><th class="r">MF-QA</th><th class="r">HotpotQA</th><th class="r">TriviaQA</th><th class="r">Qasper</th><th class="r">Narr.QA</th><th class="r">GovRep.</th><th class="r">All</th></tr>
+<tr><td>Paid writes</td><td class="r">322,588</td><td class="r">467,975</td><td class="r">455,143</td><td class="r">428,044</td><td class="r">293,317</td><td class="r">2,992,859</td><td class="r">4,959,926</td></tr>
+<tr><td>Avoided (shadow re-used)</td><td class="r">2,619,396</td><td class="r">2,521,945</td><td class="r">2,285,593</td><td class="r">3,083,860</td><td class="r">1,379,675</td><td class="r">40,696,741</td><td class="r">52,587,210</td></tr>
+<tr class="hl"><td><b>Avoided %</b></td><td class="r">89.0</td><td class="r">84.3</td><td class="r">83.4</td><td class="r">87.8</td><td class="r">82.5</td><td class="r">93.1</td><td class="r"><b>91.4</b></td></tr>
+</table>
+<div class="cap"><b>Table 7.2.</b> Paid and avoided logical cold-tier writes during decoding. In data volume: about 20 GB written versus about 215 GB avoided.</div>
+<div class="grid2">
+  <div class="stat teal"><div class="v">91.4 %</div><div class="k">of decode-time cold-tier writes avoided (82.5–93.1 % per task).</div></div>
+  <div class="stat"><div class="v">40.7 %</div><div class="k">of all cold-tier writes in a request avoided when the initial placement of prompt rows is also counted (26.1 % averaged per task).</div></div>
+</div>
+<figure>
+  <img src="../../figures_final/fig3_write_savings.png" alt="Figure 3" style="width:88%">
+  <div class="cap"><b>Figure 3.</b> Paid versus avoided logical decode writes per task (hot 992).</div>
+</figure>
+<p>Two qualifications apply. First, the 91.4 % covers decoding only; the initial placement of the prompt into the cold tier is unavoidable, which is why the whole-request figure is lower. Second, GovReport, which generates up to 512 tokens per input, contributes 77 % of the avoided writes, so the pooled figure depends on the workload. All counts are logical events recorded by the policy, not physical STT-RAM writes, and no endurance or lifetime claim is derived from them.</p>
+
+<h2 data-toc="2">7.3 Memory footprint</h2>
+<p>The saving in writes is paid for in capacity. TieredKV's configured KV capacity is (992 + 2,048) rows × 4 KB × 32 layers = <b>398.5 MB</b> per request, against 134.2 MB for a 1,024-row compressed cache — about 3×. After prefill the cold tier is at most 75 % full, so the retained payload starts at about 331 MB and grows during decoding. In the current implementation the 134 MB working copy handed to the model is stored separately, which Figure 4 shows as observed storage. The cold tier is intended to live in denser, cheaper STT-RAM, but it is still additional capacity.</p>
+<p>For reference, the upstream SnapKV selector stores its cache for all 32 query heads (4× the 8 KV heads), which gives 536.9 MB after prefill and a mean of 578 MB (maximum 805 MB) at the end of a request in the recorded snapshots. The official GQA SnapKV stores 134.2 MB after prefill and grows slightly during decoding.</p>
+<figure>
+  <img src="../../figures_final/fig4_footprint.png" alt="Figure 4" style="width:88%">
+  <div class="cap"><b>Figure 4.</b> Configured capacity and observed KV payload storage at the end of a request. These are endpoint snapshots, not runtime peaks or whole-system memory.</div>
+</figure>
+
+<h2 data-toc="2">7.4 Measured decode latency</h2>
+<table class="t">
+<tr><th>Method (median ms / token)</th><th class="r">512</th><th class="r">1K</th><th class="r">2K</th><th class="r">4K</th><th class="r">8K</th><th class="r">16K</th></tr>
+<tr><td>Full cache</td><td class="r">23.5</td><td class="r">23.7</td><td class="r">24.2</td><td class="r">25.2</td><td class="r">27.0</td><td class="r">30.8</td></tr>
+<tr><td>StreamingLLM (adapted)</td><td class="r">23.5</td><td class="r">24.7</td><td class="r">24.7</td><td class="r">24.7</td><td class="r">24.7</td><td class="r">24.8</td></tr>
+<tr><td>H2O (adapted)</td><td class="r">25.7</td><td class="r">34.3</td><td class="r">34.3</td><td class="r">34.3</td><td class="r">34.3</td><td class="r">34.2</td></tr>
+<tr><td>SnapKV (adapted)</td><td class="r">25.7</td><td class="r">34.3</td><td class="r">34.3</td><td class="r">34.3</td><td class="r">34.3</td><td class="r">34.2</td></tr>
+<tr class="hl"><td><b>TieredKV (hot 1,024)</b></td><td class="r">32.9</td><td class="r">74.5</td><td class="r">75.0</td><td class="r">76.5</td><td class="r">76.5</td><td class="r">77.8</td></tr>
+</table>
+<div class="cap"><b>Table 7.3.</b> Measured median inter-token latency on one L40S versus context length (150 measured steps per point).</div>
+<figure>
+  <img src="../../figures_final/fig5_decode_scaling.png" alt="Figure 5" style="width:86%">
+  <div class="cap"><b>Figure 5.</b> Measured median decode latency versus context length.</div>
+</figure>
+<p>Once the cache exceeds the budget, TieredKV decodes at about 75–78 ms per token, roughly 2–3× slower than the other methods. The cause is engineering rather than the design itself: the policy runs as Python/PyTorch code after every layer, and it needs the attention weights, which forces the slower eager attention path. A fused GPU kernel for feedback, promotion and exposure is the main remedy (Section 10.4).</p>
+
+<h2 data-toc="2">7.5 Modelled traffic time and energy</h2>
+<table class="t">
+<tr><th>Method (all 1,474 inputs)</th><th class="r">Modelled traffic time (s)</th><th class="r">Modelled energy (J)</th></tr>
+<tr><td>Full cache</td><td class="r">202.4</td><td class="r">16,784</td></tr>
+<tr><td>SnapKV, upstream selector</td><td class="r">81.0</td><td class="r">6,719</td></tr>
+<tr class="hl"><td><b>TieredKV, hot 1,024</b></td><td class="r">32.8</td><td class="r">1,455</td></tr>
+<tr class="hl"><td><b>TieredKV, hot 992</b></td><td class="r">31.7</td><td class="r">1,387</td></tr>
+<tr><td>Adapted baselines (StreamingLLM, SnapKV, H2O)</td><td class="r">16.1 – 17.3</td><td class="r">1,334 – 1,436</td></tr>
+</table>
+<div class="cap"><b>Table 7.4.</b> Decode KV traffic, modelled from real event counts and the prices of Table 4.2. Not measured device time or energy.</div>
+<div class="grid2">
+<figure style="margin:0"><img src="../../figures_final/fig6_modeled_traffic_time.png" alt="Figure 6"><div class="cap"><b>Figure 6.</b> Modelled KV traffic time.</div></figure>
+<figure style="margin:0"><img src="../../figures_final/fig7_energy.png" alt="Figure 7"><div class="cap"><b>Figure 7.</b> Modelled KV traffic energy.</div></figure>
+</div>
+<p>TieredKV moves far less data than the full cache (about 6× less modelled traffic time, 11.5× less energy). Its energy is close to the adapted baselines because cold reads are cheap and write re-use keeps paid demotions rare. Its traffic time is about twice theirs, because cold rows are read at the assumed STT-RAM bandwidth of 50 GB/s rather than at GPU speed. Generated lengths differ between methods, so these totals describe the whole workload rather than per-token efficiency.</p>
+
+<h2 data-toc="2">7.6 Policy behaviour</h2>
+<figure>
+  <img src="../../figures_final/fig8_migration_profile.png" alt="Figure 8" style="width:84%">
+  <div class="cap"><b>Figure 8.</b> TieredKV policy actions per task (hot 1,024): promotions, demotions, reactivations and drops, as per-layer counts summed over 32 layers and all inputs.</div>
+</figure>
+<p>Promotions (55.0 M) and demotions (58.5 M) are of similar size: the hot tier is continuously refreshed rather than frozen after prefill. Many promotion candidates are deferred by the re-entry gate, which limits churn. <b>No cold rows were dropped</b> in either configuration, so on these workloads the 2,048-row cold tier never overflowed. GovReport dominates the counts because of its long outputs.</p>
+
+<h2 data-toc="2">7.7 Comparison with the official SnapKV</h2>
+<p>The official SnapKV implementation, in both its upstream form (39.80) and its current GQA form (39.52), scores <b>0.7 to 1.0 points higher</b> than TieredKV on average. Compared with the official GQA run, TieredKV hot 992 is lower on five tasks (by 0.4 to 2.5 points) and higher on HotpotQA (+0.5). The two approaches use different resources: SnapKV keeps fewer rows overall but lets its cache grow during decoding, while TieredKV holds a fixed hot tier and an additional cold tier. Neither result can be read as a win under equal resources.</p>
+<div class="box red"><div class="lab">Position taken in this thesis</div>TieredKV is <b>not</b> claimed to be state of the art. What the results support is narrower: a write-aware hierarchy keeps quality close to strong eviction methods, clearly improves on fixed-budget eviction at the same number of attended rows, and avoids about 91 % of decode-time writes to the non-volatile tier.</div>
+</section>
+
+<!-- ======================= 8 VERIFICATION ======================= -->
+<section class="pb">
+<div class="chk">Chapter 8</div>
+<h1 class="ch" data-toc="1">Verification of Results</h1>
+<div class="bar"></div>
+<p>Because the implementation was developed over several iterations, every number in this report was audited independently of the code that produced the figures.</p>
+<table class="t">
+<tr><th style="width:26%">Check</th><th>Method</th><th style="width:22%">Outcome</th></tr>
+<tr><td><b>Re-scoring</b></td><td>All 10,318 saved predictions (and 1,474 official SnapKV outputs) re-scored with an independently written F1 / ROUGE-L implementation; every stored text decoded again from its token IDs with the real tokenizer.</td><td>0 score mismatches; 0 text mismatches; all 42 task × method values equal the plotted table</td></tr>
+<tr><td><b>Re-execution</b></td><td>18 recorded requests (6 tasks × full / adapted SnapKV / TieredKV hot 992) re-run on an L40S with the frozen evaluation source.</td><td>Identical tokens, scores and write counters</td></tr>
+<tr><td><b>Figure values</b></td><td>Per-task means, write totals and all 30 latency medians recomputed from raw records and raw per-step timings.</td><td>All match the figures</td></tr>
+<tr><td><b>Unfair advantages</b></td><td>Inputs compared across methods; gold answers traced; attended widths measured from the tensors passed to the model.</td><td>Identical inputs; answers used only for scoring; ≤ 1,025 attended rows for TieredKV hot 992</td></tr>
+<tr><td><b>Whole-request writes</b></td><td>Avoidance recomputed from post-prefill cold occupancy plus decode counters.</td><td>40.68 % pooled, 26.09 % task average</td></tr>
+<tr><td><b>Figure renumbering</b></td><td>Renumbered figure files compared with the originals.</td><td>Byte-identical; names changed only</td></tr>
+<tr><td><b>Code tests</b></td><td>Unit and integration test suite plus an end-to-end smoke run checking capacity limits and write accounting.</td><td>601 passed, 1 GPU-only test skipped</td></tr>
+</table>
+<div class="cap"><b>Table 8.1.</b> Independent checks. Scripts: <code>docs/presentation/verification/</code> and <code>results/figures_20261118_renumbered/</code>.</div>
+<p>Two older ablation figures (sweeps of the cold-placement fraction) had no verified source run. They were removed from the repository rather than reported.</p>
+</section>
+
+<!-- ======================= 9 DISCUSSION ======================= -->
+<section class="pb">
+<div class="chk">Chapter 9</div>
+<h1 class="ch" data-toc="1">Discussion and Limitations</h1>
+<div class="bar"></div>
+
+<h2 data-toc="2">9.1 What the results show</h2>
+<p>The experiments support the central idea: keeping evicted rows in a second tier, and letting the model's own attention bring the useful ones back, recovers much of the accuracy that fixed-budget eviction loses. Immutability makes this affordable in writes: most rows that leave the GPU have been there before and already have a valid cold copy, so over 90 % of decode-time demotions cost no write at all.</p>
+
+<h2 data-toc="2">9.2 Limitations</h2>
+<ul>
+  <li><b>STT-RAM is modelled.</b> Latency and energy come from assumed per-bit prices; write counts are logical events, not device writes or endurance measurements.</li>
+  <li><b>More memory.</b> TieredKV's configured capacity is about 3× that of a 1,024-row compressed cache. The accuracy gains are at equal hot budget or equal attended rows, not at equal total memory.</li>
+  <li><b>Slower decoding.</b> About 75–78 ms per token versus 23–34 ms in the current implementation.</li>
+  <li><b>Limited scope.</b> One model (Mistral-7B), batch size 1, six LongBench tasks, contexts up to 31,500 tokens.</li>
+  <li><b>Official SnapKV is more accurate</b> on average by 0.7–1.0 points, under different resources.</li>
+  <li><b>Exposure uses a recency rule.</b> The 32 cold rows that join attention are the most recently accessed ones. A cold row that has not been used for a long time drops out of this set; since it then receives no attention, it cannot be promoted, even if a later question needs it. Promotion itself uses real attention, but the choice of <i>which</i> cold rows the model may see is a heuristic. Section 10.2 proposes how to address this.</li>
+  <li><b>Novelty overlap.</b> Writing an immutable page only once is also used by FlexiCache; the distinct contribution must rest on the bounded, write-expensive setting (Section 10.1).</li>
+</ul>
+</section>
+
+<!-- ======================= 10 FUTURE WORK ======================= -->
+<section class="pb">
+<div class="chk">Chapter 10</div>
+<h1 class="ch" data-toc="1">Future Work</h1>
+<div class="bar"></div>
+<p>The following steps, in order of importance, are planned before the work is submitted as a four-page IEEE paper.</p>
+
+<h2 data-toc="2">10.1 Sharpen the novelty claim</h2>
+<p>The defensible claim is the management of a <b>bounded, write-expensive non-volatile tier</b>: explicit write accounting, shadow reclamation under overflow, and accuracy under a write budget. This will be compared directly against FlexiCache's full-mirror approach.</p>
+
+<h2 data-toc="2">10.2 Better selection of exposed cold rows</h2>
+<p>An earlier exploratory test that ranked all cold rows with the current query improved the score by 2.9 points over the recency rule on 30 development inputs, but the confidence interval included zero. A Quest-style min/max bound and a centroid page index both failed earlier screens because they recalled too few of the truly relevant rows. Three candidates will be compared against the recency rule on a fresh development set:</p>
+<ol>
+  <li><b>Rotating exploration slots:</b> for example 24 slots chosen by recency and 8 that cycle through the whole cold tier, so that every row is shown at least once every 256 steps and none can starve.</li>
+  <li><b>Score-based exposure:</b> ranking cold rows by decayed accumulated attention instead of last-use time.</li>
+  <li><b>Confidence-triggered, write-free retrieval</b> (a candidate second contribution). When the attention over hot rows is confident, the recency rule is kept. When it is uncertain — high entropy, or much mass falling on the sink tokens — most of the 32 slots search the whole cold tier using small key fingerprints, such as a 128-bit hash per KV head (about 8 MB in total). The fingerprints are kept in GPU memory, so the index adds <b>no writes</b> to the non-volatile tier. The model's own uncertainty decides when to look into slow memory.</li>
+</ol>
+<p>An oracle that exposes the true top 32 cold rows will first establish how much improvement is possible; if the gap is small, the recency rule will be retained and reported as sufficient. The winning variant will be chosen by a gate fixed before any outputs are seen.</p>
+
+<h2 data-toc="2">10.3 Fair, equal-memory comparison</h2>
+<p>TieredKV will be compared at <b>matched total GPU and CPU memory</b> against the official SnapKV and at least one recent method (RocketKV or IceCache), with every buffer, index and retained copy charged. Three settings will be reported: equal attended rows, equal total storage, and equal peak memory for methods whose cache grows.</p>
+
+<h2 data-toc="2">10.4 Remove the latency overhead</h2>
+<p>A fused GPU kernel for scoring, victim selection, promotion and demotion, and a real CPU-memory cold tier with measured transfer times.</p>
+
+<h2 data-toc="2">10.5 Credible STT-RAM parameters</h2>
+<p>The assumed prices in Table 4.2 will be replaced by values from published device studies or a circuit-level simulator such as NVSim, with a sensitivity sweep over write latency and energy.</p>
+
+<h2 data-toc="2">10.6 Ablations and broader evaluation</h2>
+<p>Ablations without shadows, without exposure, with different cold-tier sizes and with exposure quotas of 8 to 64 rows. Evaluation on one or two further models (for example Llama-3-8B) and longer contexts (64K–128K tokens). A reserved set of 800 never-scored inputs will be used once, for a final pre-registered test.</p>
+</section>
+
+<!-- ======================= 11 CONCLUSION ======================= -->
+<section class="pb">
+<div class="chk">Chapter 11</div>
+<h1 class="ch" data-toc="1">Conclusion</h1>
+<div class="bar"></div>
+<p>This thesis set out to give evicted KV-cache rows a second chance without paying for it in writes to a non-volatile memory. TieredKV demotes rows from a GPU hot tier into a bounded, STT-RAM-modelled cold tier, lets up to 32 cold rows join attention at every step, and promotes those that the model actually attends to. Because a token's keys and values never change, a promoted row keeps its cold copy as a shadow, and demoting it again is free.</p>
+<p>On 10,318 predictions over six LongBench tasks, TieredKV is the most accurate of the fixed-budget compressed methods on every task when all methods attend to the same number of rows (38.50 versus 32.12–33.80; full cache 41.79), and it avoids 91.4 % of decode-time cold-tier writes. It also costs about three times the configured KV storage and, for now, decodes two to three times more slowly, and the official SnapKV remains slightly more accurate under different resources. Every number reported here was verified from raw outputs.</p>
+<p>The work shows that the write cost of a non-volatile tier can be made a design variable rather than a fixed penalty. The next steps — a fair equal-memory comparison, a faster implementation, validated device parameters and a better choice of which cold rows the model may see — will determine whether this becomes a competitive system.</p>
+
+<h2 data-toc="2">Acknowledgement</h2>
+<p>I thank my supervisor, Dr. Palash Das, for his guidance throughout this work, and the Department of Computer Science and Engineering, IIT Jodhpur, for providing the facilities that made this work possible.</p>
+</section>
+
+<!-- ======================= REFERENCES ======================= -->
+<section class="pb">
+<div class="chk">References</div>
+<h1 class="ch" data-toc="1">References</h1>
+<div class="bar"></div>
+<ol class="refs">
+  <li>A. Vaswani, N. Shazeer, N. Parmar, J. Uszkoreit, L. Jones, A. N. Gomez, Ł. Kaiser and I. Polosukhin. Attention is all you need. <i>NeurIPS</i>, 2017.</li>
+  <li>A. Q. Jiang et al. Mistral 7B. <i>arXiv:2310.06825</i>, 2023.</li>
+  <li>G. Xiao, Y. Tian, B. Chen, S. Han and M. Lewis. Efficient streaming language models with attention sinks. <i>ICLR</i>, 2024.</li>
+  <li>Z. Zhang et al. H<sub>2</sub>O: Heavy-hitter oracle for efficient generative inference of large language models. <i>NeurIPS</i>, 2023.</li>
+  <li>Y. Li et al. SnapKV: LLM knows what you are looking for before generation. <i>NeurIPS</i>, 2024.</li>
+  <li>J. Tang, Y. Zhao, K. Zhu, G. Xiao, B. Kasikci and S. Han. Quest: Query-aware sparsity for efficient long-context LLM inference. <i>ICML</i>, 2024.</li>
+  <li>N. Takbir, H. Alikhani, N. Dutt and S. Abdu Jyothi. FlexiCache: Leveraging temporal stability of attention heads for efficient KV cache management. <i>MLSys</i>, 2026.</li>
+  <li>W. Kwon et al. Efficient memory management for large language model serving with PagedAttention. <i>SOSP</i>, 2023.</li>
+  <li>Y. Bai et al. LongBench: A bilingual, multitask benchmark for long context understanding. <i>ACL</i>, 2024.</li>
+  <li>D. Apalkov et al. Spin-transfer torque magnetic random access memory (STT-MRAM). <i>ACM Journal on Emerging Technologies in Computing Systems</i>, 9(2), 2013.</li>
+  <li>X. Dong, C. Xu, Y. Xie and N. P. Jouppi. NVSim: A circuit-level performance, energy, and area model for emerging nonvolatile memory. <i>IEEE Transactions on Computer-Aided Design</i>, 31(7), 2012.</li>
+</ol>
+</section>
+
+<!-- ======================= APPENDIX ======================= -->
+<section class="pb">
+<div class="chk">Appendix</div>
+<h1 class="ch" data-toc="1">Appendix: Reproducibility and Artefacts</h1>
+<div class="bar"></div>
+<p>Code, raw evidence and figures are in the repository <a href="https://github.com/PrashantKumar-07/KV_Cache_Optimization">github.com/PrashantKumar-07/KV_Cache_Optimization</a>.</p>
+<table class="t">
+<tr><th style="width:38%">Artefact</th><th>Location</th></tr>
+<tr><td>Raw predictions and counters (10,318)</td><td><code>results/full_evaluation_20261015/verified_results.json</code></td></tr>
+<tr><td>Official GQA SnapKV run (1,474)</td><td><code>results/gqa_baseline_20261016/verified_results.json</code></td></tr>
+<tr><td>Figure renderer, numeric contracts, verifiers</td><td><code>results/figures_20261118_renumbered/</code></td></tr>
+<tr><td>Final figures 1–9</td><td><code>figures_final/</code></td></tr>
+<tr><td>Architecture diagram (Figure A)</td><td><code>figures/tieredkv_architecture_v2.svg</code></td></tr>
+<tr><td>TieredKV policy (executed path)</td><td><code>experiments/longbench_eval.py</code>, <code>src/tiered_kv_cache.py</code></td></tr>
+<tr><td>Cost model</td><td><code>src/cost_model.py</code></td></tr>
+<tr><td>Independent verification scripts</td><td><code>docs/presentation/verification/</code></td></tr>
+<tr><td>Setup on a new machine, task list</td><td><code>START_HERE.md</code>, <code>REPRODUCING.md</code>, <code>TASK_STATE.json</code></td></tr>
+</table>
+<h2>Figure index</h2>
+<table class="t">
+<tr><th style="width:10%">Figure</th><th style="width:34%">File</th><th>Content</th></tr>
+<tr><td>A</td><td><code>tieredkv_architecture_v2</code></td><td>TieredKV architecture</td></tr>
+<tr><td>1</td><td><code>fig1_accuracy_equivram</code></td><td>Accuracy at the same hot budget</td></tr>
+<tr><td>2</td><td><code>fig2_accuracy_fair</code></td><td>Accuracy at the same attended rows</td></tr>
+<tr><td>3</td><td><code>fig3_write_savings</code></td><td>Paid versus avoided decode writes</td></tr>
+<tr><td>4</td><td><code>fig4_footprint</code></td><td>KV storage footprint</td></tr>
+<tr><td>5</td><td><code>fig5_decode_scaling</code></td><td>Measured decode latency</td></tr>
+<tr><td>6</td><td><code>fig6_modeled_traffic_time</code></td><td>Modelled traffic time</td></tr>
+<tr><td>7</td><td><code>fig7_energy</code></td><td>Modelled energy</td></tr>
+<tr><td>8</td><td><code>fig8_migration_profile</code></td><td>Policy actions per task</td></tr>
+<tr><td>9</td><td><code>fig9_heatmap</code></td><td>Per-task score heatmap</td></tr>
+</table>
+<p class="small" style="margin-top:8pt">Figure numbers match the presentation and the repository. Figure 9 appears in Section 7.1 next to the accuracy results it summarises.</p>
+</section>
+
+</body>
+</html>
